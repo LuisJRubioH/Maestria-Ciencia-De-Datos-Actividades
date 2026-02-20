@@ -1,0 +1,21 @@
+# Conclusiones
+
+El análisis desarrollado permitió caracterizar de manera estructural el comportamiento de los clientes en relación con la aceptación de la campaña, utilizando un conjunto de datos previamente depurado, validado e imputado bajo criterios metodológicos consistentes.
+
+El proceso de tratamiento de duplicados, inconsistencias, valores atípicos y datos faltantes garantizó la integridad estadística del conjunto final, reduciendo posibles fuentes de sesgo y preservando la estructura de correlaciones subyacente.
+
+
+Los resultados obtenidos permiten establecer conclusiones claras:
+
+Las variables económicas presentan la mayor capacidad discriminante.
+El ingreso anual y el gasto histórico acumulado muestran diferencias estadísticamente significativas entre los clientes que aceptan y los que no aceptan la campaña. Estas diferencias no solo son significativas en términos estadísticos, sino que presentan magnitud suficiente para considerarse relevantes desde el punto de vista analítico.
+
+El comportamiento digital constituye un factor asociado a la respuesta.
+La frecuencia de visitas web mensuales es mayor en el grupo que responde positivamente, lo que sugiere que la interacción digital puede actuar como indicador de predisposición al consumo o mayor involucramiento con la marca.
+
+Las variables demográficas tradicionales muestran menor poder explicativo.
+No se encontraron diferencias estructurales relevantes en edad, nivel educativo o estado civil. Esto indica que las características sociodemográficas, por sí solas, no permiten distinguir adecuadamente el comportamiento de respuesta en esta muestra.
+
+La estructura del hogar presenta asociación parcial con la respuesta.
+La presencia de hijos en el hogar se asocia con menor proporción de aceptación, lo cual podría estar relacionado con restricciones presupuestarias o diferencias en prioridades de consumo.
+

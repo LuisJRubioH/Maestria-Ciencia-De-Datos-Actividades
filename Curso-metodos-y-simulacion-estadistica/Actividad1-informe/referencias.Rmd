@@ -1,0 +1,5 @@
+# Referencias
+
+- R Core Team (2024). _R: A language and environment for statistical computing_. R Foundation for Statistical Computing, Vienna, Austria. Disponible en: <https://www.R-project.org/>
+
+- Centro Magis (2025). _Material del curso Métodos y Simulación, versión 01-2025_. Maestría en Ciencia de Datos, Pontificia Universidad Javeriana Cali, Facultad de Ingeniería.

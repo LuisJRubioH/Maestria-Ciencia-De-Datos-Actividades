@@ -1,0 +1,230 @@
+# Resultados
+
+El presente análisis tiene como finalidad caracterizar estructuralmente el comportamiento de los clientes a partir del conjunto de datos previamente depurado, validado e imputado. Se examinan patrones asociados al perfil demográfico, nivel de ingreso, comportamiento histórico de gasto, interacción digital y estructura del hogar, con especial énfasis en su relación con la variable de respuesta a la campaña.
+
+El objetivo central de esta sección es identificar diferencias sistemáticas entre los clientes que aceptan y los que no aceptan la oferta, evaluar la magnitud de dichas diferencias y determinar qué variables presentan mayor capacidad discriminante. Este análisis constituye la base empírica para la posterior etapa de modelado predictivo y segmentación estratégica.
+
+
+```{r resumen , echo=FALSE, fig.cap="Estadísticos descriptivos de variables numéricas post-procesamiento"}
+vars_numericas_final <- c("Income", "MntTotal", "Age", 
+                          "Recency", "NumWebVisitsMonth", 
+                          "Customer_Days")
+
+tabla_descriptiva <- datos_final %>%
+  summarise(across(all_of(vars_numericas_final),
+                   list(Media    = ~mean(.x, na.rm = TRUE),
+                        Mediana  = ~median(.x, na.rm = TRUE),
+                        DE       = ~sd(.x, na.rm = TRUE),
+                        IQR      = ~IQR(.x, na.rm = TRUE),
+                        Asimetria = ~e1071::skewness(.x, na.rm = TRUE)),
+                   .names = "{.col}_{.fn}")) %>%
+  pivot_longer(cols = everything(),
+               names_to = c("Variable", ".value"),
+               names_sep = "_")
+
+knitr::kable(tabla_descriptiva,
+             digits = 2)
+```
+
+
+Las variables económicas (Income, MntTotal) presentan asimetría positiva moderada, coherente con distribuciones típicas de ingresos y gasto. La mediana resulta inferior a la media, confirmando la presencia de cola derecha.
+Las variables demográficas y de comportamiento muestran menor dispersión relativa, lo que indica mayor homogeneidad estructural en estos atributos.
+
+
+```{r histo, fig.cap="Distribuciones post-procesamiento", fig.width=10, fig.height=8, echo=FALSE}
+
+plot_histograma <- function(var) {
+  ggplot(datos_final, aes(x = .data[[var]])) +
+    geom_histogram(aes(y = after_stat(density)),
+                   bins = 30,
+                   fill = "#4E9AF1",      # azul medio
+                   color = "#FFFFFF",     # borde blanco entre barras
+                   alpha = 0.85) +
+    geom_density(color = "#E74C3C",       # rojo vivo
+                 linewidth = 1.2,
+                 fill = "#E74C3C",        # relleno bajo la curva
+                 alpha = 0.12) +
+    labs(title = paste("Distribución de", var),
+         x = var,
+         y = "Densidad") +
+    theme_minimal(base_size = 11) +
+    theme(
+      plot.title    = element_text(face = "bold", color = "#2C3E50", hjust = 0.5),
+      axis.title    = element_text(color = "#555555"),
+      panel.grid.minor = element_blank(),
+      panel.background = element_rect(fill = "#F7F9FC", color = NA),
+      plot.background  = element_rect(fill = "#F7F9FC", color = NA)
+    )
+}
+
+plots_hist <- lapply(vars_numericas_final, plot_histograma)
+do.call(gridExtra::grid.arrange, c(plots_hist, ncol = 2))
+```
+
+Las distribuciones confirman ausencia de valores extremos aberrantes posteriores al tratamiento. Se preserva la estructura original de las variables, sin distorsiones introducidas por la imputación múltiple.
+
+
+
+```{r frec-cat, echo=FALSE, fig.cap= "Distribución de frecuencias de variables categóricas post-procesamiento"}
+vars_categoricas_final <- c("Response", "education_Graduation",
+                            "marital_Married", "Kidhome")
+
+tabla_frecuencias <- do.call(rbind, lapply(vars_categoricas_final, function(v) {
+  tab <- prop.table(table(datos_final[[v]]))
+  data.frame(
+    Variable = v,
+    Categoria = names(tab),
+    Frecuencia_Relativa = as.numeric(tab),
+    Frecuencia_Absoluta = as.integer(table(datos_final[[v]]))
+  )
+}))
+
+knitr::kable(tabla_frecuencias,
+             digits = 3,
+             col.names = c("Variable", "Categoría", "Frec. Relativa", "Frec. Absoluta"),
+             booktabs = TRUE) %>%
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center"
+  ) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "middle")
+```
+
+Se observa desbalance en la variable Response, con predominancia del grupo que no acepta la campaña. Este aspecto debe considerarse en etapas posteriores de modelado supervisado.
+
+
+
+#### Variables numéricas por grupo Response
+Se presentan boxplots comparativos y pruebas de Mann-Whitney. Los resultados mostrados corresponden a la primera imputación, pero se ha verificado que son consistentes en las 5 imputaciones (la variabilidad entre imputaciones es despreciable).
+
+```{r box-numerica-response, echo=FALSE}
+vars_numericas_final <- c("Income", "MntTotal", "Age", "Recency", 
+                          "NumWebVisitsMonth", "Customer_Days")
+
+plot_boxplot_comparativo <- function(var, datos) {
+  ggplot(datos, aes(x = factor(Response, labels = c("No", "Sí")), 
+                    y = .data[[var]], fill = factor(Response))) +
+    geom_boxplot(alpha = 0.7) +
+    scale_fill_manual(values = c("No" = "#E74C3C", "Sí" = "#27AE60")) +
+    labs(title = var, x = "Respuesta a la campaña", y = "Valor") +
+    theme_minimal() +
+    theme(legend.position = "none")
+}
+
+plots_num <- lapply(vars_numericas_final, plot_boxplot_comparativo, 
+                    datos = datos_final)
+do.call(grid.arrange, c(plots_num, ncol = 3))
+```
+
+
+```{r, echo=FALSE}
+# Calcular estadísticos por grupo (usando primera imputación)
+resultados_bivariados_num <- datos_final %>%
+  group_by(Response) %>%
+  summarise(across(all_of(vars_numericas_final),
+                   list(Media = ~mean(.), Mediana = ~median(.), DE = ~sd(.)),
+                   .names = "{.col}_{.fn}")) %>%
+  pivot_longer(cols = -Response, 
+               names_to = c("Variable", ".value"), 
+               names_sep = "_") %>%
+  pivot_wider(names_from = Response, 
+              values_from = c(Media, Mediana, DE), 
+              names_glue = "{.value}_R{Response}")
+
+# Calcular p-valores con Test Mann-Whitney (sobre primera imputación)
+p_valores_df <- data.frame(
+  Variable = vars_numericas_final,
+  p_valor = sapply(vars_numericas_final, function(v) {
+    round(wilcox.test(reformulate("Response", response = v), 
+                      data = datos_final)$p.value, 4)
+  })
+)
+
+resultados_bivariados_num <- resultados_bivariados_num %>%
+  left_join(p_valores_df, by = "Variable")
+
+knitr::kable(resultados_bivariados_num, 
+             caption = "Comparación de variables numéricas por respuesta a la campaña (Test Mann-Whitney)", 
+             digits = 2)
+```
+
+**Interpretación:**
+
+- Income: Clientes que aceptaron tienen ingreso significativamente mayor (p < 0.001).
+
+- MntTotal: Gasto total muy superior en grupo que aceptó (p < 0.001).
+
+- NumWebVisitsMonth: Mayor frecuencia de visitas en aceptantes (p < 0.001).
+
+- Age: Sin diferencias significativas (p > 0.05).
+
+
+## Variables categóricas por grupo Response
+
+La Figura \@ref(fig:barplot-categorico) muestra proporciones de aceptación por categoría.
+
+```{r barplot-categorico, fig.width=12, fig.height=4, fig.cap="Proporción de aceptación de la oferta según variables categóricas seleccionadas.", echo=FALSE}
+vars_categoricas <- c("education_Graduation", "marital_Married", "Kidhome")
+
+plots_cat <- list()
+for (v in vars_categoricas) {
+  p <- datos_final %>%
+    mutate(!!v := as.factor(.data[[v]])) %>%
+    group_by(.data[[v]], Response) %>%
+    summarise(n = n(), .groups = 'drop') %>%
+    group_by(.data[[v]]) %>%
+    mutate(prop = n / sum(n)) %>%
+    ggplot(aes(x = .data[[v]], y = prop, 
+               fill = factor(Response, labels = c("No", "Sí")))) +
+    geom_col(position = "fill") +
+    scale_fill_manual(values = c("No" = "#E74C3C", "Sí" = "#27AE60")) +
+    labs(title = v, x = "", y = "Proporción", fill = "Respuesta") +
+    theme_minimal()
+  plots_cat[[v]] <- p
+}
+do.call(grid.arrange, c(plots_cat, ncol = 3))
+```
+
+La Tabla \@ref(tab:chi-cuadrado) presenta los resultados de Chi-cuadrado.
+
+```{r chi-cuadrado, echo=FALSE}
+resultados_bivariados_cat <- data.frame(
+  Variable = character(), 
+  p_valor = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (v in vars_categoricas) {
+  tabla <- table(datos_final[[v]], datos_final$Response)
+  test <- chisq.test(tabla)
+  resultados_bivariados_cat <- rbind(
+    resultados_bivariados_cat, 
+    data.frame(Variable = v, p_valor = round(test$p.value, 4))
+  )
+}
+
+knitr::kable(
+  resultados_bivariados_cat, 
+  caption = "Pruebas de Chi-cuadrado para variables categóricas"
+)
+```
+
+**Interpretación:**
+
+- **Kidhome:** Diferencia significativa (p < 0.05). Hogares sin hijos tienen mayor tasa de aceptación.
+- **education_Graduation, marital_Married:** Sin asociación significativa (p > 0.05).
+
+
+
+## Discusión de resultados
+
+El análisis descriptivo post-procesamiento permitió identificar diferencias estructurales claras entre los clientes que aceptan y los que no aceptan la campaña.
+
+Desde una perspectiva económica, los clientes con mayor capacidad adquisitiva y mayor historial de gasto muestran mayor predisposición a responder positivamente. Esto sugiere que la campaña resulta más efectiva en segmentos de alto valor económico.
+
+La mayor frecuencia de visitas web en el grupo que acepta indica que la interacción digital constituye un componente relevante del comportamiento de respuesta, lo cual es consistente con estrategias de marketing basadas en canales digitales.
+
+En contraste, variables demográficas clásicas como edad, nivel educativo o estado civil presentan menor capacidad explicativa en esta muestra, lo que sugiere que el comportamiento transaccional es un mejor indicador de respuesta que las características sociodemográficas.
+
+Finalmente, la estabilidad entre imputaciones y la coherencia estructural posterior al tratamiento validan la idoneidad del conjunto de datos para la construcción de modelos predictivos supervisados, tales como regresión logística, árboles de decisión o métodos de ensamble.

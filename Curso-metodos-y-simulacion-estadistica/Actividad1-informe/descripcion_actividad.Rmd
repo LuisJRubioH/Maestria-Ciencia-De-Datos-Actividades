@@ -1,0 +1,3 @@
+# Descripción
+
+Con el fin de optimizar la rentabilidad y fundamentar futuros modelos predictivos, se analiza una base de datos resultante de una campaña piloto de marketing directo. El estudio se basó en el contacto telefónico a una muestra aleatoria de clientes para ofrecer un nuevo dispositivo, registrando con precisión su nivel de aceptación. Este proceso de caracterización y segmentación permite distinguir los rasgos de los clientes que respondieron positivamente frente a los que no, facilitando una toma de decisiones basada en datos.

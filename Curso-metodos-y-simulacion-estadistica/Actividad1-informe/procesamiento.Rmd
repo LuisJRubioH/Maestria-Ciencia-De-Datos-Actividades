@@ -1,0 +1,1097 @@
+# Procesamiento
+
+## Identificación y eliminación de duplicados
+
+La Tabla \@ref(tab:tabla-duplicados) muestra la cantidad de datos originales, la cantidad de de filas duplicadas y el porcentaje de filas duplicadas del conjunto de datos.
+
+
+```{r tabla-duplicados, eval=TRUE, echo=FALSE}
+# Identificamos los duplicados
+total_datos <- nrow(datos_raw)
+duplicados <- duplicated(datos_raw)
+total_duplicados <- sum(duplicados)
+
+# Eliminar duplicados
+datos <- datos_raw[!duplicados, ]
+
+# Tabla con información de duplicados en formato vertical
+resumen_duplicados <- data.frame(
+  Concepto = c(
+    "Total de datos original",
+    "Total de duplicados",
+    "Porcentaje de duplicados (%)",
+    "Total de datos sin duplicados"
+  ),
+  Valor = c(
+    nrow(datos_raw),
+    total_duplicados,
+    paste(round(total_duplicados/nrow(datos_raw)  * 100, 2), "%"),
+    nrow(datos)
+  )
+)
+# danmos formato a la tabla de reporte de duplicados
+knitr::kable(
+  resumen_duplicados,
+  caption = "Detección y eliminación de duplicados",
+  label = "tabla-duplicados",
+  col.names = c("Concepto", "Valor"),
+  align = c("l", "l")
+)
+
+# guardamos los datos sin dupliv¿cados en un csv
+write.csv(datos, "sin_duplicados.csv", row.names = FALSE)
+```
+Se identificaron **`r total_duplicados`** registros duplicados (representando el **`r round(total_duplicados/nrow(datos_raw)*100, 2)`%** del total). Estos corresponden a clientes con información idéntica en todas las variables. La presencia de duplicados introduce sesgo en los estimadores de tendencia central y dispersión, inflando artificialmente el tamaño muestral y violando el supuesto de independencia. Según Barnett y Lewis (1994), duplicados exactos deben eliminarse antes del análisis para evitar sobreponderación de observaciones particulares. 
+
+```{r datos-sin-duplicados, echo=FALSE}
+#cargamos los datos sin duplicados
+datos_sin_duplicados <- read.csv("data/procesados/sin_duplicados.csv")
+```
+
+## Errores e incionsistencias
+
+En la Tabla \@ref(tab:tabla-est-desc) se muestran las principales estadisticas descriptivas para las variables continuas y discretas
+
+```{r tabla-est-desc, echo=FALSE}
+#Variables numéricas para análisis
+vars_objetivo <- c("Income", "MntWines","MntFruits", "MntMeatProducts",
+                   "MntFishProducts","MntSweetProducts", "MntGoldProds",
+                   "MntTotal","MntRegularProds", "Kidhome", "Teenhome",
+                   "Recency","NumDealsPurchases","NumWebPurchases",
+                   "NumCatalogPurchases","NumStorePurchases",
+                   "NumWebVisitsMonth", "Age", "Customer_Days")
+# Función para calculae¿r estadisticps descriptivos
+detectar_atipicos_iqr <- function(x) {
+  Min = min(x, na.rm = TRUE)
+  Max = max(x, na.rm = TRUE)
+  Media = mean(x, na.rm = TRUE)
+  std = sd(x, na.rm = TRUE)
+  Q1 <- quantile(x, 0.25, na.rm = TRUE)
+  Mediana = median(x, na.rm = TRUE)
+  Q3 <- quantile(x, 0.75, na.rm = TRUE)
+  IQR <- Q3 - Q1
+  lim_inf <- Q1 - 1.5 * IQR
+  lim_sup <- Q3 + 1.5 * IQR
+  atipicos <- x < lim_inf | x > lim_sup
+  
+  list(
+    Min = Min,
+    Media = Media,
+    std = std,
+    Q1 = Q1,
+    Mediana = Mediana,
+    Q3 = Q3,
+    Max = Max,
+    IQR = IQR,
+    lim_inf = lim_inf,
+    lim_sup = lim_sup,
+    n_atipicos = sum(atipicos, na.rm = TRUE),
+    porcentaje = sum(atipicos, na.rm = TRUE) / sum(!is.na(x)) * 100
+  )
+}
+
+# Aplicar a todas las variables
+resultados_lista <- lapply(vars_objetivo, function(var) {
+  if (var %in% colnames(datos)) {
+    resultado <- detectar_atipicos_iqr(datos[[var]])
+    data.frame(
+      Variable = var,
+      Min = round(resultado$Min, 1),
+      Media = round(resultado$Media, 1),
+      std = round(resultado$std, 1),
+      Q1 = round(resultado$Q1, 1),
+      Mediana = round(resultado$Mediana, 1),
+      Q3 = round(resultado$Q3, 1),
+      Max = round(resultado$Max, 1),
+      lim_inf = round(resultado$lim_inf, 1),
+      lim_sup = round(resultado$lim_sup, 1),
+      IQR = round(resultado$IQR, 1),
+      N_atipicos = resultado$n_atipicos,
+      Porcentaje = round(resultado$porcentaje, 1)
+    )
+  }
+})
+
+# Combinar la lista en un data frame
+tabla_estadisticos <- do.call(rbind, resultados_lista)
+
+# Estadísticos descriptivos
+tabla_estadisticos <- tabla_estadisticos[, c("Variable", "Min", "Media", 
+                                           "std", "Q1","Mediana", "Q3", "Max")]
+
+knitr::kable(
+  tabla_estadisticos,
+  caption = "Estadísticos descriptivos y límites IQR",
+  col.names = c("Variable", "Mín", "Media","std", "Q1", "Mediana","Q3", 
+                "Máx"),
+  align = c("l", "l", "l", "l", "l", "l", "l", "l"),
+  row.names = FALSE
+)
+
+```
+
+La Tabla \@ref(tab:total-porcentaje-atipicos) muestra la detección de valores atípicos mediante el método **IQR** (rango intercuartílico Tukey, 1977) el cual es una medida de dispersión robusta que cuantifica la amplitud del $50 \%$ central de la distribución, con límites definidos como:
+
+$$IQR = Q_3 - Q_1$$ 
+ 
+
+$$L_{inf} = Q_1 - (1.5 \cdot IQR)$$
+$$L_{sup} =  Q_3 + (1.5 \cdot IQR)$$
+
+Un valor $x$ es atípico si:
+
+$$𝑥 <  L_{inf} = Q_1 - (1.5 \cdot IQR) \quad \text{o} \quad x > L_{sup} = Q_3 + (1.5 \cdot IQR)$$
+
+
+```{r total-porcentaje-atipicos, echo=FALSE}
+tabla_atipicos <- do.call(rbind, resultados_lista)
+# Atípicos
+tabla_atipicos_resumen <- tabla_atipicos[, c("Variable", "lim_inf", "lim_sup", "IQR", "N_atipicos", "Porcentaje")]
+
+knitr::kable(
+  tabla_atipicos_resumen,
+  caption = "Resumen de total valores atípicos detectados",
+  col.names = c("Variable", "lim_inf", "lim_sup", "IQR","N° atípicos", "% atípicos"),
+  align = c("l", "r", "r", "r", "r", "r"),
+  row.names = FALSE
+)
+```
+
+
+### Visualización de distribuciones 
+
+#### Boxplot para cada variable continua
+
+```{r boxplotcontinuas, echo=FALSE, fig.cap="Distribución de variables numéricas continuas", echo=FALSE}
+
+vars_numericas_continuas <- c("Income", "MntWines","MntFruits", "MntMeatProducts",
+                              "MntFishProducts","MntSweetProducts", "MntGoldProds",
+                              "MntTotal","MntRegularProds")
+
+datos_largo <- datos %>%
+  select(all_of(vars_numericas_continuas)) %>%
+  pivot_longer(cols = everything(), 
+               names_to = "Variable", 
+               values_to = "Valor")
+
+ggplot(datos_largo, aes(x = Variable, y = Valor, fill = Variable)) +
+  geom_boxplot() +
+  facet_wrap(~ Variable, scales = "free", ncol = 3) +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = "none",
+    strip.text = element_text(face = "bold", size = 10)
+  ) +
+  labs(
+    title = "Distribución de variables monetarias continuas",
+    x = "",
+    y = "Valor"
+  )
+```
+
+De acuerdpo con los boxplots de la figura \@ref(fig:boxplotcontinuas) podemos resaltar:
+
+- **Income:** Distribución asimétrica positiva (sesgo derecho) con mediana ≈ $52,000. Atípicos superiores representan clientes de muy alto ingreso (segmento premium).
+- **MntWines:** Mayor variabilidad en gasto. Categoría con mayor consumo promedio.
+- **MntFruits, MntFish, MntSweet, MntGold:** Cajas comprimidas cerca de cero. Mayoría gasta poco; atípicos superiores indican compradores especializados.
+- **MntTotal y MntRegularProds:** Alta correlación esperada. Dispersión amplia refleja heterogeneidad en comportamiento de compra.
+
+
+#### Estudio de las variables discretas
+
+```{r boxplot-discretas, fig.cap="Boxplots de variables numéricas discretas", echo=FALSE}
+
+vars_numericas_discretas <- c("Kidhome", "Teenhome", "Recency", "NumDealsPurchases",
+                              "NumWebPurchases","NumCatalogPurchases","NumStorePurchases",
+                              "NumWebVisitsMonth", "Age", "Customer_Days")
+
+datos_largo_disc <- datos %>%
+  select(all_of(vars_numericas_discretas)) %>%
+  pivot_longer(cols = everything(), 
+               names_to = "Variable", 
+               values_to = "Valor")
+
+ggplot(datos_largo_disc, aes(x = "", y = Valor, fill = Variable)) +
+  geom_boxplot() +
+  facet_wrap(~ Variable, scales = "free_y", ncol = 3) +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = "none",
+    strip.text = element_text(face = "bold", size = 11)
+  ) +
+  labs(
+    title = "Distribución de variables numéricas discretas",
+    x = "",
+    y = "Valor"
+  )
+```
+
+La Figura \@ref(fig:boxplot-discretas) muestra la distribución de variables numéricas discretas. De donde podemos resaltar
+
+- **Age:** Presencia de atípicos superiores (>80 años) requiere validación.
+- **NumStorePurchases:** Canal preferido (mediana ≈ 5-6), distribución simétrica.
+- **NumWebPurchases:** Adopción moderada del canal digital.
+- **Kidhome/Teenhome:** Mayoría sin dependientes (mediana = 0).
+- **Customer_Days:** Alta antigüedad promedio (≈3000 días = 8 años), indicando lealtad.
+
+
+
+#### Estudio de variables binarias
+
+La Figura \@ref(fig:barras-binarias) muestra la distribución de frecuencias para variables categóricas binarias.
+
+```{r barras-binarias, fig.cap="Distribución de variables binarias", fig.width=12, fig.height=16, , echo=FALSE}
+vars_binarias <- c("AcceptedCmp1", "AcceptedCmp2","AcceptedCmp3","AcceptedCmp4",
+                   "AcceptedCmp5","Response","Complain","marital_Divorced",
+                   "marital_Married","marital_Single","marital_Together",
+                   "marital_Widow", "education_2n Cycle", "education_Basic",
+                   "education_Graduation", "education_Master", "education_PhD")
+
+lista_graficos <- lapply(seq_along(vars_binarias), function(i) {
+  var <- vars_binarias[i]
+  
+  tabla_freq <- datos %>%
+    count(!!sym(var)) %>%
+    rename(Categoria = 1, Frecuencia = n) %>%
+    mutate(Categoria = factor(Categoria, levels = c(0, 1), labels = c("No", "Sí")))
+  
+  ggplot(tabla_freq, aes(x = Categoria, y = Frecuencia, fill = Categoria)) +
+    geom_bar(stat = "identity", alpha = 0.85, show.legend = FALSE) +
+    geom_text(aes(label = Frecuencia), vjust = -0.5, size = 4, fontface = "bold") +
+    #scale_fill_manual(values = c("No" = "red", "Sí" = "green")) +
+    scale_fill_brewer(palette = "Dark2")+
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(size = 10, face = "bold"),
+      plot.title = element_text(face = "bold", size = 10, hjust = 0.5),
+      panel.grid.major.x = element_blank()
+    ) +
+    labs(title = var, x = "", y = "Frecuencia") +
+    ylim(0, max(tabla_freq$Frecuencia) * 1.15)
+})
+
+do.call(grid.arrange, c(lista_graficos, ncol = 4))
+```
+
+De la figura  \@ref(fig:barras-binarias) podemos podemos resaltar
+
+- **Campañas de marketing:** Tasa de aceptación menor al **15\%** en todas las campañas, sugiriendo problema estructural de efectividad.
+- **Perfil demográfico:** Predominio de clientes casados entre el **35\%** y *40\%*, con educación superior aproximadamente del **70\%**.
+- **Quejas:** Frecuencia muy baja menos del **5\%**, indicando satisfacción general.
+- **Desbalance de clases:** Variable objetivo (Response) presenta desbalance **85:15**, implicación para modelado predictivo futuro.
+
+
+
+## Análisis de datos atípicos
+
+Los valores atípicos observados en variables de gasto como por ejemplo, *MntTotal *, *MntWines* y otras variables monetarias serán conservados, ya que representan el segmento *premium* de clientes de alto valor. Según Rousseeuw y Hubert (2011), valores atípicos en el dominio natural de la variable deben conservarse cuando reflejan heterogeneidad real del fenómeno estudiado. Eliminarlos sesgaría la estimación del potencial de ingresos y reduciría artificialmente la varianza poblacional.
+
+Por otro lado, los valores extremos en variables de comportamiento como *NumWebVisitsMonth* o *NumDealsPurchases* también se mantendrán, dado que reflejan patrones auténticos de uso intensivo o baja interacción, los cuales son relevantes para la segmentación y el modelado predictivo. En síntesis, se eliminarán únicamente observaciones inconsistentes desde el punto de vista lógico y/o biológico, mientras que se conservaron aquellas que, aunque extremas, representan comportamientos reales y económicamente significativos dentro de la población analizada.
+
+ 
+#### Revisión en detalle de incossietncias 
+Se detectaron inconsistencias estructurales en las variables **MntRegularProds**, **Age** y **marital_Divorced** comos e muestra en la Tabla \@ref(tab:tabla-inconsistencias). En el caso de **MntRegularProds** se identificaron *valores negativos*, los cuales violan el dominio teórico de la variable (monto ≥ 0). En **Age** se observaron registros con valor **240**, imposible desde el punto de vista biológico.Límite superior razonable: 110 años (récord mundial: 122 años, Jeanne Calment). Asimismo, **marital_Divorced** presentó valores distintos de **0** y **1**, lo que viola la naturaleza binaria.
+
+```{r tabla-inconsistencias, echo=FALSE}
+inconsistencias <- tibble(
+  Variable = c("MntRegularProds", "Age", "marital_Divorced"),
+  Criterio_validez = c(
+    "Monto ≥ 0",
+    "0 < Edad ≤ 110 años",
+    "Valor ∈ {0, 1}"
+  ),
+  Registros_invalidos = c(
+    sum(datos$MntRegularProds < 0, na.rm = TRUE),
+    sum(datos$Age <= 0 | datos$Age > 110, na.rm = TRUE),
+    sum(!datos$marital_Divorced %in% c(0,1), na.rm = TRUE)
+  ),
+  Valores_detectados = c(
+    paste(unique(datos$MntRegularProds[datos$MntRegularProds < 0]), collapse = ", "),
+    paste(unique(datos$Age[datos$Age <= 0 | datos$Age > 110]), collapse = ", "),
+    paste(unique(datos$marital_Divorced[!datos$marital_Divorced %in% c(0,1)]), collapse = ", ")
+  )
+)
+
+knitr::kable(
+  inconsistencias,
+  caption = "Inconsistencias estructurales detectadas",
+  col.names = c("Variable", "Criterio de validez", "N° inválidos", "Valores detectados"),
+  align = c("l", "l", "c", "l")
+)
+```
+
+La Tabla \@ref(tab:tabla-inconsistencias) documenta las inconsistencias estructurales detectadas.
+
+## Tratamiento de inconsistencias
+Según Osborne y Overbay (2004), inconsistencias que violan restricciones del dominio deben eliminarse por completo, ya que no admiten corrección sin introducir mayor incertidumbre.
+
+
+```{r eliminar-inconsistencias, echo=FALSE}
+datos_limpios <- datos %>%
+  filter(
+    MntRegularProds >= 0,
+    Age > 0 & Age <= 110,
+    marital_Divorced %in% c(0,1)
+  )
+
+n_eliminados <- nrow(datos) - nrow(datos_limpios)
+pct_eliminados <- round(n_eliminados / nrow(datos) * 100, 2)
+```
+
+```{r, include=FALSE, echo=FALSE}
+# guardamos los datos sin dupliv¿cados en un csv
+write.csv(datos_limpios, "datos_limpios.csv", row.names = FALSE)
+```
+
+Tras la eliminación de registros duplicados, la base quedó compuesta por *2.041* resgistros.
+Se eliminaron **`r n_eliminados`** registros (**`r pct_eliminados`%** del total de los *2.041*), que presentaban inconsistencias estructurales: valores negativos en MntRegularProds, edades imposibles (*240 año*s) y codificaciones inválidas en marital_Divorced (valor *100*). Dado que estas observaciones violan el dominio teórico de las variables y representan una proporción marginal de la muestra, se optó por su eliminación completa. Resultando en **`r nrow(datos_limpios)`** observaciones válidas.
+
+La Tabla \@ref(tab:mntregula-Age-antes-despues) muestra el impacto del tratamiento en indicadores descriptivos.
+
+```{r mntregula-Age-antes-despues, echo=FALSE}
+# Antes
+resumen_antes <- datos %>%
+  summarise(
+    across(c(MntRegularProds, Age), 
+           list(
+             Media = ~mean(., na.rm = TRUE),
+             Mediana = ~median(., na.rm = TRUE),
+             DE = ~sd(., na.rm = TRUE),
+             Q1 = ~quantile(., 0.25, na.rm = TRUE),
+             Q3 = ~quantile(., 0.75, na.rm = TRUE)
+           ))
+  ) %>%
+  pivot_longer(everything(), 
+               names_to = c("Variable", "Estadistica"),
+               names_sep = "_",
+               values_to = "Valor") %>%
+  pivot_wider(names_from = Estadistica, values_from = Valor) %>%
+  mutate(Momento = "Antes")
+
+# Después
+resumen_despues <- datos_limpios %>%
+  summarise(
+    across(c(MntRegularProds, Age), 
+           list(
+             Media = ~mean(., na.rm = TRUE),
+             Mediana = ~median(., na.rm = TRUE),
+             DE = ~sd(., na.rm = TRUE),
+             Q1 = ~quantile(., 0.25, na.rm = TRUE),
+             Q3 = ~quantile(., 0.75, na.rm = TRUE)
+           ))
+  ) %>%
+  pivot_longer(everything(), 
+               names_to = c("Variable", "Estadistica"),
+               names_sep = "_",
+               values_to = "Valor") %>%
+  pivot_wider(names_from = Estadistica, values_from = Valor) %>%
+  mutate(Momento = "Después")
+
+# Combinar
+comparacion <- bind_rows(resumen_antes, resumen_despues) %>%
+  select(Momento, Variable, everything()) %>%
+  arrange(Variable, Momento)
+
+knitr::kable(
+  comparacion,
+  digits = 2,
+  caption = "Comparación de indicadores descriptivos antes y después del tratamiento",
+  align = c("l", "l", "r", "r", "r", "r", "r")
+)
+```
+
+
+Para la variable **MntRegularProds**, según la Tabla \@ref(tab:mntregula-Age-antes-despues), - Media aumenta ligeramente de **520.59** a **522.72**, es decir, un incremento de **2.13** unidades (**≈ 0.4\%**). En términos relativos, el cambio es despreciable. 
+- La mediana pasa de **288.0** a **290.5**, lo que confirma que la posición central robusta prácticamente no se altera. 
+- La desviación estándar se mantiene esencialmente constante **555.80** frente a **555.82** (**≈0.04\%**).
+- Los cuartiles $Q_1$ y $Q_3$ presentan variaciones mínimas.
+
+Esto indica que la dispersión intercuartílica permanece estable. La Figura \@ref(fig:comp-boxplots) corrobora visualmente este comportamiento: los boxplots antes y después del tratamiento presentan estructura y rango intercuartílico prácticamente idénticos.
+
+En consecuencia, la eliminación de los tres valores negativos no modificó de manera sustancial los indicadores de tendencia central ni de dispersión. Dichas observaciones, aunque inconsistentes desde el punto de vista lógico, no ejercían influencia relevante sobre la estructura estadística global de la variable.
+
+
+Para la variable **Age**, la Tabla \@ref(tab:mntregula-Age-antes-despues) muestran que
+- La media disminuye de **51.35** a **51.17** (**≈0.35\%**). Esto indica que los registros con edad 240 inflaban ligeramente el promedio. 
+
+- La mediana permanece exactamente en **50**, lo que confirma que el valor extremo no afectaba la posición central robusta.
+
+- La desviación estándar disminuye de **13.04** a **11.65**, lo que representa una reducción relativa aproximada del **10.6\%**. Este cambio evidencia que el registro con edad 240 generaba una sobreestimación apreciable de la variabilidad. 
+
+- Los cuartiles $Q_1$ y $Q_3$ no presentan modificaciones, por lo que la dispersión intercuartílica se mantiene estable.
+
+La Figura \@ref(fig:comp-boxplots) respalda este análisis: el boxplot posterior al tratamiento muestra una reducción clara en la amplitud total, mientras que la caja central conserva su posición y tamaño.
+
+Por tanto, la eliminación del valor atípico produjo una disminución significativa en la desviación estándar, corrigiendo la sobreestimación de la variabilidad, pero sin alterar la estructura central de la distribución.
+
+```{r comp-boxplots, fig.width=12, fig.height=5, fig.cap="Comparación de distribuciones antes (rojo) y después (azul) del tratamiento de inconsistencias.", echo=FALSE}
+# MntRegularProds
+p1 <- ggplot() +
+  geom_boxplot(data = datos, aes(x = "Antes", y = MntRegularProds), 
+               fill = "#E74C3C", alpha = 0.8) +
+  geom_boxplot(data = datos_limpios, aes(x = "Después", y = MntRegularProds), 
+               fill = "#3498DB", alpha = 0.8) +
+  labs(title = "MntRegularProds", y = "Valor", x = "") +
+  theme_minimal()
+
+# Age
+p2 <- ggplot() +
+  geom_boxplot(data = datos, aes(x = "Antes", y = Age), 
+               fill = "#E74C3C", alpha = 0.8) +
+  geom_boxplot(data = datos_limpios, aes(x = "Después", y = Age), 
+               fill = "#3498DB", alpha = 0.8) +
+  labs(title = "Age", y = "Edad (años)", x = "") +
+  theme_minimal()
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+
+
+Para una variable binaria como marital_Divorced, lo adecuado es una tabla de distribución de frecuencias absoluta y relativa, incluyendo proporciones.
+
+```{r marital-divorced-antes, echo=FALSE}
+tabla_marital <- datos_sin_duplicados %>%
+  count(marital_Divorced) %>%
+  mutate(
+    Porcentaje = round(100 * n / sum(n), 2)
+  ) %>%
+  rename(
+    Categoria = marital_Divorced,
+    Frecuencia = n
+  )
+
+knitr::kable(
+  tabla_marital,
+  caption = "Distribución de la variable binaria marital_Divorced antes del tratamiento.",
+  label = "marital-divorced-antes",
+  col.names = c("Categoría (0 = No divorciado, 1 = Divorciado, 100 = Inconsistencia)",
+                "Frecuencia",
+                "Porcentaje (%)"),
+  align = c("c", "c", "c")
+)
+```
+
+```{r marital-divorced-despues, echo=FALSE}
+tabla_marital <- datos_limpios %>%
+  count(marital_Divorced) %>%
+  mutate(
+    Porcentaje = round(100 * n / sum(n), 2)
+  ) %>%
+  rename(
+    Categoria = marital_Divorced,
+    Frecuencia = n
+  )
+
+knitr::kable(
+  tabla_marital,
+  caption = "Distribución de la variable binaria marital_Divorced después del tratamiento.",
+  label = "marital-divorced-despues",
+  col.names = c("Categoría (0 = No divorciado, 1 = Divorciado)",
+                "Frecuencia",
+                "Porcentaje (%)"),
+  align = c("c", "c", "c")
+)
+```
+
+```{r tabla-marital, echo=FALSE, include=FALSE}
+tabla_marital_comp <- bind_rows(
+  datos %>%
+    mutate(Momento = "Antes") %>%
+    count(Momento, marital_Divorced) %>%
+    group_by(Momento) %>%
+    mutate(Porcentaje = round(100 * n / sum(n), 2)),
+  
+  datos_limpios %>%
+    mutate(Momento = "Después") %>%
+    count(Momento, marital_Divorced) %>%
+    group_by(Momento) %>%
+    mutate(Porcentaje = round(100 * n / sum(n), 2))
+) %>%
+  ungroup()
+
+knitr::kable(
+  tabla_marital_comp,
+  caption = "Distribución de marital_Divorced antes y después del tratamiento",
+  col.names = c("Momento", "Categoría", "Frecuencia", "Porcentaje (%)"),
+  align = c("l", "c", "r", "r")
+)
+```
+
+```{r barras-marital-divorced-comparacion, fig.width=12, fig.height=5, fig.cap="Comparación de la distribución de marital_Divorced antes y después del tratamiento.", echo=FALSE}
+ggplot(tabla_marital_comp,
+       aes(x = factor(marital_Divorced),
+           y = Porcentaje,
+           fill = Momento)) +
+  scale_fill_brewer(palette = "Dark2") +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = Porcentaje),
+            position = position_dodge(width = 0.9),
+            vjust = -0.5,
+            size = 3.5) +
+  labs(
+    x = "",
+    y = "Porcentaje",
+    fill = "Momento"
+  ) +
+  theme_minimal()
+```
+
+Antes del tratamiento se identificaron **6** registros con valor **100** como se observa en la Tabla \@ref(tab:marital-divorced-antes) , correspondiente al **0.29\%** del total de las **2041** observaciones. Tras su eliminación, la estructura porcentual de la variable prácticamente no se modificó como se puede observar en la Tabla \@ref(tab:marital-divorced-despues) , lo cual indica que la inconsistencia no afectaba sustancialmente la distribución de la variable, lo cual es más evidente en la gráfica de la figura \@ref(fig:barras-marital-divorced-comparacion).
+
+
+
+### Validación y evaluación de la depuración
+
+La principal preocupación al eliminar registros es introducir un sesgo, alterando la estructura subyacente de los datos. Vamos a resposnder a la sigyuiente pregunta
+
+¿La eliminación de duplicados e inconsistentes ha sido una decisión metodológicamente sólida y, por lo tanto, podemos proceder con confianza al tratamiento de los valores faltantes en el conjunto de datos de 2030 registros?
+
+```{r muestra-original-limpios, echo=FALSE}
+tabla_tamano <- data.frame(
+  n_original = nrow(datos_raw),
+  n_limpios = nrow(datos_limpios)
+)
+
+tabla_tamano$Eliminados <- tabla_tamano$n_original - tabla_tamano$n_limpios
+tabla_tamano$Porcentaje_eliminado <- 
+  round(tabla_tamano$Eliminados / tabla_tamano$n_original * 100, 3)
+
+knitr::kable(
+  tabla_tamano,
+  caption = "Comparación del tamaño muestral antes y después de eliminar inconsistencias",
+  col.names = c("N original", "N limpio", "Registros eliminados", "% eliminado"),
+  align = "c"
+)
+
+```
+
+
+```{r esta-desc-original-limpios, echo=FALSE}
+comparar_estadisticos <- function(var){
+  data.frame(
+    Variable = var,
+    Media_original = mean(datos_raw[[var]], na.rm=TRUE),
+    Media_limpios  = mean(datos_limpios[[var]], na.rm=TRUE),
+    SD_original = sd(datos_raw[[var]], na.rm=TRUE),
+    SD_limpios  = sd(datos_limpios[[var]], na.rm=TRUE),
+    Mediana_original = median(datos_raw[[var]], na.rm=TRUE),
+    Mediana_limpios  = median(datos_limpios[[var]], na.rm=TRUE)
+  )
+}
+
+vars <- vars_numericas_continuas
+
+tabla_comparacion <- do.call(rbind, lapply(vars, comparar_estadisticos))
+
+tabla_comparacion$Cambio_relativo_media <- round(
+  abs(tabla_comparacion$Media_original - tabla_comparacion$Media_limpios) /
+  abs(tabla_comparacion$Media_original) * 100, 3
+)
+
+knitr::kable(
+  tabla_comparacion,
+  caption = "Comparación de estadísticos descriptivos antes y después de la depuración",
+  align = "l",
+  digits = 3
+)
+
+```
+
+
+```{r prueba-KS, echo=FALSE}
+tabla_ks <- do.call(rbind, lapply(vars, function(var){
+  test <- ks.test(
+    datos_raw[[var]][!is.na(datos_raw[[var]])],
+    datos_limpios[[var]][!is.na(datos_limpios[[var]])]
+  )
+  
+  data.frame(
+    Variable = var,
+    Estadistico_D = round(test$statistic, 4),
+    p_value = round(test$p.value, 4)
+  )
+}))
+
+knitr::kable(
+  tabla_ks,
+  caption = "Prueba de Kolmogorov–Smirnov para igualdad de distribuciones",
+  align = "c"
+)
+
+```
+
+
+```{r prueba-Frobenius, echo=FALSE}
+R_original <- cor(datos_raw[vars], use="complete.obs")
+R_limpios  <- cor(datos_limpios[vars], use="complete.obs")
+
+norma_frobenius <- sqrt(sum((R_original - R_limpios)^2))
+
+tabla_cor <- data.frame(
+  Norma_Frobenius = round(norma_frobenius, 6)
+)
+
+knitr::kable(
+  tabla_cor,
+  caption = "Diferencia global entre matrices de correlación (Norma de Frobenius)",
+  align = "c"
+)
+
+```
+
+En la Tabla \@ref(tab:esta-desc-original-limpios) es crucial observar que las medias, desviaciones estándar y medianas de todas las variables permanecen prácticamente idénticas. Por ejemplo, la media de **Income** pasa de **516,535** a **517,963**, un cambio de apenas **0.27\%**. La desviación estándar también se mantiene estable. En términos estadísticos, esto indica que la localización y la escala de las distribuciones no se han visto afectadas. La estructura central de los datos es la misma.
+
+La Tabla \@ref(tab:prueba-KS) muestra la evidencia más sólida. La **prueba KS** es una herramienta no paramétrica poderosa para comparar distribuciones completas. Los **estadísticos D** (que miden la distancia máxima entre las distribuciones acumuladas) son extremadamente bajos por ejemplo, **0.0065** para **Income**, y los **p-values** son exactamente **1**, lo que cnfirma no existe evidencia estadística que sugiera que las distribuciones, antes y después de la limpieza, sean diferentes. Son, a efectos prácticos, idénticas.
+
+
+En la Tabla \@ref(tab:prueba-Frobenius) la norma de Frobenius cuantifica la diferencia global entre dos matrices. Un valor de **0.0558** es extraordinariamente bajo. Esto significa que las relaciones lineales entre las variables se han mantenido casi inalteradas. La estructura de correlación, que es la "anatomía" de las relaciones entre variables, sigue siendo la misma.
+
+En resumen, la eliminación del **8.56%** de los datos (190 registros, Tabla \@ref(tab:muestra-original-limpios)) ha sido un proceso de limpieza efectivo. No ha introducido sesgo ni ha alterado las propiedades estadísticas fundamentales del conjunto de datos. Hemos eliminado ruido (duplicados e inconsistencias) conservando la esencia de la información, lo que valida metodológicamente el uso del conjunto depurado de 
+**2030** observaciones para el posterior tratamiento de valores faltantes.
+
+
+## Identificación de datos faltantes
+
+```{r tabla-nulos-original, echo=FALSE}
+tabla_nulos <- data.frame(
+  Variable = names(datos_raw),
+  Nulos = colSums(is.na(datos_raw)),
+  Porcentaje = round(colSums(is.na(datos_raw)) / nrow(datos_raw) * 100, 2)
+) %>%
+  filter(Nulos > 0) %>%
+  arrange(desc(Porcentaje))
+
+knitr::kable(
+  tabla_nulos,
+  caption = "Datos faltantes (solo variables con NA del dataset original)",
+  col.names = c("Variable", "Cantidad NA", "Porcentaje (%)"),
+  align = c("l", "r", "r"),
+  row.names = FALSE
+)
+```
+
+```{r tabla-nulos-sin-duplicados, echo=FALSE}
+tabla_nulos <- data.frame(
+  Variable = names(datos_sin_duplicados),
+  Nulos = colSums(is.na(datos_sin_duplicados)),
+  Porcentaje = round(colSums(is.na(datos_sin_duplicados)) / nrow(datos_sin_duplicados) * 100, 2)
+) %>%
+  filter(Nulos > 0) %>%
+  arrange(desc(Porcentaje))
+
+knitr::kable(
+  tabla_nulos,
+  caption = "Datos faltantes (solo variables con NA del dataset sin duplicados)",
+  col.names = c("Variable", "Cantidad NA", "Porcentaje (%)"),
+  align = c("l", "r", "r"),
+  row.names = FALSE
+)
+```
+
+Para el conjuntop de datos sin  duplicados  y sin inconsistentes, procedemos a dentificamos las variables con valores nulos o faltante.
+
+```{r tabla-nulos, echo=FALSE}
+tabla_nulos <- data.frame(
+  Variable = names(datos_limpios),
+  Nulos = colSums(is.na(datos_limpios)),
+  Porcentaje = round(colSums(is.na(datos_limpios)) / nrow(datos_limpios) * 100, 2)
+) %>%
+  filter(Nulos > 0) %>%
+  arrange(desc(Porcentaje))
+
+knitr::kable(
+  tabla_nulos,
+  caption = "Datos faltantes (solo variables con NA)",
+  col.names = c("Variable", "Cantidad NA", "Porcentaje (%)"),
+  align = c("l", "r", "r"),
+  row.names = FALSE
+)
+```
+
+La  Figura \@ref(fig:fig-datos-faltantes) se presenta un resumen de las variables ordenadas según el número de datos faltantes.
+
+```{r fig-datos-faltantes, eval=TRUE,fig.cap="Porcentaje de datos faltantes por variables y combinaciones de faltantes por variables.", echo=FALSE,fig.width=10, fig.height=8}
+# Ajuste de márgenes: inferior, izquierda, superior y derecha
+par(mar = c(6, 4, 2, 2) + 0.1)
+
+# Gráfico de patrones de missing con números
+VIM::aggr(
+  datos_limpios,
+  palette = "Dark2",  # colores: presente / faltante
+  numbers     = TRUE,                     # muestra el número de casos
+  prop        = FALSE,                    # FALSE = muestra conteos, TRUE = proporciones
+  cex.numbers = 0.8,                      # tamaño de los números
+  sortVars    = TRUE,                     # ordena variables por % de missing
+  labels      = names(datos_limpios),        # etiquetas para el eje X
+  cex.axis    = 0.7,                      # tamaño del texto en el eje X
+  las         = 2,                        # rota las etiquetas del eje X (vertical)
+  gap         = 3,                        # espacio entre barras
+  combined    = FALSE,                    # muestra el barplot separado para cada variable
+  ylab        = c("Proporción de datos",  # etiquetas del eje Y
+                  "Datos faltantes")
+)
+```
+
+La Figura \@ref(fig:vis-missing) muestra el patrón espacial de datos faltantes.
+
+```{r vis-missing, fig.width=12, fig.height=6, fig.cap="Mapa de valores faltantes. Columnas gris indican presencia de dato, negra indica ausencia.", echo=FALSE}
+vis_miss(datos_limpios, sort_miss = TRUE) 
+```
+
+
+La revisión conjunta de las Figuras \@ref(fig:fig-datos-faltantes) y \@ref(fig:vis-missing), junto con las Tablas \@ref(tab:tabla-nulos-original), \@ref(tab:tabla-nulos-sin-duplicados) y \@ref(tab:tabla-nulos), confirma que el problema de datos faltantes es reducido y está concentrado exclusivamente en las variables 
+**Income** y **MntWines**. En el dataset original se observan 68 valores faltantes en **Income` (3.06%)** y **20** en **MntWines (0.90%)**. Tras eliminar duplicados, las proporciones se mantienen prácticamente inalteradas (**3.33\%** y **0.98\%**, respectivamente). Finalmente, en el conjunto depurado sin duplicados ni inconsistencias, **Income** presenta **66** valores faltantes (**3.25\%**) y **MntWines** presenta *20* (**0.99\%**). 
+
+Las Figuras \@ref(fig:fig-datos-faltantes) y \@ref(fig:vis-missing) muestran que el resto de variables no presentan ausencia de datos y que los faltantes aparecen de forma esporádica y dispersa, sin aparente evidencia de patrones estructurados ni bloques sistemáticos de coausencia. Dado que todas las proporciones están por debajo del umbral del **5\%** señalado en la literatura especializada  (Little y Rubin, 2002), el nivel de datos faltantes puede considerarse bajo y su impacto potencial sobre los análisis posteriores es limitado y manejable mediante procedimientos estándar de tratamiento de valores ausentes.
+
+
+## Tratamiento de Datos Faltantes
+
+### Evaluación del mecanismo generador de datos faltantes
+
+Para evaluar si los datos faltan completamente al azar (MCAR), se aplica el test de Little (1988) considerando un conjunto amplio de variables que podrían estar relacionadas con la probabilidad de missing. Se incluyen: ingresos, gasto en vinos, edad, número de hijos, antigüedad, frecuencia de compras y variables demográficas codificadas como factores.
+
+```{r test-mca, echo=FALSE}
+## Reconstruir variables categóricas originales a partir de dummies
+datos_little <- datos_limpios %>%
+  mutate(
+    Education = case_when(
+      education_PhD == 1 ~ "PhD",
+      education_Master == 1 ~ "Master",
+      education_Graduation == 1 ~ "Graduation",
+      education_Basic == 1 ~ "Basic",
+      `education_2n Cycle` == 1 ~ "2n Cycle",
+      TRUE ~ NA_character_
+    ),
+    Marital = case_when(
+      marital_Divorced == 1 ~ "Divorced",
+      marital_Married == 1 ~ "Married",
+      marital_Single == 1 ~ "Single",
+      marital_Together == 1 ~ "Together",
+      marital_Widow == 1 ~ "Widow",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  select(Income, MntWines, Age, Kidhome, Teenhome, Recency,
+         NumWebPurchases, NumStorePurchases, NumCatalogPurchases,
+         Education, Marital)
+
+# Convertir a factores
+datos_little$Education <- factor(datos_little$Education)
+datos_little$Marital <- factor(datos_little$Marital)
+
+# Aplicar test de Little
+test_little <- mcar_test(datos_little)
+
+knitr::kable(
+  data.frame(
+    Estadístico = test_little$statistic,
+    gl = test_little$df,
+    p_valor = test_little$p.value
+  ),
+  caption = "Test de Little para MCAR (con variables relevantes)",
+  digits = 4
+)
+```
+
+
+La Tabla \@ref(tab:test-mca) muestra el resultado al aplicar el test de Little (1988) para evaluar si los datos faltantes siguen un mecanismo MCAR (Missing Completely At Random).
+
+**Hipótesis:**
+
+$$H_0: \text{Los datos faltantes son MCAR (completamente al azar)}$$
+$$H_1: \text{Los datos faltantes NO son MCAR (dependen de otras variables)}$$
+
+
+
+
+Dado que el p-valor = `r round(test_little$p.value, 4)` < 0.05, se rechaza $H_{0}$. En consecuencia, los datos no siguen un mecanismo completamente aleatorio (**MCAR**). No obstante, dado el bajo porcentaje de ausencia (**<5%**) y la ausencia de evidencia estructural de **MNAR**, se asume razonablemente un mecanismo **MAR** para efectos de imputación múltiple.
+
+
+Bajo **MAR**, la eliminación por lista completa puede inducir sesgo y pérdida innecesaria de eficiencia. Por ello se emplea imputación múltiple según Rubin (1987), que:
+
+- Preserva la estructura multivariada.
+
+- Incorpora la incertidumbre de imputación.
+
+- Mantiene la variabilidad poblacional.
+
+
+
+Se excluyen variables que constituyen combinaciones lineales exactas (por ejemplo, **MntTotal**, **MntRegularProds** y **AcceptedCmpOverall**), ya que generan multicolinealidad perfecta y matrices singulares en el algoritmo de imputación (criterio clásico de diagnóstico estructural). Las variables derivadas se recalculan posteriormente.
+
+```r
+# Colinealidad perfecta (VIF = ∞)
+- MntRegularProds = MntFruits + MntMeat + MntFish + MntSweet
+- MntTotal = MntWines + ... + MntGold (suma de todas)
+- AcceptedCmpOverall = max(AcceptedCmp1, ..., AcceptedCmp5)
+```
+
+```{r eliminar-redundante, echo=FALSE}
+datos_imputacion <- datos_limpios %>%
+  select(-MntRegularProds, -MntTotal, -AcceptedCmpOverall)
+```
+
+
+Se comparan tres métodos: **PMM** con regularización ridge, **CART** y **Regresión ridge**
+Con **m=5** imputaciones y 10 iteraciones.
+
+```{r, echo=FALSE}
+vars_predictoras <- c(
+  "Age", "Customer_Days", "Recency",
+  "NumWebPurchases", "NumCatalogPurchases", "NumStorePurchases",
+  "NumWebVisitsMonth", "NumDealsPurchases",
+  "Kidhome", "Teenhome",
+  "marital_Married", "marital_Single",
+  "education_Graduation", "education_Master", "education_PhD",
+  "MntMeatProducts", "MntWines", "Income"
+)
+
+datos_imp_subset <- datos_imputacion %>%
+  select(all_of(vars_predictoras))
+
+# PMM con ridge
+imp_pmm <- mice(datos_imp_subset, m = 5, method = "pmm",
+                ridge = 1e-4, maxit = 10, seed = 42, printFlag = FALSE)
+
+# CART
+imp_cart <- mice(datos_imp_subset, m = 5, method = "cart",
+                 maxit = 10, seed = 42, printFlag = FALSE)
+
+# Regresión Ridge
+metodos <- make.method(datos_imp_subset)
+metodos["Income"] <- "norm"
+metodos["MntWines"] <- "norm"
+predictor_matrix <- make.predictorMatrix(datos_imp_subset)
+diag(predictor_matrix) <- 0
+
+imp_ridge <- mice(datos_imp_subset, m = 5, method = metodos,
+                  predictorMatrix = predictor_matrix,
+                  ridge = 1e-3, maxit = 10, seed = 42, printFlag = FALSE)
+```
+
+
+Para elegir el método que mejor preserva la estructura de los datos observados, se evalúan:
+
+1. Estabilidad de las imputaciones: desviación estándar de las medias imputadas entre las 5 réplicas.
+
+2. Preservación de momentos: comparación de medias y varianzas de las variables imputadas con las observadas (listwise deletion).
+
+3. Preservación de correlaciones: comparación de la matriz de correlación de las variables clave (Income, MntWines, Age, MntTotal) con la observada.
+
+Los resultados se presentan en la Tabla \@ref(tab:comp-metd-imputacion).
+
+```{r comp-metd-imputacion, echo=FALSE}
+# Función para extraer estadísticos de un objeto mice
+estadisticos_imputacion <- function(imp, metodo_nombre) {
+  completed <- complete(imp, "long")
+  stats_income <- completed %>%
+    group_by(.imp) %>%
+    summarise(media_income = mean(Income, na.rm = TRUE),
+              sd_income = sd(Income, na.rm = TRUE)) %>%
+    ungroup() %>%
+    summarise(media_media = mean(media_income),
+              sd_media = sd(media_income),
+              media_sd = mean(sd_income))
+  
+  stats_wines <- completed %>%
+    group_by(.imp) %>%
+    summarise(media_wines = mean(MntWines, na.rm = TRUE),
+              sd_wines = sd(MntWines, na.rm = TRUE)) %>%
+    ungroup() %>%
+    summarise(media_media_w = mean(media_wines),
+              sd_media_w = sd(media_wines),
+              media_sd_w = mean(sd_wines))
+  
+  data.frame(
+    Metodo = metodo_nombre,
+    Income_media = stats_income$media_media,
+    Income_sd = stats_income$media_sd,
+    Income_sd_entre = stats_income$sd_media,
+    MntWines_media = stats_wines$media_media_w,
+    MntWines_sd = stats_wines$media_sd_w,
+    MntWines_sd_entre = stats_wines$sd_media_w
+  )
+}
+
+# Estadísticos observados
+obs_stats <- datos_imp_subset %>%
+  filter(!is.na(Income) & !is.na(MntWines)) %>%
+  summarise(
+    Income_media_obs = mean(Income),
+    Income_sd_obs = sd(Income),
+    MntWines_media_obs = mean(MntWines),
+    MntWines_sd_obs = sd(MntWines)
+  )
+
+# Aplicar a cada método
+comp_metodos <- bind_rows(
+  estadisticos_imputacion(imp_pmm, "PMM"),
+  estadisticos_imputacion(imp_cart, "CART"),
+  estadisticos_imputacion(imp_ridge, "Ridge")
+)
+
+# Añadir diferencias relativas
+comp_metodos <- comp_metodos %>%
+  mutate(
+    Income_diff_media = abs(Income_media - obs_stats$Income_media_obs) / obs_stats$Income_media_obs * 100,
+    Income_diff_sd = abs(Income_sd - obs_stats$Income_sd_obs) / obs_stats$Income_sd_obs * 100,
+    Wines_diff_media = abs(MntWines_media - obs_stats$MntWines_media_obs) / obs_stats$MntWines_media_obs * 100,
+    Wines_diff_sd = abs(MntWines_sd - obs_stats$MntWines_sd_obs) / obs_stats$MntWines_sd_obs * 100
+  )
+
+knitr::kable(comp_metodos, digits = 2, format = "html",
+             caption = "Comparación de métodos de imputación")
+```
+
+Adicionalmente en la Tabla \@ref(tab:tabla-cor), se comparan las correlaciones de Pearson entre Income, MntWines y Age para cada método (promedio de las 5 imputaciones) frente a la correlación observada.
+
+
+```{r tabla-cor, echo=FALSE}
+# Correlación observada
+obs_cor <- datos_imp_subset %>%
+  filter(!is.na(Income) & !is.na(MntWines)) %>%
+  select(Income, MntWines, Age) %>%
+  cor(use = "complete.obs")
+
+# Función para correlaciones promedio de un método
+cor_method <- function(imp) {
+  completed <- complete(imp, "long")
+  cors <- completed %>%
+    group_by(.imp) %>%
+    summarise(cor_inc_wine = cor(Income, MntWines, use = "complete.obs"),
+              cor_inc_age = cor(Income, Age, use = "complete.obs"),
+              cor_wine_age = cor(MntWines, Age, use = "complete.obs")) %>%
+    ungroup() %>%
+    summarise(across(starts_with("cor"), mean))
+  as.numeric(cors)
+}
+
+cor_pmm <- cor_method(imp_pmm)
+cor_cart <- cor_method(imp_cart)
+cor_ridge <- cor_method(imp_ridge)
+
+tabla_cor <- data.frame(
+  Metodo = c("Observado", "PMM", "CART", "Ridge"),
+  rbind(
+    c(obs_cor["Income","MntWines"], obs_cor["Income","Age"], obs_cor["MntWines","Age"]),
+    cor_pmm,
+    cor_cart,
+    cor_ridge
+  )
+)
+names(tabla_cor)[2:4] <- c("Income~MntWines", "Income~Age", "MntWines~Age")
+
+knitr::kable(tabla_cor, digits = 3,
+             caption = "Comparación de correlaciones promedio (5 imputaciones) con las observadas.")
+```
+
+
+Basado en la menor diferencia relativa de medias y desviaciones, así como la preservación de correlaciones, se selecciona **PMM** con ridge como método final. Este método presenta la mayor estabilidad (baja desviación entre imputaciones) y reproduce fielmente la estructura correlacional.
+
+
+Se utiliza la primera imputación de *PMM* para el análisis descriptivo, previa verificación de que las 5 imputaciones producen resultados muy similares (Tabla \@ref(tab:consistencia-imputaciones).
+
+```{r consistencia-imputaciones, echo=FALSE}
+# Mostrar variabilidad de medias entre imputaciones PMM
+completed_pmm <- complete(imp_pmm, "long")
+medias_por_imp <- completed_pmm %>%
+  group_by(.imp) %>%
+  summarise(media_income = mean(Income),
+            media_wines = mean(MntWines))
+knitr::kable(medias_por_imp, digits = 2,
+             caption = "Medias de Income y MntWines en cada una de las 5 imputaciones (PMM). La baja variabilidad confirma estabilidad.")
+```
+
+```{r, echo=FALSE}
+# Tomar primera imputación
+datos_final_subset <- complete(imp_pmm, 1)
+
+# Reconstruir dataset completo
+datos_final <- datos_imputacion
+datos_final$Income <- datos_final_subset$Income
+datos_final$MntWines <- datos_final_subset$MntWines
+
+# Recalcular variables derivadas
+datos_final <- datos_final %>%
+  mutate(
+    MntTotal = MntWines + MntFruits + MntMeatProducts + 
+               MntFishProducts + MntSweetProducts + MntGoldProds,
+    MntRegularProds = MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts,
+    AcceptedCmpOverall = pmax(AcceptedCmp1, AcceptedCmp2, AcceptedCmp3, 
+                              AcceptedCmp4, AcceptedCmp5)
+  )
+```
+
+
+Para la validación estructural post-imputación, se comparan densidades antes y después de imputar como se ne la Figura \@ref(fig:densidad-compa).
+
+```{r densidad-compa, echo=FALSE, fig.cap="Densidades originales vs imputadas para Income y MntWines.", fig.width=12}
+p1 <- ggplot() +
+  geom_density(data = datos_limpios, aes(x = Income, color = "Original (con NA)"), 
+               linewidth = 1, na.rm = TRUE) +
+  geom_density(data = datos_final, aes(x = Income, color = "Imputado"), 
+               linewidth = 1, linetype = "dashed") +
+  scale_color_manual(
+    name = "Datos",
+    values = c("Original (con NA)" = "red", "Imputado" = "blue")
+  ) +
+  labs(
+    title = "Income: Original (con NA) vs Imputado",
+    x = "Ingreso anual", y = "Densidad"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 10),   # reduce tamaño para que no se corte
+    legend.position = "bottom"
+  )
+
+p2 <- ggplot() +
+  geom_density(data = datos_limpios, aes(x = MntWines, color = "Original"), 
+               linewidth = 1, na.rm = TRUE) +
+  geom_density(data = datos_final, aes(x = MntWines, color = "Imputado"), 
+               linewidth = 1, linetype = "dashed") +
+  scale_color_manual(
+    name = "Datos",
+    values = c("Original" = "red", "Imputado" = "blue")
+  ) +
+  labs(
+    title = "MntWines: Original vs Imputado",
+    x = "Monto en vinos", y = "Densidad"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+Las curvas muestran superposición casi completa, sin distorsión visible. Finalmente, se analiza la matriz de correlaciones en la Figura \@ref(fig:matriz-cor).
+
+```{r matriz-cor, echo=FALSE, fig.cap="Matriz de correlaciones de variables numéricas."}
+vars_cor <- c("Income", "MntWines", "MntMeatProducts", "MntFishProducts",
+              "MntFruits", "MntSweetProducts", "MntGoldProds",
+              "NumWebPurchases", "NumCatalogPurchases", "NumStorePurchases",
+              "Age", "Recency", "Customer_Days")
+
+cor_matrix <- cor(datos_final[, vars_cor], use = "complete.obs")
+
+corrplot(cor_matrix, method = "color", type = "upper", 
+         tl.col = "black", tl.srt = 45,
+         addCoef.col = "black",      # Color de los coeficientes
+         number.cex = 0.7,            # Tamaño del texto
+         number.digits = 2,           # Decimales
+         title = "Matriz de correlaciones de variables numéricas",
+         mar = c(0,0,2,0))
+```
+
+Las relaciones esperadas (por ejemplo, alta correlación entre Income y MntWines) se mantienen, lo que confirma preservación estructural. También, correlaciones moderadas entre distintos tipos de gasto, indicando cierto patrón de consumo conjunto. Además, se rsalta que la variable Recency presenta correlaciones bajas con el resto, sugiriendo independencia.
+
+
+

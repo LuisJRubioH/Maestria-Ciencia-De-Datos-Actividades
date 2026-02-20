@@ -1,0 +1,123 @@
+# Datos
+
+
+```{r datos_originales,include=FALSE}
+datos_raw <- read_excel("data/data_actividad1.xlsx")
+```
+
+
+La base de datos contiene información detallada sobre el perfil demográfico y el comportamiento de consumo de una cartera de clientes, recopilada con el fin de analizar patrones de compra y la efectividad de campañas de marketing. En total, el conjunto de datos se compone de `r nrow(datos_raw)` clientes y `r ncol(datos_raw)` variables, donde cada entrada documenta variables clave relacionadas con el estatus socioeconómico, la composición familiar y los hábitos de gasto.
+
+La información recolectada incluye el nivel de ingresos anuales (**Income**), la presencia de menores en el hogar (**Kidhome** y **Teenhome**), la antigüedad del cliente (**Customer_Days**) y su edad (**Age**). Asimismo, se detalla el comportamiento de compra mediante la frecuencia de uso de distintos canales: compras en tienda (**NumStorePurchases**), por catálogo (**NumCatalogPurchases**) y a través de la web (**NumWebPurchases**).
+
+Además, se registra el gasto desglosado por categorías de productos como vinos, frutas, productos cárnicos, pescados, dulces y productos de lujo (identificados bajo el prefijo **Mnt**), así como la respuesta de los clientes a cinco campañas de marketing previas (**AcceptedCmp1-5**). La Tabla \@ref(tab:tab-descripcion) presenta la descripción y la clasificación de cada variable de acuerdo con su naturaleza.
+
+```{r tabla-descripcion, eval=TRUE, echo=FALSE}
+tabla_descriptiva <- data.frame(
+  Variable = c(
+    "Income", "Kidhome", "Teenhome", "Recency",
+    "MntWines", "MntFruits", "MntMeatProducts", "MntFishProducts",
+    "MntSweetProducts", "MntGoldProds",
+    "NumDealsPurchases", "NumWebPurchases", "NumCatalogPurchases",
+    "NumStorePurchases", "NumWebVisitsMonth",
+    "AcceptedCmp1", "AcceptedCmp2", "AcceptedCmp3",
+    "AcceptedCmp4", "AcceptedCmp5", "AcceptedCmpOverall",
+    "Response", "Complain",
+    "Age", "Customer_Days",
+    "marital_Divorced", "marital_Married", "marital_Single",
+    "marital_Together", "marital_Widow",
+    "education_2n Cycle", "education_Basic", "education_Graduation",
+    "education_Master", "education_PhD",
+    "MntTotal", "MntRegularProds"
+  ),
+  Descripcion = c(
+    "Ingreso anual del cliente",
+    "Número de niños en el hogar",
+    "Número de adolescentes en el hogar",
+    "Días desde la última compra",
+    "Monto gastado en vinos",
+    "Monto gastado en frutas",
+    "Monto gastado en productos cárnicos",
+    "Monto gastado en productos de pescado",
+    "Monto gastado en productos dulces",
+    "Monto gastado en productos de oro",
+    "Número de compras con descuento",
+    "Número de compras vía web",
+    "Número de compras por catálogo",
+    "Número de compras en tienda física",
+    "Número de visitas al sitio web en el último mes",
+    "Aceptación de la campaña 1",
+    "Aceptación de la campaña 2",
+    "Aceptación de la campaña 3",
+    "Aceptación de la campaña 4",
+    "Aceptación de la campaña 5",
+    "Aceptación de al menos una campaña previa",
+    "Respuesta a la campaña piloto",
+    "Registro de quejas del cliente",
+    "Edad del cliente",
+    "Antigüedad del cliente en días",
+    "Estado civil: divorciado",
+    "Estado civil: casado",
+    "Estado civil: soltero",
+    "Estado civil: convivencia",
+    "Estado civil: viudo",
+    "Nivel educativo: segundo ciclo",
+    "Nivel educativo: básico",
+    "Nivel educativo: universitario",
+    "Nivel educativo: maestría",
+    "Nivel educativo: doctorado",
+    "Gasto total acumulado",
+    "Gasto total en productos regulares"
+  ),
+  Naturaleza = c(
+    "Cuantitativa continua",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cuantitativa continua",
+    "Cuantitativa continua",
+    "Cuantitativa continua",
+    "Cuantitativa continua",
+    "Cuantitativa continua",
+    "Cuantitativa continua",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cuantitativa discreta",
+    "Cuantitativa discreta",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cualitativa binaria",
+    "Cuantitativa continua",
+    "Cuantitativa continua"
+  ),
+  stringsAsFactors = FALSE
+)
+
+# Mostrar la tabla con un caption y label
+knitr::kable(
+  tabla_descriptiva,
+  caption = "Descripción y clasificación de variables de acuerdo con su naturaleza.",
+   label = "tab-descripcion",
+  col.names = c("Variable", "Descripción", "Naturaleza"),
+  align = c("l", "l", "l"),
+)
+```
+ 

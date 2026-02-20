@@ -1,0 +1,38 @@
+book_filename: "Informe-descriptivo"
+delete_merged_file: true
+new_session: no
+
+rmd_files:
+  - "index.Rmd"
+  - "descripcion_actividad.Rmd"
+  - "objetivos.Rmd"
+  - "datos.Rmd"
+  - "procesamiento.Rmd"
+  - "resultados.Rmd"
+  - "conclusiones.Rmd"
+  - "referencias.Rmd"
+  - "anexos.Rmd"
+
+# Todos los archivos de salida (HTML y carpeta de recursos) irán a docs/
+output_dir: "docs"
+
+# Opciones de knitr: las figuras de los chunks irán a docs/figure/
+knitr:
+  opts_chunk:
+    fig.path: "docs/figure/"
+
+# Configuración global de salida
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    collapsed: true
+    smooth_scroll: true
+    theme: journal
+    highlight: kate
+    df_print: paged
+    code_folding: show
+    fig_caption: true
+    # forzar que las imágenes pandoc (MathML, capturas, etc.) queden en carpeta
+    self_contained: false

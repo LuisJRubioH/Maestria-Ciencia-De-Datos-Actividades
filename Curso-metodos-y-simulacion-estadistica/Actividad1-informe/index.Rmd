@@ -1,0 +1,80 @@
+---
+title: "Informe-descriptivo"
+author: "Luis Javier Rubio Hernández"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+---
+
+
+
+```{r setup,warning=FALSE,message=FALSE,eval=TRUE,include=FALSE}
+
+# Configuración global de los chunks
+knitr::opts_chunk$set(eval = TRUE, message = FALSE, warning = FALSE)
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+#notación cientuifica
+options(scipen = 999)
+
+#para reproductibilidad
+set.seed(42)
+
+# Cargar librerías necesarias
+library(skimr)
+library(knitr)
+library(dplyr)
+library(DescTools)
+library(patchwork)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(readxl)
+library(scales)
+library(bookdown)
+library(naniar)
+library(VIM)
+library(devtools)# devtools::install_github("cttobin/ggthemr")
+library(ggthemr)
+library(gridExtra)
+library(tidyverse)
+library(mice)
+library(patchwork)
+library(missForest)
+library(lubridate)
+library(scales)
+library(readr)
+library(lubridate)
+library(lubridate)
+library(knitr)
+library(readr)
+library(corrplot)
+library(e1071) 
+suppressPackageStartupMessages(library(fmsb))
+suppressPackageStartupMessages(library(naniar))
+suppressPackageStartupMessages(library(gridExtra))
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(dplyr))
+
+# Aplica el tema global con ggthemr, eligiendo la paleta deseada
+ggthemr("dust", layout = "clean")
+```
+
+# Índice
+
+1. Descripción de la actividad
+
+2. Objetivos
+
+3. Datos
+
+4. Procesamiento de datos
+
+5. Resultados y discusión
+
+6. Conclusiones
+
+7. Referencias
+
+8. Anexos

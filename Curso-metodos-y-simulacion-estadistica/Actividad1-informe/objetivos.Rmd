@@ -1,0 +1,20 @@
+# Objetivos
+
+## Objetivo general
+Caracterizar estadísticamente los perfiles de clientes que aceptaron y rechazaron la oferta del nuevo dispositivo en la campaña piloto, mediante análisis descriptivo y exploratorio de datos.
+
+## Objetivos específicos
+
+1. Cuantificar y tratar los valores atípicos, inconsistencias y datos 
+faltantes presentes en la base de datos mediante técnicas estadísticas apropiadas.
+
+2. Evaluar el mecanismo de generación de datos faltantes mediante pruebas estadísticas.
+
+3. Identificar y caracterizar las variables demográficas, económicas y de
+comportamiento de compra que diferencian a los clientes que aceptaron la
+oferta de aquellos que la rechazaron.
+
+
+4. Establecer patrones de comportamiento y relaciones bivariadas entre
+  variables que permitan describir el perfil de clientes propensos a ceptar ofertas de marketing directo.
+  

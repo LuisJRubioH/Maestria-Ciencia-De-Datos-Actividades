@@ -1,0 +1,33 @@
+# Anexos
+
+- El repositorio en GitHub incluye un archivo ZIP en el siguiente enlace (https://github.com/Centromagis/Informe.git) con los ficheros fuente de bookdown para reproducir el informe:
+
+  - `index.Rmd`
+  - `descripcion_actividad.Rmd`
+  - `objetivos.Rmd`
+  - `datos.Rmd`
+  - `procesamiento.Rmd`
+  - `resultados.Rmd`
+  - `conclusiones.Rmd`
+  - `referencias.Rmd`
+  - `Anexos.Rmd`
+  - `_bookdown.yml`
+
+- Para compilar el informe completo:
+
+  - Abra el proyecto en **RStudio** (haga doble clic en `proyecto.Rproj`).
+  - En la consola de **R**, ejecute `bookdown::render_book("index.Rmd")`
+ 
+- Los archivos HTML generados se guardan en la carpeta `docs/`, con los siguientes nombres:
+  
+  - `index.html`
+  - `descripcion_actividad.html`
+  - `objetivos.html`
+  - `datos.html`
+  - `procesamiento.html`
+  - `resultados.html`
+  - `conclusiones.html`
+  - `referencias.html`
+  - `Anexos.html`
+  
+  
