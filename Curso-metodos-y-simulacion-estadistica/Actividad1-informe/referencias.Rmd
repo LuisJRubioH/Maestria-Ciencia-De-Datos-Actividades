@@ -3,3 +3,25 @@
 - R Core Team (2024). _R: A language and environment for statistical computing_. R Foundation for Statistical Computing, Vienna, Austria. Disponible en: <https://www.R-project.org/>
 
 - Centro Magis (2025). _Material del curso Métodos y Simulación, versión 01-2025_. Maestría en Ciencia de Datos, Pontificia Universidad Javeriana Cali, Facultad de Ingeniería.
+
+- Barnett, V., & Lewis, T. (1994). *Outliers in Statistical Data* (3rd ed.). Wiley.
+
+- Belsley, D. A., Kuh, E., & Welsch, R. E. (1980). *Regression Diagnostics*. Wiley.
+
+- Little, R. J. (1988). A test of missing completely at random for multivariate data with missing values. *Journal of the American Statistical Association*, 83(404), 1198-1202.
+
+- Little, R. J., & Rubin, D. B. (2002). *Statistical Analysis with Missing Data* (2nd ed.). Wiley.
+
+- Osborne, J. W., & Overbay, A. (2004). The power of outliers (and why researchers should always check for them). *Practical Assessment, Research & Evaluation*, 9(6), 1-12.
+
+- Rousseeuw, P. J., & Hubert, M. (2011). Robust statistics for outlier detection. *Wiley Interdisciplinary Reviews: Data Mining and Knowledge Discovery*, 1(1), 73-79.
+
+- Rubin, D. B. (1987). *Multiple Imputation for Nonresponse in Surveys*. Wiley.
+
+- Tukey, J. W. (1977). *Exploratory Data Analysis*. Addison-Wesley.
+
+- van Buuren, S. (2012). *Flexible Imputation of Missing Data*. Chapman & Hall/CRC.
+
+- van Buuren, S., & Groothuis-Oudshoorn, K. (2011). mice: Multivariate imputation by chained equations in R. *Journal of Statistical Software*, 45(3), 1-67.
+
+- von Hippel, P. T. (2020). How to impute interactions, squares, and other transformed variables. Sociological Methodology, 39(1), 265-291.

@@ -16,5 +16,5 @@ oferta de aquellos que la rechazaron.
 
 
 4. Establecer patrones de comportamiento y relaciones bivariadas entre
-  variables que permitan describir el perfil de clientes propensos a ceptar ofertas de marketing directo.
+  variables que permitan describir el perfil de clientes propensos a aceptar ofertas de marketing directo.
   

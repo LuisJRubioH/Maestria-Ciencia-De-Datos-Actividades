@@ -38,8 +38,8 @@ knitr::kable(
   align = c("l", "l")
 )
 
-# guardamos los datos sin dupliv¿cados en un csv
-write.csv(datos, "sin_duplicados.csv", row.names = FALSE)
+# guardamos los datos sin duplicados en un csv
+write.csv(datos, "data/procesados/sin_duplicados.csv", row.names = FALSE)
 ```
 Se identificaron **`r total_duplicados`** registros duplicados (representando el **`r round(total_duplicados/nrow(datos_raw)*100, 2)`%** del total). Estos corresponden a clientes con información idéntica en todas las variables. La presencia de duplicados introduce sesgo en los estimadores de tendencia central y dispersión, inflando artificialmente el tamaño muestral y violando el supuesto de independencia. Según Barnett y Lewis (1994), duplicados exactos deben eliminarse antes del análisis para evitar sobreponderación de observaciones particulares. 
 
@@ -48,7 +48,7 @@ Se identificaron **`r total_duplicados`** registros duplicados (representando el
 datos_sin_duplicados <- read.csv("data/procesados/sin_duplicados.csv")
 ```
 
-## Errores e incionsistencias
+## Errores e inconsistencias
 
 En la Tabla \@ref(tab:tabla-est-desc) se muestran las principales estadisticas descriptivas para las variables continuas y discretas
 
@@ -175,7 +175,7 @@ datos_largo <- datos %>%
                values_to = "Valor")
 
 ggplot(datos_largo, aes(x = Variable, y = Valor, fill = Variable)) +
-  geom_boxplot() +
+  geom_boxplot(outlier.color = "firebrick", outlier.size = 1) +
   facet_wrap(~ Variable, scales = "free", ncol = 3) +
   scale_fill_brewer(palette = "Dark2") +
   theme_minimal() +
@@ -215,7 +215,7 @@ datos_largo_disc <- datos %>%
                values_to = "Valor")
 
 ggplot(datos_largo_disc, aes(x = "", y = Valor, fill = Variable)) +
-  geom_boxplot() +
+  geom_boxplot(outlier.color = "firebrick", outlier.size = 1) +
   facet_wrap(~ Variable, scales = "free_y", ncol = 3) +
   scale_fill_brewer(palette = "Dark2") +
   theme_minimal() +
@@ -295,7 +295,7 @@ Los valores atípicos observados en variables de gasto como por ejemplo, *MntTot
 Por otro lado, los valores extremos en variables de comportamiento como *NumWebVisitsMonth* o *NumDealsPurchases* también se mantendrán, dado que reflejan patrones auténticos de uso intensivo o baja interacción, los cuales son relevantes para la segmentación y el modelado predictivo. En síntesis, se eliminarán únicamente observaciones inconsistentes desde el punto de vista lógico y/o biológico, mientras que se conservaron aquellas que, aunque extremas, representan comportamientos reales y económicamente significativos dentro de la población analizada.
 
  
-#### Revisión en detalle de incossietncias 
+#### Revisión en detalle de inconsistencias 
 Se detectaron inconsistencias estructurales en las variables **MntRegularProds**, **Age** y **marital_Divorced** comos e muestra en la Tabla \@ref(tab:tabla-inconsistencias). En el caso de **MntRegularProds** se identificaron *valores negativos*, los cuales violan el dominio teórico de la variable (monto ≥ 0). En **Age** se observaron registros con valor **240**, imposible desde el punto de vista biológico.Límite superior razonable: 110 años (récord mundial: 122 años, Jeanne Calment). Asimismo, **marital_Divorced** presentó valores distintos de **0** y **1**, lo que viola la naturaleza binaria.
 
 ```{r tabla-inconsistencias, echo=FALSE}
@@ -345,8 +345,8 @@ pct_eliminados <- round(n_eliminados / nrow(datos) * 100, 2)
 ```
 
 ```{r, include=FALSE, echo=FALSE}
-# guardamos los datos sin dupliv¿cados en un csv
-write.csv(datos_limpios, "datos_limpios.csv", row.names = FALSE)
+# guardamos los datos sin duplicados en un csv
+write.csv(datos_limpios, "data/procesados/datos_limpios.csv", row.names = FALSE)
 ```
 
 Tras la eliminación de registros duplicados, la base quedó compuesta por *2.041* resgistros.
@@ -695,7 +695,7 @@ knitr::kable(
 )
 ```
 
-Para el conjuntop de datos sin  duplicados  y sin inconsistentes, procedemos a dentificamos las variables con valores nulos o faltante.
+Para el conjunto de datos sin  duplicados  y sin inconsistentes, procedemos a dentificamos las variables con valores nulos o faltante.
 
 ```{r tabla-nulos, echo=FALSE}
 tabla_nulos <- data.frame(
@@ -747,7 +747,7 @@ vis_miss(datos_limpios, sort_miss = TRUE)
 
 
 La revisión conjunta de las Figuras \@ref(fig:fig-datos-faltantes) y \@ref(fig:vis-missing), junto con las Tablas \@ref(tab:tabla-nulos-original), \@ref(tab:tabla-nulos-sin-duplicados) y \@ref(tab:tabla-nulos), confirma que el problema de datos faltantes es reducido y está concentrado exclusivamente en las variables 
-**Income** y **MntWines**. En el dataset original se observan 68 valores faltantes en **Income` (3.06%)** y **20** en **MntWines (0.90%)**. Tras eliminar duplicados, las proporciones se mantienen prácticamente inalteradas (**3.33\%** y **0.98\%**, respectivamente). Finalmente, en el conjunto depurado sin duplicados ni inconsistencias, **Income** presenta **66** valores faltantes (**3.25\%**) y **MntWines** presenta *20* (**0.99\%**). 
+**Income** y **MntWines**. En el dataset original se observan 68 valores faltantes en **Income` (3.06%)** y **20** en **MntWines (0.90%)**. Tras eliminar duplicados, las proporciones se mantienen prácticamente inalteradas (**3.33\%** y **0.98\%**, respectivamente). Finalmente, en el conjunto depurado sin duplicados ni inconsistencias, **Income** presenta **66** valores faltantes (**3.25\%**) y **MntWines** presenta **20** (**0.99\%**). 
 
 Las Figuras \@ref(fig:fig-datos-faltantes) y \@ref(fig:vis-missing) muestran que el resto de variables no presentan ausencia de datos y que los faltantes aparecen de forma esporádica y dispersa, sin aparente evidencia de patrones estructurados ni bloques sistemáticos de coausencia. Dado que todas las proporciones están por debajo del umbral del **5\%** señalado en la literatura especializada  (Little y Rubin, 2002), el nivel de datos faltantes puede considerarse bajo y su impacto potencial sobre los análisis posteriores es limitado y manejable mediante procedimientos estándar de tratamiento de valores ausentes.
 
@@ -994,7 +994,7 @@ knitr::kable(tabla_cor, digits = 3,
 ```
 
 
-Basado en la menor diferencia relativa de medias y desviaciones, así como la preservación de correlaciones, se selecciona **PMM** con ridge como método final. Este método presenta la mayor estabilidad (baja desviación entre imputaciones) y reproduce fielmente la estructura correlacional.
+Basado en la menor diferencia relativa de medias y desviaciones, así como la preservación de correlaciones, se selecciona **PMM** con ridge como método final (van Buuren, 2018, Flexible Imputation of Missing Data). Este método presenta la mayor estabilidad (baja desviación entre imputaciones) y reproduce fielmente la estructura correlacional.
 
 
 Se utiliza la primera imputación de *PMM* para el análisis descriptivo, previa verificación de que las 5 imputaciones producen resultados muy similares (Tabla \@ref(tab:consistencia-imputaciones).

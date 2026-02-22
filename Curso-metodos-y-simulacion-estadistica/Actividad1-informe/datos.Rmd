@@ -40,7 +40,7 @@ tabla_descriptiva <- data.frame(
     "Monto gastado en productos cárnicos",
     "Monto gastado en productos de pescado",
     "Monto gastado en productos dulces",
-    "Monto gastado en productos de oro",
+    "Monto gastado en productos premium/gold",
     "Número de compras con descuento",
     "Número de compras vía web",
     "Número de compras por catálogo",

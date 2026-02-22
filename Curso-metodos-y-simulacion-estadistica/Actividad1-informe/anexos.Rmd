@@ -1,6 +1,7 @@
 # Anexos
 
-- El repositorio en GitHub incluye un archivo ZIP en el siguiente enlace (https://github.com/Centromagis/Informe.git) con los ficheros fuente de bookdown para reproducir el informe:
+- El repositorio en GitHub incluye un archivo ZIP en el siguiente enlace (https://github.com/LuisJRubioH/Maestria-Ciencia-De-Datos-Actividades/tree/main/Curso-metodos-y-simulacion-estadistica/Actividad1-informe) con los ficheros fuente de bookdown para reproducir el informe:
+
 
   - `index.Rmd`
   - `descripcion_actividad.Rmd`
@@ -13,13 +14,17 @@
   - `Anexos.Rmd`
   - `_bookdown.yml`
 
+- En la carpeta `referencias/` se encuentras los pdf's con las referencias bibliograficas utilizadas en el proyecto.
+
 - Para compilar el informe completo:
 
-  - Abra el proyecto en **RStudio** (haga doble clic en `proyecto.Rproj`).
+  - Abra el proyecto en **RStudio** (haga doble clic en `Actividad1-informe.Rproj`).
   - En la consola de **R**, ejecute `bookdown::render_book("index.Rmd")`
+ 
  
 - Los archivos HTML generados se guardan en la carpeta `docs/`, con los siguientes nombres:
   
+  - `404.html` (contiene todo el informe)
   - `index.html`
   - `descripcion_actividad.html`
   - `objetivos.html`
