@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Procesamiento | Informe-descriptivo</title>
+  <meta name="description" content="5 Procesamiento | Informe-descriptivo" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Procesamiento | Informe-descriptivo" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Procesamiento | Informe-descriptivo" />
+  
+  
+  
+
+<meta name="author" content="Luis Javier Rubio Hernández" />
+
+
+<meta name="date" content="2026-02-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="datos.html"/>
+<link rel="next" href="resultados.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Índice</a></li>
+<li class="chapter" data-level="2" data-path="descripción.html"><a href="descripción.html"><i class="fa fa-check"></i><b>2</b> Descripción</a></li>
+<li class="chapter" data-level="3" data-path="objetivos.html"><a href="objetivos.html"><i class="fa fa-check"></i><b>3</b> Objetivos</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="objetivos.html"><a href="objetivos.html#objetivo-general"><i class="fa fa-check"></i><b>3.1</b> Objetivo general</a></li>
+<li class="chapter" data-level="3.2" data-path="objetivos.html"><a href="objetivos.html#objetivos-espec%C3%ADficos"><i class="fa fa-check"></i><b>3.2</b> Objetivos específicos</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="datos.html"><a href="datos.html"><i class="fa fa-check"></i><b>4</b> Datos</a></li>
+<li class="chapter" data-level="5" data-path="procesamiento.html"><a href="procesamiento.html"><i class="fa fa-check"></i><b>5</b> Procesamiento</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="procesamiento.html"><a href="procesamiento.html#identificaci%C3%B3n-y-eliminaci%C3%B3n-de-duplicados"><i class="fa fa-check"></i><b>5.1</b> Identificación y eliminación de duplicados</a></li>
+<li class="chapter" data-level="5.2" data-path="procesamiento.html"><a href="procesamiento.html#errores-e-inconsistencias"><i class="fa fa-check"></i><b>5.2</b> Errores e inconsistencias</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="procesamiento.html"><a href="procesamiento.html#visualizaci%C3%B3n-de-distribuciones"><i class="fa fa-check"></i><b>5.2.1</b> Visualización de distribuciones</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="procesamiento.html"><a href="procesamiento.html#an%C3%A1lisis-de-datos-at%C3%ADpicos"><i class="fa fa-check"></i><b>5.3</b> Análisis de datos atípicos</a></li>
+<li class="chapter" data-level="5.4" data-path="procesamiento.html"><a href="procesamiento.html#tratamiento-de-inconsistencias"><i class="fa fa-check"></i><b>5.4</b> Tratamiento de inconsistencias</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="procesamiento.html"><a href="procesamiento.html#validaci%C3%B3n-y-evaluaci%C3%B3n-de-la-depuraci%C3%B3n"><i class="fa fa-check"></i><b>5.4.1</b> Validación y evaluación de la depuración</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="procesamiento.html"><a href="procesamiento.html#identificaci%C3%B3n-de-datos-faltantes"><i class="fa fa-check"></i><b>5.5</b> Identificación de datos faltantes</a></li>
+<li class="chapter" data-level="5.6" data-path="procesamiento.html"><a href="procesamiento.html#tratamiento-de-datos-faltantes"><i class="fa fa-check"></i><b>5.6</b> Tratamiento de Datos Faltantes</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="procesamiento.html"><a href="procesamiento.html#evaluaci%C3%B3n-del-mecanismo-generador-de-datos-faltantes"><i class="fa fa-check"></i><b>5.6.1</b> Evaluación del mecanismo generador de datos faltantes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="resultados.html"><a href="resultados.html"><i class="fa fa-check"></i><b>6</b> Resultados</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="resultados.html"><a href="resultados.html#estad%C3%ADsticos-descriptivos-generales"><i class="fa fa-check"></i><b>6.1</b> Estadísticos descriptivos generales</a></li>
+<li class="chapter" data-level="6.2" data-path="resultados.html"><a href="resultados.html#distribuci%C3%B3n-de-variables-categ%C3%B3ricas"><i class="fa fa-check"></i><b>6.2</b> Distribución de variables categóricas</a></li>
+<li class="chapter" data-level="6.3" data-path="resultados.html"><a href="resultados.html#variables-num%C3%A9ricas-por-grupo-response"><i class="fa fa-check"></i><b>6.3</b> Variables numéricas por grupo Response</a></li>
+<li class="chapter" data-level="6.4" data-path="resultados.html"><a href="resultados.html#variables-categ%C3%B3ricas-por-grupo-response"><i class="fa fa-check"></i><b>6.4</b> Variables categóricas por grupo Response</a></li>
+<li class="chapter" data-level="6.5" data-path="resultados.html"><a href="resultados.html#discusi%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.5</b> Discusión de resultados</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
+<li class="chapter" data-level="8" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>8</b> Referencias</a></li>
+<li class="chapter" data-level="9" data-path="anexos.html"><a href="anexos.html"><i class="fa fa-check"></i><b>9</b> Anexos</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Informe-descriptivo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="procesamiento" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Procesamiento<a href="procesamiento.html#procesamiento" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="identificación-y-eliminación-de-duplicados" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Identificación y eliminación de duplicados<a href="procesamiento.html#identificaci%C3%B3n-y-eliminaci%C3%B3n-de-duplicados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La Tabla <a href="procesamiento.html#tab:tabla-duplicados">5.1</a> muestra la cantidad de datos originales, la cantidad de de filas duplicadas y el porcentaje de filas duplicadas del conjunto de datos.</p>
+<table>
+<caption><span id="tab:tabla-duplicados">Table 5.1: </span>Detección y eliminación de duplicados</caption>
+<thead>
+<tr class="header">
+<th align="left">Concepto</th>
+<th align="left">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Total de datos original</td>
+<td align="left">2220</td>
+</tr>
+<tr class="even">
+<td align="left">Total de duplicados</td>
+<td align="left">179</td>
+</tr>
+<tr class="odd">
+<td align="left">Porcentaje de duplicados (%)</td>
+<td align="left">8.06 %</td>
+</tr>
+<tr class="even">
+<td align="left">Total de datos sin duplicados</td>
+<td align="left">2041</td>
+</tr>
+</tbody>
+</table>
+<p>Se identificaron <strong>179</strong> registros duplicados (representando el <strong>8.06%</strong> del total). Estos corresponden a clientes con información idéntica en todas las variables. La presencia de duplicados introduce sesgo en los estimadores de tendencia central y dispersión, inflando artificialmente el tamaño muestral y violando el supuesto de independencia. Según Barnett y Lewis (1994), duplicados exactos deben eliminarse antes del análisis para evitar sobreponderación de observaciones particulares.</p>
+</div>
+<div id="errores-e-inconsistencias" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Errores e inconsistencias<a href="procesamiento.html#errores-e-inconsistencias" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En la Tabla <a href="procesamiento.html#tab:tabla-est-desc">5.2</a> se muestran las principales estadisticas descriptivas para las variables continuas y discretas</p>
+<table>
+<caption><span id="tab:tabla-est-desc">Table 5.2: </span>Estadísticos descriptivos y límites IQR</caption>
+<colgroup>
+<col width="27%" />
+<col width="8%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="10%" />
+<col width="9%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="left">Mín</th>
+<th align="left">Media</th>
+<th align="left">std</th>
+<th align="left">Q1</th>
+<th align="left">Mediana</th>
+<th align="left">Q3</th>
+<th align="left">Máx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Income</td>
+<td align="left">17300</td>
+<td align="left">516809.1</td>
+<td align="left">207352.5</td>
+<td align="left">352460</td>
+<td align="left">514120</td>
+<td align="left">681480</td>
+<td align="left">1137340</td>
+</tr>
+<tr class="even">
+<td align="left">MntWines</td>
+<td align="left">0</td>
+<td align="left">301.5</td>
+<td align="left">332.9</td>
+<td align="left">24</td>
+<td align="left">174</td>
+<td align="left">499</td>
+<td align="left">1493</td>
+</tr>
+<tr class="odd">
+<td align="left">MntFruits</td>
+<td align="left">0</td>
+<td align="left">26.3</td>
+<td align="left">39.8</td>
+<td align="left">2</td>
+<td align="left">8</td>
+<td align="left">33</td>
+<td align="left">199</td>
+</tr>
+<tr class="even">
+<td align="left">MntMeatProducts</td>
+<td align="left">0</td>
+<td align="left">166.0</td>
+<td align="left">219.8</td>
+<td align="left">16</td>
+<td align="left">68</td>
+<td align="left">230</td>
+<td align="left">1725</td>
+</tr>
+<tr class="odd">
+<td align="left">MntFishProducts</td>
+<td align="left">0</td>
+<td align="left">37.6</td>
+<td align="left">54.8</td>
+<td align="left">3</td>
+<td align="left">12</td>
+<td align="left">50</td>
+<td align="left">259</td>
+</tr>
+<tr class="even">
+<td align="left">MntSweetProducts</td>
+<td align="left">0</td>
+<td align="left">27.3</td>
+<td align="left">41.6</td>
+<td align="left">1</td>
+<td align="left">8</td>
+<td align="left">34</td>
+<td align="left">262</td>
+</tr>
+<tr class="odd">
+<td align="left">MntGoldProds</td>
+<td align="left">0</td>
+<td align="left">43.9</td>
+<td align="left">51.7</td>
+<td align="left">9</td>
+<td align="left">24</td>
+<td align="left">56</td>
+<td align="left">321</td>
+</tr>
+<tr class="even">
+<td align="left">MntTotal</td>
+<td align="left">4</td>
+<td align="left">564.5</td>
+<td align="left">577.8</td>
+<td align="left">55</td>
+<td align="left">343</td>
+<td align="left">965</td>
+<td align="left">2491</td>
+</tr>
+<tr class="odd">
+<td align="left">MntRegularProds</td>
+<td align="left">-283</td>
+<td align="left">520.6</td>
+<td align="left">555.9</td>
+<td align="left">42</td>
+<td align="left">288</td>
+<td align="left">886</td>
+<td align="left">2458</td>
+</tr>
+<tr class="even">
+<td align="left">Kidhome</td>
+<td align="left">0</td>
+<td align="left">0.4</td>
+<td align="left">0.5</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Teenhome</td>
+<td align="left">0</td>
+<td align="left">0.5</td>
+<td align="left">0.5</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">2</td>
+</tr>
+<tr class="even">
+<td align="left">Recency</td>
+<td align="left">0</td>
+<td align="left">48.9</td>
+<td align="left">28.9</td>
+<td align="left">24</td>
+<td align="left">49</td>
+<td align="left">74</td>
+<td align="left">99</td>
+</tr>
+<tr class="odd">
+<td align="left">NumDealsPurchases</td>
+<td align="left">0</td>
+<td align="left">2.3</td>
+<td align="left">1.9</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">15</td>
+</tr>
+<tr class="even">
+<td align="left">NumWebPurchases</td>
+<td align="left">0</td>
+<td align="left">4.1</td>
+<td align="left">2.8</td>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">6</td>
+<td align="left">27</td>
+</tr>
+<tr class="odd">
+<td align="left">NumCatalogPurchases</td>
+<td align="left">0</td>
+<td align="left">2.6</td>
+<td align="left">2.8</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">28</td>
+</tr>
+<tr class="even">
+<td align="left">NumStorePurchases</td>
+<td align="left">0</td>
+<td align="left">5.8</td>
+<td align="left">3.2</td>
+<td align="left">3</td>
+<td align="left">5</td>
+<td align="left">8</td>
+<td align="left">13</td>
+</tr>
+<tr class="odd">
+<td align="left">NumWebVisitsMonth</td>
+<td align="left">0</td>
+<td align="left">5.3</td>
+<td align="left">2.4</td>
+<td align="left">3</td>
+<td align="left">6</td>
+<td align="left">7</td>
+<td align="left">20</td>
+</tr>
+<tr class="even">
+<td align="left">Age</td>
+<td align="left">25</td>
+<td align="left">51.4</td>
+<td align="left">13.0</td>
+<td align="left">43</td>
+<td align="left">50</td>
+<td align="left">61</td>
+<td align="left">240</td>
+</tr>
+<tr class="odd">
+<td align="left">Customer_Days</td>
+<td align="left">2159</td>
+<td align="left">2511.4</td>
+<td align="left">202.6</td>
+<td align="left">2337</td>
+<td align="left">2510</td>
+<td align="left">2688</td>
+<td align="left">2858</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="procesamiento.html#tab:total-porcentaje-atipicos">5.3</a> muestra la detección de valores atípicos mediante el método <strong>IQR</strong> (rango intercuartílico Tukey, 1977) el cual es una medida de dispersión robusta que cuantifica la amplitud del <span class="math inline">\(50 \%\)</span> central de la distribución, con límites definidos como:</p>
+<p><span class="math display">\[IQR = Q_3 - Q_1\]</span></p>
+<p><span class="math display">\[L_{inf} = Q_1 - (1.5 \cdot IQR)\]</span>
+<span class="math display">\[L_{sup} =  Q_3 + (1.5 \cdot IQR)\]</span></p>
+<p>Un valor <span class="math inline">\(x\)</span> es atípico si:</p>
+<p><span class="math display">\[𝑥 &lt;  L_{inf} = Q_1 - (1.5 \cdot IQR) \quad \text{o} \quad x &gt; L_{sup} = Q_3 + (1.5 \cdot IQR)\]</span></p>
+<table style="width:100%;">
+<caption><span id="tab:total-porcentaje-atipicos">Table 5.3: </span>Resumen de total valores atípicos detectados</caption>
+<colgroup>
+<col width="28%" />
+<col width="14%" />
+<col width="14%" />
+<col width="10%" />
+<col width="17%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="right">lim_inf</th>
+<th align="right">lim_sup</th>
+<th align="right">IQR</th>
+<th align="right">N° atípicos</th>
+<th align="right">% atípicos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Income</td>
+<td align="right">-141070.0</td>
+<td align="right">1175010.0</td>
+<td align="right">329020</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">MntWines</td>
+<td align="right">-688.5</td>
+<td align="right">1211.5</td>
+<td align="right">475</td>
+<td align="right">35</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="odd">
+<td align="left">MntFruits</td>
+<td align="right">-44.5</td>
+<td align="right">79.5</td>
+<td align="right">31</td>
+<td align="right">222</td>
+<td align="right">10.9</td>
+</tr>
+<tr class="even">
+<td align="left">MntMeatProducts</td>
+<td align="right">-305.0</td>
+<td align="right">551.0</td>
+<td align="right">214</td>
+<td align="right">170</td>
+<td align="right">8.3</td>
+</tr>
+<tr class="odd">
+<td align="left">MntFishProducts</td>
+<td align="right">-67.5</td>
+<td align="right">120.5</td>
+<td align="right">47</td>
+<td align="right">204</td>
+<td align="right">10.0</td>
+</tr>
+<tr class="even">
+<td align="left">MntSweetProducts</td>
+<td align="right">-48.5</td>
+<td align="right">83.5</td>
+<td align="right">33</td>
+<td align="right">223</td>
+<td align="right">10.9</td>
+</tr>
+<tr class="odd">
+<td align="left">MntGoldProds</td>
+<td align="right">-61.5</td>
+<td align="right">126.5</td>
+<td align="right">47</td>
+<td align="right">186</td>
+<td align="right">9.1</td>
+</tr>
+<tr class="even">
+<td align="left">MntTotal</td>
+<td align="right">-1310.0</td>
+<td align="right">2330.0</td>
+<td align="right">910</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">MntRegularProds</td>
+<td align="right">-1224.0</td>
+<td align="right">2152.0</td>
+<td align="right">844</td>
+<td align="right">4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">Kidhome</td>
+<td align="right">-1.5</td>
+<td align="right">2.5</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Teenhome</td>
+<td align="right">-1.5</td>
+<td align="right">2.5</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Recency</td>
+<td align="right">-51.0</td>
+<td align="right">149.0</td>
+<td align="right">50</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">NumDealsPurchases</td>
+<td align="right">-2.0</td>
+<td align="right">6.0</td>
+<td align="right">2</td>
+<td align="right">74</td>
+<td align="right">3.6</td>
+</tr>
+<tr class="even">
+<td align="left">NumWebPurchases</td>
+<td align="right">-4.0</td>
+<td align="right">12.0</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">NumCatalogPurchases</td>
+<td align="right">-6.0</td>
+<td align="right">10.0</td>
+<td align="right">4</td>
+<td align="right">19</td>
+<td align="right">0.9</td>
+</tr>
+<tr class="even">
+<td align="left">NumStorePurchases</td>
+<td align="right">-4.5</td>
+<td align="right">15.5</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">NumWebVisitsMonth</td>
+<td align="right">-3.0</td>
+<td align="right">13.0</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="left">Age</td>
+<td align="right">16.0</td>
+<td align="right">88.0</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Customer_Days</td>
+<td align="right">1810.5</td>
+<td align="right">3214.5</td>
+<td align="right">351</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+</tbody>
+</table>
+<div id="visualización-de-distribuciones" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Visualización de distribuciones<a href="procesamiento.html#visualizaci%C3%B3n-de-distribuciones" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="boxplot-para-cada-variable-continua" class="section level4 hasAnchor" number="5.2.1.1">
+<h4><span class="header-section-number">5.2.1.1</span> Boxplot para cada variable continua<a href="procesamiento.html#boxplot-para-cada-variable-continua" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="figure"><span style="display:block;" id="fig:boxplotcontinuas"></span>
+<img src="Informe-descriptivo_files/figure-html/boxplotcontinuas-1.png" alt="Distribución de variables numéricas continuas" width="672" />
+<p class="caption">
+Figure 5.1: Distribución de variables numéricas continuas
+</p>
+</div>
+<p>De acuerdpo con los boxplots de la figura <a href="procesamiento.html#fig:boxplotcontinuas">5.1</a> podemos resaltar:</p>
+<ul>
+<li><strong>Income:</strong> Distribución asimétrica positiva (sesgo derecho) con mediana ≈ $52,000. Atípicos superiores representan clientes de muy alto ingreso (segmento premium).</li>
+<li><strong>MntWines:</strong> Mayor variabilidad en gasto. Categoría con mayor consumo promedio.</li>
+<li><strong>MntFruits, MntFish, MntSweet, MntGold:</strong> Cajas comprimidas cerca de cero. Mayoría gasta poco; atípicos superiores indican compradores especializados.</li>
+<li><strong>MntTotal y MntRegularProds:</strong> Alta correlación esperada. Dispersión amplia refleja heterogeneidad en comportamiento de compra.</li>
+</ul>
+</div>
+<div id="estudio-de-las-variables-discretas" class="section level4 hasAnchor" number="5.2.1.2">
+<h4><span class="header-section-number">5.2.1.2</span> Estudio de las variables discretas<a href="procesamiento.html#estudio-de-las-variables-discretas" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="figure"><span style="display:block;" id="fig:boxplot-discretas"></span>
+<img src="Informe-descriptivo_files/figure-html/boxplot-discretas-1.png" alt="Boxplots de variables numéricas discretas" width="672" />
+<p class="caption">
+Figure 5.2: Boxplots de variables numéricas discretas
+</p>
+</div>
+<p>La Figura <a href="procesamiento.html#fig:boxplot-discretas">5.2</a> muestra la distribución de variables numéricas discretas. De donde podemos resaltar</p>
+<ul>
+<li><strong>Age:</strong> Presencia de atípicos superiores (&gt;80 años) requiere validación.</li>
+<li><strong>NumStorePurchases:</strong> Canal preferido (mediana ≈ 5-6), distribución simétrica.</li>
+<li><strong>NumWebPurchases:</strong> Adopción moderada del canal digital.</li>
+<li><strong>Kidhome/Teenhome:</strong> Mayoría sin dependientes (mediana = 0).</li>
+<li><strong>Customer_Days:</strong> Alta antigüedad promedio (≈3000 días = 8 años), indicando lealtad.</li>
+</ul>
+</div>
+<div id="estudio-de-variables-binarias" class="section level4 hasAnchor" number="5.2.1.3">
+<h4><span class="header-section-number">5.2.1.3</span> Estudio de variables binarias<a href="procesamiento.html#estudio-de-variables-binarias" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>La Figura <a href="procesamiento.html#fig:barras-binarias">5.3</a> muestra la distribución de frecuencias para variables categóricas binarias.</p>
+<div class="figure"><span style="display:block;" id="fig:barras-binarias"></span>
+<img src="Informe-descriptivo_files/figure-html/barras-binarias-1.png" alt="Distribución de variables binarias" width="1152" />
+<p class="caption">
+Figure 5.3: Distribución de variables binarias
+</p>
+</div>
+<p>De la figura <a href="procesamiento.html#fig:barras-binarias">5.3</a> podemos podemos resaltar</p>
+<ul>
+<li><strong>Campañas de marketing:</strong> Tasa de aceptación menor al <strong>15%</strong> en todas las campañas, sugiriendo problema estructural de efectividad.</li>
+<li><strong>Perfil demográfico:</strong> Predominio de clientes casados entre el <strong>35%</strong> y <em>40%</em>, con educación superior aproximadamente del <strong>70%</strong>.</li>
+<li><strong>Quejas:</strong> Frecuencia muy baja menos del <strong>5%</strong>, indicando satisfacción general.</li>
+<li><strong>Desbalance de clases:</strong> Variable objetivo (Response) presenta desbalance <strong>85:15</strong>, implicación para modelado predictivo futuro.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="análisis-de-datos-atípicos" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Análisis de datos atípicos<a href="procesamiento.html#an%C3%A1lisis-de-datos-at%C3%ADpicos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Los valores atípicos observados en variables de gasto como por ejemplo, <em>MntTotal </em>, <em>MntWines</em> y otras variables monetarias serán conservados, ya que representan el segmento <em>premium</em> de clientes de alto valor. Según Rousseeuw y Hubert (2011), valores atípicos en el dominio natural de la variable deben conservarse cuando reflejan heterogeneidad real del fenómeno estudiado. Eliminarlos sesgaría la estimación del potencial de ingresos y reduciría artificialmente la varianza poblacional.</p>
+<p>Por otro lado, los valores extremos en variables de comportamiento como <em>NumWebVisitsMonth</em> o <em>NumDealsPurchases</em> también se mantendrán, dado que reflejan patrones auténticos de uso intensivo o baja interacción, los cuales son relevantes para la segmentación y el modelado predictivo. En síntesis, se eliminarán únicamente observaciones inconsistentes desde el punto de vista lógico y/o biológico, mientras que se conservaron aquellas que, aunque extremas, representan comportamientos reales y económicamente significativos dentro de la población analizada.</p>
+<div id="revisión-en-detalle-de-inconsistencias" class="section level4 hasAnchor" number="5.3.0.1">
+<h4><span class="header-section-number">5.3.0.1</span> Revisión en detalle de inconsistencias<a href="procesamiento.html#revisi%C3%B3n-en-detalle-de-inconsistencias" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Se detectaron inconsistencias estructurales en las variables <strong>MntRegularProds</strong>, <strong>Age</strong> y <strong>marital_Divorced</strong> comos e muestra en la Tabla <a href="procesamiento.html#tab:tabla-inconsistencias">5.4</a>. En el caso de <strong>MntRegularProds</strong> se identificaron <em>valores negativos</em>, los cuales violan el dominio teórico de la variable (monto ≥ 0). En <strong>Age</strong> se observaron registros con valor <strong>240</strong>, imposible desde el punto de vista biológico.Límite superior razonable: 110 años (récord mundial: 122 años, Jeanne Calment). Asimismo, <strong>marital_Divorced</strong> presentó valores distintos de <strong>0</strong> y <strong>1</strong>, lo que viola la naturaleza binaria.</p>
+<table>
+<caption><span id="tab:tabla-inconsistencias">Table 5.4: </span>Inconsistencias estructurales detectadas</caption>
+<colgroup>
+<col width="24%" />
+<col width="28%" />
+<col width="20%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="left">Criterio de validez</th>
+<th align="center">N° inválidos</th>
+<th align="left">Valores detectados</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">MntRegularProds</td>
+<td align="left">Monto ≥ 0</td>
+<td align="center">3</td>
+<td align="left">-151, -166, -283</td>
+</tr>
+<tr class="even">
+<td align="left">Age</td>
+<td align="left">0 &lt; Edad ≤ 110 años</td>
+<td align="center">2</td>
+<td align="left">240</td>
+</tr>
+<tr class="odd">
+<td align="left">marital_Divorced</td>
+<td align="left">Valor ∈ {0, 1}</td>
+<td align="center">6</td>
+<td align="left">100</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="procesamiento.html#tab:tabla-inconsistencias">5.4</a> documenta las inconsistencias estructurales detectadas.</p>
+</div>
+</div>
+<div id="tratamiento-de-inconsistencias" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Tratamiento de inconsistencias<a href="procesamiento.html#tratamiento-de-inconsistencias" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Según Osborne y Overbay (2004), inconsistencias que violan restricciones del dominio deben eliminarse por completo, ya que no admiten corrección sin introducir mayor incertidumbre.</p>
+<p>Tras la eliminación de registros duplicados, la base quedó compuesta por <em>2.041</em> resgistros.
+Se eliminaron <strong>11</strong> registros (<strong>0.54%</strong> del total de los <em>2.041</em>), que presentaban inconsistencias estructurales: valores negativos en MntRegularProds, edades imposibles (<em>240 año</em>s) y codificaciones inválidas en marital_Divorced (valor <em>100</em>). Dado que estas observaciones violan el dominio teórico de las variables y representan una proporción marginal de la muestra, se optó por su eliminación completa. Resultando en <strong>2030</strong> observaciones válidas.</p>
+<p>La Tabla <a href="procesamiento.html#tab:mntregula-Age-antes-despues">5.5</a> muestra el impacto del tratamiento en indicadores descriptivos.</p>
+<table>
+<caption><span id="tab:mntregula-Age-antes-despues">Table 5.5: </span>Comparación de indicadores descriptivos antes y después del tratamiento</caption>
+<thead>
+<tr class="header">
+<th align="left">Momento</th>
+<th align="left">Variable</th>
+<th align="right">Media</th>
+<th align="right">Mediana</th>
+<th align="right">DE</th>
+<th align="right">Q1</th>
+<th align="right">Q3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Antes</td>
+<td align="left">Age</td>
+<td align="right">51.35</td>
+<td align="right">50.0</td>
+<td align="right">13.04</td>
+<td align="right">43</td>
+<td align="right">61</td>
+</tr>
+<tr class="even">
+<td align="left">Después</td>
+<td align="left">Age</td>
+<td align="right">51.17</td>
+<td align="right">50.0</td>
+<td align="right">11.65</td>
+<td align="right">43</td>
+<td align="right">61</td>
+</tr>
+<tr class="odd">
+<td align="left">Antes</td>
+<td align="left">MntRegularProds</td>
+<td align="right">520.59</td>
+<td align="right">288.0</td>
+<td align="right">555.88</td>
+<td align="right">42</td>
+<td align="right">886</td>
+</tr>
+<tr class="even">
+<td align="left">Después</td>
+<td align="left">MntRegularProds</td>
+<td align="right">522.72</td>
+<td align="right">290.5</td>
+<td align="right">555.82</td>
+<td align="right">42</td>
+<td align="right">887</td>
+</tr>
+</tbody>
+</table>
+<p>Para la variable <strong>MntRegularProds</strong>, según la Tabla <a href="procesamiento.html#tab:mntregula-Age-antes-despues">5.5</a>, - Media aumenta ligeramente de <strong>520.59</strong> a <strong>522.72</strong>, es decir, un incremento de <strong>2.13</strong> unidades (<strong>≈ 0.4%</strong>). En términos relativos, el cambio es despreciable.
+- La mediana pasa de <strong>288.0</strong> a <strong>290.5</strong>, lo que confirma que la posición central robusta prácticamente no se altera.
+- La desviación estándar se mantiene esencialmente constante <strong>555.80</strong> frente a <strong>555.82</strong> (<strong>≈0.04%</strong>).
+- Los cuartiles <span class="math inline">\(Q_1\)</span> y <span class="math inline">\(Q_3\)</span> presentan variaciones mínimas.</p>
+<p>Esto indica que la dispersión intercuartílica permanece estable. La Figura <a href="procesamiento.html#fig:comp-boxplots">5.4</a> corrobora visualmente este comportamiento: los boxplots antes y después del tratamiento presentan estructura y rango intercuartílico prácticamente idénticos.</p>
+<p>En consecuencia, la eliminación de los tres valores negativos no modificó de manera sustancial los indicadores de tendencia central ni de dispersión. Dichas observaciones, aunque inconsistentes desde el punto de vista lógico, no ejercían influencia relevante sobre la estructura estadística global de la variable.</p>
+<p>Para la variable <strong>Age</strong>, la Tabla <a href="procesamiento.html#tab:mntregula-Age-antes-despues">5.5</a> muestran que
+- La media disminuye de <strong>51.35</strong> a <strong>51.17</strong> (<strong>≈0.35%</strong>). Esto indica que los registros con edad 240 inflaban ligeramente el promedio.</p>
+<ul>
+<li><p>La mediana permanece exactamente en <strong>50</strong>, lo que confirma que el valor extremo no afectaba la posición central robusta.</p></li>
+<li><p>La desviación estándar disminuye de <strong>13.04</strong> a <strong>11.65</strong>, lo que representa una reducción relativa aproximada del <strong>10.6%</strong>. Este cambio evidencia que el registro con edad 240 generaba una sobreestimación apreciable de la variabilidad.</p></li>
+<li><p>Los cuartiles <span class="math inline">\(Q_1\)</span> y <span class="math inline">\(Q_3\)</span> no presentan modificaciones, por lo que la dispersión intercuartílica se mantiene estable.</p></li>
+</ul>
+<p>La Figura <a href="procesamiento.html#fig:comp-boxplots">5.4</a> respalda este análisis: el boxplot posterior al tratamiento muestra una reducción clara en la amplitud total, mientras que la caja central conserva su posición y tamaño.</p>
+<p>Por tanto, la eliminación del valor atípico produjo una disminución significativa en la desviación estándar, corrigiendo la sobreestimación de la variabilidad, pero sin alterar la estructura central de la distribución.</p>
+<div class="figure"><span style="display:block;" id="fig:comp-boxplots"></span>
+<img src="Informe-descriptivo_files/figure-html/comp-boxplots-1.png" alt="Comparación de distribuciones antes (rojo) y después (azul) del tratamiento de inconsistencias." width="1152" />
+<p class="caption">
+Figure 5.4: Comparación de distribuciones antes (rojo) y después (azul) del tratamiento de inconsistencias.
+</p>
+</div>
+<p>Para una variable binaria como marital_Divorced, lo adecuado es una tabla de distribución de frecuencias absoluta y relativa, incluyendo proporciones.</p>
+<table>
+<caption><span id="tab:marital-divorced-antes">Table 5.6: </span>Distribución de la variable binaria marital_Divorced antes del tratamiento.</caption>
+<colgroup>
+<col width="71%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Categoría (0 = No divorciado, 1 = Divorciado, 100 = Inconsistencia)</th>
+<th align="center">Frecuencia</th>
+<th align="center">Porcentaje (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">1826</td>
+<td align="center">89.47</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">209</td>
+<td align="center">10.24</td>
+</tr>
+<tr class="odd">
+<td align="center">100</td>
+<td align="center">6</td>
+<td align="center">0.29</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:marital-divorced-despues">Table 5.7: </span>Distribución de la variable binaria marital_Divorced después del tratamiento.</caption>
+<colgroup>
+<col width="62%" />
+<col width="16%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Categoría (0 = No divorciado, 1 = Divorciado)</th>
+<th align="center">Frecuencia</th>
+<th align="center">Porcentaje (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">1821</td>
+<td align="center">89.7</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">209</td>
+<td align="center">10.3</td>
+</tr>
+</tbody>
+</table>
+<div class="figure"><span style="display:block;" id="fig:barras-marital-divorced-comparacion"></span>
+<img src="Informe-descriptivo_files/figure-html/barras-marital-divorced-comparacion-1.png" alt="Comparación de la distribución de marital_Divorced antes y después del tratamiento." width="1152" />
+<p class="caption">
+Figure 5.5: Comparación de la distribución de marital_Divorced antes y después del tratamiento.
+</p>
+</div>
+<p>Antes del tratamiento se identificaron <strong>6</strong> registros con valor <strong>100</strong> como se observa en la Tabla <a href="procesamiento.html#tab:marital-divorced-antes">5.6</a> , correspondiente al <strong>0.29%</strong> del total de las <strong>2041</strong> observaciones. Tras su eliminación, la estructura porcentual de la variable prácticamente no se modificó como se puede observar en la Tabla <a href="procesamiento.html#tab:marital-divorced-despues">5.7</a> , lo cual indica que la inconsistencia no afectaba sustancialmente la distribución de la variable, lo cual es más evidente en la gráfica de la figura <a href="procesamiento.html#fig:barras-marital-divorced-comparacion">5.5</a>.</p>
+<div id="validación-y-evaluación-de-la-depuración" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Validación y evaluación de la depuración<a href="procesamiento.html#validaci%C3%B3n-y-evaluaci%C3%B3n-de-la-depuraci%C3%B3n" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La principal preocupación al eliminar registros es introducir un sesgo, alterando la estructura subyacente de los datos. Vamos a resposnder a la sigyuiente pregunta</p>
+<p>¿La eliminación de duplicados e inconsistentes ha sido una decisión metodológicamente sólida y, por lo tanto, podemos proceder con confianza al tratamiento de los valores faltantes en el conjunto de datos de 2030 registros?</p>
+<table>
+<caption><span id="tab:muestra-original-limpios">Table 5.8: </span>Comparación del tamaño muestral antes y después de eliminar inconsistencias</caption>
+<thead>
+<tr class="header">
+<th align="center">N original</th>
+<th align="center">N limpio</th>
+<th align="center">Registros eliminados</th>
+<th align="center">% eliminado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">2220</td>
+<td align="center">2030</td>
+<td align="center">190</td>
+<td align="center">8.559</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:esta-desc-original-limpios">Table 5.9: </span>Comparación de estadísticos descriptivos antes y después de la depuración</caption>
+<colgroup>
+<col width="13%" />
+<col width="12%" />
+<col width="11%" />
+<col width="9%" />
+<col width="8%" />
+<col width="13%" />
+<col width="12%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="left">Media_original</th>
+<th align="left">Media_limpios</th>
+<th align="left">SD_original</th>
+<th align="left">SD_limpios</th>
+<th align="left">Mediana_original</th>
+<th align="left">Mediana_limpios</th>
+<th align="left">Cambio_relativo_media</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Income</td>
+<td align="left">516535.567</td>
+<td align="left">517963.452</td>
+<td align="left">207041.059</td>
+<td align="left">206598.223</td>
+<td align="left">513815.0</td>
+<td align="left">515235.0</td>
+<td align="left">0.276</td>
+</tr>
+<tr class="even">
+<td align="left">MntWines</td>
+<td align="left">301.055</td>
+<td align="left">302.096</td>
+<td align="left">331.644</td>
+<td align="left">332.334</td>
+<td align="left">174.5</td>
+<td align="left">176.0</td>
+<td align="left">0.346</td>
+</tr>
+<tr class="odd">
+<td align="left">MntFruits</td>
+<td align="left">26.591</td>
+<td align="left">26.453</td>
+<td align="left">40.171</td>
+<td align="left">39.879</td>
+<td align="left">8.0</td>
+<td align="left">8.0</td>
+<td align="left">0.520</td>
+</tr>
+<tr class="even">
+<td align="left">MntMeatProducts</td>
+<td align="left">165.774</td>
+<td align="left">166.718</td>
+<td align="left">218.159</td>
+<td align="left">220.130</td>
+<td align="left">68.0</td>
+<td align="left">68.0</td>
+<td align="left">0.569</td>
+</tr>
+<tr class="odd">
+<td align="left">MntFishProducts</td>
+<td align="left">37.736</td>
+<td align="left">37.755</td>
+<td align="left">54.782</td>
+<td align="left">54.907</td>
+<td align="left">12.0</td>
+<td align="left">12.0</td>
+<td align="left">0.052</td>
+</tr>
+<tr class="even">
+<td align="left">MntSweetProducts</td>
+<td align="left">27.108</td>
+<td align="left">27.447</td>
+<td align="left">41.062</td>
+<td align="left">41.719</td>
+<td align="left">8.0</td>
+<td align="left">8.0</td>
+<td align="left">1.251</td>
+</tr>
+<tr class="odd">
+<td align="left">MntGoldProds</td>
+<td align="left">44.300</td>
+<td align="left">43.481</td>
+<td align="left">52.086</td>
+<td align="left">50.826</td>
+<td align="left">25.0</td>
+<td align="left">24.0</td>
+<td align="left">1.848</td>
+</tr>
+<tr class="even">
+<td align="left">MntTotal</td>
+<td align="left">563.513</td>
+<td align="left">566.199</td>
+<td align="left">575.844</td>
+<td align="left">578.104</td>
+<td align="left">344.5</td>
+<td align="left">345.0</td>
+<td align="left">0.477</td>
+</tr>
+<tr class="odd">
+<td align="left">MntRegularProds</td>
+<td align="left">519.213</td>
+<td align="left">522.718</td>
+<td align="left">553.652</td>
+<td align="left">555.817</td>
+<td align="left">288.5</td>
+<td align="left">290.5</td>
+<td align="left">0.675</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:prueba-KS">Table 5.10: </span>Prueba de Kolmogorov–Smirnov para igualdad de distribuciones</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Variable</th>
+<th align="center">Estadistico_D</th>
+<th align="center">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">D</td>
+<td align="center">Income</td>
+<td align="center">0.0065</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="left">D1</td>
+<td align="center">MntWines</td>
+<td align="center">0.0029</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="left">D2</td>
+<td align="center">MntFruits</td>
+<td align="center">0.0034</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="left">D3</td>
+<td align="center">MntMeatProducts</td>
+<td align="center">0.0045</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="left">D4</td>
+<td align="center">MntFishProducts</td>
+<td align="center">0.0054</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="left">D5</td>
+<td align="center">MntSweetProducts</td>
+<td align="center">0.0037</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="left">D6</td>
+<td align="center">MntGoldProds</td>
+<td align="center">0.0061</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="left">D7</td>
+<td align="center">MntTotal</td>
+<td align="center">0.0035</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="left">D8</td>
+<td align="center">MntRegularProds</td>
+<td align="center">0.0038</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:prueba-Frobenius">Table 5.11: </span>Diferencia global entre matrices de correlación (Norma de Frobenius)</caption>
+<thead>
+<tr class="header">
+<th align="center">Norma_Frobenius</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.055797</td>
+</tr>
+</tbody>
+</table>
+<p>En la Tabla <a href="procesamiento.html#tab:esta-desc-original-limpios">5.9</a> es crucial observar que las medias, desviaciones estándar y medianas de todas las variables permanecen prácticamente idénticas. Por ejemplo, la media de <strong>Income</strong> pasa de <strong>516,535</strong> a <strong>517,963</strong>, un cambio de apenas <strong>0.27%</strong>. La desviación estándar también se mantiene estable. En términos estadísticos, esto indica que la localización y la escala de las distribuciones no se han visto afectadas. La estructura central de los datos es la misma.</p>
+<p>La Tabla <a href="procesamiento.html#tab:prueba-KS">5.10</a> muestra la evidencia más sólida. La <strong>prueba KS</strong> es una herramienta no paramétrica poderosa para comparar distribuciones completas. Los <strong>estadísticos D</strong> (que miden la distancia máxima entre las distribuciones acumuladas) son extremadamente bajos por ejemplo, <strong>0.0065</strong> para <strong>Income</strong>, y los <strong>p-values</strong> son exactamente <strong>1</strong>, lo que cnfirma no existe evidencia estadística que sugiera que las distribuciones, antes y después de la limpieza, sean diferentes. Son, a efectos prácticos, idénticas.</p>
+<p>En la Tabla <a href="procesamiento.html#tab:prueba-Frobenius">5.11</a> la norma de Frobenius cuantifica la diferencia global entre dos matrices. Un valor de <strong>0.0558</strong> es extraordinariamente bajo. Esto significa que las relaciones lineales entre las variables se han mantenido casi inalteradas. La estructura de correlación, que es la “anatomía” de las relaciones entre variables, sigue siendo la misma.</p>
+<p>En resumen, la eliminación del <strong>8.56%</strong> de los datos (190 registros, Tabla <a href="procesamiento.html#tab:muestra-original-limpios">5.8</a>) ha sido un proceso de limpieza efectivo. No ha introducido sesgo ni ha alterado las propiedades estadísticas fundamentales del conjunto de datos. Hemos eliminado ruido (duplicados e inconsistencias) conservando la esencia de la información, lo que valida metodológicamente el uso del conjunto depurado de
+<strong>2030</strong> observaciones para el posterior tratamiento de valores faltantes.</p>
+</div>
+</div>
+<div id="identificación-de-datos-faltantes" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Identificación de datos faltantes<a href="procesamiento.html#identificaci%C3%B3n-de-datos-faltantes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<caption><span id="tab:tabla-nulos-original">Table 5.12: </span>Datos faltantes (solo variables con NA del dataset original)</caption>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="right">Cantidad NA</th>
+<th align="right">Porcentaje (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Income</td>
+<td align="right">68</td>
+<td align="right">3.06</td>
+</tr>
+<tr class="even">
+<td align="left">MntWines</td>
+<td align="right">20</td>
+<td align="right">0.90</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:tabla-nulos-sin-duplicados">Table 5.13: </span>Datos faltantes (solo variables con NA del dataset sin duplicados)</caption>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="right">Cantidad NA</th>
+<th align="right">Porcentaje (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Income</td>
+<td align="right">68</td>
+<td align="right">3.33</td>
+</tr>
+<tr class="even">
+<td align="left">MntWines</td>
+<td align="right">20</td>
+<td align="right">0.98</td>
+</tr>
+</tbody>
+</table>
+<p>Para el conjunto de datos sin duplicados y sin inconsistentes, procedemos a dentificamos las variables con valores nulos o faltante.</p>
+<table>
+<caption><span id="tab:tabla-nulos">Table 5.14: </span>Datos faltantes (solo variables con NA)</caption>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="right">Cantidad NA</th>
+<th align="right">Porcentaje (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Income</td>
+<td align="right">66</td>
+<td align="right">3.25</td>
+</tr>
+<tr class="even">
+<td align="left">MntWines</td>
+<td align="right">20</td>
+<td align="right">0.99</td>
+</tr>
+</tbody>
+</table>
+<p>La Figura <a href="procesamiento.html#fig:fig-datos-faltantes">5.6</a> se presenta un resumen de las variables ordenadas según el número de datos faltantes.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-datos-faltantes"></span>
+<img src="Informe-descriptivo_files/figure-html/fig-datos-faltantes-1.png" alt="Porcentaje de datos faltantes por variables y combinaciones de faltantes por variables." width="960" />
+<p class="caption">
+Figure 5.6: Porcentaje de datos faltantes por variables y combinaciones de faltantes por variables.
+</p>
+</div>
+<pre><code>## 
+##  Variables sorted by number of missings: 
+##              Variable Count
+##                Income    66
+##              MntWines    20
+##               Kidhome     0
+##              Teenhome     0
+##               Recency     0
+##             MntFruits     0
+##       MntMeatProducts     0
+##       MntFishProducts     0
+##      MntSweetProducts     0
+##          MntGoldProds     0
+##     NumDealsPurchases     0
+##       NumWebPurchases     0
+##   NumCatalogPurchases     0
+##     NumStorePurchases     0
+##     NumWebVisitsMonth     0
+##          AcceptedCmp3     0
+##          AcceptedCmp4     0
+##          AcceptedCmp5     0
+##          AcceptedCmp1     0
+##          AcceptedCmp2     0
+##              Complain     0
+##              Response     0
+##                   Age     0
+##         Customer_Days     0
+##      marital_Divorced     0
+##       marital_Married     0
+##        marital_Single     0
+##      marital_Together     0
+##         marital_Widow     0
+##    education_2n Cycle     0
+##       education_Basic     0
+##  education_Graduation     0
+##      education_Master     0
+##         education_PhD     0
+##              MntTotal     0
+##       MntRegularProds     0
+##    AcceptedCmpOverall     0</code></pre>
+<p>La Figura <a href="procesamiento.html#fig:vis-missing">5.7</a> muestra el patrón espacial de datos faltantes.</p>
+<div class="figure"><span style="display:block;" id="fig:vis-missing"></span>
+<img src="Informe-descriptivo_files/figure-html/vis-missing-1.png" alt="Mapa de valores faltantes. Columnas gris indican presencia de dato, negra indica ausencia." width="1152" />
+<p class="caption">
+Figure 5.7: Mapa de valores faltantes. Columnas gris indican presencia de dato, negra indica ausencia.
+</p>
+</div>
+<p>La revisión conjunta de las Figuras <a href="procesamiento.html#fig:fig-datos-faltantes">5.6</a> y <a href="procesamiento.html#fig:vis-missing">5.7</a>, junto con las Tablas <a href="procesamiento.html#tab:tabla-nulos-original">5.12</a>, <a href="procesamiento.html#tab:tabla-nulos-sin-duplicados">5.13</a> y <a href="procesamiento.html#tab:tabla-nulos">5.14</a>, confirma que el problema de datos faltantes es reducido y está concentrado exclusivamente en las variables
+<strong>Income</strong> y <strong>MntWines</strong>. En el dataset original se observan 68 valores faltantes en <strong>Income` (3.06%)</strong> y <strong>20</strong> en <strong>MntWines (0.90%)</strong>. Tras eliminar duplicados, las proporciones se mantienen prácticamente inalteradas (<strong>3.33%</strong> y <strong>0.98%</strong>, respectivamente). Finalmente, en el conjunto depurado sin duplicados ni inconsistencias, <strong>Income</strong> presenta <strong>66</strong> valores faltantes (<strong>3.25%</strong>) y <strong>MntWines</strong> presenta <strong>20</strong> (<strong>0.99%</strong>).</p>
+<p>Las Figuras <a href="procesamiento.html#fig:fig-datos-faltantes">5.6</a> y <a href="procesamiento.html#fig:vis-missing">5.7</a> muestran que el resto de variables no presentan ausencia de datos y que los faltantes aparecen de forma esporádica y dispersa, sin aparente evidencia de patrones estructurados ni bloques sistemáticos de coausencia. Dado que todas las proporciones están por debajo del umbral del <strong>5%</strong> señalado en la literatura especializada (Little y Rubin, 2002), el nivel de datos faltantes puede considerarse bajo y su impacto potencial sobre los análisis posteriores es limitado y manejable mediante procedimientos estándar de tratamiento de valores ausentes.</p>
+</div>
+<div id="tratamiento-de-datos-faltantes" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Tratamiento de Datos Faltantes<a href="procesamiento.html#tratamiento-de-datos-faltantes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="evaluación-del-mecanismo-generador-de-datos-faltantes" class="section level3 hasAnchor" number="5.6.1">
+<h3><span class="header-section-number">5.6.1</span> Evaluación del mecanismo generador de datos faltantes<a href="procesamiento.html#evaluaci%C3%B3n-del-mecanismo-generador-de-datos-faltantes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para evaluar si los datos faltan completamente al azar (MCAR), se aplica el test de Little (1988) considerando un conjunto amplio de variables que podrían estar relacionadas con la probabilidad de missing. Se incluyen: ingresos, gasto en vinos, edad, número de hijos, antigüedad, frecuencia de compras y variables demográficas codificadas como factores.</p>
+<table>
+<caption><span id="tab:test-mca">Table 5.15: </span>Test de Little para MCAR (con variables relevantes)</caption>
+<thead>
+<tr class="header">
+<th align="right">Estadístico</th>
+<th align="right">gl</th>
+<th align="right">p_valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">41.5232</td>
+<td align="right">20</td>
+<td align="right">0.0032</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="procesamiento.html#tab:test-mca">5.15</a> muestra el resultado al aplicar el test de Little (1988) para evaluar si los datos faltantes siguen un mecanismo MCAR (Missing Completely At Random).</p>
+<p><strong>Hipótesis:</strong></p>
+<p><span class="math display">\[H_0: \text{Los datos faltantes son MCAR (completamente al azar)}\]</span>
+<span class="math display">\[H_1: \text{Los datos faltantes NO son MCAR (dependen de otras variables)}\]</span></p>
+<p>Dado que el p-valor = 0.0032 &lt; 0.05, se rechaza <span class="math inline">\(H_{0}\)</span>. En consecuencia, los datos no siguen un mecanismo completamente aleatorio (<strong>MCAR</strong>). No obstante, dado el bajo porcentaje de ausencia (<strong>&lt;5%</strong>) y la ausencia de evidencia estructural de <strong>MNAR</strong>, se asume razonablemente un mecanismo <strong>MAR</strong> para efectos de imputación múltiple.</p>
+<p>Bajo <strong>MAR</strong>, la eliminación por lista completa puede inducir sesgo y pérdida innecesaria de eficiencia. Por ello se emplea imputación múltiple según Rubin (1987), que:</p>
+<ul>
+<li><p>Preserva la estructura multivariada.</p></li>
+<li><p>Incorpora la incertidumbre de imputación.</p></li>
+<li><p>Mantiene la variabilidad poblacional.</p></li>
+</ul>
+<p>Se excluyen variables que constituyen combinaciones lineales exactas (por ejemplo, <strong>MntTotal</strong>, <strong>MntRegularProds</strong> y <strong>AcceptedCmpOverall</strong>), ya que generan multicolinealidad perfecta y matrices singulares en el algoritmo de imputación (criterio clásico de diagnóstico estructural). Las variables derivadas se recalculan posteriormente.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="procesamiento.html#cb2-1" tabindex="-1"></a><span class="co"># Colinealidad perfecta (VIF = ∞)</span></span>
+<span id="cb2-2"><a href="procesamiento.html#cb2-2" tabindex="-1"></a><span class="sc">-</span> MntRegularProds <span class="ot">=</span> MntFruits <span class="sc">+</span> MntMeat <span class="sc">+</span> MntFish <span class="sc">+</span> MntSweet</span>
+<span id="cb2-3"><a href="procesamiento.html#cb2-3" tabindex="-1"></a><span class="sc">-</span> MntTotal <span class="ot">=</span> MntWines <span class="sc">+</span> ... <span class="sc">+</span> <span class="fu">MntGold</span> (suma de todas)</span>
+<span id="cb2-4"><a href="procesamiento.html#cb2-4" tabindex="-1"></a><span class="sc">-</span> AcceptedCmpOverall <span class="ot">=</span> <span class="fu">max</span>(AcceptedCmp1, ..., AcceptedCmp5)</span></code></pre></div>
+<p>Se comparan tres métodos: <strong>PMM</strong> con regularización ridge, <strong>CART</strong> y <strong>Regresión ridge</strong>
+Con <strong>m=5</strong> imputaciones y 10 iteraciones.</p>
+<p>Para elegir el método que mejor preserva la estructura de los datos observados, se evalúan:</p>
+<ol style="list-style-type: decimal">
+<li><p>Estabilidad de las imputaciones: desviación estándar de las medias imputadas entre las 5 réplicas.</p></li>
+<li><p>Preservación de momentos: comparación de medias y varianzas de las variables imputadas con las observadas (listwise deletion).</p></li>
+<li><p>Preservación de correlaciones: comparación de la matriz de correlación de las variables clave (Income, MntWines, Age, MntTotal) con la observada.</p></li>
+</ol>
+<p>Los resultados se presentan en la Tabla <a href="procesamiento.html#tab:comp-metd-imputacion">5.16</a>.</p>
+<table>
+<caption>
+<span id="tab:comp-metd-imputacion">Table 5.16: </span>Comparación de métodos de imputación
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Metodo
+</th>
+<th style="text-align:right;">
+Income_media
+</th>
+<th style="text-align:right;">
+Income_sd
+</th>
+<th style="text-align:right;">
+Income_sd_entre
+</th>
+<th style="text-align:right;">
+MntWines_media
+</th>
+<th style="text-align:right;">
+MntWines_sd
+</th>
+<th style="text-align:right;">
+MntWines_sd_entre
+</th>
+<th style="text-align:right;">
+Income_diff_media
+</th>
+<th style="text-align:right;">
+Income_diff_sd
+</th>
+<th style="text-align:right;">
+Wines_diff_media
+</th>
+<th style="text-align:right;">
+Wines_diff_sd
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+PMM
+</td>
+<td style="text-align:right;">
+518782.9
+</td>
+<td style="text-align:right;">
+206621.5
+</td>
+<td style="text-align:right;">
+215.84
+</td>
+<td style="text-align:right;">
+305.55
+</td>
+<td style="text-align:right;">
+334.59
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+1.86
+</td>
+<td style="text-align:right;">
+1.25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CART
+</td>
+<td style="text-align:right;">
+518225.7
+</td>
+<td style="text-align:right;">
+206494.1
+</td>
+<td style="text-align:right;">
+285.37
+</td>
+<td style="text-align:right;">
+305.60
+</td>
+<td style="text-align:right;">
+334.83
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+0.41
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:right;">
+1.87
+</td>
+<td style="text-align:right;">
+1.32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ridge
+</td>
+<td style="text-align:right;">
+518937.1
+</td>
+<td style="text-align:right;">
+206795.1
+</td>
+<td style="text-align:right;">
+66.18
+</td>
+<td style="text-align:right;">
+305.15
+</td>
+<td style="text-align:right;">
+333.41
+</td>
+<td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+1.72
+</td>
+<td style="text-align:right;">
+0.89
+</td>
+</tr>
+</tbody>
+</table>
+<p>Adicionalmente en la Tabla <a href="procesamiento.html#tab:tabla-cor">5.17</a>, se comparan las correlaciones de Pearson entre Income, MntWines y Age para cada método (promedio de las 5 imputaciones) frente a la correlación observada.</p>
+<table>
+<caption><span id="tab:tabla-cor">Table 5.17: </span>Comparación de correlaciones promedio (5 imputaciones) con las observadas.</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Metodo</th>
+<th align="right">Income~MntWines</th>
+<th align="right">Income~Age</th>
+<th align="right">MntWines~Age</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Observado</td>
+<td align="right">0.727</td>
+<td align="right">0.217</td>
+<td align="right">0.168</td>
+</tr>
+<tr class="even">
+<td align="left">cor_pmm</td>
+<td align="left">PMM</td>
+<td align="right">0.726</td>
+<td align="right">0.211</td>
+<td align="right">0.166</td>
+</tr>
+<tr class="odd">
+<td align="left">cor_cart</td>
+<td align="left">CART</td>
+<td align="right">0.728</td>
+<td align="right">0.213</td>
+<td align="right">0.166</td>
+</tr>
+<tr class="even">
+<td align="left">cor_ridge</td>
+<td align="left">Ridge</td>
+<td align="right">0.728</td>
+<td align="right">0.210</td>
+<td align="right">0.167</td>
+</tr>
+</tbody>
+</table>
+<p>Basado en la menor diferencia relativa de medias y desviaciones, así como la preservación de correlaciones, se selecciona <strong>PMM</strong> con ridge como método final (van Buuren, 2018, Flexible Imputation of Missing Data). Este método presenta la mayor estabilidad (baja desviación entre imputaciones) y reproduce fielmente la estructura correlacional.</p>
+<p>Se utiliza la primera imputación de <em>PMM</em> para el análisis descriptivo, previa verificación de que las 5 imputaciones producen resultados muy similares (Tabla <a href="procesamiento.html#tab:consistencia-imputaciones">5.18</a>.</p>
+<table>
+<caption><span id="tab:consistencia-imputaciones">Table 5.18: </span>Medias de Income y MntWines en cada una de las 5 imputaciones (PMM). La baja variabilidad confirma estabilidad.</caption>
+<thead>
+<tr class="header">
+<th align="right">.imp</th>
+<th align="right">media_income</th>
+<th align="right">media_wines</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">518768.4</td>
+<td align="right">305.95</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">518908.8</td>
+<td align="right">305.80</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">519078.0</td>
+<td align="right">305.62</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">518562.5</td>
+<td align="right">305.30</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">518596.8</td>
+<td align="right">305.08</td>
+</tr>
+</tbody>
+</table>
+<p>Para la validación estructural post-imputación, se comparan densidades antes y después de imputar como se ne la Figura <a href="procesamiento.html#fig:densidad-compa">5.8</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:densidad-compa"></span>
+<img src="Informe-descriptivo_files/figure-html/densidad-compa-1.png" alt="Densidades originales vs imputadas para Income y MntWines." width="1152" />
+<p class="caption">
+Figure 5.8: Densidades originales vs imputadas para Income y MntWines.
+</p>
+</div>
+<p>Las curvas muestran superposición casi completa, sin distorsión visible. Finalmente, se analiza la matriz de correlaciones en la Figura <a href="procesamiento.html#fig:matriz-cor">5.9</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:matriz-cor"></span>
+<img src="Informe-descriptivo_files/figure-html/matriz-cor-1.png" alt="Matriz de correlaciones de variables numéricas." width="672" />
+<p class="caption">
+Figure 5.9: Matriz de correlaciones de variables numéricas.
+</p>
+</div>
+<p>Las relaciones esperadas (por ejemplo, alta correlación entre Income y MntWines) se mantienen, lo que confirma preservación estructural. También, correlaciones moderadas entre distintos tipos de gasto, indicando cierto patrón de consumo conjunto. Además, se rsalta que la variable Recency presenta correlaciones bajas con el resto, sugiriendo independencia.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="datos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="resultados.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
