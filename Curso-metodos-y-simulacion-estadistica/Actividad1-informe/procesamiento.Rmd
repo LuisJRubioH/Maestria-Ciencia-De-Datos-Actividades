@@ -553,6 +553,7 @@ La principal preocupación al eliminar registros es introducir un sesgo, alteran
 
 ¿La eliminación de duplicados e inconsistentes ha sido una decisión metodológicamente sólida y, por lo tanto, podemos proceder con confianza al tratamiento de los valores faltantes en el conjunto de datos de 2030 registros?
 
+<div style="overflow-x: auto; width: 100%;">
 ```{r muestra-original-limpios, echo=FALSE}
 tabla_tamano <- data.frame(
   n_original = nrow(datos_raw),
@@ -571,8 +572,9 @@ knitr::kable(
 )
 
 ```
+</div>
 
-
+<div style="overflow-x: auto; width: 100%;">
 ```{r esta-desc-original-limpios, echo=FALSE}
 comparar_estadisticos <- function(var){
   data.frame(
@@ -603,8 +605,9 @@ knitr::kable(
 )
 
 ```
+</div>
 
-
+<div style="overflow-x: auto; width: 100%;">
 ```{r prueba-KS, echo=FALSE}
 tabla_ks <- do.call(rbind, lapply(vars, function(var){
   test <- ks.test(
@@ -645,6 +648,7 @@ knitr::kable(
 )
 
 ```
+</div>
 
 En la Tabla \@ref(tab:esta-desc-original-limpios) es crucial observar que las medias, desviaciones estándar y medianas de todas las variables permanecen prácticamente idénticas. Por ejemplo, la media de **Income** pasa de **516,535** a **517,963**, un cambio de apenas **0.27\%**. La desviación estándar también se mantiene estable. En términos estadísticos, esto indica que la localización y la escala de las distribuciones no se han visto afectadas. La estructura central de los datos es la misma.
 
@@ -888,6 +892,7 @@ Para elegir el método que mejor preserva la estructura de los datos observados,
 
 Los resultados se presentan en la Tabla \@ref(tab:comp-metd-imputacion).
 
+<div style="overflow-x: auto; width: 100%;">
 ```{r comp-metd-imputacion, echo=FALSE}
 # Función para extraer estadísticos de un objeto mice
 estadisticos_imputacion <- function(imp, metodo_nombre) {
@@ -950,10 +955,11 @@ comp_metodos <- comp_metodos %>%
 knitr::kable(comp_metodos, digits = 2, format = "html",
              caption = "Comparación de métodos de imputación")
 ```
+</div>
 
 Adicionalmente en la Tabla \@ref(tab:tabla-cor), se comparan las correlaciones de Pearson entre Income, MntWines y Age para cada método (promedio de las 5 imputaciones) frente a la correlación observada.
 
-
+<div style="overflow-x: auto; width: 100%;">
 ```{r tabla-cor, echo=FALSE}
 # Correlación observada
 obs_cor <- datos_imp_subset %>%
@@ -992,13 +998,14 @@ names(tabla_cor)[2:4] <- c("Income~MntWines", "Income~Age", "MntWines~Age")
 knitr::kable(tabla_cor, digits = 3,
              caption = "Comparación de correlaciones promedio (5 imputaciones) con las observadas.")
 ```
-
+</div>
 
 Basado en la menor diferencia relativa de medias y desviaciones, así como la preservación de correlaciones, se selecciona **PMM** con ridge como método final (van Buuren, 2018, Flexible Imputation of Missing Data). Este método presenta la mayor estabilidad (baja desviación entre imputaciones) y reproduce fielmente la estructura correlacional.
 
 
 Se utiliza la primera imputación de *PMM* para el análisis descriptivo, previa verificación de que las 5 imputaciones producen resultados muy similares (Tabla \@ref(tab:consistencia-imputaciones).
 
+<div style="overflow-x: auto; width: 100%;">
 ```{r consistencia-imputaciones, echo=FALSE}
 # Mostrar variabilidad de medias entre imputaciones PMM
 completed_pmm <- complete(imp_pmm, "long")
@@ -1009,6 +1016,7 @@ medias_por_imp <- completed_pmm %>%
 knitr::kable(medias_por_imp, digits = 2,
              caption = "Medias de Income y MntWines en cada una de las 5 imputaciones (PMM). La baja variabilidad confirma estabilidad.")
 ```
+</div>
 
 ```{r, echo=FALSE}
 # Tomar primera imputación

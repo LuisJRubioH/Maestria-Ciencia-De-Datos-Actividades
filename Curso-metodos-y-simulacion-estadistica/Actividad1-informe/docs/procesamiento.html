@@ -878,6 +878,7 @@ Figure 5.5: Comparación de la distribución de marital_Divorced antes y despué
 <h3><span class="header-section-number">5.4.1</span> Validación y evaluación de la depuración<a href="procesamiento.html#validaci%C3%B3n-y-evaluaci%C3%B3n-de-la-depuraci%C3%B3n" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>La principal preocupación al eliminar registros es introducir un sesgo, alterando la estructura subyacente de los datos. Vamos a resposnder a la sigyuiente pregunta</p>
 <p>¿La eliminación de duplicados e inconsistentes ha sido una decisión metodológicamente sólida y, por lo tanto, podemos proceder con confianza al tratamiento de los valores faltantes en el conjunto de datos de 2030 registros?</p>
+<div style="overflow-x: auto; width: 100%;">
 <table>
 <caption><span id="tab:muestra-original-limpios">Table 5.8: </span>Comparación del tamaño muestral antes y después de eliminar inconsistencias</caption>
 <thead>
@@ -897,6 +898,8 @@ Figure 5.5: Comparación de la distribución de marital_Divorced antes y despué
 </tr>
 </tbody>
 </table>
+</div>
+<div style="overflow-x: auto; width: 100%;">
 <table>
 <caption><span id="tab:esta-desc-original-limpios">Table 5.9: </span>Comparación de estadísticos descriptivos antes y después de la depuración</caption>
 <colgroup>
@@ -1014,6 +1017,8 @@ Figure 5.5: Comparación de la distribución de marital_Divorced antes y despué
 </tr>
 </tbody>
 </table>
+</div>
+<div style="overflow-x: auto; width: 100%;">
 <table>
 <caption><span id="tab:prueba-KS">Table 5.10: </span>Prueba de Kolmogorov–Smirnov para igualdad de distribuciones</caption>
 <thead>
@@ -1094,6 +1099,7 @@ Figure 5.5: Comparación de la distribución de marital_Divorced antes y despué
 </tr>
 </tbody>
 </table>
+</div>
 <p>En la Tabla <a href="procesamiento.html#tab:esta-desc-original-limpios">5.9</a> es crucial observar que las medias, desviaciones estándar y medianas de todas las variables permanecen prácticamente idénticas. Por ejemplo, la media de <strong>Income</strong> pasa de <strong>516,535</strong> a <strong>517,963</strong>, un cambio de apenas <strong>0.27%</strong>. La desviación estándar también se mantiene estable. En términos estadísticos, esto indica que la localización y la escala de las distribuciones no se han visto afectadas. La estructura central de los datos es la misma.</p>
 <p>La Tabla <a href="procesamiento.html#tab:prueba-KS">5.10</a> muestra la evidencia más sólida. La <strong>prueba KS</strong> es una herramienta no paramétrica poderosa para comparar distribuciones completas. Los <strong>estadísticos D</strong> (que miden la distancia máxima entre las distribuciones acumuladas) son extremadamente bajos por ejemplo, <strong>0.0065</strong> para <strong>Income</strong>, y los <strong>p-values</strong> son exactamente <strong>1</strong>, lo que cnfirma no existe evidencia estadística que sugiera que las distribuciones, antes y después de la limpieza, sean diferentes. Son, a efectos prácticos, idénticas.</p>
 <p>En la Tabla <a href="procesamiento.html#tab:prueba-Frobenius">5.11</a> la norma de Frobenius cuantifica la diferencia global entre dos matrices. Un valor de <strong>0.0558</strong> es extraordinariamente bajo. Esto significa que las relaciones lineales entre las variables se han mantenido casi inalteradas. La estructura de correlación, que es la “anatomía” de las relaciones entre variables, sigue siendo la misma.</p>
@@ -1275,6 +1281,7 @@ Con <strong>m=5</strong> imputaciones y 10 iteraciones.</p>
 <li><p>Preservación de correlaciones: comparación de la matriz de correlación de las variables clave (Income, MntWines, Age, MntTotal) con la observada.</p></li>
 </ol>
 <p>Los resultados se presentan en la Tabla <a href="procesamiento.html#tab:comp-metd-imputacion">5.16</a>.</p>
+<div style="overflow-x: auto; width: 100%;">
 <table>
 <caption>
 <span id="tab:comp-metd-imputacion">Table 5.16: </span>Comparación de métodos de imputación
@@ -1424,7 +1431,9 @@ Ridge
 </tr>
 </tbody>
 </table>
+</div>
 <p>Adicionalmente en la Tabla <a href="procesamiento.html#tab:tabla-cor">5.17</a>, se comparan las correlaciones de Pearson entre Income, MntWines y Age para cada método (promedio de las 5 imputaciones) frente a la correlación observada.</p>
+<div style="overflow-x: auto; width: 100%;">
 <table>
 <caption><span id="tab:tabla-cor">Table 5.17: </span>Comparación de correlaciones promedio (5 imputaciones) con las observadas.</caption>
 <thead>
@@ -1467,8 +1476,10 @@ Ridge
 </tr>
 </tbody>
 </table>
+</div>
 <p>Basado en la menor diferencia relativa de medias y desviaciones, así como la preservación de correlaciones, se selecciona <strong>PMM</strong> con ridge como método final (van Buuren, 2018, Flexible Imputation of Missing Data). Este método presenta la mayor estabilidad (baja desviación entre imputaciones) y reproduce fielmente la estructura correlacional.</p>
 <p>Se utiliza la primera imputación de <em>PMM</em> para el análisis descriptivo, previa verificación de que las 5 imputaciones producen resultados muy similares (Tabla <a href="procesamiento.html#tab:consistencia-imputaciones">5.18</a>.</p>
+<div style="overflow-x: auto; width: 100%;">
 <table>
 <caption><span id="tab:consistencia-imputaciones">Table 5.18: </span>Medias de Income y MntWines en cada una de las 5 imputaciones (PMM). La baja variabilidad confirma estabilidad.</caption>
 <thead>
@@ -1506,6 +1517,7 @@ Ridge
 </tr>
 </tbody>
 </table>
+</div>
 <p>Para la validación estructural post-imputación, se comparan densidades antes y después de imputar como se ne la Figura <a href="procesamiento.html#fig:densidad-compa">5.8</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:densidad-compa"></span>
 <img src="Informe-descriptivo_files/figure-html/densidad-compa-1.png" alt="Densidades originales vs imputadas para Income y MntWines." width="1152" />
