@@ -192,7 +192,7 @@ ggplot(datos_largo, aes(x = Variable, y = Valor, fill = Variable)) +
   )
 ```
 
-De acuerdpo con los boxplots de la figura \@ref(fig:boxplotcontinuas) podemos resaltar:
+De acuerpo con los boxplots de la figura \@ref(fig:boxplotcontinuas) podemos resaltar:
 
 - **Income:** Distribución asimétrica positiva (sesgo derecho) con mediana ≈ $52,000. Atípicos superiores representan clientes de muy alto ingreso (segmento premium).
 - **MntWines:** Mayor variabilidad en gasto. Categoría con mayor consumo promedio.
@@ -238,7 +238,7 @@ La Figura \@ref(fig:boxplot-discretas) muestra la distribución de variables num
 - **NumStorePurchases:** Canal preferido (mediana ≈ 5-6), distribución simétrica.
 - **NumWebPurchases:** Adopción moderada del canal digital.
 - **Kidhome/Teenhome:** Mayoría sin dependientes (mediana = 0).
-- **Customer_Days:** Alta antigüedad promedio (≈3000 días = 8 años), indicando lealtad.
+- **Customer_Days:** Alta antigüedad promedio 2511 días ≈ 6.9 años, indicando lealtad.
 
 
 
@@ -349,7 +349,7 @@ pct_eliminados <- round(n_eliminados / nrow(datos) * 100, 2)
 write.csv(datos_limpios, "data/procesados/datos_limpios.csv", row.names = FALSE)
 ```
 
-Tras la eliminación de registros duplicados, la base quedó compuesta por *2.041* resgistros.
+Tras la eliminación de registros duplicados, la base quedó compuesta por *2.041* registros.
 Se eliminaron **`r n_eliminados`** registros (**`r pct_eliminados`%** del total de los *2.041*), que presentaban inconsistencias estructurales: valores negativos en MntRegularProds, edades imposibles (*240 año*s) y codificaciones inválidas en marital_Divorced (valor *100*). Dado que estas observaciones violan el dominio teórico de las variables y representan una proporción marginal de la muestra, se optó por su eliminación completa. Resultando en **`r nrow(datos_limpios)`** observaciones válidas.
 
 La Tabla \@ref(tab:mntregula-Age-antes-despues) muestra el impacto del tratamiento en indicadores descriptivos.
@@ -802,7 +802,7 @@ knitr::kable(
 ```
 
 
-La Tabla \@ref(tab:test-mca) muestra el resultado al aplicar el test de Little (1988) para evaluar si los datos faltantes siguen un mecanismo MCAR (Missing Completely At Random).
+La Tabla \@ref(tab:test-mca) muestra el resultado al aplicar el test de Little (1988) para evaluar si los datos faltantes siguen un mecanismo **MCAR (Missing Completely At Random)**.
 
 **Hipótesis:**
 
@@ -812,7 +812,7 @@ $$H_1: \text{Los datos faltantes NO son MCAR (dependen de otras variables)}$$
 
 
 
-Dado que el p-valor = `r round(test_little$p.value, 4)` < 0.05, se rechaza $H_{0}$. En consecuencia, los datos no siguen un mecanismo completamente aleatorio (**MCAR**). No obstante, dado el bajo porcentaje de ausencia (**<5%**) y la ausencia de evidencia estructural de **MNAR**, se asume razonablemente un mecanismo **MAR** para efectos de imputación múltiple.
+Dado que el p-valor = `r round(test_little$p.value, 4)` < 0.05, se rechaza $H_{0}$. En consecuencia, los datos no siguen un mecanismo completamente aleatorio (**MCAR**). No obstante, dado el bajo porcentaje de ausencia (**<5%**) y la ausencia de evidencia estructural de **MNAR (Missing Not At Random)**, se asume razonablemente un mecanismo **MAR (Missing At Random)** para efectos de imputación múltiple.
 
 
 Bajo **MAR**, la eliminación por lista completa puede inducir sesgo y pérdida innecesaria de eficiencia. Por ello se emplea imputación múltiple según Rubin (1987), que:
@@ -829,9 +829,9 @@ Se excluyen variables que constituyen combinaciones lineales exactas (por ejempl
 
 ```r
 # Colinealidad perfecta (VIF = ∞)
-- MntRegularProds = MntFruits + MntMeat + MntFish + MntSweet
-- MntTotal = MntWines + ... + MntGold (suma de todas)
-- AcceptedCmpOverall = max(AcceptedCmp1, ..., AcceptedCmp5)
+- MntTotal = MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts
+- MntRegularProds = MntTotal − MntGoldProds
+- AcceptedCmpOverall = AcceptedCmp1 + AcceptedCmp2 + AcceptedCmp3 + AcceptedCmp4 + AcceptedCmp5
 ```
 
 ```{r eliminar-redundante, echo=FALSE}
@@ -840,7 +840,7 @@ datos_imputacion <- datos_limpios %>%
 ```
 
 
-Se comparan tres métodos: **PMM** con regularización ridge, **CART** y **Regresión ridge**
+Se comparan tres métodos: **PMM (Predictive Mean Matching)** con regularización ridge, **CART (Classification and Regression Trees)** y **Regresión ridge**
 Con **m=5** imputaciones y 10 iteraciones.
 
 ```{r, echo=FALSE}

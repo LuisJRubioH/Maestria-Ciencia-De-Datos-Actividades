@@ -14,7 +14,7 @@
   - `Anexos.Rmd`
   - `_bookdown.yml`
 
-- En la carpeta `referencias/` se encuentras los pdf's con las referencias bibliograficas utilizadas en el proyecto.
+- En la carpeta `referencias/` se encuentran los pdf's con las referencias bibliograficas utilizadas en el proyecto.
 
 - Para compilar el informe completo:
 

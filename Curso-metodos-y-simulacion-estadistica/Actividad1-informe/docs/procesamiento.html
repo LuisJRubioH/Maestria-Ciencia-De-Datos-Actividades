@@ -23,7 +23,7 @@
 <meta name="author" content="Luis Javier Rubio Hernández" />
 
 
-<meta name="date" content="2026-02-21" />
+<meta name="date" content="2026-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,8 +52,6 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -172,6 +170,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="resultados.html"><a href="resultados.html#variables-num%C3%A9ricas-por-grupo-response"><i class="fa fa-check"></i><b>6.3</b> Variables numéricas por grupo Response</a></li>
 <li class="chapter" data-level="6.4" data-path="resultados.html"><a href="resultados.html#variables-categ%C3%B3ricas-por-grupo-response"><i class="fa fa-check"></i><b>6.4</b> Variables categóricas por grupo Response</a></li>
 <li class="chapter" data-level="6.5" data-path="resultados.html"><a href="resultados.html#discusi%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.5</b> Discusión de resultados</a></li>
+<li class="chapter" data-level="6.6" data-path="resultados.html"><a href="resultados.html#discusi%C3%B3n-de-resultados-1"><i class="fa fa-check"></i><b>6.6</b> Discusión de resultados</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
 <li class="chapter" data-level="8" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>8</b> Referencias</a></li>
@@ -638,7 +637,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Figure 5.1: Distribución de variables numéricas continuas
 </p>
 </div>
-<p>De acuerdpo con los boxplots de la figura <a href="procesamiento.html#fig:boxplotcontinuas">5.1</a> podemos resaltar:</p>
+<p>De acuerpo con los boxplots de la figura <a href="procesamiento.html#fig:boxplotcontinuas">5.1</a> podemos resaltar:</p>
 <ul>
 <li><strong>Income:</strong> Distribución asimétrica positiva (sesgo derecho) con mediana ≈ $52,000. Atípicos superiores representan clientes de muy alto ingreso (segmento premium).</li>
 <li><strong>MntWines:</strong> Mayor variabilidad en gasto. Categoría con mayor consumo promedio.</li>
@@ -660,7 +659,7 @@ Figure 5.2: Boxplots de variables numéricas discretas
 <li><strong>NumStorePurchases:</strong> Canal preferido (mediana ≈ 5-6), distribución simétrica.</li>
 <li><strong>NumWebPurchases:</strong> Adopción moderada del canal digital.</li>
 <li><strong>Kidhome/Teenhome:</strong> Mayoría sin dependientes (mediana = 0).</li>
-<li><strong>Customer_Days:</strong> Alta antigüedad promedio (≈3000 días = 8 años), indicando lealtad.</li>
+<li><strong>Customer_Days:</strong> Alta antigüedad promedio 2511 días ≈ 6.9 años, indicando lealtad.</li>
 </ul>
 </div>
 <div id="estudio-de-variables-binarias" class="section level4 hasAnchor" number="5.2.1.3">
@@ -732,7 +731,7 @@ Figure 5.3: Distribución de variables binarias
 <div id="tratamiento-de-inconsistencias" class="section level2 hasAnchor" number="5.4">
 <h2><span class="header-section-number">5.4</span> Tratamiento de inconsistencias<a href="procesamiento.html#tratamiento-de-inconsistencias" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Según Osborne y Overbay (2004), inconsistencias que violan restricciones del dominio deben eliminarse por completo, ya que no admiten corrección sin introducir mayor incertidumbre.</p>
-<p>Tras la eliminación de registros duplicados, la base quedó compuesta por <em>2.041</em> resgistros.
+<p>Tras la eliminación de registros duplicados, la base quedó compuesta por <em>2.041</em> registros.
 Se eliminaron <strong>11</strong> registros (<strong>0.54%</strong> del total de los <em>2.041</em>), que presentaban inconsistencias estructurales: valores negativos en MntRegularProds, edades imposibles (<em>240 año</em>s) y codificaciones inválidas en marital_Divorced (valor <em>100</em>). Dado que estas observaciones violan el dominio teórico de las variables y representan una proporción marginal de la muestra, se optó por su eliminación completa. Resultando en <strong>2030</strong> observaciones válidas.</p>
 <p>La Tabla <a href="procesamiento.html#tab:mntregula-Age-antes-despues">5.5</a> muestra el impacto del tratamiento en indicadores descriptivos.</p>
 <table>
@@ -1251,11 +1250,11 @@ Figure 5.7: Mapa de valores faltantes. Columnas gris indican presencia de dato, 
 </tr>
 </tbody>
 </table>
-<p>La Tabla <a href="procesamiento.html#tab:test-mca">5.15</a> muestra el resultado al aplicar el test de Little (1988) para evaluar si los datos faltantes siguen un mecanismo MCAR (Missing Completely At Random).</p>
+<p>La Tabla <a href="procesamiento.html#tab:test-mca">5.15</a> muestra el resultado al aplicar el test de Little (1988) para evaluar si los datos faltantes siguen un mecanismo <strong>MCAR (Missing Completely At Random)</strong>.</p>
 <p><strong>Hipótesis:</strong></p>
 <p><span class="math display">\[H_0: \text{Los datos faltantes son MCAR (completamente al azar)}\]</span>
 <span class="math display">\[H_1: \text{Los datos faltantes NO son MCAR (dependen de otras variables)}\]</span></p>
-<p>Dado que el p-valor = 0.0032 &lt; 0.05, se rechaza <span class="math inline">\(H_{0}\)</span>. En consecuencia, los datos no siguen un mecanismo completamente aleatorio (<strong>MCAR</strong>). No obstante, dado el bajo porcentaje de ausencia (<strong>&lt;5%</strong>) y la ausencia de evidencia estructural de <strong>MNAR</strong>, se asume razonablemente un mecanismo <strong>MAR</strong> para efectos de imputación múltiple.</p>
+<p>Dado que el p-valor = 0.0032 &lt; 0.05, se rechaza <span class="math inline">\(H_{0}\)</span>. En consecuencia, los datos no siguen un mecanismo completamente aleatorio (<strong>MCAR</strong>). No obstante, dado el bajo porcentaje de ausencia (<strong>&lt;5%</strong>) y la ausencia de evidencia estructural de <strong>MNAR (Missing Not At Random)</strong>, se asume razonablemente un mecanismo <strong>MAR (Missing At Random)</strong> para efectos de imputación múltiple.</p>
 <p>Bajo <strong>MAR</strong>, la eliminación por lista completa puede inducir sesgo y pérdida innecesaria de eficiencia. Por ello se emplea imputación múltiple según Rubin (1987), que:</p>
 <ul>
 <li><p>Preserva la estructura multivariada.</p></li>
@@ -1264,10 +1263,10 @@ Figure 5.7: Mapa de valores faltantes. Columnas gris indican presencia de dato, 
 </ul>
 <p>Se excluyen variables que constituyen combinaciones lineales exactas (por ejemplo, <strong>MntTotal</strong>, <strong>MntRegularProds</strong> y <strong>AcceptedCmpOverall</strong>), ya que generan multicolinealidad perfecta y matrices singulares en el algoritmo de imputación (criterio clásico de diagnóstico estructural). Las variables derivadas se recalculan posteriormente.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="procesamiento.html#cb2-1" tabindex="-1"></a><span class="co"># Colinealidad perfecta (VIF = ∞)</span></span>
-<span id="cb2-2"><a href="procesamiento.html#cb2-2" tabindex="-1"></a><span class="sc">-</span> MntRegularProds <span class="ot">=</span> MntFruits <span class="sc">+</span> MntMeat <span class="sc">+</span> MntFish <span class="sc">+</span> MntSweet</span>
-<span id="cb2-3"><a href="procesamiento.html#cb2-3" tabindex="-1"></a><span class="sc">-</span> MntTotal <span class="ot">=</span> MntWines <span class="sc">+</span> ... <span class="sc">+</span> <span class="fu">MntGold</span> (suma de todas)</span>
-<span id="cb2-4"><a href="procesamiento.html#cb2-4" tabindex="-1"></a><span class="sc">-</span> AcceptedCmpOverall <span class="ot">=</span> <span class="fu">max</span>(AcceptedCmp1, ..., AcceptedCmp5)</span></code></pre></div>
-<p>Se comparan tres métodos: <strong>PMM</strong> con regularización ridge, <strong>CART</strong> y <strong>Regresión ridge</strong>
+<span id="cb2-2"><a href="procesamiento.html#cb2-2" tabindex="-1"></a><span class="sc">-</span> MntTotal <span class="ot">=</span> MntWines <span class="sc">+</span> MntFruits <span class="sc">+</span> MntMeatProducts <span class="sc">+</span> MntFishProducts <span class="sc">+</span> MntSweetProducts</span>
+<span id="cb2-3"><a href="procesamiento.html#cb2-3" tabindex="-1"></a><span class="sc">-</span> MntRegularProds <span class="ot">=</span> MntTotal − MntGoldProds</span>
+<span id="cb2-4"><a href="procesamiento.html#cb2-4" tabindex="-1"></a><span class="sc">-</span> AcceptedCmpOverall <span class="ot">=</span> AcceptedCmp1 <span class="sc">+</span> AcceptedCmp2 <span class="sc">+</span> AcceptedCmp3 <span class="sc">+</span> AcceptedCmp4 <span class="sc">+</span> AcceptedCmp5</span></code></pre></div>
+<p>Se comparan tres métodos: <strong>PMM (Predictive Mean Matching)</strong> con regularización ridge, <strong>CART (Classification and Regression Trees)</strong> y <strong>Regresión ridge</strong>
 Con <strong>m=5</strong> imputaciones y 10 iteraciones.</p>
 <p>Para elegir el método que mejor preserva la estructura de los datos observados, se evalúan:</p>
 <ol style="list-style-type: decimal">

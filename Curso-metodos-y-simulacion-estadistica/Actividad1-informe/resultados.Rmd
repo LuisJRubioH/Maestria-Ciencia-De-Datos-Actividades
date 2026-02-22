@@ -6,7 +6,7 @@ Esta sección responde directamente a los objetivos específicos 3 y 4: identifi
 
 ## Estadísticos descriptivos generales
 
-```{r resumen, echo=FALSE, fig.cap="Estadísticos descriptivos de variables numéricas post-procesamiento"}
+```{r resumen, echo=FALSE}
 vars_numericas_final <- c("Income", "MntTotal", "Age", 
                           "Recency", "NumWebVisitsMonth", 
                           "Customer_Days")
@@ -65,7 +65,7 @@ Las distribuciones mostradas en la Figura \@ref(fig:histo) confirman ausencia de
 
 ## Distribución de variables categóricas
 
-```{r frec-cat, echo=FALSE, fig.cap="Distribución de frecuencias de variables categóricas post-procesamiento"}
+```{r frec-cat, echo=FALSE}
 vars_categoricas_final <- c("Response", "education_Graduation",
                             "marital_Married", "Kidhome")
 
@@ -82,15 +82,7 @@ tabla_frecuencias <- do.call(rbind, lapply(vars_categoricas_final, function(v) {
 knitr::kable(tabla_frecuencias,
              digits = 3,
              caption = "Distribución de frecuencias de variables categóricas post-procesamiento",
-             label = "frec-cat",
-             col.names = c("Variable", "Categoría", "Frec. Relativa", "Frec. Absoluta"),
-             booktabs = TRUE) %>%
-  kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed"),
-    full_width = FALSE,
-    position = "center"
-  ) %>%
-  kableExtra::collapse_rows(columns = 1, valign = "middle")
+             col.names = c("Variable", "Categoría", "Frec. Relativa", "Frec. Absoluta"))
 ```
 
 En la Tabla \@ref(tab:frec-cat) se observa desbalance en la variable Response, con predominancia del grupo que no acepta la campaña (proporción aproximada 85:15). Este desbalance implica que los estimadores bivariados del grupo minoritario presentan mayor incertidumbre y que, en etapas posteriores de modelado supervisado, será necesario considerar técnicas de balanceo o métricas alternativas a la exactitud global.
@@ -121,9 +113,10 @@ do.call(grid.arrange, c(plots_num, ncol = 3))
 ```
 
 
-La Figura \@ref(fig:box-numerica-response) presenta los boxplots comparativos por grupo. La Tabla \@ref(tab:comp-numeric-response) resume los estadísticos descriptivos por grupo y los p-valores del test de Mann-Whitney.
+La Figura \@ref(fig:box-numerica-response) presenta los boxplots comparativos por grupo. La Tabla \@ref(tab:comp-numeric-response) resume los estadísticos descriptivos por grupo y los p-valores del test de Mann-Whitney para la comparación de variables numéricas por respuesta a la campaña. 
 
-```{r comp-numeric-response, echo=FALSE, fig.cap="Comparación de variables numéricas por respuesta a la campaña (Test Mann-Whitney)"}
+<div style="overflow-x: auto; width: 100%;">
+```{r comp-numeric-response, echo=FALSE}
 # Calcular estadísticos por grupo
 resultados_bivariados_num <- datos_final %>%
   group_by(Response) %>%
@@ -150,14 +143,14 @@ resultados_bivariados_num <- resultados_bivariados_num %>%
   left_join(p_valores_df, by = "Variable")
 
 knitr::kable(resultados_bivariados_num, digits = 2,
-             caption = "Comparación de variables numéricas por respuesta a la campaña (Test Mann-Whitney)")
+             caption = "Test Mann-Whitney")
 ```
+</div>
 
 Para cuantificar la magnitud práctica de las diferencias detectadas, se calcula el coeficiente de correlación de rango biserial ($r_{rb}$), que estima el tamaño del efecto asociado a la prueba de Mann-Whitney. Los umbrales interpretativos convencionales son: $|r| < 0.1$ (despreciable), $0.1 \leq |r| < 0.3$ (pequeño), $0.3 \leq |r| < 0.5$ (moderado), $|r| \geq 0.5$ (grande). Los resultados se presentan en la Tabla \@ref(tab:effect-sizes-num).
 
-```{r effect-sizes-num, echo=FALSE}
-library(effectsize)
-
+<div style="overflow-x: auto; width: 100%;">
+```{r effect-sizes-num, echo=FALSE, }
 efecto_df <- data.frame(
   Variable = vars_numericas_final,
   r_rank_biserial = sapply(vars_numericas_final, function(v) {
@@ -189,6 +182,7 @@ resultados_completos <- resultados_bivariados_num %>%
 knitr::kable(resultados_completos, digits = 3,
              caption = "Comparación completa: estadísticos descriptivos, p-valor y tamaño del efecto por grupo de respuesta")
 ```
+</div>
 
 **Interpretación variable por variable:**
 
@@ -196,13 +190,13 @@ knitr::kable(resultados_completos, digits = 3,
 
 **MntTotal:** La diferencia en gasto acumulado constituye la señal más marcada del análisis. Los clientes que aceptaron presentan un gasto medio que prácticamente duplica al del grupo que rechazó. Esta variable exhibe tanto significancia estadística (p < 0.001) como el mayor tamaño del efecto entre todas las variables numéricas analizadas, lo que la posiciona como el principal discriminador conductual.
 
-**NumWebVisitsMonth:** Se detecta una diferencia estadísticamente significativa (p < 0.001), aunque el tamaño del efecto es pequeño. Esto sugiere que, si bien existe una asociación entre la frecuencia de interacción digital y la respuesta, su capacidad discriminante aislada es limitada. Es necesario considerar que esta variable podría actuar como mediadora o confusora: una mayor frecuencia de visitas puede reflejar tanto mayor interés como menor conversión por visita.
+**NumWebVisitsMonth:**  (p = 0.741, r = 0.012, efecto despreciable): No se detectaron diferencias significativas entre grupos. La frecuencia de visitas al sitio web no discrimina entre aceptantes y no aceptantes en esta muestra, lo que sugiere que la interacción digital pasiva (visitar la web) no se traduce en mayor propensión a aceptar ofertas de marketing directo..
 
 **Customer_Days:** La antigüedad del cliente muestra diferencia estadísticamente significativa, aunque su magnitud es modesta. Los clientes con mayor permanencia tienden a aceptar más la oferta, lo que podría reflejar mayor lealtad o familiaridad con la marca.
 
 **Age:** No se detectaron diferencias significativas entre grupos (p > 0.05). La edad no constituye un factor discriminante en esta muestra, lo cual indica que la predisposición a aceptar no se asocia con la variable generacional.
 
-**Recency:** Los días desde la última compra no muestran diferencia significativa entre grupos (p > 0.05). La recencia de compra, en esta muestra, no discrimina entre aceptantes y no aceptantes.
+**Recency:** (p = 0.000, r = −0.334, efecto moderado): Los clientes que aceptaron la campaña realizaron su última compra más recientemente (mediana 29 días) frente a los que rechazaron (mediana 52 días). El signo negativo del efecto indica que menor recencia se asocia con mayor aceptación. Esto es coherente: clientes con actividad de compra reciente están más vinculados con la marca y son más receptivos a nuevas ofertas. Es la tercera variable más discriminante del análisis, después de MntTotal y Recency misma empatando con Customer_Days en magnitud.
 
 
 
@@ -301,14 +295,18 @@ knitr::kable(prop_kid,
 
 ## Discusión de resultados
 
+## Discusión de resultados
+
 El análisis bivariado permite establecer una jerarquía de relevancia entre las variables analizadas en relación con la respuesta a la campaña.
 
 Las variables de comportamiento transaccional, particularmente MntTotal e Income, constituyen los principales diferenciadores. Como se evidencia en la Tabla \@ref(tab:effect-sizes-num), el gasto acumulado exhibe el mayor tamaño del efecto entre todas las variables, seguido por el ingreso. Esto indica que la campaña resulta más efectiva en el segmento de clientes de alto valor, cuyo comportamiento de compra previo predice de manera consistente su propensión a aceptar nuevas ofertas. La correlación observada entre Income y MntTotal (documentada en la Figura \@ref(fig:matriz-cor) de la sección de procesamiento) implica que ambas variables capturan parcialmente la misma dimensión latente de capacidad económica, aspecto que deberá considerarse en la selección de predictores para el modelado.
 
-La frecuencia de visitas web muestra una asociación estadísticamente significativa pero de magnitud limitada. Este resultado admite dos lecturas complementarias: por un lado, una mayor interacción digital puede reflejar interés activo en los productos; por otro, podría indicar un comportamiento exploratorio sin conversión efectiva. La resolución de esta ambigüedad requiere información adicional sobre tasas de conversión por visita, no disponible en el conjunto de datos actual.
+La recencia de compra (Recency) presenta asociación estadísticamente significativa (p < 0.001) con un tamaño del efecto moderado (r = −0.334), como se reporta en la Tabla \@ref(tab:effect-sizes-num). Los clientes que aceptaron la campaña realizaron su última compra más recientemente (mediana de 29 días frente a 52 días, Tabla \@ref(tab:comp-numeric-response)), patrón que se visualiza en la Figura \@ref(fig:box-numerica-response). Esto sugiere que la actividad transaccional reciente refleja un mayor vínculo con la marca y una mayor receptividad a nuevas ofertas. De forma complementaria, la antigüedad del cliente (Customer_Days) muestra un efecto moderado similar (r = 0.307, p < 0.001, Tabla \@ref(tab:effect-sizes-num)), indicando que clientes con mayor permanencia tienden a aceptar más la oferta. Ambas variables capturan dimensiones temporales distintas pero complementarias: la primera mide actividad reciente y la segunda mide lealtad acumulada.
 
-Las variables demográficas clásicas (edad, nivel educativo, estado civil) no presentan capacidad discriminante significativa en esta muestra (Tabla \@ref(tab:comp-numeric-response) y Tabla \@ref(tab:chi-cuadrado)). Esto sugiere que el perfil del cliente respondiente se define más por su patrón de consumo que por sus características sociodemográficas, hallazgo consistente con la literatura en marketing directo donde el comportamiento previo supera a la demografía como predictor de respuesta.
+La frecuencia de visitas web mensuales (NumWebVisitsMonth) no presentó diferencias significativas entre grupos (p = 0.741, Tabla \@ref(tab:comp-numeric-response)), con un tamaño del efecto despreciable (r = 0.012, Tabla \@ref(tab:effect-sizes-num)). La interacción digital pasiva, medida como número de visitas al sitio web, no constituye un factor discriminante en esta muestra. Esto indica que visitar el sitio web no se traduce necesariamente en mayor propensión a aceptar ofertas de marketing directo.
 
-La estructura del hogar (Kidhome) muestra una asociación débil pero significativa (Tabla \@ref(tab:prop-kidhome)), posiblemente mediada por la disponibilidad de ingreso discrecional. Esta variable podría aportar capacidad explicativa complementaria en un modelo multivariante que controle simultáneamente por ingreso.
+Las variables demográficas clásicas (edad, nivel educativo, estado civil) no presentan capacidad discriminante significativa en esta muestra (Tabla \@ref(tab:comp-numeric-response) y Tabla \@ref(tab:chi-cuadrado)). Esto sugiere que el perfil del cliente respondiente se define más por su patrón de consumo y su actividad transaccional reciente que por sus características sociodemográficas, hallazgo consistente con la literatura en marketing directo donde el comportamiento previo supera a la demografía como predictor de respuesta.
+
+La estructura del hogar (Kidhome) muestra una asociación débil pero significativa (Tabla \@ref(tab:chi-cuadrado) y Tabla \@ref(tab:prop-kidhome)), como se visualiza en la Figura \@ref(fig:barplot-categorico), posiblemente mediada por la disponibilidad de ingreso discrecional. Esta variable podría aportar capacidad explicativa complementaria en un modelo multivariante que controle simultáneamente por ingreso.
 
 Finalmente, la estabilidad entre imputaciones y la coherencia estructural posterior al tratamiento, documentadas en la sección de procesamiento, validan la idoneidad del conjunto de datos para la construcción de modelos predictivos supervisados.

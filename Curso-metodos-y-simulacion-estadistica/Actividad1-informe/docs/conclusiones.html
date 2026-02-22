@@ -23,7 +23,7 @@
 <meta name="author" content="Luis Javier Rubio Hernández" />
 
 
-<meta name="date" content="2026-02-21" />
+<meta name="date" content="2026-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,8 +52,6 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -172,6 +170,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="resultados.html"><a href="resultados.html#variables-num%C3%A9ricas-por-grupo-response"><i class="fa fa-check"></i><b>6.3</b> Variables numéricas por grupo Response</a></li>
 <li class="chapter" data-level="6.4" data-path="resultados.html"><a href="resultados.html#variables-categ%C3%B3ricas-por-grupo-response"><i class="fa fa-check"></i><b>6.4</b> Variables categóricas por grupo Response</a></li>
 <li class="chapter" data-level="6.5" data-path="resultados.html"><a href="resultados.html#discusi%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.5</b> Discusión de resultados</a></li>
+<li class="chapter" data-level="6.6" data-path="resultados.html"><a href="resultados.html#discusi%C3%B3n-de-resultados-1"><i class="fa fa-check"></i><b>6.6</b> Discusión de resultados</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
 <li class="chapter" data-level="8" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>8</b> Referencias</a></li>
@@ -196,15 +195,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="conclusiones" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">7</span> Conclusiones<a href="conclusiones.html#conclusiones" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>El presente estudio abordó la caracterización estadística de los perfiles de clientes que aceptaron y rechazaron la oferta de un nuevo dispositivo en una campaña piloto de marketing directo. A continuación se evalúa el cumplimiento de cada objetivo y se sintetizan los hallazgos principales.</p>
-<p>Se identificaron y eliminaron registros duplicados, se detectaron inconsistencias estructurales en tres variables (valores negativos en MntRegularProds, edad de 240 años en Age y codificación inválida en marital_Divorced) y se trataron mediante eliminación completa, afectando una proporción marginal de la muestra. Los valores atípicos en variables de gasto fueron conservados por representar comportamiento real del segmento premium. El impacto del tratamiento fue cuantificado mediante comparación de indicadores descriptivos antes y después, confirmando estabilidad en las medidas de tendencia central y dispersión.</p>
-<p>Mediante la prueba de Little y análisis de patrones de ausencia se determinó el mecanismo de datos faltantes, lo que fundamentó la selección de imputación múltiple por PMM como método apropiado. La validación cruzada entre tres métodos (PMM, CART, Ridge) y la comparación de correlaciones observadas versus imputadas respaldaron la elección final.</p>
-<p>El análisis bivariado con pruebas de Mann-Whitney y Chi-cuadrado, complementado con medidas de tamaño del efecto, permitió establecer que las variables de comportamiento transaccional (MntTotal e Income) presentan la mayor capacidad discriminante, con tamaños del efecto de magnitud práctica relevante. Las variables demográficas (Age, education_Graduation, marital_Married) no mostraron diferencias significativas.</p>
-<p>Se documentó una jerarquía de relevancia entre variables: el gasto acumulado y el ingreso como principales diferenciadores, la interacción digital como factor secundario con asociación significativa pero de magnitud limitada, y la estructura del hogar como factor terciario con asociación débil.</p>
-<p>En relación con lo anterior, los hallazgos principales fueron:</p>
-<p>El gasto total acumulado (MntTotal) constituye la variable con mayor capacidad discriminante entre los clientes que aceptan y los que rechazan la campaña. Los aceptantes presentan un gasto medio que prácticamente duplica al de los no aceptantes, con significancia estadística (p &lt; 0.001) y el mayor tamaño del efecto observado. El ingreso anual (Income) muestra un patrón consistente, con una diferencia relativa entre medias del orden del 19%, lo que posiciona al segmento de alto valor económico como el de mayor propensión a responder positivamente.</p>
-<p>La frecuencia de visitas web mensuales presenta asociación estadísticamente significativa pero de magnitud pequeña. Esta variable podría actuar como indicador de involucramiento con la marca, aunque su interpretación causal es ambigua sin información complementaria sobre tasas de conversión.</p>
-<p>Las variables demográficas clásicas (edad, nivel educativo, estado civil) no presentan capacidad discriminante en esta muestra. Este resultado indica que el perfil del cliente respondiente se define primordialmente por su patrón de consumo y no por características sociodemográficas, hallazgo consistente con la evidencia empírica en marketing directo.</p>
-<p>La presencia de hijos en el hogar (Kidhome) muestra una asociación débil pero significativa con menor aceptación, posiblemente mediada por restricciones en el ingreso discrecional disponible.</p>
+<p>Se identificaron y eliminaron registros duplicados, se detectaron inconsistencias estructurales en tres variables (valores negativos en MntRegularProds, edad de 240 años en Age y codificación inválida en marital_Divorced) y se trataron mediante eliminación completa, afectando una proporción marginal de la muestra. Los valores atípicos en variables de gasto fueron conservados por representar comportamiento real del segmento premium. El impacto del tratamiento fue cuantificado mediante comparación de indicadores descriptivos antes y después, confirmando estabilidad en las medidas de tendencia central y dispersión.Mediante la prueba de Little y análisis de patrones de ausencia se determinó el mecanismo de datos faltantes, lo que fundamentó la selección de imputación múltiple por PMM como método apropiado. La validación cruzada entre tres métodos (PMM, CART, Ridge) y la comparación de correlaciones observadas versus imputadas respaldaron la elección final.</p>
+<p>El análisis bivariado con pruebas de Mann-Whitney y Chi-cuadrado, complementado con medidas de tamaño del efecto, permitió establecer que las variables de comportamiento transaccional (MntTotal e Income) presentan la mayor capacidad discriminante, con tamaños del efecto de magnitud práctica relevante. La recencia de compra (Recency) y la antigüedad del cliente (Customer_Days) constituyen factores secundarios con efecto moderado. Las variables demográficas (Age, education_Graduation) y la frecuencia de visitas web (NumWebVisitsMonth) no mostraron diferencias significativas entre grupos.
+Se documentó una jerarquía de relevancia entre variables: el gasto acumulado y el ingreso como principales diferenciadores; la recencia de compra y la antigüedad del cliente como factores secundarios con asociación significativa y efecto moderado; y la estructura del hogar como factor terciario con asociación débil.
+En relación con lo anterior, los hallazgos principales fueron:</p>
+<p>El gasto total acumulado (MntTotal) constituye la variable con mayor capacidad discriminante entre los clientes que aceptan y los que rechazan la campaña. Los aceptantes presentan un gasto medio que prácticamente duplica al de los no aceptantes, con significancia estadística (p &lt; 0.001) y el mayor tamaño del efecto observado. El ingreso anual (Income) muestra un patrón consistente, con una diferencia relativa entre medias del orden del 19%, lo que posiciona al segmento de alto valor económico como el de mayor propensión a responder positivamente.
+La recencia de compra (Recency) presenta asociación estadísticamente significativa (p &lt; 0.001) y un tamaño del efecto moderado (r = −0.334). Los clientes que aceptaron la campaña realizaron su última compra más recientemente (mediana de 29 días frente a 52 días en el grupo que rechazó), lo que indica que la actividad de compra reciente refleja un mayor vínculo con la marca y una mayor receptividad a nuevas ofertas. De forma complementaria, la antigüedad del cliente (Customer_Days) muestra un efecto moderado similar, sugiriendo que clientes con mayor permanencia tienden a aceptar más la oferta.</p>
+<p>La frecuencia de visitas web mensuales (NumWebVisitsMonth) no presentó diferencias significativas entre grupos (p = 0.741), con un tamaño del efecto despreciable. La interacción digital pasiva, medida como número de visitas al sitio web, no constituye un factor discriminante en esta muestra.</p>
+<p>Las variables demográficas clásicas (edad, nivel educativo, estado civil) no presentan capacidad discriminante en esta muestra. Este resultado indica que el perfil del cliente respondiente se define primordialmente por su patrón de consumo y su actividad transaccional reciente, y no por características sociodemográficas, hallazgo consistente con la evidencia empírica en marketing directo.
+La presencia de hijos en el hogar (Kidhome) muestra una asociación débil pero significativa con menor aceptación, posiblemente mediada por restricciones en el ingreso discrecional disponible.</p>
 
 </div>
             </section>

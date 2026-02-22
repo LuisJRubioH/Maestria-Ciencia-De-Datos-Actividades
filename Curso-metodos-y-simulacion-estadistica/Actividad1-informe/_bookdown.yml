@@ -24,6 +24,7 @@ knitr:
 # Configuración global de salida
 output:
   bookdown::html_document2:
+    css: style.css
     toc: true
     toc_depth: 3
     toc_float: true

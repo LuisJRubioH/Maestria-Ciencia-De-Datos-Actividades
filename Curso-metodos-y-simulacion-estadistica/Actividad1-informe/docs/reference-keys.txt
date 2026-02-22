@@ -61,6 +61,7 @@ distribución-de-variables-categóricas
 variables-numéricas-por-grupo-response
 variables-categóricas-por-grupo-response
 discusión-de-resultados
+discusión-de-resultados-1
 conclusiones
 referencias
 anexos

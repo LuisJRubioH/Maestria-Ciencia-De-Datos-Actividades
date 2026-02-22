@@ -12,7 +12,9 @@ documentclass: book
 
 # Configuración global de los chunks
 knitr::opts_chunk$set(eval = TRUE, message = FALSE, warning = FALSE)
+options(kableExtra.auto_format = FALSE)
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
 
 #notación cientuifica
 options(scipen = 999)
@@ -51,6 +53,7 @@ library(readr)
 library(corrplot)
 library(e1071)
 library(effectsize)
+
 suppressPackageStartupMessages(library(fmsb))
 suppressPackageStartupMessages(library(naniar))
 suppressPackageStartupMessages(library(gridExtra))
@@ -79,3 +82,4 @@ ggthemr("dust", layout = "clean")
 7. Referencias
 
 8. Anexos
+

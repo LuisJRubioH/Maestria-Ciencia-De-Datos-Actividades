@@ -24,4 +24,4 @@
 
 - van Buuren, S., & Groothuis-Oudshoorn, K. (2011). mice: Multivariate imputation by chained equations in R. *Journal of Statistical Software*, 45(3), 1-67.
 
-- von Hippel, P. T. (2020). How to impute interactions, squares, and other transformed variables. Sociological Methodology, 39(1), 265-291.
+- von Hippel, P. T. (2009). How to impute interactions, squares, and other transformed variables. Sociological Methodology, 39(1), 265-291.
