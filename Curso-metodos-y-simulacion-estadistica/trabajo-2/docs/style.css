@@ -1,0 +1,53 @@
+/* ancho de la página */
+.book .book-body .page-wrapper .page-inner {
+  max-width: 80% !important;
+}
+
+/* tamaño de fuente del texto normal */
+.book .book-body .page-wrapper .page-inner section.normal {
+  font-size: 18px;
+}
+
+/* títulos de secciones */
+.book .book-body .page-wrapper .page-inner h1 {
+  font-size: 28px;
+}
+
+.book .book-body .page-wrapper .page-inner h2 {
+  font-size: 24px;
+}
+
+.book .book-body .page-wrapper .page-inner h3 {
+  font-size: 20px;
+}
+
+.book .book-body .page-wrapper .page-inner h4 {
+  font-size: 18px;
+}
+
+/* código */
+pre {
+  font-size: 16px;
+}
+
+/* títulos de gráficas */
+.plot-title {
+  font-size: 16px !important;
+}
+
+.plot-subtitle {
+  font-size: 14px !important;
+}
+
+.plot-caption {
+  font-size: 13px !important;
+}
+
+/* ejes de gráficas */
+.axis-title {
+  font-size: 14px !important;
+}
+
+.axis-text {
+  font-size: 13px !important;
+}

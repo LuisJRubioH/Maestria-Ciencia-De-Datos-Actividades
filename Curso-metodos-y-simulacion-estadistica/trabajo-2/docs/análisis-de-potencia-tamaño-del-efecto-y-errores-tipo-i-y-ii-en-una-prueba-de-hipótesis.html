@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis | Actividad-2</title>
+  <meta name="description" content="5 Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis | Actividad-2" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis | Actividad-2" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis | Actividad-2" />
+  
+  
+  
+
+<meta name="author" content="Luis Javier Rubio Hernández - Oriana Giraldo Arcia" />
+
+
+<meta name="date" content="2026-03-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="estimación-de-intervalos-de-confianza.html"/>
+<link rel="next" href="prueba-de-hipótesis-e-intervalo-de-confianza.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html"><i class="fa fa-check"></i><b>1</b> <strong>Estimación de la probabilidad y la media</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#problema-1"><i class="fa fa-check"></i><b>1.1</b> <strong>Problema 1</strong></a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#c%C3%A1lculo-de-probabilidad-te%C3%B3rica"><i class="fa fa-check"></i><b>1.1.1</b> <strong>Cálculo de probabilidad teórica</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#simulaci%C3%B3n-con-una-muestra"><i class="fa fa-check"></i><b>1.1.2</b> <strong>Simulación con una muestra</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#an%C3%A1lisis-de-la-variabilidad-entre-muestras"><i class="fa fa-check"></i><b>1.1.3</b> <strong>Análisis de la variabilidad entre muestras</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral"><i class="fa fa-check"></i><b>1.1.4</b> <strong>Impacto del tamaño muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.5" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#convergencia-de-la-media-muestral"><i class="fa fa-check"></i><b>1.1.5</b> <strong>Convergencia de la media muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.6" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral-en-la-media"><i class="fa fa-check"></i><b>1.1.6</b> <strong>Impacto del tamaño muestral en la media</strong>:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html"><i class="fa fa-check"></i><b>2</b> <strong>Propiedades de los estimadores</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#problema-2"><i class="fa fa-check"></i><b>2.1</b> <strong>Problema 2</strong></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#simulaci%C3%B3n-de-estimadores"><i class="fa fa-check"></i><b>2.1.1</b> <strong>Simulación de estimadores</strong></a></li>
+<li class="chapter" data-level="2.1.2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#insesgadez"><i class="fa fa-check"></i><b>2.1.2</b> <strong>Insesgadez</strong></a></li>
+<li class="chapter" data-level="2.1.3" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#consistencia"><i class="fa fa-check"></i><b>2.1.3</b> <strong>Consistencia</strong></a></li>
+<li class="chapter" data-level="2.1.4" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#eficiencia"><i class="fa fa-check"></i><b>2.1.4</b> <strong>Eficiencia</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html"><i class="fa fa-check"></i><b>3</b> <strong>Teorema del límite central</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#problema-3"><i class="fa fa-check"></i><b>3.1</b> <strong>Problema 3</strong></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#c%C3%A1lculo-de-la-media-y-varianza-de-la-poblaci%C3%B3n"><i class="fa fa-check"></i><b>3.1.1</b> <strong>Cálculo de la media y varianza de la población</strong></a></li>
+<li class="chapter" data-level="3.1.2" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#gr%C3%A1fico-de-la-curva-de-densidad"><i class="fa fa-check"></i><b>3.1.2</b> <strong>Gráfico de la curva de densidad</strong></a></li>
+<li class="chapter" data-level="3.1.3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#comparaci%C3%B3n-de-par%C3%A1metros-estimadores-y-estimaciones"><i class="fa fa-check"></i><b>3.1.3</b> <strong>Comparación de parámetros, estimadores y estimaciones</strong></a></li>
+<li class="chapter" data-level="3.1.4" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-para-n-200"><i class="fa fa-check"></i><b>3.1.4</b> <strong>Aplicación del Teorema del Límite Central para <span class="math inline">\(n = 200\)</span></strong></a></li>
+<li class="chapter" data-level="3.1.5" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-variando-n"><i class="fa fa-check"></i><b>3.1.5</b> <strong>Aplicación del Teorema del Límite Central variando <span class="math inline">\(n\)</span></strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html"><i class="fa fa-check"></i><b>4</b> <strong>Estimación de intervalos de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#normalidad"><i class="fa fa-check"></i><b>4.0.1</b> <strong>Normalidad</strong></a></li>
+<li class="chapter" data-level="4.0.2" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico"><i class="fa fa-check"></i><b>4.0.2</b> <strong>Método paramétrico</strong></a></li>
+<li class="chapter" data-level="4.0.3" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap"><i class="fa fa-check"></i><b>4.0.3</b> <strong>Procedimiento bootstrap</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><i class="fa fa-check"></i><b>5</b> <strong>Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#problema-5"><i class="fa fa-check"></i><b>5.1</b> <strong>Problema 5</strong></a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-computacional"><i class="fa fa-check"></i><b>5.1.1</b> <strong>Análisis computacional</strong></a></li>
+<li class="chapter" data-level="5.1.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tabla-de-tama%C3%B1os-m%C3%ADnimos-de-muestra"><i class="fa fa-check"></i><b>5.1.2</b> <strong>Tabla de tamaños mínimos de muestra</strong></a></li>
+<li class="chapter" data-level="5.1.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#curva-de-rendimientos-marginales-de-la-potencia"><i class="fa fa-check"></i><b>5.1.3</b> <strong>Curva de rendimientos marginales de la potencia</strong></a></li>
+<li class="chapter" data-level="5.1.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#respuesta-a-las-preguntas-orientadoras"><i class="fa fa-check"></i><b>5.1.4</b> <strong>Respuesta a las preguntas orientadoras</strong></a></li>
+<li class="chapter" data-level="5.1.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#propuesta-final-del-dise%C3%B1o-del-estudio"><i class="fa fa-check"></i><b>5.1.5</b> <strong>Propuesta final del diseño del estudio</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html"><i class="fa fa-check"></i><b>6</b> <strong>Prueba de hipótesis e intervalo de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#problema-6"><i class="fa fa-check"></i><b>6.1</b> <strong>Problema 6</strong></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#contexto-informe-descriptivo-de-la-actividad-1"><i class="fa fa-check"></i><b>6.1.1</b> Contexto: Informe descriptivo de la Actividad 1</a></li>
+<li class="chapter" data-level="6.1.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#carga-y-preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.1.2</b> Carga y preparación de los datos</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.2</b> Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal"><i class="fa fa-check"></i><b>6.2.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.2.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos"><i class="fa fa-check"></i><b>6.2.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.2.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-t-de-welch"><i class="fa fa-check"></i><b>6.2.3</b> Prueba de hipótesis: <span class="math inline">\(t\)</span> de Welch</a></li>
+<li class="chapter" data-level="6.2.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.2.4</b> Intervalo de confianza al 95% para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.2.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.5</b> Visualización</a></li>
+<li class="chapter" data-level="6.2.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.6</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.3</b> Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-1"><i class="fa fa-check"></i><b>6.3.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.3.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-1"><i class="fa fa-check"></i><b>6.3.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.3.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-no-param%C3%A9trica-mann-whitney-wilcoxon"><i class="fa fa-check"></i><b>6.3.3</b> Prueba no paramétrica: Mann-Whitney-Wilcoxon</a></li>
+<li class="chapter" data-level="6.3.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tama%C3%B1o-del-efecto-correlaci%C3%B3n-biserial-de-rango"><i class="fa fa-check"></i><b>6.3.4</b> Tamaño del efecto: Correlación biserial de rango</a></li>
+<li class="chapter" data-level="6.3.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-t-de-welch-confirmaci%C3%B3n-asint%C3%B3tica"><i class="fa fa-check"></i><b>6.3.5</b> Prueba <span class="math inline">\(t\)</span> de Welch (confirmación asintótica)</a></li>
+<li class="chapter" data-level="6.3.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-bootstrap-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.3.6</b> Intervalo de confianza Bootstrap para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.3.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#comparaci%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.3.7</b> Comparación de resultados</a></li>
+<li class="chapter" data-level="6.3.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.3.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-3-la-proporci%C3%B3n-de-aceptaci%C3%B3n-de-la-campa%C3%B1a-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar"><i class="fa fa-check"></i><b>6.4</b> Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-2"><i class="fa fa-check"></i><b>6.4.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.4.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.4.2</b> Preparación de los datos</a></li>
+<li class="chapter" data-level="6.4.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-2"><i class="fa fa-check"></i><b>6.4.3</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.4.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-dos-proporciones-z-test"><i class="fa fa-check"></i><b>6.4.4</b> Prueba de dos proporciones (<span class="math inline">\(z\)</span>-test)</a></li>
+<li class="chapter" data-level="6.4.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-p_a---p_b"><i class="fa fa-check"></i><b>6.4.5</b> Intervalo de confianza al 95% para <span class="math inline">\(p_A - p_B\)</span></a></li>
+<li class="chapter" data-level="6.4.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#confirmaci%C3%B3n-prueba-chi2-de-independencia"><i class="fa fa-check"></i><b>6.4.6</b> Confirmación: prueba <span class="math inline">\(\chi^2\)</span> de independencia</a></li>
+<li class="chapter" data-level="6.4.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.4.7</b> Visualización</a></li>
+<li class="chapter" data-level="6.4.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-2"><i class="fa fa-check"></i><b>6.4.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#resumen-comparativo-de-las-tres-preguntas"><i class="fa fa-check"></i><b>6.5</b> Resumen comparativo de las tres preguntas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="anexos.html"><a href="anexos.html"><i class="fa fa-check"></i><b>7</b> Anexos</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad-2</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> <strong>Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-tama%C3%B1o-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hip%C3%B3tesis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="problema-5" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> <strong>Problema 5</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#problema-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Caso:</strong> Se asume que la presión arterial en la población general sigue una distribución
+normal con media 120 mmHg y desviación estándar 15 mmHg. Un laboratorio desea
+evaluar si la media de presión arterial en un grupo de pacientes con cierta enfermedad
+difiere significativamente de 120 mmHg, mediante una prueba t para una muestra,
+asumiendo varianza poblacional desconocida.</p>
+<p><strong>Objetivo del caso:</strong> Determinar de manera informada un tamaño de muestra y un nivel de
+significancia adecuados para realizar el estudio.</p>
+<p>Para lograr este objetivo, analiza la relación entre la potencia estadística, el tamaño del
+efecto y el tamaño muestral.</p>
+<ul>
+<li>Fija inicialmente el nivel de significancia en <span class="math inline">\(\alpha = 0.1\)</span>.</li>
+<li>Evalúa la potencia estadística para diferentes tamaños muestrales <span class="math inline">\(n = 10, 20, 30,
+40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900\)</span> y <span class="math inline">\(1{,}000\)</span>.</li>
+<li>Considera tres tamaños del efecto: <span class="math inline">\(d = 0.2\)</span> (pequeño), <span class="math inline">\(d = 0.5\)</span> (mediano), <span class="math inline">\(d = 0.8\)</span>
+(grande).</li>
+<li>Visualiza los resultados:
+<ul>
+<li>Eje <span class="math inline">\(X\)</span>: tamaño muestral.</li>
+<li>Eje <span class="math inline">\(Y\)</span>: potencia estadística.</li>
+<li>Traza una curva para cada tamaño del efecto.</li>
+</ul></li>
+<li>Utiliza las funciones <code>power.t.test</code> y <code>ggplot2</code> en R para construir los gráficos.</li>
+<li>Posteriormente, repite el análisis para <span class="math inline">\(\alpha = 0.05\)</span> y <span class="math inline">\(\alpha = 0.01\)</span> y compara los tres
+gráficos.</li>
+</ul>
+<p>Preguntas orientadoras para el análisis:</p>
+<ul>
+<li>¿Qué tamaño de muestra se requiere para alcanzar una potencia del 80% al detectar
+un efecto grande (<span class="math inline">\(d = 0.8\)</span>)?</li>
+<li>¿Cuántas observaciones se necesitan para detectar un efecto mediano (<span class="math inline">\(d = 0.5\)</span>) con
+una potencia adecuada?</li>
+<li>Para un efecto grande, ¿qué sucede al aumentar el tamaño de muestra más allá de
+300 observaciones? ¿Es eficiente?</li>
+<li>Explica cómo influye el tamaño del efecto sobre la potencia estadística.</li>
+<li>¿Cómo afecta el tamaño muestral a la potencia estadística?</li>
+<li>¿En qué punto aumentar el tamaño muestral deja de proporcionar beneficios
+significativos en la potencia?</li>
+</ul>
+<p>Con base en los gráficos obtenidos y tu análisis, propón un tamaño de muestra y un nivel
+de significancia apropiados para diseñar el estudio.</p>
+<p>Sea <span class="math inline">\(X_1, X_2, \ldots, X_n \overset{\text{i.i.d.}}{\sim} N(\mu, \sigma^2)\)</span> con
+<span class="math inline">\(\sigma^2\)</span> desconocida. El sistema de hipótesis es:</p>
+<p><strong>Nota sobre la elección de la prueba.</strong> El enunciado indica que
+<span class="math inline">\(\sigma = 15\)</span> mmHg en la población general, pero especifica que la
+prueba debe realizarse “asumiendo varianza poblacional desconocida”
+(prueba <span class="math inline">\(t\)</span>). Esta elección es metodológicamente apropiada: el valor
+<span class="math inline">\(\sigma = 15\)</span> proviene de la población general sana, y no hay garantía
+de que la variabilidad de la presión arterial en el grupo de pacientes
+con la enfermedad sea idéntica. Al utilizar la prueba <span class="math inline">\(t\)</span> con la
+desviación estándar muestral <span class="math inline">\(S\)</span>, se evita el supuesto de que la
+varianza del grupo enfermo coincide con la de la población de
+referencia, lo que hace la inferencia más robusta. El valor
+<span class="math inline">\(\sigma = 15\)</span> se utiliza exclusivamente para el cálculo del tamaño del
+efecto de Cohen <span class="math inline">\(d = |\delta|/\sigma\)</span>, donde cumple el rol de unidad de
+estandarización.</p>
+<p><span class="math display">\[H_0: \mu = \mu_0 = 120 \text{ mmHg} \qquad \text{vs} \qquad H_1: \mu \neq \mu_0\]</span></p>
+<p>El estadístico de prueba es:</p>
+<p><span class="math display">\[T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}}\]</span></p>
+<p>donde <span class="math inline">\(\bar{X} = n^{-1}\sum_{i=1}^n X_i\)</span> es la media muestral y
+<span class="math inline">\(S = \sqrt{(n-1)^{-1}\sum_{i=1}^n (X_i - \bar{X})^2}\)</span> es la desviación
+estándar muestral. Bajo <span class="math inline">\(H_0\)</span>, el estadístico sigue <strong>exactamente</strong>:</p>
+<p><span class="math display">\[T \sim t_{n-1}\]</span></p>
+<p>La región de rechazo al nivel <span class="math inline">\(\alpha\)</span> es:</p>
+<p><span class="math display">\[\mathcal{R}_\alpha = \left\{|T| &gt; t_{\alpha/2,\, n-1}\right\}\]</span></p>
+<p>donde <span class="math inline">\(t_{\alpha/2,\, n-1} = F_{t_{n-1}}^{-1}(1 - \alpha/2)\)</span> es el cuantil de
+orden <span class="math inline">\(1 - \alpha/2\)</span> de la distribución <span class="math inline">\(t\)</span> de Student con <span class="math inline">\(n-1\)</span> grados de
+libertad.</p>
+<hr />
+<div id="errores-de-decisión-tipo-i-y-tipo-ii" class="section level4 hasAnchor" number="5.1.0.1">
+<h4><span class="header-section-number">5.1.0.1</span> Errores de decisión: Tipo I y Tipo II<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#errores-de-decisi%C3%B3n-tipo-i-y-tipo-ii" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definición.</strong> Sea <span class="math inline">\(\mathcal{R}_\alpha\)</span> la región de rechazo. Se definen:</p>
+<ul>
+<li><strong>Error de Tipo I</strong> (<span class="math inline">\(\alpha\)</span>): probabilidad de rechazar <span class="math inline">\(H_0\)</span> cuando es
+verdadera:</li>
+</ul>
+<p><span class="math display">\[\alpha = P(T \in \mathcal{R}_\alpha \mid H_0 \text{ verdadera}) = P\!\left(|T| &gt; t_{\alpha/2,\,n-1} \mid T \sim t_{n-1}\right)\]</span></p>
+<ul>
+<li><strong>Error de Tipo II</strong> (<span class="math inline">\(\beta\)</span>): probabilidad de no rechazar <span class="math inline">\(H_0\)</span> cuando es
+falsa, es decir, cuando <span class="math inline">\(\mu = \mu_1 \neq \mu_0\)</span>:</li>
+</ul>
+<p><span class="math display">\[\beta(\delta) = P(T \notin \mathcal{R}_\alpha \mid \mu = \mu_0 + \delta)\]</span></p>
+<p>donde <span class="math inline">\(\delta = \mu_1 - \mu_0 \neq 0\)</span> es la diferencia real entre la media
+verdadera y la hipotética.</p>
+<p>Existe una relación de compromiso fundamental: para <span class="math inline">\(n\)</span> fijo, reducir <span class="math inline">\(\alpha\)</span>
+incrementa <span class="math inline">\(\beta\)</span> y viceversa. Solo aumentando <span class="math inline">\(n\)</span> es posible reducir
+simultáneamente ambos errores.</p>
+<hr />
+</div>
+<div id="potencia-estadística" class="section level4 hasAnchor" number="5.1.0.2">
+<h4><span class="header-section-number">5.1.0.2</span> Potencia estadística<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#potencia-estad%C3%ADstica" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definición.</strong> La <strong>potencia</strong> de la prueba ante la alternativa <span class="math inline">\(\mu_1 = \mu_0 + \delta\)</span> es:</p>
+<p><span class="math display">\[\pi(\delta, n, \alpha) = 1 - \beta(\delta) = P\!\left(|T| &gt; t_{\alpha/2,\,n-1} \mid \mu = \mu_0 + \delta\right)\]</span></p>
+<p>La potencia mide la capacidad de la prueba para detectar una diferencia real <span class="math inline">\(\delta \neq 0\)</span>.
+Un valor de referencia ampliamente aceptado es <span class="math inline">\(\pi \geq 0.80\)</span> (Cohen, 1988), que implica un riesgo de error tipo II de a lo sumo el <span class="math inline">\(20\%\)</span>.</p>
+<hr />
+</div>
+<div id="tamaño-del-efecto-de-cohen" class="section level4 hasAnchor" number="5.1.0.3">
+<h4><span class="header-section-number">5.1.0.3</span> Tamaño del efecto de Cohen<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tama%C3%B1o-del-efecto-de-cohen" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definición.</strong> El <strong>tamaño del efecto estandarizado</strong> (Cohen’s <span class="math inline">\(d\)</span>) para la
+prueba <span class="math inline">\(t\)</span> de una muestra se define como:</p>
+<p><span class="math display">\[d = \frac{|\mu_1 - \mu_0|}{\sigma} = \frac{|\delta|}{\sigma}\]</span></p>
+<p>Cohen (1988) propone la siguiente clasificación empírica:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Tamaño del efecto</th>
+<th align="center">Valor de <span class="math inline">\(d\)</span></th>
+<th align="center">Diferencia en este contexto (<span class="math inline">\(\sigma = 15\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Pequeño</td>
+<td align="center"><span class="math inline">\(d = 0.2\)</span></td>
+<td align="center"><span class="math inline">\(\delta = 3\)</span> mmHg</td>
+</tr>
+<tr class="even">
+<td align="center">Mediano</td>
+<td align="center"><span class="math inline">\(d = 0.5\)</span></td>
+<td align="center"><span class="math inline">\(\delta = 7.5\)</span> mmHg</td>
+</tr>
+<tr class="odd">
+<td align="center">Grande</td>
+<td align="center"><span class="math inline">\(d = 0.8\)</span></td>
+<td align="center"><span class="math inline">\(\delta = 12\)</span> mmHg</td>
+</tr>
+</tbody>
+</table>
+<p>Esta estandarización hace que la potencia dependa de <span class="math inline">\(d\)</span>, <span class="math inline">\(n\)</span> y <span class="math inline">\(\alpha\)</span>,
+pero no de las unidades de medida ni del valor particular de <span class="math inline">\(\sigma\)</span>.</p>
+<hr />
+</div>
+<div id="función-de-potencia-exacta-distribución-t-no-central" class="section level4 hasAnchor" number="5.1.0.4">
+<h4><span class="header-section-number">5.1.0.4</span> Función de potencia exacta: distribución <span class="math inline">\(t\)</span> no central<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#funci%C3%B3n-de-potencia-exacta-distribuci%C3%B3n-t-no-central" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Bajo <span class="math inline">\(H_1\)</span>: <span class="math inline">\(\mu = \mu_0 + \delta\)</span>, el estadístico <span class="math inline">\(T\)</span> sigue una distribución
+<span class="math inline">\(t\)</span> <strong>no central</strong>. Para establecerlo rigurosamente, se escribe:</p>
+<p><span class="math display">\[T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}} = \frac{(\bar{X} - \mu_1)/(\sigma/\sqrt{n}) + \delta\sqrt{n}/\sigma}{S/\sigma}\]</span></p>
+<p>El numerador estandarizado sigue <span class="math inline">\(N(\lambda, 1)\)</span> con parámetro de no
+centralidad:</p>
+<p><span class="math display">\[\lambda = \frac{\delta\sqrt{n}}{\sigma} = d\sqrt{n}\]</span></p>
+<p>y el denominador satisface <span class="math inline">\(S/\sigma = \sqrt{(n-1)S^2/\sigma^2/(n-1)}\)</span> con
+<span class="math inline">\((n-1)S^2/\sigma^2 \sim \chi^2_{n-1}\)</span> independiente del numerador. Por lo
+tanto:</p>
+<p><span class="math display">\[T \mid H_1 \sim t_{n-1}(\lambda), \qquad \lambda = d\sqrt{n}\]</span></p>
+<p>donde <span class="math inline">\(t_{n-1}(\lambda)\)</span> denota la distribución <span class="math inline">\(t\)</span> de Student no central con
+<span class="math inline">\(n-1\)</span> grados de libertad y parámetro de no centralidad <span class="math inline">\(\lambda\)</span>.</p>
+<p>La función de potencia exacta es:</p>
+<p><span class="math display">\[\boxed{\pi(d, n, \alpha) = F_{t_{n-1}(\lambda)}\!\left(-t_{\alpha/2,\,n-1}\right) + 1 - F_{t_{n-1}(\lambda)}\!\left(t_{\alpha/2,\,n-1}\right)}\]</span></p>
+<p>donde <span class="math inline">\(F_{t_{n-1}(\lambda)}\)</span> es la función de distribución acumulada de la
+<span class="math inline">\(t\)</span> no central y <span class="math inline">\(\lambda = d\sqrt{n}\)</span>.</p>
+<p><strong>Propiedades analíticas de la función de potencia:</strong></p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\pi(d, n, \alpha)\)</span> es <strong>estrictamente creciente</strong> en <span class="math inline">\(d\)</span> para <span class="math inline">\(d &gt; 0\)</span>, <span class="math inline">\(n\)</span> y
+<span class="math inline">\(\alpha\)</span> fijos: a mayor efecto, mayor potencia.</li>
+<li><span class="math inline">\(\pi(d, n, \alpha)\)</span> es <strong>estrictamente creciente</strong> en <span class="math inline">\(n\)</span> para <span class="math inline">\(d &gt; 0\)</span>,
+<span class="math inline">\(\alpha\)</span> fijos: a mayor muestra, mayor potencia.</li>
+<li><span class="math inline">\(\pi(d, n, \alpha)\)</span> es <strong>estrictamente creciente</strong> en <span class="math inline">\(\alpha\)</span> para <span class="math inline">\(d &gt; 0\)</span>,
+<span class="math inline">\(n\)</span> fijos: relajar el criterio de rechazo aumenta la potencia pero también
+el error tipo I.</li>
+<li><span class="math inline">\(\lim_{n \to \infty} \pi(d, n, \alpha) = 1\)</span> para todo <span class="math inline">\(d &gt; 0\)</span> y <span class="math inline">\(\alpha \in (0,1)\)</span>:
+la prueba <span class="math inline">\(t\)</span> es <strong>consistente</strong>.</li>
+<li><span class="math inline">\(\pi(0, n, \alpha) = \alpha\)</span> para todo <span class="math inline">\(n\)</span>: cuando <span class="math inline">\(H_0\)</span> es verdadera, la
+probabilidad de rechazo es exactamente <span class="math inline">\(\alpha\)</span> (nivel nominal).</li>
+</ol>
+<hr />
+</div>
+<div id="análisis-computacional" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> <strong>Análisis computacional</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-computacional" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="configuración-general" class="section level4 hasAnchor" number="5.1.1.1">
+<h4><span class="header-section-number">5.1.1.1</span> Configuración general<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#configuraci%C3%B3n-general" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tabla-muestra-potencia">Table 5.1: </span><span id="tab:tabla-muestra-potencia">Table 5.2: </span>Potencia de la prueba <span class="math inline">\(t\)</span> de una muestra (<span class="math inline">\(\alpha = 0.05\)</span>, dos colas) para tamaños muestrales seleccionados y tres tamaños del efecto.
+</caption>
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Tamaño del efecto (Cohen’s <span class="math inline">\(d\)</span>)
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(n\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(d = 0.2\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(d = 0.5\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(d = 0.8\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+0.0820
+</td>
+<td style="text-align:center;">
+0.2928
+</td>
+<td style="text-align:center;">
+0.6162
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:center;">
+0.1839
+</td>
+<td style="text-align:center;">
+0.7540
+</td>
+<td style="text-align:center;">
+0.9885
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+50
+</td>
+<td style="text-align:center;">
+0.2832
+</td>
+<td style="text-align:center;">
+0.9339
+</td>
+<td style="text-align:center;">
+0.9998
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+100
+</td>
+<td style="text-align:center;">
+0.5082
+</td>
+<td style="text-align:center;">
+0.9986
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+200
+</td>
+<td style="text-align:center;">
+0.8037
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+500
+</td>
+<td style="text-align:center;">
+0.9939
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1000
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tab:tabla-muestra-potencia">5.1</a> permite observar, para <span class="math inline">\(\alpha = 0.05\)</span>, cómo la potencia crece con <span class="math inline">\(n\)</span> y con <span class="math inline">\(d\)</span>. Para <span class="math inline">\(d = 0.2\)</span>, incluso con <span class="math inline">\(n = 1{,}000\)</span> la potencia apenas supera el <span class="math inline">\(96\%\)</span>, mientras que para <span class="math inline">\(d = 0.8\)</span> se alcanza el <span class="math inline">\(80\%\)</span> con muestras relativamente pequeñas.</p>
+<hr />
+</div>
+<div id="análisis-de-potencia-para-alpha-0.10" class="section level4 hasAnchor" number="5.1.1.2">
+<h4><span class="header-section-number">5.1.1.2</span> Análisis de potencia para <span class="math inline">\(\alpha = 0.10\)</span><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.10" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="figure"><span style="display:block;" id="fig:fig-potencia-alpha010"></span>
+<img src="Actividad-2_files/figure-html/fig-potencia-alpha010-1.png" alt="Curvas de potencia para $\alpha = 0.10$ (prueba $t$ de una muestra, dos colas). La línea horizontal punteada indica la potencia de referencia del $80\%$ (Cohen, 1988). La no centralidad es $\lambda = d\sqrt{n}$." width="80%" />
+<p class="caption">
+Figure 5.1: Curvas de potencia para <span class="math inline">\(\alpha = 0.10\)</span> (prueba <span class="math inline">\(t\)</span> de una muestra, dos colas). La línea horizontal punteada indica la potencia de referencia del <span class="math inline">\(80\%\)</span> (Cohen, 1988). La no centralidad es <span class="math inline">\(\lambda = d\sqrt{n}\)</span>.
+</p>
+</div>
+<hr />
+</div>
+<div id="análisis-de-potencia-para-alpha-0.05" class="section level4 hasAnchor" number="5.1.1.3">
+<h4><span class="header-section-number">5.1.1.3</span> Análisis de potencia para <span class="math inline">\(\alpha = 0.05\)</span><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.05" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="figure"><span style="display:block;" id="fig:fig-potencia-alpha005"></span>
+<img src="Actividad-2_files/figure-html/fig-potencia-alpha005-1.png" alt="Curvas de potencia para $\alpha = 0.05$ (prueba $t$ de una muestra, dos colas). Comparadas con la Figura \ref{fig:fig-potencia-alpha010}, las curvas se desplazan hacia la derecha: se requieren muestras más grandes para alcanzar la misma potencia." width="80%" />
+<p class="caption">
+Figure 5.2: Curvas de potencia para <span class="math inline">\(\alpha = 0.05\)</span> (prueba <span class="math inline">\(t\)</span> de una muestra, dos colas). Comparadas con la Figura <span class="math inline">\(\ref{fig:fig-potencia-alpha010}\)</span>, las curvas se desplazan hacia la derecha: se requieren muestras más grandes para alcanzar la misma potencia.
+</p>
+</div>
+<hr />
+</div>
+<div id="análisis-de-potencia-para-alpha-0.01" class="section level4 hasAnchor" number="5.1.1.4">
+<h4><span class="header-section-number">5.1.1.4</span> Análisis de potencia para <span class="math inline">\(\alpha = 0.01\)</span><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.01" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="figure"><span style="display:block;" id="fig:fig-potencia-alpha001"></span>
+<img src="Actividad-2_files/figure-html/fig-potencia-alpha001-1.png" alt="Curvas de potencia para $\alpha = 0.01$ (prueba $t$ de una muestra, dos colas). El nivel más restrictivo desplaza notablemente las curvas a la derecha, penalizando especialmente la detección de efectos pequeños ($d = 0.2$)." width="80%" />
+<p class="caption">
+Figure 5.3: Curvas de potencia para <span class="math inline">\(\alpha = 0.01\)</span> (prueba <span class="math inline">\(t\)</span> de una muestra, dos colas). El nivel más restrictivo desplaza notablemente las curvas a la derecha, penalizando especialmente la detección de efectos pequeños (<span class="math inline">\(d = 0.2\)</span>).
+</p>
+</div>
+<hr />
+</div>
+<div id="comparación-de-los-tres-niveles-de-significancia" class="section level4 hasAnchor" number="5.1.1.5">
+<h4><span class="header-section-number">5.1.1.5</span> Comparación de los tres niveles de significancia<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#comparaci%C3%B3n-de-los-tres-niveles-de-significancia" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="figure"><span style="display:block;" id="fig:fig-comparacion-alphas"></span>
+<img src="Actividad-2_files/figure-html/fig-comparacion-alphas-1.png" alt="Comparación de las curvas de potencia para $\alpha \in \{0.10,\, 0.05,\, 0.01\}$ (columnas) y $d \in \{0.2,\, 0.5,\, 0.8\}$ (filas). Cada panel muestra la función de potencia $\pi(d, n, \alpha) = F_{t_{n-1}(d\sqrt{n})}(-t_{\alpha/2,n-1}) + 1 - F_{t_{n-1}(d\sqrt{n})}(t_{\alpha/2,n-1})$. La línea horizontal punteada negra indica $\pi = 0.80$." width="80%" />
+<p class="caption">
+Figure 5.4: Comparación de las curvas de potencia para <span class="math inline">\(\alpha \in \{0.10,\, 0.05,\, 0.01\}\)</span> (columnas) y <span class="math inline">\(d \in \{0.2,\, 0.5,\, 0.8\}\)</span> (filas). Cada panel muestra la función de potencia <span class="math inline">\(\pi(d, n, \alpha) = F_{t_{n-1}(d\sqrt{n})}(-t_{\alpha/2,n-1}) + 1 - F_{t_{n-1}(d\sqrt{n})}(t_{\alpha/2,n-1})\)</span>. La línea horizontal punteada negra indica <span class="math inline">\(\pi = 0.80\)</span>.
+</p>
+</div>
+<p>La Figura <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-comparacion-alphas">5.4</a> sintetiza el efecto conjunto de los
+tres factores sobre la potencia. Se observa claramente que: (i) filas inferiores
+(mayor <span class="math inline">\(d\)</span>) alcanzan <span class="math inline">\(\pi = 0.80\)</span> con <span class="math inline">\(n\)</span> menores; (ii) columnas de la derecha
+(menor <span class="math inline">\(\alpha\)</span>) desplazan las curvas hacia la derecha, requiriendo muestras más
+grandes para la misma potencia.</p>
+<hr />
+</div>
+</div>
+<div id="tabla-de-tamaños-mínimos-de-muestra" class="section level3 hasAnchor" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> <strong>Tabla de tamaños mínimos de muestra</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tabla-de-tama%C3%B1os-m%C3%ADnimos-de-muestra" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tabla-n-minimo">Table 5.3: </span><span id="tab:tabla-n-minimo">Table 5.4: </span>Tamaño mínimo de muestra requerido para alcanzar una potencia del <span class="math inline">\(80\%\)</span> y <span class="math inline">\(90\%\)</span> en la prueba <span class="math inline">\(t\)</span> de una muestra (dos colas), para distintos niveles de significancia <span class="math inline">\(\alpha\)</span> y tamaños del efecto <span class="math inline">\(d\)</span>. La diferencia real <span class="math inline">\(\delta = d \cdot \sigma\)</span> se expresa en mmHg con <span class="math inline">\(\sigma = 15\)</span>.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(\alpha\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(d\)</span> (Cohen)
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(\delta\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(n\)</span> mín. (<span class="math inline">\(\pi = 0.80\)</span>)
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(n\)</span> mín. (<span class="math inline">\(\pi = 0.90\)</span>)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr grouplength="3">
+<td colspan="5" style="border-bottom: 1px solid;">
+<strong><span class="math inline">\(\alpha = 0.01\)</span></strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.01\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 3\)</span> mmHg
+</td>
+<td style="text-align:center;">
+296
+</td>
+<td style="text-align:center;">
+376
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.01\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 7.5\)</span> mmHg
+</td>
+<td style="text-align:center;">
+51
+</td>
+<td style="text-align:center;">
+63
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.01\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.8\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 12\)</span> mmHg
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:center;">
+27
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="5" style="border-bottom: 1px solid;">
+<strong><span class="math inline">\(\alpha = 0.05\)</span></strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.05\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 3\)</span> mmHg
+</td>
+<td style="text-align:center;">
+199
+</td>
+<td style="text-align:center;">
+265
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.05\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 7.5\)</span> mmHg
+</td>
+<td style="text-align:center;">
+34
+</td>
+<td style="text-align:center;">
+44
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.05\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.8\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 12\)</span> mmHg
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+19
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="5" style="border-bottom: 1px solid;">
+<strong><span class="math inline">\(\alpha = 0.10\)</span></strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 3\)</span> mmHg
+</td>
+<td style="text-align:center;">
+156
+</td>
+<td style="text-align:center;">
+216
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 7.5\)</span> mmHg
+</td>
+<td style="text-align:center;">
+27
+</td>
+<td style="text-align:center;">
+36
+</td>
+</tr>
+<tr>
+<td style="text-align:center;padding-left: 2em;" indentlevel="1">
+<span class="math inline">\(\alpha = 0.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.8\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\delta = 12\)</span> mmHg
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+15
+</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="curva-de-rendimientos-marginales-de-la-potencia" class="section level3 hasAnchor" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> <strong>Curva de rendimientos marginales de la potencia</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#curva-de-rendimientos-marginales-de-la-potencia" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para cuantificar rigurosamente cuándo el aumento de <span class="math inline">\(n\)</span> deja de ser
+eficiente, se define la <strong>ganancia marginal de potencia</strong>:</p>
+<p><span class="math display">\[\Delta\pi(n) = \pi(d, n+1, \alpha) - \pi(d, n, \alpha)\]</span></p>
+<p>Dado que <span class="math inline">\(\pi(d, n, \alpha)\)</span> es cóncava en <span class="math inline">\(n\)</span> para <span class="math inline">\(d\)</span> y <span class="math inline">\(\alpha\)</span> fijos
+(propiedad observada empíricamente en la simulación y consistente con el
+comportamiento asintótico de la función de potencia de la <span class="math inline">\(t\)</span> no central,
+ya que <span class="math inline">\(\lambda = d\sqrt{n}\)</span> crece a tasa sublineal mientras la potencia
+se acota superiormente por <span class="math inline">\(1\)</span>), <span class="math inline">\(\Delta\pi(n)\)</span> es decreciente en <span class="math inline">\(n\)</span>. La Figura
+<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-ganancia-marginal">5.5</a> ilustra este fenómeno.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-ganancia-marginal"></span>
+<img src="Actividad-2_files/figure-html/fig-ganancia-marginal-1.png" alt="Ganancia marginal de potencia $\Delta\pi(n) = \pi(d,n+1,\alpha) - \pi(d,n,\alpha)$ como función de $n$, para $\alpha = 0.05$ y los tres tamaños del efecto. La curva es monótonamente decreciente, confirmando la ley de rendimientos marginales decrecientes. La línea punteada vertical señala $n = 300$." width="80%" />
+<p class="caption">
+Figure 5.5: Ganancia marginal de potencia <span class="math inline">\(\Delta\pi(n) = \pi(d,n+1,\alpha) - \pi(d,n,\alpha)\)</span> como función de <span class="math inline">\(n\)</span>, para <span class="math inline">\(\alpha = 0.05\)</span> y los tres tamaños del efecto. La curva es monótonamente decreciente, confirmando la ley de rendimientos marginales decrecientes. La línea punteada vertical señala <span class="math inline">\(n = 300\)</span>.
+</p>
+</div>
+<hr />
+</div>
+<div id="respuesta-a-las-preguntas-orientadoras" class="section level3 hasAnchor" number="5.1.4">
+<h3><span class="header-section-number">5.1.4</span> <strong>Respuesta a las preguntas orientadoras</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#respuesta-a-las-preguntas-orientadoras" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Pregunta 1:</strong> ¿Qué tamaño de muestra se requiere para alcanzar una potencia
+del <span class="math inline">\(80\%\)</span> al detectar un efecto grande (<span class="math inline">\(d = 0.8\)</span>)?</p>
+<p>Para <span class="math inline">\(\alpha = 0.10\)</span>, la solución de
+<span class="math inline">\(\pi(0.8, n, 0.10) = 0.80\)</span> da <span class="math inline">\(n = 12\)</span> observaciones (véase la Tabla
+<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tab:tabla-n-minimo">5.3</a>). Esto equivale a detectar una diferencia real de
+<span class="math inline">\(\delta = 0.8 \times 15 = 12\)</span> mmHg con un <span class="math inline">\(80\%\)</span> de probabilidad. Para <span class="math inline">\(\alpha = 0.05\)</span>
+y <span class="math inline">\(\alpha = 0.01\)</span>, el requerimiento sube según la Tabla <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tab:tabla-n-minimo">5.3</a>.</p>
+<p><strong>Pregunta 2:</strong> ¿Cuántas observaciones se necesitan para detectar un efecto
+mediano (<span class="math inline">\(d = 0.5\)</span>) con una potencia adecuada?</p>
+<p>Para <span class="math inline">\(\alpha = 0.05\)</span> y <span class="math inline">\(\pi = 0.80\)</span>, se requieren <span class="math inline">\(n = 34\)</span> observaciones,
+equivalentes a detectar <span class="math inline">\(\delta = 7.5\)</span> mmHg. Esta es la combinación más común
+utilizada en investigación clínica como mínimo estándar (Cohen, 1988; Faul
+et al., 2007).</p>
+<p><strong>Pregunta 3:</strong> Para un efecto grande, ¿qué sucede al aumentar <span class="math inline">\(n\)</span> más allá
+de <span class="math inline">\(300\)</span> observaciones? ¿Es eficiente?</p>
+<p>Para <span class="math inline">\(d = 0.8\)</span> y <span class="math inline">\(\alpha = 0.05\)</span>, la potencia en <span class="math inline">\(n = 100\)</span> ya es
+<span class="math inline">\(\pi = 1\)</span> y en <span class="math inline">\(n = 300\)</span> alcanza
+<span class="math inline">\(\pi = 1\)</span>. La ganancia al pasar de <span class="math inline">\(n = 100\)</span> a
+<span class="math inline">\(n = 300\)</span> es solo <span class="math inline">\(\Delta\pi = 0\)</span> puntos porcentuales,
+invertiendo <span class="math inline">\(200\)</span> observaciones adicionales. Esto ilustra la <strong>ley de
+rendimientos marginales decrecientes</strong>: dado que <span class="math inline">\(\pi(d, n, \alpha)\)</span> es
+cóncava en <span class="math inline">\(n\)</span> (como se evidencia en la monotonicidad decreciente de
+<span class="math inline">\(\Delta\pi(n)\)</span> en la Figura <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-ganancia-marginal">5.5</a>), el beneficio
+por cada unidad adicional de <span class="math inline">\(n\)</span> disminuye conforme <span class="math inline">\(\pi\)</span> se aproxima a <span class="math inline">\(1\)</span>.
+Por tanto, para <span class="math inline">\(d = 0.8\)</span>, superar <span class="math inline">\(n = 100\)</span> es generalmente ineficiente
+desde el punto de vista costo-potencia.</p>
+<p><strong>Pregunta 4:</strong> ¿Cómo influye el tamaño del efecto sobre la potencia estadística?</p>
+<p>El efecto actúa directamente sobre el parámetro de no centralidad
+<span class="math inline">\(\lambda = d\sqrt{n}\)</span>. A mayor <span class="math inline">\(d\)</span>, mayor <span class="math inline">\(\lambda\)</span>, y por tanto la distribución
+<span class="math inline">\(t_{n-1}(\lambda)\)</span> se desplaza más lejos del origen, incrementando la probabilidad
+de caer en la región de rechazo <span class="math inline">\(\mathcal{R}_\alpha\)</span>. Formalmente, dado que
+<span class="math inline">\(F_{t_{n-1}(\lambda)}(x)\)</span> es estrictamente decreciente en <span class="math inline">\(\lambda\)</span> para <span class="math inline">\(x\)</span>
+finito, la potencia <span class="math inline">\(\pi(d, n, \alpha)\)</span> es estrictamente creciente en <span class="math inline">\(d\)</span>.
+Las curvas de las Figuras <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-potencia-alpha010">5.1</a> a
+<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-potencia-alpha001">5.3</a> confirman empíricamente esta propiedad: la
+curva <span class="math inline">\(d = 0.8\)</span> domina uniformemente a las de <span class="math inline">\(d = 0.5\)</span> y <span class="math inline">\(d = 0.2\)</span> para todo <span class="math inline">\(n\)</span>.</p>
+<p><strong>Pregunta 5:</strong> ¿Cómo afecta el tamaño muestral a la potencia estadística?</p>
+<p>El incremento de <span class="math inline">\(n\)</span> aumenta <span class="math inline">\(\lambda = d\sqrt{n}\)</span> a tasa <span class="math inline">\(O(\sqrt{n})\)</span>, lo
+que desplaza la distribución no central y aumenta la potencia. Sin embargo,
+como se mostró en la Figura <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-ganancia-marginal">5.5</a>, la ganancia
+marginal <span class="math inline">\(\Delta\pi(n)\)</span> es decreciente. Para efectos pequeños (<span class="math inline">\(d = 0.2\)</span>), la
+convergencia es lenta y se requieren muestras muy grandes (<span class="math inline">\(n &gt; 500\)</span> para
+<span class="math inline">\(\pi = 0.80\)</span> con <span class="math inline">\(\alpha = 0.05\)</span>, según la Tabla <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tab:tabla-n-minimo">5.3</a>).
+Para efectos grandes (<span class="math inline">\(d = 0.8\)</span>), la potencia satura rápidamente.</p>
+<p><strong>Pregunta 6:</strong> ¿En qué punto aumentar <span class="math inline">\(n\)</span> deja de proporcionar beneficios
+significativos?</p>
+<p>Como criterio operativo, se define que el beneficio adicional es
+<strong>despreciable</strong> cuando <span class="math inline">\(\Delta\pi(n) &lt; 0.005\)</span> (menos de medio punto
+porcentual por observación adicional). Para <span class="math inline">\(d = 0.8\)</span> y <span class="math inline">\(\alpha = 0.05\)</span>, este
+umbral se alcanza aproximadamente en <span class="math inline">\(n \approx 60\)</span> (visible en la Figura
+<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-ganancia-marginal">5.5</a>). Para <span class="math inline">\(d = 0.5\)</span>, en <span class="math inline">\(n \approx 150\)</span>. Para
+<span class="math inline">\(d = 0.2\)</span>, en <span class="math inline">\(n &gt; 600\)</span>. Estos valores deben interpretarse en función del
+costo de obtener observaciones adicionales en el contexto aplicado.</p>
+<hr />
+</div>
+<div id="propuesta-final-del-diseño-del-estudio" class="section level3 hasAnchor" number="5.1.5">
+<h3><span class="header-section-number">5.1.5</span> <strong>Propuesta final del diseño del estudio</strong><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#propuesta-final-del-dise%C3%B1o-del-estudio" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Con base en el análisis precedente, se propone el siguiente diseño:</p>
+<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tabla-propuesta">Table 5.5: </span><span id="tab:tabla-propuesta">Table 5.6: </span>Propuesta de diseño del estudio para tres escenarios. En todos los casos se fija <span class="math inline">\(d = 0.5\)</span> (efecto mediano, <span class="math inline">\(\delta = 7.5\)</span> mmHg) como diferencia clínicamente relevante mínima. El tamaño muestral <span class="math inline">\(n\)</span> se obtiene resolviendo <span class="math inline">\(\pi(d, n, \alpha) = \pi_{\text{objetivo}}\)</span> mediante la función de potencia exacta de la <span class="math inline">\(t\)</span> no central.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Escenario
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(\alpha\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(d\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(\pi\)</span> objetivo
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(n\)</span> requerido
+</th>
+<th style="text-align:left;font-weight: bold;">
+Justificación
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Conservador
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha = 0.01\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\pi = 0.90\)</span>
+</td>
+<td style="text-align:center;">
+63
+</td>
+<td style="text-align:left;width: 30em; ">
+Mínimo error tipo I; adecuado para decisiones clínicas de alto impacto.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Estándar
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha = 0.05\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\pi = 0.80\)</span>
+</td>
+<td style="text-align:center;">
+34
+</td>
+<td style="text-align:left;width: 30em; ">
+Balance estándar entre error tipo I y potencia (criterio de Cohen).
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Exploratorio
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha = 0.10\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(d = 0.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\pi = 0.80\)</span>
+</td>
+<td style="text-align:center;">
+27
+</td>
+<td style="text-align:left;width: 30em; ">
+Mayor potencia con menor muestra; apropiado si el error tipo II es más costoso.
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recomendación:</strong> Para este estudio clínico, se recomienda el <strong>escenario estándar</strong>:
+<span class="math inline">\(\alpha = 0.05\)</span>, <span class="math inline">\(d = 0.5\)</span> y <span class="math inline">\(\pi = 0.80\)</span>, con el tamaño muestral correspondiente
+según la Tabla <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tab:tabla-propuesta">5.5</a>. Esta elección se fundamenta en:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Efecto de interés:</strong> Una diferencia de <span class="math inline">\(\delta = 7.5\)</span> mmHg en presión arterial
+es clínicamente relevante según guías internacionales (JNC 8, ESC/ESH 2018).
+Efectos menores (<span class="math inline">\(d = 0.2\)</span>, <span class="math inline">\(\delta = 3\)</span> mmHg) carecen de significado clínico
+aun siendo estadísticamente detectables con muestras grandes.</p></li>
+<li><p><strong>Balance entre errores:</strong> <span class="math inline">\(\alpha = 0.05\)</span> limita la tasa de falsos positivos
+al <span class="math inline">\(5\%\)</span>, mientras que <span class="math inline">\(\pi = 0.80\)</span> garantiza que, si el efecto existe, se
+detecta en al menos el <span class="math inline">\(80\%\)</span> de las réplicas del estudio.</p></li>
+<li><p><strong>Eficiencia:</strong> Como muestra la Figura <a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#fig:fig-ganancia-marginal">5.5</a>, para
+<span class="math inline">\(d = 0.5\)</span> incrementar <span class="math inline">\(n\)</span> más allá del requerido para <span class="math inline">\(\pi = 0.80\)</span> produce
+ganancias marginales decrecientes, haciendo ineficiente la recolección
+adicional de datos.</p></li>
+<li><p><strong>Consistencia teórica:</strong> La prueba <span class="math inline">\(t\)</span> de una muestra con los supuestos
+verificados (normalidad de la población, independencia de observaciones,
+<span class="math inline">\(\sigma^2\)</span> desconocida) produce un estadístico que sigue <strong>exactamente</strong>
+la distribución <span class="math inline">\(t_{n-1}\)</span> bajo <span class="math inline">\(H_0\)</span> y <span class="math inline">\(t_{n-1}(d\sqrt{n})\)</span> bajo <span class="math inline">\(H_1\)</span>,
+sin requerir aproximaciones asintóticas para los tamaños muestrales propuestos.</p></li>
+</ol>
+<hr />
+<p><strong>Referencias metodológicas:</strong></p>
+<ul>
+<li>Cohen, J. (1988). <em>Statistical Power Analysis for the Behavioral Sciences</em> (2.ª ed.). Lawrence Erlbaum Associates.</li>
+<li>Faul, F., Erdfelder, E., Lang, A.-G., &amp; Buchner, A. (2007). G*Power 3: A flexible statistical power analysis program for the social, behavioral, and biomedical sciences. <em>Behavior Research Methods</em>, 39(2), 175–191.</li>
+<li>Lehmann, E. L., &amp; Romano, J. P. (2005). <em>Testing Statistical Hypotheses</em> (3.ª ed.). Springer. [Capítulos 3 y 5: teoría de la potencia y familias exponenciales.]</li>
+<li>Casella, G., &amp; Berger, R. L. (2002). <em>Statistical Inference</em> (2.ª ed.). Duxbury. [Sección 8.3: tamaño y potencia de las pruebas.]</li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estimación-de-intervalos-de-confianza.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

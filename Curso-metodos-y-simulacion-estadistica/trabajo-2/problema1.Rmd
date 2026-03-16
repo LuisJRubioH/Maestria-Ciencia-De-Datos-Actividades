@@ -1,0 +1,697 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# **Estimación de la probabilidad y la media**
+
+## **Problema 1**
+
+Una empresa de servicio técnico recibe, en promedio, 5 solicitudes de
+reparación por hora. Suponiendo que el número de solicitudes sigue una
+distribución de Poisson, realiza las siguientes actividades:
+
+### **Cálculo de probabilidad teórica**
+
+-   Calcula la probabilidad de que en una hora lleguen exactamente 3
+    solicitudes usando la fórmula de la distribución de Poisson. Expresa
+    el resultado como $P(X = 3)$.
+
+Primero, extraemos los datos clave que nos proporciona el problema:
+
+-   **Tasa promedio de ocurrencia (**$\lambda$) La empresa recibe un
+    promedio de 5 solicitudes por hora. Por lo tanto, $\lambda = 5$.
+
+-   **Número de eventos deseado (**$k$) Queremos calcular la
+    probabilidad de recibir exactamente 3 solicitudes. Por lo tanto,
+    $k = 3$.
+
+-   **Constante matemática (**$e$): La base de los logaritmos naturales,
+    que equivale aproximadamente a $2.71828$.
+
+La probabilidad de que ocurran exactamente $k$ eventos en un intervalo
+dado, cuando la tasa promedio es $\lambda$, se calcula con la siguiente
+fórmula matemática:
+
+$$P(X=k) = \frac{(e^{-\lambda})\cdot\lambda^k}{k!}$$
+
+Luego, sustituyendo $\lambda = 5$ y $k = 3$, se tiene
+
+$$
+\begin{align}
+P(X=3) &= \frac{(e^{-5})(5^3)}{3!} \\
+       &= \frac{125 e^{-5}}{6}\\
+       &= \frac{(125)(0.0067379)}{6} \\
+       &= \frac{0.8422375}{6} \\
+       &\approx 0.1404
+\end{align}
+$$ La probabilidad teórica de que la empresa reciba exactamente 3
+solicitudes de reparación en una hora es aproximadamente del $14.04\%$.
+
+### **Simulación con una muestra**
+
+-   Genera una muestra aleatoria de tamaño $n = 1,000$ con
+    `rpois(n, lambda = 5)`.
+-   Calcula la frecuencia relativa para $X = 3$ ($f_n(X = 3)$).
+-   Compara e interpreta el resultado frente a la probabilidad teórica.
+
+Para realizar esta simulación, generamos $1,000$ valores aleatorios que
+siguen una distribución de Poisson con una tasa promedio $\lambda = 5$.
+Luego, contamos cuántas veces aparece exactamente el valor $3$
+(frecuencia absoluta) y lo dividimos entre el total de la muestra
+($1,000$) para obtener la frecuencia relativa.
+
+La tabla \@ref(tab:tab-simulacion-n100) muestra los resultados de la
+simulación.
+
+```{r tab-simulacion-n100, echo=FALSE}
+# 1. Definir los parámetros
+n <- 1000
+lambda <- 5
+k <- 3
+
+# Fijar semilla para que el resultado sea reproducible
+set.seed(1)
+
+# 2. Realizar los cálculos
+prob_teorica <- dpois(k, lambda)
+muestra <- rpois(n, lambda)
+
+frec_abs <- sum(muestra == k)
+frec_rel <- frec_abs / n
+diferencia <- abs(frec_rel - prob_teorica)
+
+# 3. Crear el Data Frame
+resultados_df <- data.frame(
+  Tamano_Muestra = n,
+  Frecuencia_Absoluta = frec_abs,
+  Frecuencia_Relativa = round(frec_rel, 4),
+  Prob_Teorica = round(prob_teorica, 4),
+  Diferencia = round(diferencia, 4)
+)
+
+# Renombrar las columnas para presentación
+colnames(resultados_df) <- c("Tamaño de la Muestra", 
+                             "Frecuencia Absoluta", 
+                             "$f_n(X = 3)$", 
+                             "$P(X=3)$", 
+                             "Diferencia")
+
+# 4. Generar la tabla con kable
+knitr::kable(
+      resultados_df,
+      align = "c",
+      caption = "Comparación de Probabilidad Teórica vs. Empírica (Poisson λ=5, X=3)"
+      )
+```
+
+La frecuencia relativa obtenida en la simulación
+$f_n(X = 3) = 141/1000 = 0.141$ es sumamente cercana a la probabilidad
+teórica calculada matemáticamente $P(X=3) = 0.1404$.
+
+Este resultado ilustra la **Ley de los Grandes Números**. Esta ley
+establece que, a medida que aumentamos el tamaño de nuestra muestra (en
+este caso n = 1,000, que es un número bastante grande), la frecuencia
+relativa o empírica de un evento tiende a acercarse cada vez más a su
+probabilidad teórica real.
+
+### **Análisis de la variabilidad entre muestras**
+
+-   Genera $100$ muestras aleatorias de tamaño $n = 1{,}000$.
+-   Calcula la frecuencia relativa para $X = 3$ en cada muestra.
+-   Construye un gráfico de dispersión:
+    -   Eje $X$: Indexación por cada muestra (1 a 100).
+    -   Eje $Y$: Frecuencias relativas $f_n(X = 3)$.
+-   Dibuja una línea horizontal en $P(X = 3)$ y comenta si existe una
+    tendencia.
+
+La gráfica \@ref(fig:variabilidadmuestras) muestra el gráfico obtenido
+al generar $100$ muestras aleatorias de tamaño $n = 1{,}000$. En él se
+observa:
+
+-   Cada punto azul representa la frecuencia relativa de una muestra.
+
+-   La línea roja continua marca la probabilidad teórica
+    $P(X=3) = 0.1404$.
+
+```{r variabilidadmuestras, echo=FALSE, fig.cap="Variabilidad entre muestras"}
+# Fijar semilla para reproducibilidad
+set.seed(1)
+
+# Parámetros
+B <- 100          # número de muestras
+n <- 1000         # tamaño de cada muestra
+lambda <- 5
+
+# Probabilidad teórica de X = 3
+p_teorica <- dpois(3, lambda)  # = exp(-5)*5^3/6
+
+# Generar 100 muestras y calcular frecuencias relativas
+frec_rel <- replicate(B, mean(rpois(n, lambda) == 3))
+
+# Gráfico de dispersión
+plot(1:B, frec_rel,
+     xlab = "Índice de la muestra",
+     ylab = "Frecuencia relativa de X = 3",
+     main = "Variabilidad de la frecuencia relativa en 100 muestras",
+     pch = 19, col = rgb(0, 0, 1, 0.5),
+     ylim = range(c(frec_rel, p_teorica))  # para asegurar que la línea se vea
+)
+
+# Línea horizontal en la probabilidad teórica
+abline(h = p_teorica, col = "red", lwd = 2, lty = 2)
+
+# También se puede añadir una leyenda
+legend("topright", legend = c("Frecuencias observadas", 
+                              paste0("Teórica: ", round(p_teorica, 4))),
+       col = c("blue", "red"), pch = c(19, NA), lty = c(NA, 2), lwd = c(NA, 2))
+```
+
+Para cuantificar la variabilidad esperada por azar, se calculó el error
+estándar teórico (SE) de la frecuencia relativa. Sea
+$p = P(X=3) = 0.1404$, entonces
+
+$$\text{SE} = \sqrt{\frac{p(1-p)}{n}} = \sqrt{\frac{(0.1404)(0.8596)}{1000}}\approx 0.0110$$
+Se construyó una banda de $\pm 1.96$ errores estándar alrededor de $p$,
+la cual estará limitada por el intervalo
+$[p - 1.96\,\text{SE},\; p + 1.96\,\text{SE}] \approx [0.1188,\; 0.1620]$.
+Esta banda contiene aproximadamente el $95\%$ de las frecuencias
+relativas si el modelo es correcto y el tamaño de muestra es grande
+(aproximación normal).
+
+```{r banda, echo=FALSE, fig.cap="Validación empírica de la probabilidad teórica mediante simulación: banda de confianza aproximada al 95%"}
+# Fijar semilla para reproducibilidad
+set.seed(1)
+
+# Parámetros
+B <- 100          # número de muestras
+n <- 1000         # tamaño de cada muestra
+lambda <- 5
+
+# Probabilidad teórica de X = 3
+p_teorica <- dpois(3, lambda)  # = exp(-5)*5^3/6
+
+# Generar 100 muestras y calcular frecuencias relativas
+frec_rel <- replicate(B, mean(rpois(n, lambda) == 3))
+
+# Calcular error estándar teórico
+se_teorico <- sqrt(p_teorica * (1 - p_teorica) / n)
+
+# También podemos calcular la desviación estándar empírica de las frecuencias
+se_empirico <- sd(frec_rel)
+
+# Crear gráfico de dispersión
+plot(1:B, frec_rel,
+     xlab = "Índice de la muestra",
+     ylab = "Frecuencia relativa de X = 3",
+     pch = 19, col = rgb(0, 0, 1, 0.5),
+     ylim = range(c(frec_rel, p_teorica - 1.96*se_teorico, p_teorica + 1.96*se_teorico))
+)
+
+# Añadir banda de ±1.96 errores estándar teóricos
+rect(xleft = 0, xright = B+1, 
+     ybottom = p_teorica - 1.96*se_teorico, 
+     ytop = p_teorica + 1.96*se_teorico,
+     col = rgb(0.8, 0.8, 0.8, 0.5), border = NA)
+
+# Línea horizontal en la probabilidad teórica
+abline(h = p_teorica, col = "red", lwd = 2, lty = 1) # sólida para que destaque
+
+# Opcional: añadir líneas punteadas en los límites de la banda
+abline(h = p_teorica + 1.96*se_teorico, col = "red", lwd = 1, lty = 3)
+abline(h = p_teorica - 1.96*se_teorico, col = "red", lwd = 1, lty = 3)
+
+# Leyenda
+legend("topright", 
+       legend = c("Banda ±1.96 SE teórico"),
+       col = c(rgb(0.8,0.8,0.8,0.5)), 
+       pch = c(19, NA, 15), 
+       lty = c(NA, 1, NA), 
+       lwd = c(NA, 2, NA),
+       pt.cex = c(1, NA, 2))
+```
+
+La gráfica \@ref(fig:banda) muestra que la mayoría de las frecuencias
+relativas ($95$ de cada $100$, en promedio) caen dentro de la banda
+gris. En este caso particular, con la semilla 1 (`set.seed(1)`), se
+puede contar cuántos puntos quedan fuera para verificar si se aproxima
+al $5\%$ esperado (por ejemplo, podrían ser 4 o 6). Esto confirma que la
+variabilidad observada es coherente con la teoría.
+
+### **Impacto del tamaño muestral**:
+
+-   Genera muestras aleatorias con tamaños: 5, 10, 20, 30, 40, 50, 60,
+    70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900 y 1,000.
+    Agrega valores si consideras que mejora el análisis de los
+    resultados.
+-   Calcula la frecuencia relativa de $X = 3$ para cada tamaño.
+-   Construye un gráfico de dispersión:
+    -   Eje $X$: Indexación (1 al 20) por cada tamaño muestral.
+    -   Eje $Y$: Frecuencias relativas $f_n(X = 3)$.
+-   Dibuja la línea en $P(X = 3)$ y describe si aparece una tendencia.
+
+Se seleccionan los siguientes tamaños de muestras
+$n \in \lbrace 5, 10, 20, 30, 40, 50, 60, 70, 80, 90,100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 5000, 10000 \rbrace$
+
+Para cada tamaño, se genera una única muestra aleatoria de una
+distribución de Poisson con $\lambda =5$ utilizando la función `rpois`.
+Se emplea un diseño de **muestreo anidado**: se genera una sola muestra
+de tamaño $n = 10{,}000$ y se toman los primeros $n$ elementos para
+cada tamaño muestral. Este enfoque garantiza que la muestra de tamaño
+$n$ es un subconjunto de todas las muestras de tamaño mayor, lo que
+permite visualizar la convergencia acumulativa de la frecuencia relativa
+conforme se incorporan más observaciones de la misma realización.
+
+Luego, se calcula la frecuencia relativa $f_n(X = 3)$ como:
+
+$$f_n(X = 3) = \frac{\text{número de valores igual a 3 en la muestra de tamaño n}}{n}$$
+
+```{r impacto-frec-relativa, echo=FALSE}
+set.seed(1)
+
+# Tamaños muestrales
+tamanos <- c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90,
+             100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 5000, 10000)
+
+lambda <- 5
+
+# Generar la muestra más grande y tomar subconjuntos (diseño anidado)
+muestra_total <- rpois(max(tamanos), lambda)
+
+p_teorica <- dpois(3, 5)
+
+frec_abs <- sapply(tamanos, function(n) sum(muestra_total[1:n] == 3))
+frec_rel <- frec_abs / tamanos
+
+tabla_resultados <- data.frame(
+  Tamaño = tamanos,
+  Frec_Absoluta = frec_abs,
+  Frec_Relativa = round(frec_rel, 4),
+  Error = round(frec_rel - p_teorica, 4)
+)
+
+knitr::kable(tabla_resultados,
+             caption = "Frecuencia absoluta y relativa de X = 3, y error respecto a la probabilidad teórica",
+             col.names = c("Tamaño muestral (n)",
+                           "Frecuencia absoluta (éxitos)",
+                           "Frecuencia relativa $f_n(X = 3)$",
+                           "Error $f_n(X = 3) - P(X=3)$"),
+             align = "c")
+```
+
+Para tamaños pequeños ($n \leq 50$): las frecuencias relativas presentan
+una gran variabilidad y pueden alejarse considerablemente del valor
+teórico como muestra la Tabla \@ref(tab:impacto-frec-relativa). Por
+ejemplo, con $n=5$ es posible obtener valores extremos ($0$, $0.2$,
+$0.4$, etc.) debido al azar.
+
+A medida que $n$ aumenta: la frecuencia relativa tiende a estabilizarse
+y acercarse a la probabilidad teórica. Para $n=1000$: la estimación
+suele ser muy próxima a $0.1404$, aunque persiste una pequeña diferencia
+aleatoria.
+
+```{r fig-efecto, echo=FALSE, fig.cap="Efecto del tamaño muestral en la estimación de P(X=3)"}
+# Parámetros (se reutiliza la misma muestra anidada para coherencia)
+lambda <- 5
+p_teorica <- dpois(3, lambda)  # e^{-5} · 5^3 / 3! ≈ 0.1404
+
+# Tamaños muestrales
+tamanos <- c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90,
+             100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 5000, 10000)
+k <- length(tamanos)
+
+# Frecuencias relativas del diseño anidado (ya calculadas con set.seed(1))
+set.seed(1)
+muestra_total <- rpois(max(tamanos), lambda)
+frec_rel <- sapply(tamanos, function(n) mean(muestra_total[1:n] == 3))
+
+# Gráfico
+plot(1:k, frec_rel,
+     xlab = "Índice del tamaño muestral",
+     ylab = expression(f[n](X == 3)),
+     xaxt = "n", pch = 19, col = "blue",
+     ylim = c(0.05, 0.25),
+     main = "Convergencia de la frecuencia relativa a P(X=3)")
+axis(1, at = 1:k, labels = tamanos, las = 2, cex.axis = 0.7)
+abline(h = p_teorica, col = "red", lwd = 2, lty = 2)
+legend("topright",
+       legend = c("Frecuencia observada",
+                  paste0("P(X=3) = ", round(p_teorica, 4))),
+       col = c("blue", "red"), pch = c(19, NA), lty = c(NA, 2), lwd = c(NA, 2))
+```
+
+Al incrementar el tamaño de la muestra, la frecuencia relativa converge
+hacia la probabilidad teórica. El gráfico de la Figura
+\@ref(fig:fig-efecto) ilustra cómo el error de estimación disminuye
+conforme $n$ aumenta, lo que justifica el uso de muestras grandes para
+obtener estimaciones precisas.
+
+De acuerdo con lo anterior, el análisis empírico confirma que el tamaño
+muestral es un factor crítico en la precisión de las estimaciones.
+Muestras pequeñas pueden dar lugar a estimaciones muy variables y poco
+fiables, mientras que muestras grandes proporcionan valores más estables
+y cercanos al parámetro poblacional. Este principio fundamental de la
+estadística se visualiza claramente en la Figura
+\@ref(fig:fig-efecto).
+
+### **Convergencia de la media muestral**:
+
+-   Genera 100 muestras de tamaño $n = 1,000$.
+-   Calcula el promedio muestral de solicitudes en cada muestra.
+-   Construye un gráfico de dispersión:
+    -   Eje $X$: Indexación por cada muestra (1 a 100).
+    -   Eje $Y$: Promedios muestrales.
+-   Traza la línea horizontal en la media teórica ($\lambda$) y analiza
+    la tendencia.
+
+Analizaremos el comportamiento de la media muestral $\overline{X}$ como
+estimador de la media teórica $\lambda = 5$ en una distribución de
+Poisson. Para ello, se generan $100$ muestras independientes de tamaño
+$n = 1000$ y se calcula la media de cada una. Luego se representan
+gráficamente y se comparan con el valor poblacional.
+
+Se fija una semilla para reproducibilidad. Se generan $B = 100$
+muestras, cada una de tamaño $n = 1000$, de una población Poisson con
+$\lambda = 5$. Para cada muestra $i$ se calcula la media muestral:
+
+$$\overline{X}_i = \frac{1}{n}\sum_{j=1}^{n} X_{ij}$$
+
+En la Tabla
+\@ref(tab:tab-medias-muestrales) se presentan las medias muestrales
+obtenidas de las primeras 20 muestras (de un total de 100). Se incluye
+la diferencia respecto a la media teórica para evaluar visualmente la
+magnitud del error de estimación.
+
+```{r tab-medias-muestrales, echo=FALSE}
+# Fijar semilla para reproducibilidad
+set.seed(1)
+
+# Parámetros
+B <- 100          # número de muestras
+n <- 1000         # tamaño de cada muestra
+lambda <- 5       # media teórica
+
+# Generar las 100 medias muestrales
+medias <- replicate(B, mean(rpois(n, lambda)))
+
+# Crear data frame con índice, media y error (solo primeras 20 filas)
+tabla_medias <- data.frame(
+  Muestra = 1:20,
+  Media_muestral = round(medias[1:20], 4),
+  Error = round(medias[1:20] - lambda, 4)
+)
+
+# Mostrar tabla con kable
+knitr::kable(tabla_medias,
+             caption = "Medias muestrales de las primeras 20 muestras.",
+             col.names = c("Índice", "Media muestral $\\overline{X}$", "Error $\\overline{X} - \\lambda$"),
+             align = "c")
+```
+
+Podemos ver que las primeras $20$ medias muestrales mostradas oscilan
+muy cerca de $\lambda = 5$, con errores del orden de $\pm 0.1$ o
+menores. Esto es consistente con lo que predice la Ley de los Grandes
+Números: para $n = 1000$ observaciones, $\bar{X}_i$ converge en
+probabilidad a $\lambda$. Además, por el Teorema Central del Límite,
+cada $\bar{X}_i$ se distribuye aproximadamente como:
+
+$$\bar{X}_i\,\dot\sim N\left(\lambda, \frac{\lambda}{n}\right) = N\left(5, \frac{5}{1000}\right)$$
+lo que da una desviación estándar de $\sqrt{5/1000} \approx 0.0707$. Por
+eso los errores rara vez superan $\pm 0.15$ (aproximadamente $2$
+desviaciones estándar).
+
+```{r fig-convergencia-media-muestral, echo=FALSE, fig.cap="Convergencia de la media muestral (n = 1000)"}
+# Fijar semilla para reproducibilidad
+set.seed(1)
+
+# Parámetros
+B <- 100          # número de muestras
+n <- 1000         # tamaño de cada muestra
+lambda <- 5       # media teórica
+
+# Generar las 100 medias muestrales
+medias <- replicate(B, mean(rpois(n, lambda)))
+
+# Gráfico de dispersión
+plot(1:B, medias,
+     xlab = "Índice de la muestra",
+     ylab = "Media muestral",
+     pch = 19, col = rgb(0, 0, 1, 0.5),
+     ylim = range(c(medias, lambda)))  # para asegurar que la línea se vea
+
+# Línea horizontal en la media teórica
+abline(h = lambda, col = "red", lwd = 2, lty = 2)
+
+# Leyenda
+legend("topright", legend = c("Medias muestrales", 
+                              paste0("Media teórica λ = ", lambda)),
+       col = c("blue", "red"), pch = c(19, NA), lty = c(NA, 2), lwd = c(NA, 2))
+```
+
+El gráfico de la Figura \@ref(fig:fig-convergencia-media-muestral)
+ilustra empíricamente que la media muestral converge en probabilidad
+hacia la media poblacional. Al aumentar $n$, las estimaciones se
+concentran cada vez más cerca del valor verdadero.
+
+Por el **Teorema Central del Límite**, cada media muestral se distribuye
+aproximadamente como:
+
+$$\bar{X}_i \;\dot\sim\; N\!\left(\lambda,\; \frac{\lambda}{n}\right)$$
+
+Estandarizando:
+
+$$Z = \frac{\bar{X}_i - \lambda}{\sqrt{\lambda/n}} \;\sim\; N(0,1)$$
+
+De la distribución normal estándar se sabe que:
+
+$$P(-1.96 \leq Z \leq 1.96) = 0.95$$
+
+Sustituyendo y despejando:
+
+$$P\!\left(\lambda - 1.96\sqrt{\frac{\lambda}{n}} \;\leq\; \bar{X}_i \;\leq\; \lambda + 1.96\sqrt{\frac{\lambda}{n}}\right) = 0.95$$
+
+Con $\lambda = 5$ y $n = 1000$:
+
+$$1.96\sqrt{\frac{5}{1000}} = 1.96 \times 0.0707 \approx 0.1386$$
+
+Por lo tanto, el **intervalo del 95%** es:
+
+$$(5 - 0.1386,\; 5 + 0.1386) = (4.8614,\; 5.1386)$$
+
+Esto significa que aproximadamente 95 de las 100 medias muestrales deben
+caer en ese intervalo, lo cual es exactamente lo que se observa en la
+figura.
+
+```{r banda-95, echo=FALSE, fig.cap="Medias muestrales con banda del 95% según el TCL"}
+# Fijar semilla para reproducibilidad
+set.seed(1)
+
+# Parámetros
+B <- 100
+n <- 1000
+lambda <- 5
+
+# Generar las 100 medias muestrales
+medias <- replicate(B, mean(rpois(n, lambda)))
+
+# Error estándar teórico y límites al 95%
+ee <- sqrt(lambda / n)
+lim_inf <- lambda - 1.96 * ee
+lim_sup <- lambda + 1.96 * ee
+
+# Gráfico de dispersión
+plot(1:B, medias,
+     xlab = "Índice de la muestra",
+     ylab = "Media muestral",
+     pch = 19, col = rgb(0, 0, 1, 0.5),
+     ylim = range(c(medias, lim_inf - 0.02, lim_sup + 0.02)),
+     yaxt = "n")
+
+# Eje Y personalizado con los valores de los extremos
+eje_y <- sort(unique(c(
+  seq(round(lim_inf - 0.1, 1), round(lim_sup + 0.1, 1), by = 0.05),
+  lambda, round(lim_inf, 4), round(lim_sup, 4)
+)))
+axis(2, at = c(lambda, round(lim_inf, 4), round(lim_sup, 4)),
+     labels = c(expression(lambda == 5), 
+                round(lim_inf, 4), 
+                round(lim_sup, 4)),
+     las = 1, cex.axis = 0.85)
+
+# Banda sombreada del 95%
+rect(0, lim_inf, B + 1, lim_sup, col = rgb(0.8, 0.8, 0.8, 0.3), border = NA)
+
+# Redibujar puntos sobre la banda
+points(1:B, medias, pch = 19, col = rgb(0, 0, 1, 0.5))
+
+# Línea de la media teórica
+abline(h = lambda, col = "red", lwd = 2)
+
+# Líneas punteadas en los límites
+abline(h = lim_inf, col = "red", lty = 2, lwd = 1.5)
+abline(h = lim_sup, col = "red", lty = 2, lwd = 1.5)
+
+# Leyenda
+legend("topright",
+       legend = c("Banda ±1.96 EE (95%)"),
+       col = c("gray"),
+       pch = c(19, NA, 15),
+       lty = c(NA, 1, NA),
+       lwd = c(NA, 2, NA),
+       pt.cex = c(1, 1, 2),
+       bg = "white")
+```
+
+El gráfico de dispersión de la Figura \@ref(fig:banda-95) muestra los
+100 valores de $\bar{X}_i$ distribuidos en una banda estrecha alrededor
+de la línea roja $\lambda = 5$, sin tendencia ni patrón sistemático.
+Esto confirma visualmente que:
+
+-   No hay sesgo: los puntos se reparten simétricamente arriba y abajo
+    de $\lambda = 5$, lo cual es esperable ya que $E[\bar{X}] = \lambda$
+    (estimador insesgado).
+-   Baja dispersión: la concentración de los puntos refleja la varianza
+    $\lambda/n = 0.005$, que es muy pequeña.
+-   Convergencia: con $n = 1000$, la media muestral es un estimador
+    preciso y confiable de $\lambda$. En resumen, tanto la tabla como la
+    figura ilustran empíricamente la Ley de los Grandes Números y son
+    coherentes con la distribución teórica que predice el Teorema
+    Central del Límite.
+
+### **Impacto del tamaño muestral en la media**:
+
+-   Genera muestras aleatorias con tamaños: 5, 10, 20, 30, 40, 50, 60,
+    70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900 y 1,000.
+    Agrega valores si consideras que mejora el análisis de los
+    resultados.
+-   Calcula el promedio muestral para cada tamaño.
+-   Construye un gráfico de dispersión:
+    -   Eje $X$: Indexación (1 al 20) por cada tamaño muestral.
+    -   Eje $Y$: Promedios muestrales.
+-   Dibuja la línea horizontal en la media teórica ($\lambda$) y compara
+    si el promedio se aproxima a medida que crece el tamaño.
+
+Para una variable $X \sim \text{Poisson}(\lambda)$, se tiene
+$E[X] = \lambda$ y $\text{Var}(X) = \lambda$. La varianza de la media
+muestral es:
+
+$$\text{Var}(\bar{X}_n) = \frac{\lambda}{n}$$
+
+Por lo tanto, el **error estándar** decrece como:
+
+$$\text{SE}(\bar{X}_n) = \sqrt{\frac{\lambda}{n}}$$
+
+A mayor $n$, menor dispersión alrededor de $\lambda$, lo que garantiza
+la convergencia.
+
+Al igual que en la sección anterior, se emplea un diseño de muestreo
+anidado: se genera una única muestra de tamaño $n = 10{,}000$ y se
+calculan las medias muestrales sobre los primeros $n$ elementos para
+cada tamaño. De este modo, la convergencia observada corresponde a una
+misma realización del proceso aleatorio.
+
+```{r tabla-impacto-tamano, echo=FALSE}
+set.seed(1)
+
+# Tamaños muestrales
+tamanos <- c(5, 10, 20, 30, 40, 50, 60, 70, 80, 90,
+             100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+             2000, 5000, 10000)
+
+lambda <- 5
+
+# Generar la muestra más grande y tomar subconjuntos (diseño anidado)
+muestra_total <- rpois(max(tamanos), lambda)
+
+# Calcular estadísticos para cada tamaño
+medias      <- sapply(tamanos, function(n) mean(muestra_total[1:n]))
+error       <- medias - lambda
+ee_teorico  <- sqrt(lambda / tamanos)
+
+tabla <- data.frame(
+  Tamano     = tamanos,
+  Media      = round(medias, 4),
+  Error      = round(error, 4),
+  EE_teorico = round(ee_teorico, 4),
+  Var_teorica = round(lambda / tamanos, 6)
+)
+
+knitr::kable(tabla,
+             caption = "Convergencia de la media muestral conforme crece n",
+             col.names = c("Tamaño muestral $(n)$",
+                           "Media muestral $\\bar{X}_n$",
+                           "Error $\\bar{X}_n - \\lambda$",
+                           "SE teórico $\\sqrt{\\lambda/n}$",
+                           "Varianza teórica $\\lambda/n$"),
+             align = "c")
+```
+
+En la Tabla \@ref(tab:tabla-impacto-tamano), se puede observar que para
+tamaños pequeños ($n = 5, 10, 20$), la media muestral puede alejarse
+considerablemente de $\lambda = 5$, con errores que reflejan la alta
+varianza teórica $\lambda/n$, pero a medida que $n$ crece, el error
+$\bar{X}_n - \lambda$ tiende a cero y la varianza teórica decrece.
+
+```{r grafico-impacto-tamano, echo=FALSE, fig.cap="Convergencia de la media muestral hacia λ = 5 conforme aumenta n"}
+# Banda del 95% para cada tamaño (según el TCL)
+lim_sup <- lambda + 1.96 * ee_teorico
+lim_inf <- lambda - 1.96 * ee_teorico
+
+# Índices para el eje X
+idx <- seq_along(tamanos)
+
+# Configurar márgenes para etiquetas del eje X
+par(mar = c(6, 4.5, 3, 1))
+
+# Gráfico base
+plot(idx, medias,
+     xlab = "",
+     ylab = expression(bar(X)[n]),
+     main = expression("Convergencia de " * bar(X)[n] * " hacia " * lambda * " = 5"),
+     pch = 19, col = rgb(0, 0, 1, 0.7),
+     xaxt = "n",
+     ylim = c(min(lim_inf) - 0.1, max(lim_sup) + 0.1),
+     cex = 1.2)
+
+# Eje X con los tamaños muestrales
+axis(1, at = idx, labels = tamanos, las = 2, cex.axis = 0.7)
+mtext("Tamaño muestral (n)", side = 1, line = 4.5)
+
+# Banda del 95% (polígono)
+polygon(c(idx, rev(idx)),
+        c(lim_sup, rev(lim_inf)),
+        col = rgb(0.9, 0.9, 0.9, 0.5), border = NA)
+
+# Redibujar puntos sobre la banda
+points(idx, medias, pch = 19, col = rgb(0, 0, 1, 0.7), cex = 1.2)
+
+# Línea de la media teórica
+abline(h = lambda, col = "red", lwd = 2)
+
+# Líneas punteadas de los límites del 95%
+lines(idx, lim_sup, col = "red", lty = 2, lwd = 1.2)
+lines(idx, lim_inf, col = "red", lty = 2, lwd = 1.2)
+
+# Leyenda
+legend("topright",
+       legend = c(expression(bar(X)[n]),
+                  expression(lambda == 5),
+                  "Banda 95% (±1.96 EE)"),
+       col = c("blue", "red", "gray80"),
+       pch = c(19, NA, 15),
+       lty = c(NA, 1, NA),
+       lwd = c(NA, 2, NA),
+       pt.cex = c(1.2, 1, 2),
+       bg = "white")
+```
+
+El gráfico de la Figura \@ref(fig:grafico-impacto-tamano) muestra que la
+**banda del 95%** se estrecha progresivamente. Notar que para $n = 5$
+tiene un ancho de $2 \times 1.96 \sqrt{5/5} \approx 3.92$, mientras que
+para $n = 10000$ se reduce a
+$2 \times 1.96 \sqrt{5/10000} = 2 \times 1.96 \times 0.0224 \approx 0.0877$.
+
+En el gráfico se observa que todos los puntos permanecen dentro de la
+banda y se concentran cada vez más cerca de la línea roja, confirmando
+empíricamente la **Ley de los Grandes Números**.

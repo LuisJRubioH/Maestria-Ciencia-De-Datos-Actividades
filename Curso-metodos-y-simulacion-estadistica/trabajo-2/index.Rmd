@@ -1,0 +1,78 @@
+---
+title: "Actividad-2"
+author: "Luis Javier Rubio Hernández - Oriana Giraldo Arcia"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+---
+
+```{r setup, warning=FALSE, message=FALSE, include=FALSE}
+
+knitr::opts_chunk$set(
+  eval = TRUE,
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 8,
+  fig.height = 4,
+  out.width = "80%"
+)
+
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+options(scipen = 999)
+set.seed(42)
+
+# Cargar librerías necesarias
+library(skimr)
+library(knitr)
+library(dplyr)
+library(DescTools)
+library(patchwork)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(readxl)
+library(scales)
+library(bookdown)
+library(naniar)
+library(VIM)
+library(devtools)
+library(ggthemr)
+library(gridExtra)
+library(tidyverse)
+library(mice)
+library(missForest)
+library(lubridate)
+library(readr)
+library(corrplot)
+library(e1071)
+library(nortest)
+
+suppressPackageStartupMessages(library(fmsb))
+suppressPackageStartupMessages(library(naniar))
+suppressPackageStartupMessages(library(gridExtra))
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(dplyr))
+
+# Tema global de ggplot
+ggthemr("dust", layout = "clean")
+```
+
+# Índice{-}
+
+1. Problema 1
+
+2. Problema 2
+
+3. Problema 3
+
+4. Problema 4
+
+5. Problema 5
+
+6. Problema 6
+
+8. Anexos
+
+
