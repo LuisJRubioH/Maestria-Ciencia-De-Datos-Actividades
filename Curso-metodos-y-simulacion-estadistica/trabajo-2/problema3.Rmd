@@ -1,5 +1,11 @@
 # **Teorema del límite central**
 
+```{r setup-problema3, echo=FALSE, message=FALSE, warning=FALSE}
+# En este problema se usa kbl() de kableExtra (en lugar de knitr::kable())
+# para las tablas que requieren kable_styling(), evitando así la doble
+# numeración que produce bookdown cuando ambos paquetes interactúan.
+```
+
 ## **Problema 3**
 
 En una planta de fabricación de componentes electrónicos, se modela el tiempo (meses)
@@ -245,7 +251,7 @@ tabla_muestras <- data.frame(
   Error_Var   = sapply(muestras, var) - varianza_pob
 )
 
-tabla_kable <- kable(tabla_muestras,
+tabla_kable <- kbl(tabla_muestras,
       col.names = c("Muestra", "$\\bar{x}$", "Error $\\bar{x} - \\mu$",
                      "$s^2$", "Error $s^2 - \\sigma^2$"),
       digits = 4,
@@ -366,7 +372,7 @@ tabla_tlc <- data.frame(
   check.names = FALSE
 )
 
-kable(
+kbl(
   tabla_tlc,
   format  = "html",
   escape  = FALSE,

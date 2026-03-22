@@ -81,9 +81,7 @@ donde $t_{\alpha/2,\, n-1} = F_{t_{n-1}}^{-1}(1 - \alpha/2)$ es el cuantil de
 orden $1 - \alpha/2$ de la distribución $t$ de Student con $n-1$ grados de
 libertad.
 
----
-
-#### Errores de decisión: Tipo I y Tipo II
+### Errores de decisión: Tipo I y Tipo II
 
 **Definición.** Sea $\mathcal{R}_\alpha$ la región de rechazo. Se definen:
 
@@ -104,9 +102,7 @@ Existe una relación de compromiso fundamental: para $n$ fijo, reducir $\alpha$
 incrementa $\beta$ y viceversa. Solo aumentando $n$ es posible reducir
 simultáneamente ambos errores.
 
----
-
-#### Potencia estadística
+### Potencia estadística
 
 **Definición.** La **potencia** de la prueba ante la alternativa $\mu_1 = \mu_0 + \delta$ es:
 
@@ -115,9 +111,7 @@ $$\pi(\delta, n, \alpha) = 1 - \beta(\delta) = P\!\left(|T| > t_{\alpha/2,\,n-1}
 La potencia mide la capacidad de la prueba para detectar una diferencia real $\delta \neq 0$.
 Un valor de referencia ampliamente aceptado es $\pi \geq 0.80$ (Cohen, 1988), que implica un riesgo de error tipo II de a lo sumo el $20\%$.
 
----
-
-#### Tamaño del efecto de Cohen
+### Tamaño del efecto de Cohen
 
 **Definición.** El **tamaño del efecto estandarizado** (Cohen's $d$) para la
 prueba $t$ de una muestra se define como:
@@ -135,9 +129,7 @@ Cohen (1988) propone la siguiente clasificación empírica:
 Esta estandarización hace que la potencia dependa de $d$, $n$ y $\alpha$,
 pero no de las unidades de medida ni del valor particular de $\sigma$.
 
----
-
-#### Función de potencia exacta: distribución $t$ no central
+### Función de potencia exacta: distribución $t$ no central
 
 Bajo $H_1$: $\mu = \mu_0 + \delta$, el estadístico $T$ sigue una distribución
 $t$ **no central**. Para establecerlo rigurosamente, se escribe:
@@ -160,7 +152,7 @@ $n-1$ grados de libertad y parámetro de no centralidad $\lambda$.
 
 La función de potencia exacta es:
 
-$$\boxed{\pi(d, n, \alpha) = F_{t_{n-1}(\lambda)}\!\left(-t_{\alpha/2,\,n-1}\right) + 1 - F_{t_{n-1}(\lambda)}\!\left(t_{\alpha/2,\,n-1}\right)}$$
+$$\pi(d, n, \alpha) = F_{t_{n-1}(\lambda)}\!\left(-t_{\alpha/2,\,n-1}\right) + 1 - F_{t_{n-1}(\lambda)}\!\left(t_{\alpha/2,\,n-1}\right)$$
 
 donde $F_{t_{n-1}(\lambda)}$ es la función de distribución acumulada de la
 $t$ no central y $\lambda = d\sqrt{n}$.
@@ -179,19 +171,11 @@ $t$ no central y $\lambda = d\sqrt{n}$.
 5. $\pi(0, n, \alpha) = \alpha$ para todo $n$: cuando $H_0$ es verdadera, la
    probabilidad de rechazo es exactamente $\alpha$ (nivel nominal).
 
----
+## **Análisis computacional**
 
-### **Análisis computacional**
-
-#### Configuración general
+### Configuración general
 
 ```{r setup-problema5, echo=FALSE, message=FALSE, warning=FALSE}
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(knitr)
-library(kableExtra)
-library(latex2exp)  # para notación LaTeX en ejes de ggplot2
 
 # Parámetros del estudio
 mu_0    <- 120        # media bajo H_0 (mmHg)
@@ -261,7 +245,7 @@ tab_muestra <- grid_completo %>%
     `$d = 0.8$`        = `0.8`
   )
 
-knitr::kable(
+kbl(
   tab_muestra,
   caption = "Potencia de la prueba $t$ de una muestra ($\\alpha = 0.05$, dos colas) para tamaños muestrales seleccionados y tres tamaños del efecto.",
   align   = "c",
@@ -279,9 +263,7 @@ knitr::kable(
 
 La Tabla \@ref(tab:tabla-muestra-potencia) permite observar, para $\alpha = 0.05$, cómo la potencia crece con $n$ y con $d$. Para $d = 0.2$, incluso con $n = 1{,}000$ la potencia apenas supera el $96\%$, mientras que para $d = 0.8$ se alcanza el $80\%$ con muestras relativamente pequeñas.
 
----
-
-#### Análisis de potencia para $\alpha = 0.10$
+### Análisis de potencia para $\alpha = 0.10$
 
 ```{r fig-potencia-alpha010, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Curvas de potencia para $\\alpha = 0.10$ (prueba $t$ de una muestra, dos colas). La línea horizontal punteada indica la potencia de referencia del $80\\%$ (Cohen, 1988). La no centralidad es $\\lambda = d\\sqrt{n}$."}
 datos_010 <- filter(grid_completo, alpha == 0.10)
@@ -315,9 +297,7 @@ ggplot(datos_010, aes(x = n, y = potencia, color = Efecto, linetype = Efecto)) +
   )
 ```
 
----
-
-#### Análisis de potencia para $\alpha = 0.05$
+### Análisis de potencia para $\alpha = 0.05$
 
 ```{r fig-potencia-alpha005, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Curvas de potencia para $\\alpha = 0.05$ (prueba $t$ de una muestra, dos colas). Comparadas con la Figura \\ref{fig:fig-potencia-alpha010}, las curvas se desplazan hacia la derecha: se requieren muestras más grandes para alcanzar la misma potencia."}
 datos_005 <- filter(grid_completo, alpha == 0.05)
@@ -351,9 +331,7 @@ ggplot(datos_005, aes(x = n, y = potencia, color = Efecto, linetype = Efecto)) +
   )
 ```
 
----
-
-#### Análisis de potencia para $\alpha = 0.01$
+### Análisis de potencia para $\alpha = 0.01$
 
 ```{r fig-potencia-alpha001, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Curvas de potencia para $\\alpha = 0.01$ (prueba $t$ de una muestra, dos colas). El nivel más restrictivo desplaza notablemente las curvas a la derecha, penalizando especialmente la detección de efectos pequeños ($d = 0.2$)."}
 datos_001 <- filter(grid_completo, alpha == 0.01)
@@ -387,9 +365,7 @@ ggplot(datos_001, aes(x = n, y = potencia, color = Efecto, linetype = Efecto)) +
   )
 ```
 
----
-
-#### Comparación de los tres niveles de significancia
+### Comparación de los tres niveles de significancia
 
 ```{r fig-comparacion-alphas, echo=FALSE, fig.width=11, fig.height=9, fig.cap="Comparación de las curvas de potencia para $\\alpha \\in \\{0.10,\\, 0.05,\\, 0.01\\}$ (columnas) y $d \\in \\{0.2,\\, 0.5,\\, 0.8\\}$ (filas). Cada panel muestra la función de potencia $\\pi(d, n, \\alpha) = F_{t_{n-1}(d\\sqrt{n})}(-t_{\\alpha/2,n-1}) + 1 - F_{t_{n-1}(d\\sqrt{n})}(t_{\\alpha/2,n-1})$. La línea horizontal punteada negra indica $\\pi = 0.80$."}
 ggplot(grid_completo,
@@ -434,9 +410,7 @@ tres factores sobre la potencia. Se observa claramente que: (i) filas inferiores
 (menor $\alpha$) desplazan las curvas hacia la derecha, requiriendo muestras más
 grandes para la misma potencia.
 
----
-
-### **Tabla de tamaños mínimos de muestra**
+## **Tabla de tamaños mínimos de muestra**
 
 ```{r tabla-n-minimo, echo=FALSE}
 # Calcular n mínimo para potencia del 80% y 90%
@@ -476,7 +450,7 @@ n_minimo <- expand.grid(d = efectos, alpha = alphas) %>%
   ) %>%
   select(alpha_label, d_label, delta_label, n_80, n_90)
 
-knitr::kable(
+kbl(
   n_minimo,
   caption = "Tamaño mínimo de muestra requerido para alcanzar una potencia del $80\\%$ y $90\\%$ en la prueba $t$ de una muestra (dos colas), para distintos niveles de significancia $\\alpha$ y tamaños del efecto $d$. La diferencia real $\\delta = d \\cdot \\sigma$ se expresa en mmHg con $\\sigma = 15$.",
   col.names = c("$\\alpha$", "$d$ (Cohen)", "$\\delta$",
@@ -495,9 +469,7 @@ knitr::kable(
   pack_rows("$\\alpha = 0.10$", 7, 9, escape = FALSE)
 ```
 
----
-
-### **Curva de rendimientos marginales de la potencia**
+## **Curva de rendimientos marginales de la potencia**
 
 Para cuantificar rigurosamente cuándo el aumento de $n$ deja de ser
 eficiente, se define la **ganancia marginal de potencia**:
@@ -558,9 +530,7 @@ ggplot(marginal_df, aes(x = n, y = ganancia * 100,
   )
 ```
 
----
-
-### **Respuesta a las preguntas orientadoras**
+## **Respuesta a las preguntas orientadoras**
 
 ```{r calculos-preguntas, echo=FALSE}
 # --- Pregunta 1: n para pi = 0.80, d = 0.8, alpha = 0.10 ---
@@ -646,9 +616,7 @@ umbral se alcanza aproximadamente en $n \approx 60$ (visible en la Figura
 $d = 0.2$, en $n > 600$. Estos valores deben interpretarse en función del
 costo de obtener observaciones adicionales en el contexto aplicado.
 
----
-
-### **Propuesta final del diseño del estudio**
+## **Propuesta final del diseño del estudio**
 
 Con base en el análisis precedente, se propone el siguiente diseño:
 
@@ -676,7 +644,7 @@ propuesta <- data.frame(
   )
 )
 
-knitr::kable(
+kbl(
   propuesta,
   caption = "Propuesta de diseño del estudio para tres escenarios. En todos los casos se fija $d = 0.5$ (efecto mediano, $\\delta = 7.5$ mmHg) como diferencia clínicamente relevante mínima. El tamaño muestral $n$ se obtiene resolviendo $\\pi(d, n, \\alpha) = \\pi_{\\text{objetivo}}$ mediante la función de potencia exacta de la $t$ no central.",
   col.names = c("Escenario", "$\\alpha$", "$d$", "$\\pi$ objetivo",
@@ -717,7 +685,7 @@ según la Tabla \@ref(tab:tabla-propuesta). Esta elección se fundamenta en:
    la distribución $t_{n-1}$ bajo $H_0$ y $t_{n-1}(d\sqrt{n})$ bajo $H_1$,
    sin requerir aproximaciones asintóticas para los tamaños muestrales propuestos.
 
----
+
 
 **Referencias metodológicas:**
 

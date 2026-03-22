@@ -10,6 +10,7 @@ rmd_files:
   - "problema4.Rmd"
   - "problema5.Rmd"
   - "problema6.Rmd"
+  - "referencias.Rmd"
   - "anexos.Rmd"
 
 output_dir: "docs"

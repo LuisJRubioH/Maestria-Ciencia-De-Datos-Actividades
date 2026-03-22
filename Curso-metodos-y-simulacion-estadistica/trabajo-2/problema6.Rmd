@@ -2,9 +2,9 @@
 
 ## **Problema 6**
 Teniendo en cuenta el contexto y los datos utilizados en el informe estadístico desarrollado
-en la Actividad 1, formule tres preguntas de investigación relevantes. Para cada pregunta,
-realice el análisis correspondiente utilizando pruebas de hipótesis e intervalos de confianza.
-Además, verifique el cumplimiento de los supuestos necesarios para garantizar
+en la Actividad 1, formulamos tres preguntas de investigación relevantes. Para cada pregunta,
+realizamos el análisis correspondiente utilizando pruebas de hipótesis e intervalos de confianza.
+Además, verificamos el cumplimiento de los supuestos necesarios para garantizar
 la validez de los procedimientos estadísticos aplicados.
 
 ### Contexto: Informe descriptivo de la Actividad 1
@@ -946,7 +946,7 @@ barplot_pos <- barplot(props_plot * 100,
 arrows(barplot_pos, li_props * 100, barplot_pos, ls_props * 100,
        angle = 90, code = 3, length = 0.1, lwd = 2)
 
-text(barplot_pos, props_plot * 100 + 2,
+text(barplot_pos, ls_props * 100 + 1.5,
      paste0(round(props_plot * 100, 1), "%"), cex = 0.9, font = 2)
 ```
 
@@ -966,7 +966,6 @@ se observó que la presencia de dependientes en el hogar se asocia con
 menor disposición a aceptar nuevos productos, posiblemente por
 restricciones presupuestarias o diferencias en prioridades de consumo.
 
----
 
 ## Resumen comparativo de las tres preguntas
 

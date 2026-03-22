@@ -156,4 +156,5 @@ confirmación-prueba-chi2-de-independencia
 visualización-1
 interpretación-2
 resumen-comparativo-de-las-tres-preguntas
+referencias
 anexos

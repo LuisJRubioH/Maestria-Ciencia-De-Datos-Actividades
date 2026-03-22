@@ -1,6 +1,8 @@
 ---
-title: "Actividad-2"
-author: "Luis Javier Rubio Hernández - Oriana Giraldo Arcia"
+title: "Actividad 2"
+author:
+  - "Oriana Giraldo Arcia (Grupo A)"
+  - "Luis Javier Rubio Hernández (Grupo B)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -23,6 +25,8 @@ options(scipen = 999)
 set.seed(42)
 
 # Cargar librerías necesarias
+library(kableExtra)
+library(latex2exp)  # para notación LaTeX en ejes de ggplot2
 library(skimr)
 library(knitr)
 library(dplyr)

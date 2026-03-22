@@ -1,5 +1,11 @@
 # **Estimación de intervalos de confianza**
 
+```{r setup-problema4, echo=FALSE, message=FALSE, warning=FALSE}
+# En este problema se usa kbl() de kableExtra (en lugar de kbl())
+# para las tablas que requieren kable_styling(), evitando la doble
+# numeración que produce bookdown cuando ambos paquetes interactúan.
+```
+
 
 Una empresa dedicada a la generación de energía renovable desea evaluar el rendimiento
 de sus 20 generadores eléctricos portátiles, alimentados con biocombustible. Estos
@@ -57,7 +63,7 @@ resumen <- data.frame(
                   "kWh/L")
 )
 
-knitr::kable(
+kbl(
   resumen,
   caption   = "Estadísticos descriptivos de la muestra de eficiencia energética de los $n = 20$ generadores eléctricos portátiles.",
   col.names = c("Estadístico", "Símbolo", "Valor", "Unidad"),
@@ -157,7 +163,7 @@ resumen_norm <- data.frame(
   )
 )
 
-knitr::kable(resumen_norm, col.names = c("Prueba", "Estadístico", "p-valor", "Decisión (α = 0.05)"),
+kbl(resumen_norm, col.names = c("Prueba", "Estadístico", "p-valor", "Decisión (α = 0.05)"),
              caption = "Resumen de pruebas de normalidad")
 ```
 
@@ -280,7 +286,7 @@ tab_elementos <- data.frame(
                 "kWh/L")
 )
 
-knitr::kable(
+kbl(
   tab_elementos,
   caption   = "Elementos del intervalo de confianza al $95\\%$ para la eficiencia media $\\mu$",
   col.names = c("Elemento", "Símbolo", "Valor", "Unidad"),
@@ -324,7 +330,7 @@ tab_ic <- data.frame(
   Unidad    = rep("kWh/L", 4)
 )
 
-knitr::kable(
+kbl(
   tab_ic,
   caption   = "Intervalo de confianza al $95\\%$ para la eficiencia media $\\mu$ de los generadores, obtenido mediante el procedimiento $t$ de Student.",
   col.names = c("Concepto", "Expresión", "Valor (kWh/L)", "Unidad"),
@@ -353,7 +359,7 @@ tab_ver <- data.frame(
                 round(diff(ic_t$conf.int),   4))
 )
 
-knitr::kable(
+kbl(
   tab_ver,
   caption   = "Verificación cruzada del intervalo de confianza al $95\\%$: cálculo manual mediante la fórmula $t$ de Student versus resultado de la función `t.test()` de R.",
   col.names = c("Método de cálculo",
@@ -534,7 +540,7 @@ tab_boot_desc <- data.frame(
   Unidad    = c("réplicas", "kWh/L", "kWh/L", "kWh/L", "kWh/L")
 )
 
-knitr::kable(
+kbl(
   tab_boot_desc,
   caption   = "Estadísticos descriptivos de la distribución bootstrap de $\\bar{X}^*$ obtenida con $B = 10{,}000$ réplicas ($\\texttt{set.seed(123)}$). El sesgo bootstrap mide la diferencia sistemática entre la media de las réplicas y el estadístico original $\\bar{x} = 5.9175$ kWh/L.",
   col.names = c("Concepto", "Símbolo", "Valor", "Unidad"),
@@ -634,7 +640,7 @@ tab_perc <- data.frame(
   Unidad    = c("—", "—", "kWh/L", "kWh/L", "kWh/L")
 )
 
-knitr::kable(
+kbl(
   tab_perc,
   caption   = "Intervalo de confianza al $95\\%$ mediante bootstrap percentil. Los cuantiles empíricos $Q_{0.025}$ y $Q_{0.975}$ se calculan directamente sobre las $B = 10{,}000$ réplicas bootstrap.",
   col.names = c("Elemento", "Símbolo", "Valor", "Unidad"),
@@ -721,7 +727,7 @@ tab_bca <- data.frame(
                 "kWh/L", "kWh/L", "kWh/L")
 )
 
-knitr::kable(
+kbl(
   tab_bca,
   caption   = "Intervalo de confianza al $95\\%$ mediante bootstrap BCa. Las correcciones $\\hat{z}_0 \\approx 0$ y $\\hat{a} \\approx 0$ indican que la distribución bootstrap no presenta sesgo ni asimetría apreciables, lo que explica la práctica coincidencia con el intervalo percentil de la Tabla \\ref{tab:tab-ic-percentil}.",
   col.names = c("Elemento", "Símbolo", "Valor", "Unidad"),
@@ -780,7 +786,7 @@ tab_verif <- data.frame(
   )
 )
 
-knitr::kable(
+kbl(
   tab_verif,
   caption   = "Verificación cruzada de los intervalos bootstrap: cálculo manual versus paquete `boot` de R. Las pequeñas discrepancias entre métodos equivalentes son atribuibles al uso de semillas distintas internamente por el paquete `boot`; los resultados son sustancialmente idénticos.",
   col.names = c("Método", "Límite inferior (kWh/L)",
@@ -832,7 +838,7 @@ tab_comp <- data.frame(
                 round(amp_bca  / amp_t, 4))
 )
 
-knitr::kable(
+kbl(
   tab_comp,
   caption   = "Comparación de los tres intervalos de confianza al $95\\%$ para la eficiencia media $\\mu$. La razón de amplitudes $R = \\text{Amplitud} / \\text{Amplitud}_{t}$ se calcula respecto al intervalo $t$ de Student como referencia ($R = 1.0000$). Valores $R \\approx 1$ indican equivalencia práctica. Los supuestos indican si el método requiere distribución poblacional específica.",
   col.names = c("Método", "Supuesto distribucional",
@@ -1003,7 +1009,7 @@ tab_concl <- data.frame(
                  "Alta: bootstrap replica el intervalo $t$")
 )
 
-knitr::kable(
+kbl(
   tab_concl,
   caption   = "Síntesis de los resultados del Problema 4. La coincidencia de los tres intervalos de confianza y la validación de supuestos proporcionan una estimación robusta y confiable de la eficiencia media poblacional $\\mu$ de los generadores eléctricos.",
   col.names = c("Aspecto", "Resultado"),
