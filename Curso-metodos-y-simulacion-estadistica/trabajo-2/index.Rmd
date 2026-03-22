@@ -77,6 +77,8 @@ ggthemr("dust", layout = "clean")
 
 6. Problema 6
 
+7. Referencias
+
 8. Anexos
 
 

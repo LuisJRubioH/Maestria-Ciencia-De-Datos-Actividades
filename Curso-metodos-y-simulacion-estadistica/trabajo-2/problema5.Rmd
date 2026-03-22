@@ -689,7 +689,3 @@ según la Tabla \@ref(tab:tabla-propuesta). Esta elección se fundamenta en:
 
 **Referencias metodológicas:**
 
-- Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2.ª ed.). Lawrence Erlbaum Associates.
-- Faul, F., Erdfelder, E., Lang, A.-G., & Buchner, A. (2007). G\*Power 3: A flexible statistical power analysis program for the social, behavioral, and biomedical sciences. *Behavior Research Methods*, 39(2), 175–191.
-- Lehmann, E. L., & Romano, J. P. (2005). *Testing Statistical Hypotheses* (3.ª ed.). Springer. [Capítulos 3 y 5: teoría de la potencia y familias exponenciales.]
-- Casella, G., & Berger, R. L. (2002). *Statistical Inference* (2.ª ed.). Duxbury. [Sección 8.3: tamaño y potencia de las pruebas.]

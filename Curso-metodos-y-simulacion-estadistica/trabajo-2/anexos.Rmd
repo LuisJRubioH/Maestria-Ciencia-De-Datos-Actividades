@@ -1,8 +1,9 @@
 # Anexos
 
 - El repositorio en GitHub incluye un archivo ZIP en el siguiente enlace:
+  - https://github.com/Ori-G-A/Actividades_Maestria_CD/tree/main/Metodos_simulacion_EST/trabajo-2
   - https://github.com/LuisJRubioH/Maestria-Ciencia-De-Datos-Actividades/tree/main/Curso-metodos-y-simulacion-estadistica
-  - 
+  
   
 con los ficheros fuente de bookdown para reproducir el informe:
 
