@@ -1,0 +1,369 @@
+# Modelo de regresión lineal simple — Portugués (POR) {#sec-modelo-por}
+
+Para POR se adopta la misma especificación de la Sección \@ref(sec-espec-mat) sobre el conjunto *studentpor* depurado:
+
+$$G3_i = \beta_0 + \beta_1 \cdot G2_i + \varepsilon_i, \quad i = 1, \ldots, `r n_por`$$
+
+## Estimación de parámetros {#sec-estim-por}
+
+```{r tab-coef-por, echo=FALSE}
+# ============================================================
+# COEFICIENTES ESTIMADOS — POR
+# ============================================================
+tabla_coef_por <- data.frame(
+  Parámetro  = c("$\\hat{\\beta}_0$ (Intercepto)", "$\\hat{\\beta}_1$ (G2)"),
+  Estimación = c(b0p, b1p),
+  `Error estándar`    = c(se_b0p, se_b1p),
+  `Estadístico t`     = c(t_b0p,  t_b1p),
+  `p-valor`           = c(
+    ifelse(sm_por$coefficients["(Intercept)","Pr(>|t|)"] < 0.001, "< 0.001",
+           round(sm_por$coefficients["(Intercept)","Pr(>|t|)"], 4)),
+    ifelse(sm_por$coefficients["G2","Pr(>|t|)"] < 0.001, "< 0.001",
+           round(sm_por$coefficients["G2","Pr(>|t|)"], 4))
+  ),
+  `Decisión ($\\alpha = 0.05$)` = c(
+    ifelse(sm_por$coefficients["(Intercept)","Pr(>|t|)"] < 0.05, "Rechaza $H_0$", "No rechaza $H_0$"),
+    ifelse(sm_por$coefficients["G2","Pr(>|t|)"] < 0.05, "Rechaza $H_0$", "No rechaza $H_0$")
+  ),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_coef_por,
+  caption  = "Estimación de parámetros del modelo G3 ~ G2 en Portugués (POR).",
+  align    = c("l", "c", "c", "c", "c", "l"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(2, bold = TRUE)
+```
+
+Tabla \@ref(tab:tab-coef-por): el modelo ajustado es
+
+$$\widehat{G3} = `r b0p` + `r b1p` \cdot G2$$
+
+La pendiente $\hat{\beta}_1 = `r b1p`$ es **menor que la de MAT** ($\hat{\beta}_1 = `r beta1_hat`$): un valor por debajo de 1 sugiere una leve compresión hacia la media (fenómeno galtoniano, Galton 1886). El intercepto $\hat\beta_0 = `r b0p`$ es estadísticamente significativo al 5 % en POR (p < 0.001), a diferencia de MAT donde no lo era — diferencia atribuible al mayor tamaño muestral ($n_{\text{POR}} = `r n_por`$) que infla la potencia para detectar desviaciones modestas respecto de cero; sustantivamente, la extrapolación a $G2 = 0$ sigue careciendo de sentido por estar fuera del rango muestral. El error residual $\hat{\sigma} = `r sigma_por`$ excede el de MAT ($`r sigma_hat`$), señalando **menor precisión predictiva** en POR.
+
+## Prueba de hipótesis global — ANOVA y prueba F {#sec-anova-por}
+
+Misma estructura que la Sección \@ref(sec-anova-mat): $H_0: \beta_1 = 0$ vs. $H_1: \beta_1 \neq 0$; $F_0 = MSR/MSE \sim F_{1,n-2}$ bajo $H_0$.
+
+```{r tab-anova-por, echo=FALSE}
+# ============================================================
+# ANOVA — POR
+# ============================================================
+tabla_anova_por <- data.frame(
+  `Fuente de variación`     = c("Regresión (G2)", "Error residual", "Total"),
+  `Suma de cuadrados (SC)`  = c(SSR_por, SSE_por, SST_por),
+  `Grados de libertad (gl)` = c(1, n_por - 2, n_por - 1),
+  `Cuadrado medio (CM)`     = c(MSR_por, MSE_por, NA),
+  `Estadístico F`           = c(F_por, NA, NA),
+  `p-valor`                 = c(
+    ifelse(p_F_por < 0.001, "< 0.001", round(p_F_por, 4)),
+    NA, NA
+  ),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_anova_por,
+  caption  = "Análisis de varianza (ANOVA) del modelo G3 ~ G2 en Portugués (POR).",
+  align    = c("l", "c", "c", "c", "c", "c"),
+  booktabs = TRUE,
+  na_val   = "—"
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(1, bold = TRUE) |>
+  kableExtra::row_spec(3, italic = TRUE)
+```
+
+Tabla \@ref(tab:tab-anova-por): $F_0 = `r F_por`$ con 1 y `r n_por-2` gl, p < 0.001 → **se rechaza $H_0: \beta_1 = 0$**. El $F$ de POR (`r F_por`) es menor que el de MAT (`r F_stat`), coherente con la correlación también menor ($r = `r round(cor(por$G2, por$G3),4)`$ en POR vs. $`r round(cor(mat$G2, mat$G3),4)`$ en MAT).
+
+## Coeficiente de determinación {#sec-r2-por}
+
+```{r tab-r2-por, echo=FALSE}
+# ============================================================
+# MÉTRICAS DE BONDAD DE AJUSTE — POR
+# ============================================================
+tabla_r2_por <- data.frame(
+  Métrica = c(
+    "$R^2$",
+    "$R^2$ ajustado",
+    "$\\hat{\\sigma}$ (Error estándar residual)",
+    "$n$ (observaciones)"
+  ),
+  Valor = c(r2_por, r2_adj_por, sigma_por, n_por),
+  Interpretación = c(
+    paste0(round(r2_por * 100, 2), "% de la variabilidad de G3 es explicada por G2"),
+    "Ajustado por grados de libertad",
+    "Desviación típica de los residuales (en puntos de calificación)",
+    "Observaciones con G3 > 0"
+  )
+)
+
+knitr::kable(
+  tabla_r2_por,
+  caption  = "Métricas de bondad de ajuste del modelo G3 ~ G2 en Portugués (POR).",
+  align    = c("l", "c", "l"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(1, bold = TRUE)
+```
+
+Tabla \@ref(tab:tab-r2-por): $R^2 = `r r2_por`$ — el **`r round(r2_por*100,2)` %** de la variabilidad de G3 queda explicada por G2 (porcentaje inferior al de MAT: $R^2 = `r r2_mat`$; $\Delta R^2 = `r round(r2_por-r2_mat,4)`$). Una explicación plausible: el contenido matemático tiende a ser jerárquico y acumulativo, mientras que Portugués incorpora componentes más heterogéneos (comprensión lectora, producción escrita, competencia oral) que introducen mayor varianza residual entre períodos.
+
+## Intervalos de confianza para los parámetros {#sec-ic-params-por}
+
+Con $t_{0.025,`r n_por-2`} = `r t_crit_por`$ (Casella y Berger, 2002, §11.3):
+
+```{r tab-ic-params-por, echo=FALSE}
+# ============================================================
+# IC 95% PARA PARÁMETROS — POR
+# ============================================================
+tabla_ic_por <- data.frame(
+  Parámetro  = c("$\\beta_0$ (Intercepto)", "$\\beta_1$ (G2)"),
+  Estimación = c(b0p, b1p),
+  `LC inferior (2.5%)`  = as.numeric(round(ic_params_por[, 1], 4)),
+  `LC superior (97.5%)` = as.numeric(round(ic_params_por[, 2], 4)),
+  Interpretación = c(
+    "Rango plausible del intercepto poblacional",
+    "Incremento medio de G3 por cada punto adicional en G2"
+  ),
+  check.names = FALSE,
+  row.names = NULL
+)
+
+knitr::kable(
+  tabla_ic_por,
+  caption  = "Intervalos de confianza al 95% para los parámetros del modelo G3 ~ G2 en Portugués (POR).",
+  align    = c("l", "c", "c", "c", "l"),
+  booktabs = TRUE,
+  escape   = FALSE,
+  row.names = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(2, bold = TRUE)
+```
+
+Tabla \@ref(tab:tab-ic-params-por): IC al 95% para $\beta_1 = [`r round(ic_params_por["G2",1],4)`, `r round(ic_params_por["G2",2],4)`]$, cero excluido → **se rechaza $H_0$**. El IC es ligeramente más ancho que el de MAT (amplitud `r round(ic_params_por["G2",2]-ic_params_por["G2",1],4)` vs. `r round(ic_params["G2",2]-ic_params["G2",1],4)`). Como $SE(\hat\beta_1) = \hat\sigma/\sqrt{S_{xx}}$, el mayor $S_{xx}$ de POR ($`r Sxx_por`$ vs. $`r Sxx`$) queda compensado por el mayor $\hat\sigma$ ($`r sigma_por`$ vs. $`r sigma_hat`$), produciendo $SE(\hat\beta_1) = `r se_b1p`$ vs. $`r se_beta1`$ en MAT.
+
+## Intervalos de confianza y predicción para G3 {#sec-ic-pred-por}
+
+```{r tab-ic-pred-por, echo=FALSE}
+# ============================================================
+# IC Y IP EN VALORES REPRESENTATIVOS — POR
+# ============================================================
+x0_vals_por <- data.frame(G2 = c(4, 6, 8, 10, 12, 14, 16, 18, 20))
+
+ic_por <- predict(modelo_por, newdata = x0_vals_por,
+                  interval = "confidence", level = 0.95)
+ip_por <- predict(modelo_por, newdata = x0_vals_por,
+                  interval = "prediction", level = 0.95)
+
+tabla_pred_por <- data.frame(
+  `G2 (x₀)`          = x0_vals_por$G2,
+  `Ĝ3 (predicción)`  = round(ic_por[, "fit"], 3),
+  `IC inf. (95%)`     = round(ic_por[, "lwr"], 3),
+  `IC sup. (95%)`     = round(ic_por[, "upr"], 3),
+  `IP inf. (95%)`     = round(ip_por[, "lwr"], 3),
+  `IP sup. (95%)`     = round(ip_por[, "upr"], 3),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_pred_por,
+  caption  = "Predicción puntual, intervalos de confianza para la media condicional e
+              intervalos de predicción para observaciones individuales, en valores
+              representativos de G2. Modelo G3 ~ G2, Portugués (POR).",
+  align    = c("c", "c", "c", "c", "c", "c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::add_header_above(
+    c(" " = 2, "IC media condicional" = 2, "IP obs. individual" = 2)
+  ) |>
+  kableExtra::row_spec(
+    which(x0_vals_por$G2 == 12),
+    bold = TRUE
+  ) |>
+  kableExtra::add_footnote(
+    paste0("S_xx = ", Sxx_por, "; media de G2 = ", g2_bar_por,
+           "; t_{0.025, ", n_por - 2, "} = ", t_crit_por, "."),
+    notation = "symbol"
+  )
+```
+
+```{r fig-regresion-por, fig.cap="Modelo G3 ~ G2 en Portugués (POR): recta de regresión ajustada (azul marino), banda del IC 95% para la media condicional (gris medio) y banda del IP 95% para observaciones individuales (gris claro). La información del modelo se ubica en la esquina superior izquierda para evitar superposiciones con los datos.", fig.width=10, fig.height=6.5, echo=FALSE}
+# ============================================================
+# RECTA AJUSTADA + IC + IP — POR (paleta sobria unificada)
+# ============================================================
+g2_seq_por <- data.frame(G2 = seq(min(por$G2), max(por$G2), length.out = 300))
+ic_seq_por <- predict(modelo_por, newdata = g2_seq_por,
+                      interval = "confidence", level = 0.95)
+ip_seq_por <- predict(modelo_por, newdata = g2_seq_por,
+                      interval = "prediction", level = 0.95)
+
+df_bandas_por <- data.frame(
+  G2     = g2_seq_por$G2,
+  fit    = ic_seq_por[, "fit"],
+  ic_lwr = ic_seq_por[, "lwr"],
+  ic_upr = ic_seq_por[, "upr"],
+  ip_lwr = ip_seq_por[, "lwr"],
+  ip_upr = ip_seq_por[, "upr"]
+)
+
+x_ann <- min(por$G2) + 0.3
+y_ann <- 19.5
+
+ggplot() +
+  geom_ribbon(data = df_bandas_por,
+              aes(x = G2, ymin = ip_lwr, ymax = ip_upr),
+              fill = paleta$banda_ip, alpha = 0.55) +
+  geom_ribbon(data = df_bandas_por,
+              aes(x = G2, ymin = ic_lwr, ymax = ic_upr),
+              fill = paleta$banda_ic, alpha = 0.55) +
+  geom_jitter(data = por,
+              aes(x = G2, y = G3),
+              width = 0.15, height = 0.15,
+              alpha = 0.40, size = 1.5,
+              colour = paleta$punto) +
+  geom_line(data = df_bandas_por,
+            aes(x = G2, y = fit),
+            colour = paleta$linea, linewidth = 1.1) +
+  annotate("label", x = x_ann, y = y_ann,
+           label = paste0("Ĝ3 = ", b0p, " + ", b1p, " · G2\n",
+                          "R² = ", r2_por, "   n = ", n_por),
+           hjust = 0, vjust = 1,
+           size = 3.5, fontface = "bold",
+           colour = paleta$linea,
+           fill   = "white",
+           label.size = 0.4,
+           label.r = unit(0.1, "lines")) +
+  scale_x_continuous(breaks = seq(0, 20, 2), limits = c(0, 20)) +
+  scale_y_continuous(breaks = seq(0, 20, 2), limits = c(0, 20)) +
+  labs(title = "Portugués (POR): recta de regresión G3 ~ G2",
+       subtitle = "Banda gris medio: IC 95% — Banda gris claro: IP 95%",
+       x = "Calificación del segundo período (G2)",
+       y = "Calificación final (G3)")
+```
+
+Para $G2 = 12$ en POR: $\widehat{G3} = $ **`r round(predict(modelo_por, newdata=data.frame(G2=12)),3)`**, IC 95% $[`r round(predict(modelo_por,newdata=data.frame(G2=12),interval="confidence")[,"lwr"],3)`, `r round(predict(modelo_por,newdata=data.frame(G2=12),interval="confidence")[,"upr"],3)`]$, IP 95% $[`r round(predict(modelo_por,newdata=data.frame(G2=12),interval="prediction")[,"lwr"],3)`, `r round(predict(modelo_por,newdata=data.frame(G2=12),interval="prediction")[,"upr"],3)`]$. El IP de POR (≈ `r round(predict(modelo_por,newdata=data.frame(G2=12),interval="prediction")[,"upr"]-predict(modelo_por,newdata=data.frame(G2=12),interval="prediction")[,"lwr"],3)` puntos) es más amplio que el de MAT (≈ `r round(predict(modelo_mat,newdata=data.frame(G2=12),interval="prediction")[,"upr"]-predict(modelo_mat,newdata=data.frame(G2=12),interval="prediction")[,"lwr"],3)`), consistente con el mayor $\hat\sigma$.
+
+## Comparación de ambos modelos {#sec-comparacion-modelos}
+
+```{r tab-comparacion, echo=FALSE}
+# ============================================================
+# RESUMEN COMPARATIVO MAT vs POR
+# ============================================================
+tabla_comp <- data.frame(
+  Métrica = c(
+    "$n$ (obs. con G3 > 0)",
+    "$\\hat{\\beta}_0$",
+    "$\\hat{\\beta}_1$ (G2)",
+    "$SE(\\hat{\\beta}_1)$",
+    "$t_0$ para $\\beta_1$",
+    "$F_0$ (prueba global)",
+    "$R^2$",
+    "$R^2$ ajustado",
+    "$\\hat{\\sigma}$",
+    "IC 95% para $\\beta_1$"
+  ),
+  MAT = c(
+    n_mat, beta0_hat, beta1_hat, se_beta1, t_beta1, F_stat,
+    r2_mat, r2_adj_mat, sigma_hat,
+    paste0("[", round(ic_params["G2",1],4), ", ",
+               round(ic_params["G2",2],4), "]")
+  ),
+  POR = c(
+    n_por, b0p, b1p, se_b1p, t_b1p, F_por,
+    r2_por, r2_adj_por, sigma_por,
+    paste0("[", round(ic_params_por["G2",1],4), ", ",
+               round(ic_params_por["G2",2],4), "]")
+  ),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_comp,
+  caption  = "Cuadro comparativo de los modelos G3 ~ G2 en Matemáticas (MAT) y Portugués (POR).",
+  align    = c("l", "c", "c"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(c(3, 7), bold = TRUE) |>
+  kableExtra::add_footnote(
+    "Ambos modelos son globalmente significativos con p-valor < 0.001.",
+    notation = "symbol"
+  )
+```
+
+```{r fig-comparacion-bandas, fig.cap="Superposición de las rectas de regresión ajustadas para Matemáticas (línea sólida azul marino) y Portugués (línea discontinua gris oscuro), con sus intervalos de predicción al 95% en tonos grises. Las etiquetas de identificación se sitúan al extremo derecho de cada recta, en espacio libre.", fig.width=11, fig.height=6.5, echo=FALSE}
+# ============================================================
+# COMPARACIÓN RECTAS MAT vs POR — paleta sobria (2 tonos)
+# Se usan distintos TIPOS de línea y tonos de GRIS-AZUL
+# para diferenciar, no colores saturados.
+# ============================================================
+
+g2_com <- data.frame(G2 = seq(1, 19, length.out = 200))
+
+ic_mat_com <- as.data.frame(
+  predict(modelo_mat, newdata = g2_com, interval = "prediction", level = 0.95)
+)
+ic_por_com <- as.data.frame(
+  predict(modelo_por, newdata = g2_com, interval = "prediction", level = 0.95)
+)
+
+df_comp <- bind_rows(
+  data.frame(G2 = g2_com$G2, fit = ic_mat_com$fit,
+             lwr = ic_mat_com$lwr, upr = ic_mat_com$upr,
+             Asignatura = "Matemáticas (MAT)"),
+  data.frame(G2 = g2_com$G2, fit = ic_por_com$fit,
+             lwr = ic_por_com$lwr, upr = ic_por_com$upr,
+             Asignatura = "Portugués (POR)")
+)
+
+ggplot(df_comp, aes(x = G2, y = fit, group = Asignatura)) +
+  geom_ribbon(aes(ymin = lwr, ymax = upr, fill = Asignatura),
+              alpha = 0.20, colour = NA) +
+  geom_line(aes(colour = Asignatura, linetype = Asignatura),
+            linewidth = 1.05) +
+  scale_colour_manual(values = c("Matemáticas (MAT)" = paleta$linea,
+                                  "Portugués (POR)"   = paleta$punto)) +
+  scale_fill_manual(values   = c("Matemáticas (MAT)" = paleta$linea,
+                                  "Portugués (POR)"   = paleta$punto)) +
+  scale_linetype_manual(values = c("Matemáticas (MAT)" = "solid",
+                                     "Portugués (POR)"   = "dashed")) +
+  scale_x_continuous(breaks = seq(0, 20, 2), limits = c(0, 20)) +
+  scale_y_continuous(breaks = seq(0, 20, 2), limits = c(0, 20)) +
+  labs(title  = "Comparación de modelos: rectas ajustadas e IP al 95%",
+       x      = "Calificación del segundo período (G2)",
+       y      = "Calificación final estimada (G3)",
+       colour = "Asignatura",
+       fill   = "Asignatura",
+       linetype = "Asignatura") +
+  theme(legend.position = "bottom")
+```
+
+Tabla \@ref(tab:tab-comparacion) y Figura \@ref(fig:fig-comparacion-bandas): MAT supera a POR en $R^2$ (`r r2_mat` vs. `r r2_por`), $F_0$ (`r F_stat` vs. `r F_por`) y precisión residual ($\hat\sigma = `r sigma_hat`$ vs. `r sigma_por`). La pendiente en MAT ($\hat\beta_1 = `r beta1_hat`$) es prácticamente una identidad G2 → G3; la de POR ($`r b1p`$) sugiere ligera compresión hacia la media (fenómeno galtoniano clásico). Ambos modelos son globalmente significativos ($p < 0.001$); la validación de supuestos sigue en la Sección \@ref(sec-diagnostico).

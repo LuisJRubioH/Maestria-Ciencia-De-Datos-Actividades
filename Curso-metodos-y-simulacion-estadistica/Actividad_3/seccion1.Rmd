@@ -1,0 +1,522 @@
+# Exploración de datos
+
+## Descripción del conjunto de datos
+
+Los datos provienen de Cortez y Silva (2008), recogidos en dos instituciones portuguesas de educación secundaria durante 2005–2006. Cada registro contiene las evaluaciones de los tres períodos (**G1**, **G2**, **G3**) junto con variables demográficas, familiares y de comportamiento escolar. Esta actividad construye un **modelo de regresión lineal simple** con G3 como respuesta. Cada dataset tiene `r ncol(mat_raw)` variables: *studentmat* (`r nrow(mat_raw)` registros) y *studentpor* (`r nrow(por_raw)`). La Tabla \@ref(tab:tab-variables) las resume.
+
+```{r tab-variables, echo=FALSE}
+tabla_vars <- data.frame(
+  `N°` = 1:33,
+  Variable = c(
+    "school", "sex", "age", "address", "famsize", "Pstatus",
+    "Medu", "Fedu", "Mjob", "Fjob", "reason", "guardian",
+    "traveltime", "studytime", "failures", "schoolsup", "famsup",
+    "paid", "activities", "nursery", "higher", "internet", "romantic",
+    "famrel", "freetime", "goout", "Dalc", "Walc", "health",
+    "absences", "G1", "G2", "G3"
+  ),
+  Descripción = c(
+    "Escuela del estudiante (GP: Gabriel Pereira; MS: Mousinho da Silveira)",
+    "Sexo del estudiante (F: femenino; M: masculino)",
+    "Edad del estudiante (años)",
+    "Tipo de domicilio (U: urbano; R: rural)",
+    "Tamaño del núcleo familiar (LE3: ≤3 miembros; GT3: >3 miembros)",
+    "Estado de convivencia de los padres (T: juntos; A: separados)",
+    "Nivel educativo de la madre (0: ninguno → 4: superior)",
+    "Nivel educativo del padre (0: ninguno → 4: superior)",
+    "Ocupación de la madre",
+    "Ocupación del padre",
+    "Razón para elegir la escuela",
+    "Tutor del estudiante",
+    "Tiempo de desplazamiento al colegio (1: <15 min → 4: >1 hora)",
+    "Tiempo semanal de estudio (1: <2 h → 4: >10 h)",
+    "Número de reprobaciones previas (0, 1, 2, ≥3)",
+    "Apoyo educativo escolar adicional (yes/no)",
+    "Apoyo educativo familiar (yes/no)",
+    "Clases pagadas adicionales en la asignatura (yes/no)",
+    "Participación en actividades extracurriculares (yes/no)",
+    "Asistió a jardín de infantes (yes/no)",
+    "Desea cursar educación superior (yes/no)",
+    "Acceso a internet en casa (yes/no)",
+    "Tiene relación romántica (yes/no)",
+    "Calidad de las relaciones familiares (1: muy mala → 5: excelente)",
+    "Tiempo libre después del colegio (1: muy bajo → 5: muy alto)",
+    "Frecuencia de salidas con amigos (1: muy baja → 5: muy alta)",
+    "Consumo de alcohol en días de semana (1: muy bajo → 5: muy alto)",
+    "Consumo de alcohol en fines de semana (1: muy bajo → 5: muy alto)",
+    "Estado de salud actual (1: muy malo → 5: muy bueno)",
+    "Número de ausencias escolares",
+    "Calificación del primer período (0–20)",
+    "Calificación del segundo período (0–20)",
+    "Calificación final (0–20) — variable respuesta"
+  ),
+  Naturaleza = c(
+    "Cualitativa nominal binaria","Cualitativa nominal binaria",
+    "Cuantitativa discreta","Cualitativa nominal binaria",
+    "Cualitativa nominal binaria","Cualitativa nominal binaria",
+    "Cualitativa ordinal","Cualitativa ordinal",
+    "Cualitativa nominal","Cualitativa nominal",
+    "Cualitativa nominal","Cualitativa nominal",
+    "Cualitativa ordinal","Cualitativa ordinal","Cuantitativa discreta",
+    "Cualitativa nominal binaria","Cualitativa nominal binaria",
+    "Cualitativa nominal binaria","Cualitativa nominal binaria",
+    "Cualitativa nominal binaria","Cualitativa nominal binaria",
+    "Cualitativa nominal binaria","Cualitativa nominal binaria",
+    "Cualitativa ordinal","Cualitativa ordinal","Cualitativa ordinal",
+    "Cualitativa ordinal","Cualitativa ordinal","Cualitativa ordinal",
+    "Cuantitativa discreta","Cuantitativa discreta","Cuantitativa discreta",
+    "Cuantitativa discreta"
+  ),
+  Rango = c(
+    "{GP, MS}", "{F, M}", "15–22 años",
+    "{U, R}", "{LE3, GT3}", "{T, A}",
+    "0, 1, 2, 3, 4", "0, 1, 2, 3, 4",
+    "5 categorías", "5 categorías", "4 categorías", "{mother, father, other}",
+    "1, 2, 3, 4", "1, 2, 3, 4", "0, 1, 2, ≥3",
+    "{yes, no}", "{yes, no}", "{yes, no}", "{yes, no}", "{yes, no}",
+    "{yes, no}", "{yes, no}", "{yes, no}",
+    "1, 2, 3, 4, 5", "1, 2, 3, 4, 5", "1, 2, 3, 4, 5",
+    "1, 2, 3, 4, 5", "1, 2, 3, 4, 5", "1, 2, 3, 4, 5",
+    "0–93", "0–20", "0–20", "0–20"
+  ),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_vars,
+  caption = "Descripción, naturaleza y rango de las 33 variables del conjunto de datos.",
+  col.names = c("N°", "Variable", "Descripción", "Naturaleza", "Rango"),
+  align = c("c", "l", "l", "l", "l"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    full_width = TRUE,
+    font_size = 12
+  ) |>
+  kableExtra::row_spec(33, bold = TRUE) |>
+  kableExtra::add_footnote(
+    "La variable G3 (resaltada en negrita) constituye la variable respuesta del modelo.
+     Las variables cualitativas ordinales se tratan como numéricas en el análisis de
+     correlación lineal; la limitación de este supuesto se aborda en la Sección 1.5.",
+    notation = "symbol"
+  )
+```
+
+De las 33 variables, 27 son cualitativas —binarias o con escalas ordinales tipo Likert— y 6 son cuantitativas discretas: **age**, **failures**, **absences**, **G1**, **G2**, **G3**. Para el modelo lineal se emplearán únicamente predictores cuantitativos.
+
+## Integridad de los datos
+
+```{r tab-integridad, echo=FALSE}
+# ============================================================
+# RESUMEN DE INTEGRIDAD
+# ============================================================
+
+dup_mat <- sum(duplicated(mat_raw))
+dup_por <- sum(duplicated(por_raw))
+
+na_mat  <- sum(is.na(mat_raw))
+na_por  <- sum(is.na(por_raw))
+
+g3_0_mat <- sum(mat_raw$G3 == 0)
+g3_0_por <- sum(por_raw$G3 == 0)
+
+tabla_integridad <- data.frame(
+  Indicador = c(
+    "Observaciones totales",
+    "Variables",
+    "Registros duplicados",
+    "Valores faltantes (NA)",
+    "Observaciones con G3 = 0",
+    "Porcentaje con G3 = 0"
+  ),
+  Matemáticas = c(nrow(mat_raw), ncol(mat_raw), dup_mat, na_mat, g3_0_mat,
+                   paste0(round(g3_0_mat / nrow(mat_raw) * 100, 2), "%")),
+  Portugués   = c(nrow(por_raw), ncol(por_raw), dup_por, na_por, g3_0_por,
+                   paste0(round(g3_0_por / nrow(por_raw) * 100, 2), "%"))
+)
+
+knitr::kable(
+  tabla_integridad,
+  caption = "Verificación de integridad de los conjuntos de datos.",
+  col.names = c("Indicador", "Matemáticas (MAT)", "Portugués (POR)"),
+  align = c("l", "c", "c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(5:6, bold = TRUE)
+```
+
+La calidad técnica es satisfactoria: **no hay duplicados ni faltantes** (Tabla \@ref(tab:tab-integridad)). La única anomalía son `r g3_0_mat` registros con **G3 = 0** en MAT (`r round(g3_0_mat/nrow(mat_raw)*100,2)`%) y `r g3_0_por` en POR (`r round(g3_0_por/nrow(por_raw)*100,2)`%), cuyo tratamiento se detalla a continuación.
+
+## Tratamiento de observaciones con G3 = 0 {#sec-g3cero}
+
+```{r tab-g3cero, echo=FALSE}
+# ============================================================
+# COMPARATIVA: G3 = 0 vs G3 > 0
+# ============================================================
+
+g3_cero_mat <- mat_raw[mat_raw$G3 == 0, ]
+g3_pos_mat  <- mat_raw[mat_raw$G3 > 0,  ]
+
+resumen_g3cero <- data.frame(
+  Grupo = c("G3 = 0 (MAT)", "G3 > 0 (MAT)",
+            "G3 = 0 (POR)", "G3 > 0 (POR)"),
+  n = c(nrow(g3_cero_mat), nrow(g3_pos_mat),
+        sum(por_raw$G3 == 0), sum(por_raw$G3 > 0)),
+  `Media G1` = c(
+    round(mean(g3_cero_mat$G1, na.rm=TRUE), 2),
+    round(mean(g3_pos_mat$G1,  na.rm=TRUE), 2),
+    round(mean(por_raw$G1[por_raw$G3==0], na.rm=TRUE), 2),
+    round(mean(por_raw$G1[por_raw$G3>0],  na.rm=TRUE), 2)
+  ),
+  `Media G2` = c(
+    round(mean(g3_cero_mat$G2, na.rm=TRUE), 2),
+    round(mean(g3_pos_mat$G2,  na.rm=TRUE), 2),
+    round(mean(por_raw$G2[por_raw$G3==0], na.rm=TRUE), 2),
+    round(mean(por_raw$G2[por_raw$G3>0],  na.rm=TRUE), 2)
+  ),
+  `Media absences` = c(
+    round(mean(g3_cero_mat$absences, na.rm=TRUE), 2),
+    round(mean(g3_pos_mat$absences,  na.rm=TRUE), 2),
+    round(mean(por_raw$absences[por_raw$G3==0], na.rm=TRUE), 2),
+    round(mean(por_raw$absences[por_raw$G3>0],  na.rm=TRUE), 2)
+  ),
+  `Media failures` = c(
+    round(mean(g3_cero_mat$failures, na.rm=TRUE), 2),
+    round(mean(g3_pos_mat$failures,  na.rm=TRUE), 2),
+    round(mean(por_raw$failures[por_raw$G3==0], na.rm=TRUE), 2),
+    round(mean(por_raw$failures[por_raw$G3>0],  na.rm=TRUE), 2)
+  ),
+  check.names = FALSE
+)
+
+knitr::kable(
+  resumen_g3cero,
+  caption = "Comparación de indicadores entre los subgrupos G3 = 0 y G3 > 0.",
+  align = c("l", "c", "c", "c", "c", "c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(c(1, 3), italic = TRUE)
+```
+
+```{r evid-g3cero, echo=FALSE}
+# ============================================================
+# EVIDENCIA DE CODIFICACIÓN CONJUNTA G3 = 0  ↔  absences = 0
+# Se calcula aquí para uso inline en el párrafo siguiente.
+# ============================================================
+fisher_mat <- fisher.test(
+  table(mat_raw$G3 == 0, mat_raw$absences == 0),
+  alternative = "greater"
+)
+fisher_por <- fisher.test(
+  table(por_raw$G3 == 0, por_raw$absences == 0),
+  alternative = "greater"
+)
+
+p_abs0_g3pos_mat <- mean(mat_raw$absences[mat_raw$G3 > 0] == 0) * 100
+p_abs0_g3pos_por <- mean(por_raw$absences[por_raw$G3 > 0] == 0) * 100
+
+g1_g3cero_por <- mean(por_raw$G1[por_raw$G3 == 0])
+g2_g3cero_por <- mean(por_raw$G2[por_raw$G3 == 0])
+```
+
+Los estudiantes con G3 = 0 presentan calificaciones positivas pero **reprobatorias** en G1 y G2 (MAT: $\bar{G}_1 = `r round(mean(g3_cero_mat$G1),2)`$, $\bar{G}_2 = `r round(mean(g3_cero_mat$G2),2)`$; POR: $\bar{G}_1 = `r round(g1_g3cero_por,2)`$, $\bar{G}_2 = `r round(g2_g3cero_por,2)`$): ni ausencias totales **ni aprobaciones previas** (la escala portuguesa exige $\geq 10$). El patrón decisivo está en `absences`: en los `r g3_0_mat + g3_0_por` registros con G3 = 0, ausencias vale 0 en el 100 % de los casos, frente a `r round(p_abs0_g3pos_mat, 1)` % (MAT) y `r round(p_abs0_g3pos_por, 1)` % (POR) entre los G3 > 0. La implicación G3 = 0 $\Rightarrow$ absences = 0 se cumple determinísticamente (Fisher, $p = `r format(fisher_mat$p.value, digits = 2)`$ en MAT, $`r format(fisher_por$p.value, digits = 2)`$ en POR): codificación administrativa de **no-presentación al examen final** (Cortez y Silva, 2008). La convivencia de dos mecanismos generadores rompería la especificación $E[Y_i \mid X_i = x] = \beta_0 + \beta_1 x$ (Montgomery y Runger, 2021, Cap. 11); se **excluyen** estos registros: MAT conserva **`r n_mat`**, POR **`r n_por`**.
+
+## Análisis descriptivo de la variable respuesta
+
+```{r tab-g3-desc, echo=FALSE}
+# ============================================================
+# ESTADÍSTICOS DESCRIPTIVOS DE G3
+# ============================================================
+desc_g3 <- function(x, nombre) {
+  data.frame(
+    Asignatura  = nombre,
+    n           = length(x),
+    Media       = round(mean(x), 3),
+    Mediana     = round(median(x), 3),
+    DE          = round(sd(x), 3),
+    Mínimo      = min(x),
+    Q1          = round(quantile(x, 0.25), 3),
+    Q3          = round(quantile(x, 0.75), 3),
+    Máximo      = max(x),
+    Asimetría   = round(e1071::skewness(x), 3),
+    Curtosis    = round(e1071::kurtosis(x), 3)
+  )
+}
+
+tabla_g3 <- bind_rows(
+  desc_g3(mat$G3, "Matemáticas (MAT)"),
+  desc_g3(por$G3, "Portugués (POR)")
+)
+
+knitr::kable(
+  tabla_g3,
+  caption = "Estadísticos descriptivos de la variable respuesta G3 (con G3 > 0).",
+  align   = c("l", rep("c", 10)),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  )
+```
+
+```{r fig-g3-dist, fig.cap="Distribución de G3 en Matemáticas (izquierda) y Portugués (derecha), comparada mediante diagrama de caja superpuesto a la distribución de frecuencias. El rombo señala la media; la barra central de la caja marca la mediana.", fig.width=11, fig.height=5, echo=FALSE}
+# ============================================================
+# BOXPLOT + PUNTOS JITTER (alternativa sobria al histograma+densidad)
+# ============================================================
+
+plot_g3_box <- function(datos, titulo) {
+  media_g3   <- mean(datos$G3)
+  mediana_g3 <- median(datos$G3)
+
+  ggplot(datos, aes(x = "", y = G3)) +
+    geom_jitter(width = 0.25, height = 0.10,
+                alpha = 0.25, size = 1.2,
+                colour = paleta$sombra) +
+    geom_boxplot(width = 0.30, fill = "white",
+                 colour = paleta$punto, linewidth = 0.6,
+                 outlier.shape = NA, alpha = 0.85) +
+    stat_summary(fun = mean, geom = "point",
+                 shape = 23, size = 3.2,
+                 fill = paleta$destacado,
+                 colour = paleta$destacado) +
+    scale_y_continuous(breaks = seq(0, 20, 2), limits = c(0, 20)) +
+    labs(title = titulo,
+         subtitle = paste0("Media = ", round(media_g3, 2),
+                           "  |  Mediana = ", round(mediana_g3, 2),
+                           "  |  n = ", nrow(datos)),
+         x = NULL, y = "Calificación final (G3)") +
+    coord_flip()
+}
+
+p1 <- plot_g3_box(mat, "Matemáticas (MAT)")
+p2 <- plot_g3_box(por, "Portugués (POR)")
+
+p1 / p2
+```
+
+Tabla \@ref(tab:tab-g3-desc) y Figura \@ref(fig:fig-g3-dist): MAT con media **`r round(mean(mat$G3),2)`** (DE = `r round(sd(mat$G3),2)`) y asimetría positiva (`r round(e1071::skewness(mat$G3),3)`); POR con media **`r round(mean(por$G3),2)`** (DE = `r round(sd(por$G3),2)`), más compacta y simétrica. La curtosis negativa en ambos casos indica distribuciones platicúrticas.
+
+## Estadísticos descriptivos de las variables cuantitativas candidatas
+
+```{r tab-desc-quant, echo=FALSE}
+# ============================================================
+# ESTADÍSTICOS DESCRIPTIVOS — VARIABLES CUANTITATIVAS
+# ============================================================
+
+vars_q <- c("age", "Medu", "Fedu", "traveltime", "studytime",
+            "failures", "famrel", "freetime", "goout",
+            "Dalc", "Walc", "health", "absences", "G1", "G2")
+
+calc_desc <- function(df, vars, etiqueta) {
+  purrr::map_dfr(vars, function(v) {
+    x <- df[[v]]
+    data.frame(
+      Dataset   = etiqueta,
+      Variable  = v,
+      n         = sum(!is.na(x)),
+      Media     = round(mean(x, na.rm = TRUE), 2),
+      Mediana   = round(median(x, na.rm = TRUE), 2),
+      DE        = round(sd(x, na.rm = TRUE), 2),
+      Mínimo    = round(min(x, na.rm = TRUE), 2),
+      Q1        = round(quantile(x, 0.25, na.rm = TRUE), 2),
+      Q3        = round(quantile(x, 0.75, na.rm = TRUE), 2),
+      Máximo    = round(max(x, na.rm = TRUE), 2),
+      Asimetría = round(e1071::skewness(x, na.rm = TRUE), 3)
+    )
+  })
+}
+
+desc_mat <- calc_desc(mat, vars_q, "MAT")
+desc_por <- calc_desc(por, vars_q, "POR")
+
+desc_comb <- bind_rows(desc_mat, desc_por) |>
+  arrange(Variable, Dataset)
+rownames(desc_comb) <- NULL
+
+knitr::kable(
+  desc_comb,
+  caption = "Resumen descriptivo de las variables cuantitativas candidatas como predictoras,
+             por conjunto de datos (G3 > 0).",
+  align   = c("l", "l", rep("c", 9)),
+  booktabs = TRUE,
+  digits  = 2,
+  row.names = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    full_width = TRUE,
+    font_size  = 11
+  ) |>
+  kableExtra::column_spec(1, bold = TRUE) |>
+  kableExtra::add_footnote(
+    "Las escalas ordinales Medu, Fedu, traveltime, studytime, famrel, freetime,
+     goout, Dalc, Walc y health se tratan como numéricas bajo el supuesto de
+     equidistancia entre niveles.",
+    notation = "symbol"
+  )
+```
+
+De la Tabla \@ref(tab:tab-desc-quant) destacan: **G1** y **G2** concentran mayor dispersión (rango 0–20); **failures** es fuertemente asimétrica; las ordinales (**famrel**, **freetime**, **health**) se comprimen en niveles altos, limitando su capacidad discriminatoria.
+
+## Análisis de correlación con la variable respuesta
+
+```{r tab-correlaciones, echo=FALSE}
+# ============================================================
+# CORRELACIONES DE PEARSON Y SPEARMAN CON G3
+# ============================================================
+
+cor_tabla <- purrr::map_dfr(vars_q, function(v) {
+  r_mat <- cor(mat[[v]], mat$G3, method = "pearson",  use = "complete.obs")
+  s_mat <- cor(mat[[v]], mat$G3, method = "spearman", use = "complete.obs")
+  r_por <- cor(por[[v]], por$G3, method = "pearson",  use = "complete.obs")
+  s_por <- cor(por[[v]], por$G3, method = "spearman", use = "complete.obs")
+
+  data.frame(
+    Variable    = v,
+    `r MAT`     = round(r_mat, 4),
+    `ρ MAT`     = round(s_mat, 4),
+    `r POR`     = round(r_por, 4),
+    `ρ POR`     = round(s_por, 4),
+    check.names = FALSE
+  )
+}) |>
+  arrange(desc(abs(`r MAT`)))
+
+knitr::kable(
+  cor_tabla,
+  caption = "Correlaciones de Pearson (r) y Spearman (ρ) entre las variables cuantitativas
+             y G3, ordenadas por |r| descendente en Matemáticas.",
+  align   = c("l", rep("c", 4)),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(1:2, bold = TRUE) |>
+  kableExtra::row_spec(3, italic = TRUE) |>
+  kableExtra::add_footnote(
+    "En negrita: predictores seleccionados para modelación (G2 y G1).
+     En itálica: mejor predictor no-calificación (failures).",
+    notation = "symbol"
+  )
+```
+
+```{r fig-corrplot, fig.cap="Matriz de correlaciones de Pearson entre las variables cuantitativas y G3, para Matemáticas (izquierda) y Portugués (derecha). La escala monocromática va de gris claro (correlación negativa) a azul marino (correlación positiva).", fig.width=14, fig.height=6.5, echo=FALSE}
+# ============================================================
+# MAPA DE CALOR CON ggcorrplot (estilo sobrio, sin fondos de color)
+# ============================================================
+
+todas_vars <- c(vars_q, "G3")
+
+mat_cor_mat <- cor(mat[, todas_vars], use = "complete.obs", method = "pearson")
+mat_cor_por <- cor(por[, todas_vars], use = "complete.obs", method = "pearson")
+
+# Paleta monocromática gris → azul marino
+p_corr_mat <- ggcorrplot::ggcorrplot(
+  mat_cor_mat,
+  type       = "lower",
+  lab        = TRUE,
+  lab_size   = 2.7,
+  colors     = c("#922B21", "#FFFFFF", "#1F4E79"),
+  tl.cex     = 9,
+  tl.srt     = 45,
+  ggtheme    = tema_sobrio,
+  title      = "Matemáticas (MAT)"
+) +
+  theme(legend.position = "right",
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+p_corr_por <- ggcorrplot::ggcorrplot(
+  mat_cor_por,
+  type       = "lower",
+  lab        = TRUE,
+  lab_size   = 2.7,
+  colors     = c("#922B21", "#FFFFFF", "#1F4E79"),
+  tl.cex     = 9,
+  tl.srt     = 45,
+  ggtheme    = tema_sobrio,
+  title      = "Portugués (POR)"
+) +
+  theme(legend.position = "right",
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+p_corr_mat | p_corr_por
+```
+
+Tabla \@ref(tab:tab-correlaciones) y Figura \@ref(fig:fig-corrplot): **G2** presenta la máxima correlación con G3 en ambos datasets ($r = `r round(cor(mat$G2, mat$G3), 4)`$ en MAT; $`r round(cor(por$G2, por$G3), 4)`$ en POR), seguida de **G1** ($r = `r round(cor(mat$G1, mat$G3), 4)`$ y $`r round(cor(por$G1, por$G3), 4)`$). La concordancia entre Pearson y Spearman ofrece robustez ante outliers y relaciones monótonas no estrictamente lineales —no ante no-normalidad, supuesto que solo afecta la inferencia sobre $\rho$ y no el cálculo de $r$ (Faraway, 2014, §3.7)—. El mejor predictor no-calificación es **failures** ($r = `r round(cor(mat$failures, mat$G3), 4)`$ en MAT; $`r round(cor(por$failures, por$G3), 4)`$ en POR); en POR se suman **studytime** ($r = `r round(cor(por$studytime, por$G3), 4)`$) y **Medu** ($r = `r round(cor(por$Medu, por$G3), 4)`$). El resto presenta correlaciones débiles ($|r| < 0.22$ en MAT; $|r| < 0.27$ en POR).
+
+## Selección de la variable predictora {#sec-predictor}
+
+```{r fig-scatter, fig.cap="Diagramas de dispersión de G3 frente a los dos predictores seleccionados, G2 (fila superior) y failures (fila inferior), en Matemáticas (columna izquierda) y Portugués (columna derecha). Línea azul marino: ajuste por mínimos cuadrados; banda gris: intervalo de confianza al 95% para la media condicional.", fig.width=12, fig.height=10, echo=FALSE}
+# ============================================================
+# DISPERSOGRAMAS G3 VS PREDICTORES (paleta sobria)
+# La anotación del r(Pearson) se ubica en una esquina libre
+# para no superponerse con puntos ni con la recta de regresión.
+# ============================================================
+
+scatter_plot <- function(datos, x_var, titulo, x_lab) {
+  r_val <- round(cor(datos[[x_var]], datos$G3), 3)
+
+  # Posición de la anotación: esquina superior izquierda, con margen
+  x_min <- min(datos[[x_var]], na.rm = TRUE)
+  x_rng <- diff(range(datos[[x_var]], na.rm = TRUE))
+  x_pos <- x_min + 0.03 * x_rng
+  y_pos <- 19
+
+  ggplot(datos, aes(x = .data[[x_var]], y = G3)) +
+    geom_jitter(width = 0.15, height = 0.15,
+                alpha = 0.40, size = 1.7,
+                colour = paleta$punto) +
+    geom_smooth(method  = "lm", formula = y ~ x,
+                se = TRUE,
+                colour = paleta$linea,
+                fill   = paleta$banda_ic,
+                linewidth = 1.0, alpha = 0.45) +
+    annotate("label", x = x_pos, y = y_pos,
+             label = paste0("r = ", r_val),
+             hjust = 0, vjust = 1,
+             size = 3.4, fontface = "bold",
+             colour = paleta$linea,
+             fill   = "white",
+             label.size = 0.3,
+             label.r = unit(0.05, "lines")) +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 6)) +
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 6),
+                       limits = c(0, 20)) +
+    labs(title = titulo, x = x_lab, y = "Calificación final (G3)")
+}
+
+p_g2_mat   <- scatter_plot(mat, "G2", "MAT: G3 ~ G2",
+                           "Calificación segundo período (G2)")
+p_g2_por   <- scatter_plot(por, "G2", "POR: G3 ~ G2",
+                           "Calificación segundo período (G2)")
+p_fail_mat <- scatter_plot(mat, "failures", "MAT: G3 ~ failures",
+                           "Reprobaciones previas (failures)")
+p_fail_por <- scatter_plot(por, "failures", "POR: G3 ~ failures",
+                           "Reprobaciones previas (failures)")
+
+(p_g2_mat | p_g2_por) / (p_fail_mat | p_fail_por)
+```
+
+La Figura \@ref(fig:fig-scatter) confirma la **linealidad nítida** de G2 → G3 en ambas asignaturas (puntos agrupados, banda estrecha); failures → G3 es lineal y negativa con mayor dispersión. Se adopta como **predictor principal** a **G2** (máxima correlación, relación lineal nítida) y como **alternativo en la app interactiva** a **failures** (mejor predictor no-calificación, interpretable para intervenciones educativas). La alta correlación $r \approx 0.93$–$0.97$ refleja la continuidad entre períodos de una misma asignatura: el $R^2$ será alto, pero Cortez y Silva (2008) advierten que la superioridad predictiva pierde utilidad cuando G2 no está disponible con anticipación —tensión ajuste vs. utilidad retomada en §\@ref(sec-critica)—.
+
+```{r guardar-datos, include=FALSE}
+# ============================================================
+# PERSISTENCIA DE LOS CONJUNTOS DEPURADOS
+# ============================================================
+# Los objetos 'mat' y 'por' persisten en el entorno (new_session: no)
+# para las secciones siguientes. Adicionalmente se guardan en disco.
+saveRDS(mat, "data/mat_clean.rds")
+saveRDS(por, "data/por_clean.rds")
+```

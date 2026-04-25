@@ -1,0 +1,691 @@
+# **Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis**
+
+## **Problema 5**
+
+**Caso:** Se asume que la presión arterial en la población general sigue una distribución
+normal con media 120 mmHg y desviación estándar 15 mmHg. Un laboratorio desea
+evaluar si la media de presión arterial en un grupo de pacientes con cierta enfermedad
+difiere significativamente de 120 mmHg, mediante una prueba t para una muestra,
+asumiendo varianza poblacional desconocida.
+
+**Objetivo del caso:** Determinar de manera informada un tamaño de muestra y un nivel de
+significancia adecuados para realizar el estudio.
+
+Para lograr este objetivo, analiza la relación entre la potencia estadística, el tamaño del
+efecto y el tamaño muestral.
+
+- Fija inicialmente el nivel de significancia en $\alpha = 0.1$.
+- Evalúa la potencia estadística para diferentes tamaños muestrales $n = 10, 20, 30,
+  40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900$ y $1{,}000$.
+- Considera tres tamaños del efecto: $d = 0.2$ (pequeño), $d = 0.5$ (mediano), $d = 0.8$
+  (grande).
+- Visualiza los resultados:
+  + Eje $X$: tamaño muestral.
+  + Eje $Y$: potencia estadística.
+  + Traza una curva para cada tamaño del efecto.
+- Utiliza las funciones `power.t.test` y `ggplot2` en R para construir los gráficos.
+- Posteriormente, repite el análisis para $\alpha = 0.05$ y $\alpha = 0.01$ y compara los tres
+  gráficos.
+
+Preguntas orientadoras para el análisis:
+
+- ¿Qué tamaño de muestra se requiere para alcanzar una potencia del 80% al detectar
+  un efecto grande ($d = 0.8$)?
+- ¿Cuántas observaciones se necesitan para detectar un efecto mediano ($d = 0.5$) con
+  una potencia adecuada?
+- Para un efecto grande, ¿qué sucede al aumentar el tamaño de muestra más allá de
+  300 observaciones? ¿Es eficiente?
+- Explica cómo influye el tamaño del efecto sobre la potencia estadística.
+- ¿Cómo afecta el tamaño muestral a la potencia estadística?
+- ¿En qué punto aumentar el tamaño muestral deja de proporcionar beneficios
+  significativos en la potencia?
+
+Con base en los gráficos obtenidos y tu análisis, propón un tamaño de muestra y un nivel
+de significancia apropiados para diseñar el estudio.
+
+
+Sea $X_1, X_2, \ldots, X_n \overset{\text{i.i.d.}}{\sim} N(\mu, \sigma^2)$ con
+$\sigma^2$ desconocida. El sistema de hipótesis es:
+
+**Nota sobre la elección de la prueba.** El enunciado indica que
+$\sigma = 15$ mmHg en la población general, pero especifica que la
+prueba debe realizarse "asumiendo varianza poblacional desconocida"
+(prueba $t$). Esta elección es metodológicamente apropiada: el valor
+$\sigma = 15$ proviene de la población general sana, y no hay garantía
+de que la variabilidad de la presión arterial en el grupo de pacientes
+con la enfermedad sea idéntica. Al utilizar la prueba $t$ con la
+desviación estándar muestral $S$, se evita el supuesto de que la
+varianza del grupo enfermo coincide con la de la población de
+referencia, lo que hace la inferencia más robusta. El valor
+$\sigma = 15$ se utiliza exclusivamente para el cálculo del tamaño del
+efecto de Cohen $d = |\delta|/\sigma$, donde cumple el rol de unidad de
+estandarización.
+
+$$H_0: \mu = \mu_0 = 120 \text{ mmHg} \qquad \text{vs} \qquad H_1: \mu \neq \mu_0$$
+
+El estadístico de prueba es:
+ 
+$$T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}}$$
+
+donde $\bar{X} = n^{-1}\sum_{i=1}^n X_i$ es la media muestral y
+$S = \sqrt{(n-1)^{-1}\sum_{i=1}^n (X_i - \bar{X})^2}$ es la desviación
+estándar muestral. Bajo $H_0$, el estadístico sigue **exactamente**:
+
+$$T \sim t_{n-1}$$
+
+La región de rechazo al nivel $\alpha$ es:
+
+$$\mathcal{R}_\alpha = \left\{|T| > t_{\alpha/2,\, n-1}\right\}$$
+
+donde $t_{\alpha/2,\, n-1} = F_{t_{n-1}}^{-1}(1 - \alpha/2)$ es el cuantil de
+orden $1 - \alpha/2$ de la distribución $t$ de Student con $n-1$ grados de
+libertad.
+
+### Errores de decisión: Tipo I y Tipo II
+
+**Definición.** Sea $\mathcal{R}_\alpha$ la región de rechazo. Se definen:
+
+- **Error de Tipo I** ($\alpha$): probabilidad de rechazar $H_0$ cuando es
+  verdadera:
+
+$$\alpha = P(T \in \mathcal{R}_\alpha \mid H_0 \text{ verdadera}) = P\!\left(|T| > t_{\alpha/2,\,n-1} \mid T \sim t_{n-1}\right)$$
+
+- **Error de Tipo II** ($\beta$): probabilidad de no rechazar $H_0$ cuando es
+  falsa, es decir, cuando $\mu = \mu_1 \neq \mu_0$:
+
+$$\beta(\delta) = P(T \notin \mathcal{R}_\alpha \mid \mu = \mu_0 + \delta)$$
+
+donde $\delta = \mu_1 - \mu_0 \neq 0$ es la diferencia real entre la media
+verdadera y la hipotética.
+
+Existe una relación de compromiso fundamental: para $n$ fijo, reducir $\alpha$
+incrementa $\beta$ y viceversa. Solo aumentando $n$ es posible reducir
+simultáneamente ambos errores.
+
+### Potencia estadística
+
+**Definición.** La **potencia** de la prueba ante la alternativa $\mu_1 = \mu_0 + \delta$ es:
+
+$$\pi(\delta, n, \alpha) = 1 - \beta(\delta) = P\!\left(|T| > t_{\alpha/2,\,n-1} \mid \mu = \mu_0 + \delta\right)$$
+
+La potencia mide la capacidad de la prueba para detectar una diferencia real $\delta \neq 0$.
+Un valor de referencia ampliamente aceptado es $\pi \geq 0.80$ (Cohen, 1988), que implica un riesgo de error tipo II de a lo sumo el $20\%$.
+
+### Tamaño del efecto de Cohen
+
+**Definición.** El **tamaño del efecto estandarizado** (Cohen's $d$) para la
+prueba $t$ de una muestra se define como:
+
+$$d = \frac{|\mu_1 - \mu_0|}{\sigma} = \frac{|\delta|}{\sigma}$$
+
+Cohen (1988) propone la siguiente clasificación empírica:
+
+| Tamaño del efecto | Valor de $d$ | Diferencia en este contexto ($\sigma = 15$) |
+|:---:|:---:|:---:|
+| Pequeño | $d = 0.2$ | $\delta = 3$ mmHg |
+| Mediano | $d = 0.5$ | $\delta = 7.5$ mmHg |
+| Grande | $d = 0.8$ | $\delta = 12$ mmHg |
+
+Esta estandarización hace que la potencia dependa de $d$, $n$ y $\alpha$,
+pero no de las unidades de medida ni del valor particular de $\sigma$.
+
+### Función de potencia exacta: distribución $t$ no central
+
+Bajo $H_1$: $\mu = \mu_0 + \delta$, el estadístico $T$ sigue una distribución
+$t$ **no central**. Para establecerlo rigurosamente, se escribe:
+
+$$T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}} = \frac{(\bar{X} - \mu_1)/(\sigma/\sqrt{n}) + \delta\sqrt{n}/\sigma}{S/\sigma}$$
+
+El numerador estandarizado sigue $N(\lambda, 1)$ con parámetro de no
+centralidad:
+
+$$\lambda = \frac{\delta\sqrt{n}}{\sigma} = d\sqrt{n}$$
+
+y el denominador satisface $S/\sigma = \sqrt{(n-1)S^2/\sigma^2/(n-1)}$ con
+$(n-1)S^2/\sigma^2 \sim \chi^2_{n-1}$ independiente del numerador. Por lo
+tanto:
+
+$$T \mid H_1 \sim t_{n-1}(\lambda), \qquad \lambda = d\sqrt{n}$$
+
+donde $t_{n-1}(\lambda)$ denota la distribución $t$ de Student no central con
+$n-1$ grados de libertad y parámetro de no centralidad $\lambda$.
+
+La función de potencia exacta es:
+
+$$\pi(d, n, \alpha) = F_{t_{n-1}(\lambda)}\!\left(-t_{\alpha/2,\,n-1}\right) + 1 - F_{t_{n-1}(\lambda)}\!\left(t_{\alpha/2,\,n-1}\right)$$
+
+donde $F_{t_{n-1}(\lambda)}$ es la función de distribución acumulada de la
+$t$ no central y $\lambda = d\sqrt{n}$.
+
+**Propiedades analíticas de la función de potencia:**
+
+1. $\pi(d, n, \alpha)$ es **estrictamente creciente** en $d$ para $d > 0$, $n$ y
+   $\alpha$ fijos: a mayor efecto, mayor potencia.
+2. $\pi(d, n, \alpha)$ es **estrictamente creciente** en $n$ para $d > 0$,
+   $\alpha$ fijos: a mayor muestra, mayor potencia.
+3. $\pi(d, n, \alpha)$ es **estrictamente creciente** en $\alpha$ para $d > 0$,
+   $n$ fijos: relajar el criterio de rechazo aumenta la potencia pero también
+   el error tipo I.
+4. $\lim_{n \to \infty} \pi(d, n, \alpha) = 1$ para todo $d > 0$ y $\alpha \in (0,1)$:
+   la prueba $t$ es **consistente**.
+5. $\pi(0, n, \alpha) = \alpha$ para todo $n$: cuando $H_0$ es verdadera, la
+   probabilidad de rechazo es exactamente $\alpha$ (nivel nominal).
+
+## **Análisis computacional**
+
+### Configuración general
+
+```{r setup-problema5, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Parámetros del estudio
+mu_0    <- 120        # media bajo H_0 (mmHg)
+sigma   <- 15         # desviación estándar poblacional (mmHg)
+
+# Tamaños muestrales a evaluar
+tamanos <- c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+             200, 300, 400, 500, 600, 700, 800, 900, 1000)
+
+# Tamaños del efecto (Cohen's d)
+efectos <- c(0.2, 0.5, 0.8)
+
+# Niveles de significancia
+alphas <- c(0.10, 0.05, 0.01)
+
+# -----------------------------------------------------------
+# Calcular la potencia para todas las combinaciones posibles
+# usando power.t.test (implementa internamente la t no central)
+# -----------------------------------------------------------
+grid_completo <- expand.grid(
+  n     = tamanos,
+  d     = efectos,
+  alpha = alphas
+) %>%
+  mutate(
+    potencia = mapply(
+      function(n, d, a) {
+        power.t.test(
+          n           = n,
+          delta       = d,      # Cohen's d (sd = 1 por defecto en esta escala)
+          sd          = 1,
+          sig.level   = a,
+          type        = "one.sample",
+          alternative = "two.sided"
+        )$power
+      },
+      n, d, alpha
+    ),
+    delta_mmHg   = d * sigma,   # diferencia real en mmHg
+    lambda       = d * sqrt(n), # parámetro de no centralidad
+    Efecto       = factor(
+      d,
+      levels = c(0.2, 0.5, 0.8),
+      labels = c("d = 0.2  (pequeño)",
+                 "d = 0.5  (mediano)",
+                 "d = 0.8  (grande)")
+    ),
+    Alpha_label  = factor(
+      alpha,
+      levels = c(0.10, 0.05, 0.01),
+      labels = c("\u03b1 = 0.10", "\u03b1 = 0.05", "\u03b1 = 0.01")
+    )
+  )
+```
+
+```{r tabla-muestra-potencia, echo=FALSE}
+# Tabla de muestra: potencia para n seleccionados y alpha = 0.05
+tab_muestra <- grid_completo %>%
+  filter(alpha == 0.05, n %in% c(10, 30, 50, 100, 200, 500, 1000)) %>%
+  select(n, d, potencia) %>%
+  mutate(potencia = round(potencia, 4)) %>%
+  pivot_wider(names_from = d, values_from = potencia) %>%
+  rename(
+    `$n$`              = n,
+    `$d = 0.2$`        = `0.2`,
+    `$d = 0.5$`        = `0.5`,
+    `$d = 0.8$`        = `0.8`
+  )
+
+kbl(
+  tab_muestra,
+  caption = "Potencia de la prueba $t$ de una muestra ($\\alpha = 0.05$, dos colas) para tamaños muestrales seleccionados y tres tamaños del efecto.",
+  align   = "c",
+  escape  = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Tamaño del efecto (Cohen's $d$)" = 3),
+                   escape = FALSE)
+```
+
+La Tabla \@ref(tab:tabla-muestra-potencia) permite observar, para $\alpha = 0.05$, cómo la potencia crece con $n$ y con $d$. Para $d = 0.2$, incluso con $n = 1{,}000$ la potencia apenas supera el $96\%$, mientras que para $d = 0.8$ se alcanza el $80\%$ con muestras relativamente pequeñas.
+
+### Análisis de potencia para $\alpha = 0.10$
+
+```{r fig-potencia-alpha010, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Curvas de potencia para $\\alpha = 0.10$ (prueba $t$ de una muestra, dos colas). La línea horizontal punteada indica la potencia de referencia del $80\\%$ (Cohen, 1988). La no centralidad es $\\lambda = d\\sqrt{n}$."}
+datos_010 <- filter(grid_completo, alpha == 0.10)
+
+ggplot(datos_010, aes(x = n, y = potencia, color = Efecto, linetype = Efecto)) +
+  geom_line(linewidth = 1.1) +
+  geom_point(size = 1.8, alpha = 0.7) +
+  geom_hline(yintercept = 0.80, linetype = "dashed",
+             color = "black", linewidth = 0.8) +
+  annotate("text", x = 980, y = 0.815,
+           label = "Potencia = 0.80", hjust = 1, size = 3.4) +
+  scale_x_continuous(breaks = tamanos,
+                     labels = ifelse(tamanos %% 100 == 0 | tamanos <= 100,
+                                     tamanos, ""),
+                     guide  = guide_axis(angle = 45)) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.10),
+                     labels = scales::percent_format(accuracy = 1)) +
+  scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A")) +
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  labs(
+    x      = TeX("Tamaño muestral ($n$)"),
+    y      = TeX("Potencia $\\pi(d, n, \\alpha)$"),
+    color  = "Tamaño del efecto",
+    linetype = "Tamaño del efecto"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    axis.text.x      = element_text(size = 8)
+  )
+```
+
+### Análisis de potencia para $\alpha = 0.05$
+
+```{r fig-potencia-alpha005, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Curvas de potencia para $\\alpha = 0.05$ (prueba $t$ de una muestra, dos colas). Comparadas con la Figura \\ref{fig:fig-potencia-alpha010}, las curvas se desplazan hacia la derecha: se requieren muestras más grandes para alcanzar la misma potencia."}
+datos_005 <- filter(grid_completo, alpha == 0.05)
+
+ggplot(datos_005, aes(x = n, y = potencia, color = Efecto, linetype = Efecto)) +
+  geom_line(linewidth = 1.1) +
+  geom_point(size = 1.8, alpha = 0.7) +
+  geom_hline(yintercept = 0.80, linetype = "dashed",
+             color = "black", linewidth = 0.8) +
+  annotate("text", x = 980, y = 0.815,
+           label = "Potencia = 0.80", hjust = 1, size = 3.4) +
+  scale_x_continuous(breaks = tamanos,
+                     labels = ifelse(tamanos %% 100 == 0 | tamanos <= 100,
+                                     tamanos, ""),
+                     guide  = guide_axis(angle = 45)) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.10),
+                     labels = scales::percent_format(accuracy = 1)) +
+  scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A")) +
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  labs(
+    x      = TeX("Tamaño muestral ($n$)"),
+    y      = TeX("Potencia $\\pi(d, n, \\alpha)$"),
+    color  = "Tamaño del efecto",
+    linetype = "Tamaño del efecto"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    axis.text.x      = element_text(size = 8)
+  )
+```
+
+### Análisis de potencia para $\alpha = 0.01$
+
+```{r fig-potencia-alpha001, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Curvas de potencia para $\\alpha = 0.01$ (prueba $t$ de una muestra, dos colas). El nivel más restrictivo desplaza notablemente las curvas a la derecha, penalizando especialmente la detección de efectos pequeños ($d = 0.2$)."}
+datos_001 <- filter(grid_completo, alpha == 0.01)
+
+ggplot(datos_001, aes(x = n, y = potencia, color = Efecto, linetype = Efecto)) +
+  geom_line(linewidth = 1.1) +
+  geom_point(size = 1.8, alpha = 0.7) +
+  geom_hline(yintercept = 0.80, linetype = "dashed",
+             color = "black", linewidth = 0.8) +
+  annotate("text", x = 980, y = 0.815,
+           label = "Potencia = 0.80", hjust = 1, size = 3.4) +
+  scale_x_continuous(breaks = tamanos,
+                     labels = ifelse(tamanos %% 100 == 0 | tamanos <= 100,
+                                     tamanos, ""),
+                     guide  = guide_axis(angle = 45)) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.10),
+                     labels = scales::percent_format(accuracy = 1)) +
+  scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A")) +
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  labs(
+    x      = TeX("Tamaño muestral ($n$)"),
+    y      = TeX("Potencia $\\pi(d, n, \\alpha)$"),
+    color  = "Tamaño del efecto",
+    linetype = "Tamaño del efecto"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    axis.text.x      = element_text(size = 8)
+  )
+```
+
+### Comparación de los tres niveles de significancia
+
+```{r fig-comparacion-alphas, echo=FALSE, fig.width=11, fig.height=9, fig.cap="Comparación de las curvas de potencia para $\\alpha \\in \\{0.10,\\, 0.05,\\, 0.01\\}$ (columnas) y $d \\in \\{0.2,\\, 0.5,\\, 0.8\\}$ (filas). Cada panel muestra la función de potencia $\\pi(d, n, \\alpha) = F_{t_{n-1}(d\\sqrt{n})}(-t_{\\alpha/2,n-1}) + 1 - F_{t_{n-1}(d\\sqrt{n})}(t_{\\alpha/2,n-1})$. La línea horizontal punteada negra indica $\\pi = 0.80$."}
+ggplot(grid_completo,
+       aes(x = n, y = potencia, color = Alpha_label, linetype = Alpha_label)) +
+  geom_line(linewidth = 1.0) +
+  geom_point(size = 1.4, alpha = 0.6) +
+  geom_hline(yintercept = 0.80, linetype = "dashed",
+             color = "black", linewidth = 0.7) +
+  facet_grid(
+    rows = vars(Efecto),
+    cols = vars(Alpha_label),
+    labeller = label_value
+  ) +
+  scale_x_continuous(
+    breaks = c(10, 100, 300, 600, 1000),
+    guide  = guide_axis(angle = 45)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    breaks = seq(0, 1, 0.20),
+    labels = scales::percent_format(accuracy = 1)
+  ) +
+  scale_color_manual(values = c("#D73027", "#4575B4", "#1A9641")) +
+  scale_linetype_manual(values = c("solid", "dashed", "dotted")) +
+  labs(
+    x        = TeX("Tamaño muestral ($n$)"),
+    y        = "Potencia",
+    color    = "Nivel de significancia",
+    linetype = "Nivel de significancia"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    strip.text       = element_text(face = "bold", size = 9)
+  )
+```
+
+La Figura \@ref(fig:fig-comparacion-alphas) sintetiza el efecto conjunto de los
+tres factores sobre la potencia. Se observa claramente que: (i) filas inferiores
+(mayor $d$) alcanzan $\pi = 0.80$ con $n$ menores; (ii) columnas de la derecha
+(menor $\alpha$) desplazan las curvas hacia la derecha, requiriendo muestras más
+grandes para la misma potencia.
+
+## **Tabla de tamaños mínimos de muestra**
+
+```{r tabla-n-minimo, echo=FALSE}
+# Calcular n mínimo para potencia del 80% y 90%
+n_minimo <- expand.grid(d = efectos, alpha = alphas) %>%
+  mutate(
+    n_80 = mapply(function(d, a) {
+      ceiling(
+        power.t.test(
+          delta       = d,
+          sd          = 1,
+          sig.level   = a,
+          power       = 0.80,
+          type        = "one.sample",
+          alternative = "two.sided"
+        )$n
+      )
+    }, d, alpha),
+    n_90 = mapply(function(d, a) {
+      ceiling(
+        power.t.test(
+          delta       = d,
+          sd          = 1,
+          sig.level   = a,
+          power       = 0.90,
+          type        = "one.sample",
+          alternative = "two.sided"
+        )$n
+      )
+    }, d, alpha),
+    delta_mmHg = d * sigma
+  ) %>%
+  arrange(alpha, d) %>%
+  mutate(
+    alpha_label = paste0("$\\alpha = ", alpha, "$"),
+    d_label     = paste0("$d = ", d, "$"),
+    delta_label = paste0("$\\delta = ", delta_mmHg, "$ mmHg")
+  ) %>%
+  select(alpha_label, d_label, delta_label, n_80, n_90)
+
+kbl(
+  n_minimo,
+  caption = "Tamaño mínimo de muestra requerido para alcanzar una potencia del $80\\%$ y $90\\%$ en la prueba $t$ de una muestra (dos colas), para distintos niveles de significancia $\\alpha$ y tamaños del efecto $d$. La diferencia real $\\delta = d \\cdot \\sigma$ se expresa en mmHg con $\\sigma = 15$.",
+  col.names = c("$\\alpha$", "$d$ (Cohen)", "$\\delta$",
+                "$n$ mín. ($\\pi = 0.80$)", "$n$ mín. ($\\pi = 0.90$)"),
+  align   = "c",
+  escape  = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  pack_rows("$\\alpha = 0.01$", 1, 3, escape = FALSE) %>%
+  pack_rows("$\\alpha = 0.05$", 4, 6, escape = FALSE) %>%
+  pack_rows("$\\alpha = 0.10$", 7, 9, escape = FALSE)
+```
+
+## **Curva de rendimientos marginales de la potencia**
+
+Para cuantificar rigurosamente cuándo el aumento de $n$ deja de ser
+eficiente, se define la **ganancia marginal de potencia**:
+
+$$\Delta\pi(n) = \pi(d, n+1, \alpha) - \pi(d, n, \alpha)$$
+
+Dado que $\pi(d, n, \alpha)$ es cóncava en $n$ para $d$ y $\alpha$ fijos
+(propiedad observada empíricamente en la simulación y consistente con el
+comportamiento asintótico de la función de potencia de la $t$ no central,
+ya que $\lambda = d\sqrt{n}$ crece a tasa sublineal mientras la potencia
+se acota superiormente por $1$), $\Delta\pi(n)$ es decreciente en $n$. La Figura
+\@ref(fig:fig-ganancia-marginal) ilustra este fenómeno.
+
+```{r fig-ganancia-marginal, echo=FALSE, fig.width=9, fig.height=5, fig.cap="Ganancia marginal de potencia $\\Delta\\pi(n) = \\pi(d,n+1,\\alpha) - \\pi(d,n,\\alpha)$ como función de $n$, para $\\alpha = 0.05$ y los tres tamaños del efecto. La curva es monótonamente decreciente, confirmando la ley de rendimientos marginales decrecientes. La línea punteada vertical señala $n = 300$."}
+# Calcular potencia para n en rango continuo (de 5 a 1000)
+n_seq <- 5:1000
+
+marginal_df <- expand.grid(n = n_seq, d = efectos) %>%
+  mutate(
+    potencia = mapply(function(n, d) {
+      power.t.test(n = n, delta = d, sd = 1,
+                   sig.level = 0.05,
+                   type = "one.sample",
+                   alternative = "two.sided")$power
+    }, n, d)
+  ) %>%
+  group_by(d) %>%
+  arrange(n) %>%
+  mutate(
+    ganancia = c(diff(potencia), NA),
+    Efecto   = factor(d,
+                      levels = c(0.2, 0.5, 0.8),
+                      labels = c("d = 0.2  (pequeño)",
+                                 "d = 0.5  (mediano)",
+                                 "d = 0.8  (grande)"))
+  ) %>%
+  filter(!is.na(ganancia), n <= 500)
+
+ggplot(marginal_df, aes(x = n, y = ganancia * 100,
+                        color = Efecto, linetype = Efecto)) +
+  geom_line(linewidth = 1.0) +
+  geom_vline(xintercept = 300, linetype = "dotted",
+             color = "gray40", linewidth = 0.8) +
+  annotate("text", x = 310, y = max(marginal_df$ganancia * 100) * 0.9,
+           label = "n = 300", hjust = 0, size = 3.2, color = "gray30") +
+  scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A")) +
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  labs(
+    x        = TeX("Tamaño muestral ($n$)"),
+    y        = "Ganancia marginal de potencia (puntos porcentuales)",
+    color    = "Tamaño del efecto",
+    linetype = "Tamaño del efecto"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank()
+  )
+```
+
+## **Respuesta a las preguntas orientadoras**
+
+```{r calculos-preguntas, echo=FALSE}
+# --- Pregunta 1: n para pi = 0.80, d = 0.8, alpha = 0.10 ---
+p1_n <- ceiling(power.t.test(delta=0.8, sd=1, sig.level=0.10,
+                              power=0.80, type="one.sample",
+                              alternative="two.sided")$n)
+
+# --- Pregunta 2: n para pi = 0.80, d = 0.5, alpha = 0.05 ---
+p2_n <- ceiling(power.t.test(delta=0.5, sd=1, sig.level=0.05,
+                              power=0.80, type="one.sample",
+                              alternative="two.sided")$n)
+
+# --- Pregunta 3: potencia para d = 0.8, n = 300, alpha = 0.05 ---
+p3_pot300 <- power.t.test(n=300, delta=0.8, sd=1, sig.level=0.05,
+                           type="one.sample", alternative="two.sided")$power
+p3_pot100 <- power.t.test(n=100, delta=0.8, sd=1, sig.level=0.05,
+                           type="one.sample", alternative="two.sided")$power
+p3_ganancia <- p3_pot300 - p3_pot100
+```
+
+**Pregunta 1:** ¿Qué tamaño de muestra se requiere para alcanzar una potencia
+del $80\%$ al detectar un efecto grande ($d = 0.8$)?
+
+Para $\alpha = 0.10$, la solución de
+$\pi(0.8, n, 0.10) = 0.80$ da $n = `r p1_n`$ observaciones (véase la Tabla
+\@ref(tab:tabla-n-minimo)). Esto equivale a detectar una diferencia real de
+$\delta = 0.8 \times 15 = 12$ mmHg con un $80\%$ de probabilidad. Para $\alpha = 0.05$
+y $\alpha = 0.01$, el requerimiento sube según la Tabla \@ref(tab:tabla-n-minimo).
+
+**Pregunta 2:** ¿Cuántas observaciones se necesitan para detectar un efecto
+mediano ($d = 0.5$) con una potencia adecuada?
+
+Para $\alpha = 0.05$ y $\pi = 0.80$, se requieren $n = `r p2_n`$ observaciones,
+equivalentes a detectar $\delta = 7.5$ mmHg. Esta es la combinación más común
+utilizada en investigación clínica como mínimo estándar (Cohen, 1988; Faul
+et al., 2007).
+
+**Pregunta 3:** Para un efecto grande, ¿qué sucede al aumentar $n$ más allá
+de $300$ observaciones? ¿Es eficiente?
+
+Para $d = 0.8$ y $\alpha = 0.05$, la potencia en $n = 100$ ya es
+$\pi = `r round(p3_pot100, 4)`$ y en $n = 300$ alcanza
+$\pi = `r round(p3_pot300, 4)`$. La ganancia al pasar de $n = 100$ a
+$n = 300$ es solo $\Delta\pi = `r round(p3_ganancia*100, 2)`$ puntos porcentuales,
+invertiendo $200$ observaciones adicionales. Esto ilustra la **ley de
+rendimientos marginales decrecientes**: dado que $\pi(d, n, \alpha)$ es
+cóncava en $n$ (como se evidencia en la monotonicidad decreciente de
+$\Delta\pi(n)$ en la Figura \@ref(fig:fig-ganancia-marginal)), el beneficio
+por cada unidad adicional de $n$ disminuye conforme $\pi$ se aproxima a $1$.
+Por tanto, para $d = 0.8$, superar $n = 100$ es generalmente ineficiente
+desde el punto de vista costo-potencia.
+
+**Pregunta 4:** ¿Cómo influye el tamaño del efecto sobre la potencia estadística?
+
+El efecto actúa directamente sobre el parámetro de no centralidad
+$\lambda = d\sqrt{n}$. A mayor $d$, mayor $\lambda$, y por tanto la distribución
+$t_{n-1}(\lambda)$ se desplaza más lejos del origen, incrementando la probabilidad
+de caer en la región de rechazo $\mathcal{R}_\alpha$. Formalmente, dado que
+$F_{t_{n-1}(\lambda)}(x)$ es estrictamente decreciente en $\lambda$ para $x$
+finito, la potencia $\pi(d, n, \alpha)$ es estrictamente creciente en $d$.
+Las curvas de las Figuras \@ref(fig:fig-potencia-alpha010) a
+\@ref(fig:fig-potencia-alpha001) confirman empíricamente esta propiedad: la
+curva $d = 0.8$ domina uniformemente a las de $d = 0.5$ y $d = 0.2$ para todo $n$.
+
+**Pregunta 5:** ¿Cómo afecta el tamaño muestral a la potencia estadística?
+
+El incremento de $n$ aumenta $\lambda = d\sqrt{n}$ a tasa $O(\sqrt{n})$, lo
+que desplaza la distribución no central y aumenta la potencia. Sin embargo,
+como se mostró en la Figura \@ref(fig:fig-ganancia-marginal), la ganancia
+marginal $\Delta\pi(n)$ es decreciente. Para efectos pequeños ($d = 0.2$), la
+convergencia es lenta y se requieren muestras muy grandes ($n > 500$ para
+$\pi = 0.80$ con $\alpha = 0.05$, según la Tabla \@ref(tab:tabla-n-minimo)).
+Para efectos grandes ($d = 0.8$), la potencia satura rápidamente.
+
+**Pregunta 6:** ¿En qué punto aumentar $n$ deja de proporcionar beneficios
+significativos?
+
+Como criterio operativo, se define que el beneficio adicional es
+**despreciable** cuando $\Delta\pi(n) < 0.005$ (menos de medio punto
+porcentual por observación adicional). Para $d = 0.8$ y $\alpha = 0.05$, este
+umbral se alcanza aproximadamente en $n \approx 60$ (visible en la Figura
+\@ref(fig:fig-ganancia-marginal)). Para $d = 0.5$, en $n \approx 150$. Para
+$d = 0.2$, en $n > 600$. Estos valores deben interpretarse en función del
+costo de obtener observaciones adicionales en el contexto aplicado.
+
+## **Propuesta final del diseño del estudio**
+
+Con base en el análisis precedente, se propone el siguiente diseño:
+
+```{r tabla-propuesta, echo=FALSE}
+propuesta <- data.frame(
+  Escenario = c("Conservador", "Estándar", "Exploratorio"),
+  alpha     = c("$\\alpha = 0.01$", "$\\alpha = 0.05$", "$\\alpha = 0.10$"),
+  d_target  = c("$d = 0.5$", "$d = 0.5$", "$d = 0.5$"),
+  potencia  = c("$\\pi = 0.90$", "$\\pi = 0.80$", "$\\pi = 0.80$"),
+  n         = c(
+    ceiling(power.t.test(delta=0.5, sd=1, sig.level=0.01,
+                         power=0.90, type="one.sample",
+                         alternative="two.sided")$n),
+    ceiling(power.t.test(delta=0.5, sd=1, sig.level=0.05,
+                         power=0.80, type="one.sample",
+                         alternative="two.sided")$n),
+    ceiling(power.t.test(delta=0.5, sd=1, sig.level=0.10,
+                         power=0.80, type="one.sample",
+                         alternative="two.sided")$n)
+  ),
+  justificacion = c(
+    "Mínimo error tipo I; adecuado para decisiones clínicas de alto impacto.",
+    "Balance estándar entre error tipo I y potencia (criterio de Cohen).",
+    "Mayor potencia con menor muestra; apropiado si el error tipo II es más costoso."
+  )
+)
+
+kbl(
+  propuesta,
+  caption = "Propuesta de diseño del estudio para tres escenarios. En todos los casos se fija $d = 0.5$ (efecto mediano, $\\delta = 7.5$ mmHg) como diferencia clínicamente relevante mínima. El tamaño muestral $n$ se obtiene resolviendo $\\pi(d, n, \\alpha) = \\pi_{\\text{objetivo}}$ mediante la función de potencia exacta de la $t$ no central.",
+  col.names = c("Escenario", "$\\alpha$", "$d$", "$\\pi$ objetivo",
+                "$n$ requerido", "Justificación"),
+  align  = c("l", "c", "c", "c", "c", "l"),
+  escape = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    full_width        = TRUE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  column_spec(6, width = "30em")
+```
+
+**Recomendación:** Para este estudio clínico, se recomienda el **escenario estándar**:
+$\alpha = 0.05$, $d = 0.5$ y $\pi = 0.80$, con el tamaño muestral correspondiente
+según la Tabla \@ref(tab:tabla-propuesta). Esta elección se fundamenta en:
+
+1. **Efecto de interés:** Una diferencia de $\delta = 7.5$ mmHg en presión arterial
+   es clínicamente relevante según guías internacionales (JNC 8, ESC/ESH 2018).
+   Efectos menores ($d = 0.2$, $\delta = 3$ mmHg) carecen de significado clínico
+   aun siendo estadísticamente detectables con muestras grandes.
+
+2. **Balance entre errores:** $\alpha = 0.05$ limita la tasa de falsos positivos
+   al $5\%$, mientras que $\pi = 0.80$ garantiza que, si el efecto existe, se
+   detecta en al menos el $80\%$ de las réplicas del estudio.
+
+3. **Eficiencia:** Como muestra la Figura \@ref(fig:fig-ganancia-marginal), para
+   $d = 0.5$ incrementar $n$ más allá del requerido para $\pi = 0.80$ produce
+   ganancias marginales decrecientes, haciendo ineficiente la recolección
+   adicional de datos.
+
+4. **Consistencia teórica:** La prueba $t$ de una muestra con los supuestos
+   verificados (normalidad de la población, independencia de observaciones,
+   $\sigma^2$ desconocida) produce un estadístico que sigue **exactamente**
+   la distribución $t_{n-1}$ bajo $H_0$ y $t_{n-1}(d\sqrt{n})$ bajo $H_1$,
+   sin requerir aproximaciones asintóticas para los tamaños muestrales propuestos.
+
+
+
+**Referencias metodológicas:**
+

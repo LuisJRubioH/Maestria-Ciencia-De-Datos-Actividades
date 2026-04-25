@@ -1,0 +1,1031 @@
+# **Prueba de hipótesis e intervalo de confianza**
+
+## **Problema 6**
+Teniendo en cuenta el contexto y los datos utilizados en el informe estadístico desarrollado
+en la Actividad 1, formulamos tres preguntas de investigación relevantes. Para cada pregunta,
+realizamos el análisis correspondiente utilizando pruebas de hipótesis e intervalos de confianza.
+Además, verificamos el cumplimiento de los supuestos necesarios para garantizar
+la validez de los procedimientos estadísticos aplicados.
+
+### Contexto: Informe descriptivo de la Actividad 1
+
+En la Actividad 1 se desarrolló un análisis exploratorio y descriptivo
+sobre datos provenientes de una **campaña piloto de marketing directo**
+de una empresa que busca comercializar un nuevo dispositivo entre sus
+clientes existentes. El objetivo era identificar patrones y rasgos
+distintivos entre los clientes que aceptaron la oferta y aquellos que no
+lo hicieron, sentando las bases para la construcción de un modelo
+predictivo de respuesta.
+
+La base de datos original contenía $2220$ registros con información
+sociodemográfica (edad, nivel educativo, estado civil, composición del
+hogar, ingreso), comportamiento de compra (gasto por categoría de
+producto, número de compras por canal, visitas web) y respuesta a
+campañas de marketing previas y a la campaña piloto (variable
+`Response`).
+
+El proceso de depuración de la Actividad 1 comprendió las siguientes
+etapas:
+
+-   **Eliminación de duplicados:** Se identificaron y removieron $179$
+    registros duplicados ($8.06\%$), reduciendo el dataset a $n = 2041$.
+-   **Corrección de inconsistencias:** Se corrigieron $6$ errores de
+    codificación en `marital_Divorced`, se descartaron $2$ registros con
+    edades biológicamente imposibles ($240$ años) y se recalcularon $3$
+    valores negativos en `MntRegularProds`.
+-   **Imputación de datos faltantes:** Se imputaron los valores
+    faltantes de `Income` ($68$ valores, $3.33\%$) y `MntWines` ($20$
+    valores, $0.98\%$) mediante el método CART, verificando la
+    preservación de distribuciones y correlaciones.
+
+El **dataset final** quedó conformado por $n = 2039$ observaciones
+limpias y completas. Los principales hallazgos del análisis exploratorio
+fueron:
+
+-   Las **variables económicas** (ingreso anual y gasto total acumulado)
+    presentan la mayor capacidad discriminante entre los grupos de
+    respuesta.
+-   Las **compras por catálogo** constituyen el canal con mayor poder
+    diferenciador.
+-   Las **variables demográficas clásicas** (edad) no discriminan entre
+    grupos, pero el nivel educativo, estado civil y composición del
+    hogar sí presentan asociaciones significativas.
+-   La **presencia de dependientes** en el hogar se asocia con menor
+    proporción de aceptación.
+
+Las tres preguntas de investigación que se formulan a continuación se
+derivan directamente de estos hallazgos y se abordan con las
+herramientas de inferencia estadística desarrolladas en los Problemas 1
+a 5 de esta actividad.
+
+### Carga y preparación de los datos
+
+```{r carga-datos-p6, echo=FALSE, message=FALSE, warning=FALSE}
+# Librerías necesarias para este problema
+library(e1071)    # skewness
+library(nortest)  # lillie.test
+library(knitr)
+library(kableExtra)
+library(car)      # leveneTest
+
+# ──────────────────────────────────────────────────────────────────────
+# Carga del dataset final procesado en la Actividad 1.
+# Este archivo corresponde al dataset tras la eliminación de duplicados,
+# corrección de inconsistencias e imputación de valores faltantes.
+# ──────────────────────────────────────────────────────────────────────
+datos <- read.csv("data_final_imputada.csv")
+
+# Separar grupos
+grupo_acepto <- datos[datos$Response == 1, ]
+grupo_no     <- datos[datos$Response == 0, ]
+```
+
+La Tabla \@ref(tab:tab-resumen-datos-p6) presenta un resumen del dataset
+utilizado.
+
+```{r tab-resumen-datos-p6, echo=FALSE}
+resumen_datos <- data.frame(
+  Grupo = c("No aceptó (Response = 0)", "Aceptó (Response = 1)", "Total"),
+  n = c(nrow(grupo_no), nrow(grupo_acepto), nrow(datos)),
+  Porcentaje = c(
+    paste0(round(100 * nrow(grupo_no) / nrow(datos), 1), "%"),
+    paste0(round(100 * nrow(grupo_acepto) / nrow(datos), 1), "%"),
+    "100%"
+  )
+)
+
+knitr::kable(resumen_datos,
+             col.names = c("Grupo", "n", "Porcentaje"),
+             caption = "Distribución de la variable Response en el dataset",
+             align = "lcc")
+```
+
+---
+
+## Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?
+
+### Planteamiento formal
+
+Sea $\mu_1$ la media poblacional de `Income` para el grupo que aceptó la
+campaña ($\text{Response} = 1$) y $\mu_0$ la media para el grupo que no
+aceptó ($\text{Response} = 0$). Se desea contrastar:
+
+$$H_0: \mu_1 = \mu_0 \qquad \text{vs} \qquad H_1: \mu_1 \neq \mu_0$$
+
+al nivel de significancia $\alpha = 0.05$.
+
+### Verificación de supuestos
+
+#### Independencia
+
+Las muestras corresponden a clientes distintos, seleccionados
+aleatoriamente durante la campaña piloto. Las observaciones dentro de
+cada grupo y entre grupos son independientes.
+
+#### Normalidad
+
+Dado que $n_0 = 1726$ y $n_1 = 313$, ambos tamaños son suficientemente
+grandes para invocar el **Teorema del Límite Central** (TLC). Según
+este resultado (véase Casella & Berger, *Statistical Inference*, 2nd
+ed., Sec. 5.5), la distribución de la media muestral
+$\bar{X} \xrightarrow{d} N(\mu, \sigma^2/n)$ cuando $n \to \infty$,
+independientemente de la distribución poblacional, siempre que la
+varianza sea finita.
+
+No obstante, realizamos una verificación gráfica y formal. Las Figuras
+\@ref(fig:normalidad-income) y \@ref(fig:qq-income) presentan los
+histogramas y gráficos Q-Q de cada grupo.
+
+```{r normalidad-income, echo=FALSE, fig.width=10, fig.height=5, fig.cap="Histogramas de Income por grupo de respuesta"}
+par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3, 1))
+
+hist(grupo_no$Income, breaks = 30, freq = FALSE,
+     col = rgb(0.8, 0.2, 0.2, 0.3), border = "white",
+     main = "Income — No aceptó",
+     xlab = "Ingreso anual", ylab = "Densidad")
+lines(density(grupo_no$Income), col = "red", lwd = 2)
+
+hist(grupo_acepto$Income, breaks = 30, freq = FALSE,
+     col = rgb(0.2, 0.2, 0.8, 0.3), border = "white",
+     main = "Income — Aceptó",
+     xlab = "Ingreso anual", ylab = "Densidad")
+lines(density(grupo_acepto$Income), col = "blue", lwd = 2)
+
+par(mfrow = c(1, 1))
+```
+
+```{r qq-income, echo=FALSE, fig.width=10, fig.height=4.5, fig.cap="Q-Q plots de Income por grupo"}
+par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3, 1))
+qqnorm(grupo_no$Income, main = "Q-Q Normal — No aceptó",
+       pch = 16, col = rgb(0.8, 0.2, 0.2, 0.3))
+qqline(grupo_no$Income, col = "red", lwd = 2)
+qqnorm(grupo_acepto$Income, main = "Q-Q Normal — Aceptó",
+       pch = 16, col = rgb(0.2, 0.2, 0.8, 0.3))
+qqline(grupo_acepto$Income, col = "blue", lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+Se aplican las pruebas de **Shapiro-Wilk** y **Lilliefors
+(Kolmogorov-Smirnov corregido)** a cada grupo. En R, la función
+`shapiro.test()` admite muestras de tamaño $3 \leq n \leq 5000$; dado
+que ambos grupos ($n_0 = 1726$ y $n_1 = 313$) están dentro de este
+rango, la prueba es aplicable. La Tabla
+\@ref(tab:tab-normalidad-income) resume los resultados.
+
+```{r tab-normalidad-income, echo=FALSE}
+# Shapiro-Wilk
+sw_no  <- shapiro.test(grupo_no$Income)
+sw_si  <- shapiro.test(grupo_acepto$Income)
+
+# Lilliefors
+lf_no  <- lillie.test(grupo_no$Income)
+lf_si  <- lillie.test(grupo_acepto$Income)
+
+tabla_norm <- data.frame(
+  Grupo = c("No aceptó", "No aceptó", "Aceptó", "Aceptó"),
+  Prueba = c("Shapiro-Wilk", "Lilliefors", "Shapiro-Wilk", "Lilliefors"),
+  Estadistico = c(round(sw_no$statistic, 4), round(lf_no$statistic, 4),
+                  round(sw_si$statistic, 4), round(lf_si$statistic, 4)),
+  p_valor = c(round(sw_no$p.value, 4), round(lf_no$p.value, 4),
+              round(sw_si$p.value, 4), round(lf_si$p.value, 4)),
+  Decision = c(
+    ifelse(sw_no$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$"),
+    ifelse(lf_no$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$"),
+    ifelse(sw_si$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$"),
+    ifelse(lf_si$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$")
+  )
+)
+
+knitr::kable(tabla_norm,
+             col.names = c("Grupo", "Prueba", "Estadístico", "p-valor",
+                           "Decisión ($\\alpha = 0.05$)"),
+             caption = "Pruebas de normalidad para Income por grupo",
+             align = "ccccc")
+```
+
+**Nota sobre la interpretación con muestras grandes:** Con tamaños
+muestrales del orden de $n = 1726$, las pruebas de normalidad poseen una
+potencia muy elevada y pueden rechazar $H_0$ ante desviaciones mínimas
+de la normalidad que carecen de relevancia práctica. En estos casos, la
+evaluación visual (histogramas y Q-Q plots) cobra mayor importancia. Los
+gráficos de las Figuras \@ref(fig:normalidad-income) y
+\@ref(fig:qq-income) muestran distribuciones aproximadamente simétricas
+y unimodales. Además, dado el tamaño muestral, el **TLC garantiza la
+validez asintótica** de la prueba $t$, independientemente de la
+distribución subyacente (siempre que la varianza sea finita).
+
+#### Homogeneidad de varianzas
+
+Se aplica la prueba $F$ de Fisher:
+
+$$H_0: \sigma_0^2 = \sigma_1^2 \qquad \text{vs} \qquad H_1: \sigma_0^2 \neq \sigma_1^2$$
+
+**Nota:** La prueba $F$ de Fisher es sensible a desviaciones de la
+normalidad (véase Montgomery & Runger, *Probabilidad y Estadística
+Aplicadas a la Ingeniería*, 6ta ed., Sec. 10.5). Dado que con muestras
+grandes los tests de normalidad pueden rechazar $H_0$ ante desviaciones
+mínimas, complementamos la prueba $F$ con la **prueba de Levene**, que
+es robusta a no-normalidad ya que opera sobre las desviaciones absolutas
+respecto a la mediana grupal.
+
+La Tabla \@ref(tab:tab-vartest-income) presenta los resultados de ambas
+pruebas.
+
+```{r tab-vartest-income, echo=FALSE}
+test_var <- var.test(Income ~ Response, data = datos)
+
+# Prueba de Levene (robusta a no-normalidad)
+test_levene <- leveneTest(Income ~ factor(Response), data = datos)
+
+tabla_var <- data.frame(
+  Prueba = c("F de Fisher", "Levene"),
+  Estadistico = c(round(test_var$statistic, 4),
+                  round(test_levene$`F value`[1], 4)),
+  p_valor = c(round(test_var$p.value, 4),
+              round(test_levene$`Pr(>F)`[1], 4)),
+  Decision = c(
+    ifelse(test_var$p.value < 0.05,
+           "Rechaza $H_0$: varianzas desiguales",
+           "No rechaza $H_0$: varianzas comparables"),
+    ifelse(test_levene$`Pr(>F)`[1] < 0.05,
+           "Rechaza $H_0$: varianzas desiguales",
+           "No rechaza $H_0$: varianzas comparables")
+  )
+)
+
+knitr::kable(tabla_var,
+             col.names = c("Prueba", "Estadístico", "p-valor",
+                           "Decisión ($\\alpha = 0.05$)"),
+             caption = "Pruebas de igualdad de varianzas para Income",
+             align = "cccc")
+```
+
+Dado el resultado de la Tabla \@ref(tab:tab-vartest-income), se emplea
+la prueba $t$ de Welch, que no asume homocedasticidad.
+
+### Prueba de hipótesis: $t$ de Welch
+
+El estadístico de prueba es:
+
+$$t = \frac{\bar{X}_1 - \bar{X}_0}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_0^2}{n_0}}}$$
+
+con grados de libertad estimados mediante la aproximación de
+Satterthwaite (véase Montgomery & Runger, *Probabilidad y Estadística
+Aplicadas a la Ingeniería*, 6ta ed., Cap. 10).
+
+```{r t-test-income, echo=FALSE}
+# Se pasa grupo_acepto primero para obtener la diferencia μ₁ - μ₀ (positiva)
+t_income <- t.test(grupo_acepto$Income, grupo_no$Income,
+                   alternative = "two.sided", conf.level = 0.95)
+```
+
+La Tabla \@ref(tab:tab-descriptivos-income) presenta los estadísticos
+descriptivos por grupo y la Tabla \@ref(tab:tab-ttest-income) los
+resultados de la prueba.
+
+```{r tab-descriptivos-income, echo=FALSE}
+desc_income <- data.frame(
+  Grupo = c("No aceptó ($\\text{Response}=0$)", "Aceptó ($\\text{Response}=1$)"),
+  n = c(nrow(grupo_no), nrow(grupo_acepto)),
+  Media = c(round(mean(grupo_no$Income), 2), round(mean(grupo_acepto$Income), 2)),
+  DE = c(round(sd(grupo_no$Income), 2), round(sd(grupo_acepto$Income), 2)),
+  Mediana = c(round(median(grupo_no$Income), 2), round(median(grupo_acepto$Income), 2))
+)
+
+knitr::kable(desc_income,
+             col.names = c("Grupo", "$n$", "$\\bar{X}$", "$S$", "Mediana"),
+             caption = "Estadísticos descriptivos de Income por grupo",
+             align = "ccccc")
+```
+
+```{r tab-ttest-income, echo=FALSE}
+tab_t <- data.frame(
+  Estadistico = round(t_income$statistic, 4),
+  gl = round(t_income$parameter, 2),
+  p_valor = format.pval(t_income$p.value, digits = 4),
+  IC_inf = round(t_income$conf.int[1], 2),
+  IC_sup = round(t_income$conf.int[2], 2),
+  Decision = ifelse(t_income$p.value < 0.05,
+                    "Rechaza $H_0$", "No rechaza $H_0$")
+)
+
+knitr::kable(tab_t,
+             col.names = c("$t$", "gl", "p-valor",
+                           "IC 95% inf.", "IC 95% sup.",
+                           "Decisión ($\\alpha=0.05$)"),
+             caption = "Prueba t de Welch bilateral para $\\mu_1 - \\mu_0$ (Income)",
+             align = "cccccc")
+```
+
+### Intervalo de confianza al 95% para $\mu_1 - \mu_0$
+
+La prueba $t$ de Welch proporciona simultáneamente el intervalo de
+confianza para la diferencia de medias:
+
+$$(\bar{X}_1 - \bar{X}_0) \pm t_{\alpha/2,\;\nu} \cdot \sqrt{\frac{S_1^2}{n_1} + \frac{S_0^2}{n_0}}$$
+
+Según la Tabla \@ref(tab:tab-ttest-income), el IC al 95% para
+$\mu_1 - \mu_0$ es
+$[`r round(t_income$conf.int[1], 2)`,\; `r round(t_income$conf.int[2], 2)`]$.
+
+### Visualización
+
+```{r fig-ic-income, echo=FALSE, fig.width=8, fig.height=4.5, fig.cap="Medias e IC 95% de Income por grupo de respuesta"}
+medias_inc <- c(mean(grupo_no$Income), mean(grupo_acepto$Income))
+sds_inc    <- c(sd(grupo_no$Income), sd(grupo_acepto$Income))
+ns_inc     <- c(nrow(grupo_no), nrow(grupo_acepto))
+ses_inc    <- sds_inc / sqrt(ns_inc)
+
+t_crit_inc <- qt(0.975, df = ns_inc - 1)
+li_inc <- medias_inc - t_crit_inc * ses_inc
+ls_inc <- medias_inc + t_crit_inc * ses_inc
+
+plot(1:2, medias_inc, xlim = c(0.5, 2.5),
+     ylim = c(min(li_inc) - 10000, max(ls_inc) + 10000),
+     pch = 16, cex = 1.5, col = c("red", "blue"),
+     xaxt = "n", xlab = "", ylab = "Ingreso anual medio",
+     main = "Medias e IC 95% por grupo de respuesta")
+axis(1, at = 1:2, labels = c("No aceptó", "Aceptó"))
+
+# Barras verticales del IC
+segments(1, li_inc[1], 1, ls_inc[1], col = "red", lwd = 3)
+segments(2, li_inc[2], 2, ls_inc[2], col = "blue", lwd = 3)
+
+# Tapas horizontales
+segments(0.92, li_inc[1], 1.08, li_inc[1], col = "red", lwd = 2)
+segments(0.92, ls_inc[1], 1.08, ls_inc[1], col = "red", lwd = 2)
+segments(1.92, li_inc[2], 2.08, li_inc[2], col = "blue", lwd = 2)
+segments(1.92, ls_inc[2], 2.08, ls_inc[2], col = "blue", lwd = 2)
+
+# Etiquetas de medias
+text(1, medias_inc[1], pos = 4, offset = 1,
+     labels = paste0("x̄₀ = ", round(medias_inc[1], 0)), cex = 0.85)
+text(2, medias_inc[2], pos = 4, offset = 1,
+     labels = paste0("x̄₁ = ", round(medias_inc[2], 0)), cex = 0.85)
+```
+
+### Interpretación
+
+Los clientes que aceptaron la campaña presentan un ingreso medio anual
+significativamente superior al de quienes no la aceptaron, como muestra
+la Figura \@ref(fig:fig-ic-income). La diferencia es estadísticamente
+significativa al nivel $\alpha = 0.05$ (Tabla
+\@ref(tab:tab-ttest-income)). El intervalo de confianza al 95% para la
+diferencia de medias no contiene el cero, reforzando la conclusión.
+Desde el punto de vista práctico, el ingreso constituye un factor
+relevante para la segmentación de clientes en futuras campañas.
+
+---
+
+## Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?
+
+### Planteamiento formal
+
+Sea $\mu_1$ la media poblacional de `MntTotal` para
+$\text{Response}=1$ y $\mu_0$ para $\text{Response}=0$. Dado que el
+análisis exploratorio de la Actividad 1 sugiere que el grupo que aceptó
+gasta más, formulamos una prueba **unilateral**:
+
+$$H_0: \mu_1 \leq \mu_0 \qquad \text{vs} \qquad H_1: \mu_1 > \mu_0$$
+
+al nivel $\alpha = 0.05$.
+
+### Verificación de supuestos
+
+#### Normalidad
+
+La Figura \@ref(fig:normalidad-mnt) presenta los histogramas de
+`MntTotal` por grupo.
+
+```{r normalidad-mnt, echo=FALSE, fig.width=10, fig.height=5, fig.cap="Histogramas de MntTotal por grupo de respuesta"}
+par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3, 1))
+
+hist(grupo_no$MntTotal, breaks = 30, freq = FALSE,
+     col = rgb(0.8, 0.2, 0.2, 0.3), border = "white",
+     main = "MntTotal — No aceptó",
+     xlab = "Gasto total", ylab = "Densidad")
+lines(density(grupo_no$MntTotal), col = "red", lwd = 2)
+
+hist(grupo_acepto$MntTotal, breaks = 30, freq = FALSE,
+     col = rgb(0.2, 0.2, 0.8, 0.3), border = "white",
+     main = "MntTotal — Aceptó",
+     xlab = "Gasto total", ylab = "Densidad")
+lines(density(grupo_acepto$MntTotal), col = "blue", lwd = 2)
+
+par(mfrow = c(1, 1))
+```
+
+Se evalúa la asimetría y se aplican pruebas formales de normalidad. La
+Tabla \@ref(tab:tab-normalidad-mnt) resume los resultados.
+
+```{r tab-normalidad-mnt, echo=FALSE}
+# Asimetría
+sk_no <- skewness(grupo_no$MntTotal)
+sk_si <- skewness(grupo_acepto$MntTotal)
+
+# Shapiro-Wilk
+sw_mnt_no <- shapiro.test(grupo_no$MntTotal)
+sw_mnt_si <- shapiro.test(grupo_acepto$MntTotal)
+
+# Lilliefors
+lf_mnt_no <- lillie.test(grupo_no$MntTotal)
+lf_mnt_si <- lillie.test(grupo_acepto$MntTotal)
+
+tabla_norm_mnt <- data.frame(
+  Grupo = c("No aceptó", "No aceptó", "No aceptó",
+            "Aceptó", "Aceptó", "Aceptó"),
+  Prueba = rep(c("Asimetría (skewness)", "Shapiro-Wilk", "Lilliefors"), 2),
+  Estadistico = c(round(sk_no, 4), round(sw_mnt_no$statistic, 4),
+                  round(lf_mnt_no$statistic, 4),
+                  round(sk_si, 4), round(sw_mnt_si$statistic, 4),
+                  round(lf_mnt_si$statistic, 4)),
+  p_valor = c("—", round(sw_mnt_no$p.value, 4), round(lf_mnt_no$p.value, 4),
+              "—", round(sw_mnt_si$p.value, 4), round(lf_mnt_si$p.value, 4)),
+  Decision = c(
+    ifelse(abs(sk_no) > 1, "Asimetría fuerte", "Asimetría moderada"),
+    ifelse(sw_mnt_no$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$"),
+    ifelse(lf_mnt_no$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$"),
+    ifelse(abs(sk_si) > 1, "Asimetría fuerte", "Asimetría moderada"),
+    ifelse(sw_mnt_si$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$"),
+    ifelse(lf_mnt_si$p.value >= 0.05, "No rechaza $H_0$", "Rechaza $H_0$")
+  )
+)
+
+knitr::kable(tabla_norm_mnt,
+             col.names = c("Grupo", "Prueba", "Estadístico", "p-valor",
+                           "Resultado"),
+             caption = "Evaluación de normalidad para MntTotal por grupo",
+             align = "ccccc")
+```
+
+La Figura \@ref(fig:normalidad-mnt) y la Tabla
+\@ref(tab:tab-normalidad-mnt) confirman que `MntTotal` presenta
+**asimetría positiva marcada** y **rechaza normalidad** en ambos grupos.
+Esto motiva el uso de tres enfoques complementarios:
+
+1.  **Prueba no paramétrica de Mann-Whitney-Wilcoxon** (no requiere
+    normalidad).
+2.  **Prueba $t$ de Welch** (válida asintóticamente por el TLC dado el
+    tamaño muestral grande).
+3.  **Intervalo de confianza Bootstrap percentil** para la diferencia de
+    medias (libre de distribución).
+
+### Prueba no paramétrica: Mann-Whitney-Wilcoxon
+
+La prueba de Mann-Whitney-Wilcoxon contrasta si una distribución tiende
+a producir valores mayores que la otra, es decir, evalúa la **dominancia
+estocástica**: $H_0: P(X_1 > X_0) = 0.5$ vs. $H_1: P(X_1 > X_0) > 0.5$.
+No requiere el supuesto de normalidad (véase Hollander, Wolfe & Chicken,
+*Nonparametric Statistical Methods*, 3rd ed., Cap. 4).
+
+Es importante señalar que la hipótesis de Mann-Whitney es sobre
+dominancia estocástica, no directamente sobre medias. La equivalencia
+entre ambas interpretaciones se cumple estrictamente solo cuando las
+distribuciones de los dos grupos difieren únicamente en localización
+(misma forma, desplazadas). Dado que `MntTotal` presenta asimetrías y
+dispersiones distintas entre grupos (como muestran la Tabla
+\@ref(tab:tab-normalidad-mnt) y la Tabla \@ref(tab:tab-ttest-mnt)),
+las distribuciones difieren tanto en localización como en forma. Por esta
+razón, la prueba de Mann-Whitney se complementa con la prueba $t$ de
+Welch (que sí contrasta medias directamente, válida por el TLC) y con el
+intervalo Bootstrap, para obtener una conclusión robusta.
+
+```{r mann-whitney-mnt, echo=FALSE}
+wilcox_mnt <- wilcox.test(grupo_acepto$MntTotal, grupo_no$MntTotal,
+                          alternative = "greater", conf.int = TRUE,
+                          conf.level = 0.95)
+```
+
+La Tabla \@ref(tab:tab-wilcox-mnt) presenta los resultados.
+
+```{r tab-wilcox-mnt, echo=FALSE}
+tab_wilcox <- data.frame(
+  Estadistico = format(wilcox_mnt$statistic, big.mark = ","),
+  p_valor = format.pval(wilcox_mnt$p.value, digits = 4),
+  Decision = ifelse(wilcox_mnt$p.value < 0.05,
+                    "Rechaza $H_0$", "No rechaza $H_0$")
+)
+
+knitr::kable(tab_wilcox,
+             col.names = c("Estadístico $W$", "p-valor",
+                           "Decisión ($\\alpha=0.05$)"),
+             caption = "Prueba de Mann-Whitney-Wilcoxon unilateral para MntTotal",
+             align = "ccc")
+```
+
+### Tamaño del efecto: Correlación biserial de rango
+
+Para cuantificar la magnitud de la diferencia se calcula la correlación
+biserial de rango $r_{rb}$, definida como:
+
+$$r_{rb} = \frac{2U}{n_1 \cdot n_0} - 1$$
+
+donde $U$ es el estadístico de Mann-Whitney. Es importante notar que en
+R la función `wilcox.test()` devuelve $W$ (la suma de rangos de
+Wilcoxon), no $U$. La conversión es:
+
+$$U = W - \frac{n_1(n_1 + 1)}{2}$$
+
+donde $n_1$ es el tamaño del primer grupo pasado a la función (véase
+Hollander, Wolfe & Chicken, *Nonparametric Statistical Methods*, 3rd
+ed., Cap. 4). Umbrales interpretativos: $|r| < 0.1$ (despreciable),
+$0.1 \leq |r| < 0.3$ (pequeño), $0.3 \leq |r| < 0.5$ (moderado),
+$|r| \geq 0.5$ (grande).
+
+```{r tab-efecto-mnt, echo=FALSE}
+# wilcox.test() devuelve W (suma de rangos), no U (Mann-Whitney).
+# Conversión: U = W - n1*(n1+1)/2, con n1 = tamaño del primer grupo.
+n1_mw <- nrow(grupo_acepto)
+n0_mw <- nrow(grupo_no)
+W_val <- wilcox_mnt$statistic
+U_val <- W_val - n1_mw * (n1_mw + 1) / 2
+
+r_rb_val <- 2 * U_val / (n1_mw * n0_mw) - 1
+magnitud_r <- ifelse(abs(r_rb_val) >= 0.5, "Grande",
+              ifelse(abs(r_rb_val) >= 0.3, "Moderado",
+              ifelse(abs(r_rb_val) >= 0.1, "Pequeño", "Despreciable")))
+
+tab_efecto <- data.frame(
+  W = format(W_val, big.mark = ","),
+  U = format(U_val, big.mark = ","),
+  r_rb = round(r_rb_val, 4),
+  Magnitud = magnitud_r
+)
+
+knitr::kable(tab_efecto,
+             col.names = c("$W$ (Wilcoxon)", "$U$ (Mann-Whitney)",
+                           "$r_{rb}$", "Magnitud"),
+             caption = "Tamaño del efecto para la diferencia en MntTotal",
+             align = "cccc")
+```
+
+### Prueba $t$ de Welch (confirmación asintótica)
+
+Aunque la normalidad no se cumple, el TLC justifica el uso de la prueba
+$t$ con muestras de este tamaño como verificación cruzada. La Tabla
+\@ref(tab:tab-ttest-mnt) presenta los descriptivos y la Tabla
+\@ref(tab:tab-ttest-mnt-result) los resultados.
+
+```{r t-test-mnt, echo=FALSE}
+t_mnt <- t.test(grupo_acepto$MntTotal, grupo_no$MntTotal,
+                alternative = "greater", conf.level = 0.95)
+```
+
+```{r tab-ttest-mnt, echo=FALSE}
+desc_mnt <- data.frame(
+  Grupo = c("No aceptó", "Aceptó"),
+  n = c(nrow(grupo_no), nrow(grupo_acepto)),
+  Media = c(round(mean(grupo_no$MntTotal), 2),
+            round(mean(grupo_acepto$MntTotal), 2)),
+  DE = c(round(sd(grupo_no$MntTotal), 2),
+         round(sd(grupo_acepto$MntTotal), 2)),
+  Mediana = c(round(median(grupo_no$MntTotal), 2),
+              round(median(grupo_acepto$MntTotal), 2))
+)
+
+knitr::kable(desc_mnt,
+             col.names = c("Grupo", "$n$", "$\\bar{X}$", "$S$", "Mediana"),
+             caption = "Estadísticos descriptivos de MntTotal por grupo",
+             align = "ccccc")
+```
+
+```{r tab-ttest-mnt-result, echo=FALSE}
+tab_t_mnt <- data.frame(
+  Estadistico = round(t_mnt$statistic, 4),
+  gl = round(t_mnt$parameter, 2),
+  p_valor = format.pval(t_mnt$p.value, digits = 4),
+  IC_inf = round(t_mnt$conf.int[1], 2),
+  Decision = ifelse(t_mnt$p.value < 0.05,
+                    "Rechaza $H_0$", "No rechaza $H_0$")
+)
+
+knitr::kable(tab_t_mnt,
+             col.names = c("$t$", "gl", "p-valor",
+                           "IC 95% lím. inf.",
+                           "Decisión ($\\alpha=0.05$)"),
+             caption = "Prueba t de Welch unilateral para MntTotal",
+             align = "ccccc")
+```
+
+### Intervalo de confianza Bootstrap para $\mu_1 - \mu_0$
+
+Dado que la distribución de `MntTotal` es fuertemente asimétrica, se
+construye un intervalo de confianza **Bootstrap percentil**, que no
+requiere normalidad (Efron & Tibshirani, *An Introduction to the
+Bootstrap*, Chapman & Hall, 1993). Dado que la hipótesis es unilateral
+($H_1: \mu_1 > \mu_0$), se calcula tanto el intervalo bilateral al 95%
+como el límite inferior unilateral al 95% ($Q_{0.05}$), que es coherente
+con el planteamiento de la prueba. La Tabla
+\@ref(tab:tab-bootstrap-mnt) presenta los resultados.
+
+```{r bootstrap-mnt, echo=FALSE}
+set.seed(123)
+B <- 10000
+
+boot_diff <- replicate(B, {
+  b1 <- sample(grupo_acepto$MntTotal, nrow(grupo_acepto), replace = TRUE)
+  b0 <- sample(grupo_no$MntTotal, nrow(grupo_no), replace = TRUE)
+  mean(b1) - mean(b0)
+})
+
+ic_perc_bilat <- quantile(boot_diff, probs = c(0.025, 0.975))
+ic_perc_unilat_inf <- quantile(boot_diff, probs = 0.05)
+diff_obs <- mean(grupo_acepto$MntTotal) - mean(grupo_no$MntTotal)
+```
+
+```{r tab-bootstrap-mnt, echo=FALSE}
+tab_boot <- data.frame(
+  Diferencia = round(diff_obs, 2),
+  Media_boot = round(mean(boot_diff), 2),
+  Sesgo = round(mean(boot_diff) - diff_obs, 4),
+  IC_bilat_inf = round(ic_perc_bilat[1], 2),
+  IC_bilat_sup = round(ic_perc_bilat[2], 2),
+  IC_unilat_inf = round(ic_perc_unilat_inf, 2)
+)
+
+knitr::kable(tab_boot,
+             col.names = c("$\\bar{X}_1 - \\bar{X}_0$ obs.",
+                           "Media bootstrap",
+                           "Sesgo",
+                           "IC bilat. 95% inf.", "IC bilat. 95% sup.",
+                           "IC unilat. 95% inf."),
+             caption = "Intervalo Bootstrap percentil (B = 10000) para la diferencia de medias de MntTotal. Se presenta tanto el IC bilateral como el límite inferior unilateral, coherente con $H_1: \\mu_1 > \\mu_0$.",
+             align = "cccccc")
+```
+
+La Figura \@ref(fig:hist-boot-mnt) muestra la distribución bootstrap de
+la diferencia de medias.
+
+```{r hist-boot-mnt, echo=FALSE, fig.width=8, fig.height=5, fig.cap="Distribución bootstrap de la diferencia de medias de MntTotal"}
+hist(boot_diff, breaks = 40, freq = FALSE,
+     col = rgb(0, 0.5, 0.8, 0.25), border = "white",
+     main = expression("Bootstrap de " * (bar(X)[1] - bar(X)[0]) * " (B = 10,000)"),
+     xlab = expression(bar(X)[1] - bar(X)[0]),
+     ylab = "Densidad")
+lines(density(boot_diff), col = "blue", lwd = 2)
+abline(v = diff_obs, col = "darkgreen", lty = 2, lwd = 2)
+abline(v = ic_perc_bilat[1], col = "red", lty = 3, lwd = 2)
+abline(v = ic_perc_bilat[2], col = "red", lty = 3, lwd = 2)
+abline(v = ic_perc_unilat_inf, col = "darkorange", lty = 4, lwd = 2)
+abline(v = 0, col = "black", lty = 1, lwd = 1.5)
+legend("topright",
+       legend = c(paste0("Dif. obs. = ", round(diff_obs, 1)),
+                  "Límites IC bilat. 95%",
+                  "Límite inf. unilat. 95%",
+                  "Referencia (0)"),
+       col = c("darkgreen", "red", "darkorange", "black"),
+       lty = c(2, 3, 4, 1), lwd = 2, cex = 0.80)
+```
+
+### Comparación de resultados
+
+La Tabla \@ref(tab:tab-comparacion-mnt) compara los tres métodos
+empleados.
+
+```{r tab-comparacion-mnt, echo=FALSE}
+comparacion_mnt <- data.frame(
+  Metodo = c("Mann-Whitney-Wilcoxon", "t de Welch (asintótico)", "Bootstrap Percentil (unilat.)"),
+  p_valor = c(
+    format.pval(wilcox_mnt$p.value, digits = 4),
+    format.pval(t_mnt$p.value, digits = 4),
+    "—"
+  ),
+  IC_95 = c(
+    "—",
+    paste0("[", round(t_mnt$conf.int[1], 2), ", $+\\infty$)"),
+    paste0("[", round(ic_perc_unilat_inf, 2), ", $+\\infty$)")
+  ),
+  Decision = c(
+    ifelse(wilcox_mnt$p.value < 0.05, "Rechaza $H_0$", "No rechaza $H_0$"),
+    ifelse(t_mnt$p.value < 0.05, "Rechaza $H_0$", "No rechaza $H_0$"),
+    ifelse(ic_perc_unilat_inf > 0, "Significativo", "No significativo")
+  )
+)
+
+knitr::kable(comparacion_mnt,
+             col.names = c("Método", "p-valor", "IC 95%", "Decisión"),
+             caption = "Comparación de métodos para la diferencia de medias de MntTotal",
+             align = "cccc")
+```
+
+### Interpretación
+
+Los tres métodos convergen en la misma conclusión: el gasto total medio
+de los clientes que aceptaron la campaña es **significativamente mayor**
+que el de quienes no la aceptaron (Tabla
+\@ref(tab:tab-comparacion-mnt)). La prueba no paramétrica confirma la
+dominancia estocástica del grupo que aceptó (valores sistemáticamente
+mayores), y la prueba $t$ de Welch —que sí contrasta medias
+directamente, válida por el TLC— confirma que la diferencia de medias es
+estadísticamente significativa. El intervalo
+Bootstrap unilateral al 95% tiene un límite inferior mayor que cero (Tabla
+\@ref(tab:tab-bootstrap-mnt) y Figura \@ref(fig:hist-boot-mnt)), y el
+tamaño del efecto (Tabla \@ref(tab:tab-efecto-mnt)) indica una
+diferencia de magnitud práctica relevante.
+
+Este resultado es coherente con los hallazgos de la Actividad 1, donde
+`MntTotal` fue identificada como la variable con mayor poder
+discriminante entre ambos grupos de respuesta.
+
+---
+
+## Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?
+
+### Planteamiento formal
+
+Definimos dos poblaciones según la presencia de adolescentes:
+
+-   Grupo A: clientes **sin** adolescentes ($\text{Teenhome} = 0$).
+-   Grupo B: clientes **con** al menos un adolescente
+    ($\text{Teenhome} \geq 1$).
+
+Sea $p_A$ la proporción poblacional de aceptación en el Grupo A y $p_B$
+en el Grupo B. Las hipótesis son:
+
+$$H_0: p_A = p_B \qquad \text{vs} \qquad H_1: p_A \neq p_B$$
+
+al nivel $\alpha = 0.05$.
+
+### Preparación de los datos
+
+```{r prep-prop, echo=FALSE}
+datos$Teen_bin <- ifelse(datos$Teenhome == 0, "Sin adolescentes",
+                         "Con adolescentes")
+
+tabla_cont <- table(datos$Teen_bin, datos$Response)
+colnames(tabla_cont) <- c("No aceptó", "Aceptó")
+
+prop_A <- tabla_cont["Sin adolescentes", "Aceptó"] /
+          sum(tabla_cont["Sin adolescentes", ])
+prop_B <- tabla_cont["Con adolescentes", "Aceptó"] /
+          sum(tabla_cont["Con adolescentes", ])
+n_A <- sum(tabla_cont["Sin adolescentes", ])
+n_B <- sum(tabla_cont["Con adolescentes", ])
+x_A <- tabla_cont["Sin adolescentes", "Aceptó"]
+x_B <- tabla_cont["Con adolescentes", "Aceptó"]
+```
+
+La Tabla \@ref(tab:tab-contingencia-teen) presenta la tabla de
+contingencia y las proporciones de aceptación.
+
+```{r tab-contingencia-teen, echo=FALSE}
+tabla_prop <- data.frame(
+  Grupo = c("Sin adolescentes", "Con adolescentes", "Total"),
+  No_acepto = c(tabla_cont["Sin adolescentes", "No aceptó"],
+                tabla_cont["Con adolescentes", "No aceptó"],
+                sum(tabla_cont[, "No aceptó"])),
+  Acepto = c(x_A, x_B, x_A + x_B),
+  Total = c(n_A, n_B, n_A + n_B),
+  Prop = c(paste0(round(prop_A * 100, 2), "%"),
+           paste0(round(prop_B * 100, 2), "%"),
+           paste0(round(100 * (x_A + x_B) / (n_A + n_B), 2), "%"))
+)
+
+knitr::kable(tabla_prop,
+             col.names = c("Grupo", "No aceptó", "Aceptó", "Total",
+                           "$\\hat{p}$ (aceptación)"),
+             caption = "Tabla de contingencia y proporciones de aceptación por presencia de adolescentes",
+             align = "ccccc")
+```
+
+### Verificación de supuestos
+
+La prueba de dos proporciones basada en la aproximación normal requiere
+que los conteos esperados bajo $H_0$ sean suficientemente grandes:
+
+$$n_A \hat{p}_0 \geq 5, \quad n_A(1-\hat{p}_0) \geq 5, \quad n_B \hat{p}_0 \geq 5, \quad n_B(1-\hat{p}_0) \geq 5$$
+
+donde
+$\hat{p}_0 = \frac{x_A + x_B}{n_A + n_B}$
+es la proporción combinada bajo $H_0$. La Tabla
+\@ref(tab:tab-supuestos-prop) verifica estas condiciones.
+
+```{r tab-supuestos-prop, echo=FALSE}
+p_comb <- (x_A + x_B) / (n_A + n_B)
+
+tab_sup <- data.frame(
+  Condicion = c("$n_A \\times \\hat{p}_0$",
+                "$n_A \\times (1 - \\hat{p}_0)$",
+                "$n_B \\times \\hat{p}_0$",
+                "$n_B \\times (1 - \\hat{p}_0)$"),
+  Valor = c(round(n_A * p_comb, 1),
+            round(n_A * (1 - p_comb), 1),
+            round(n_B * p_comb, 1),
+            round(n_B * (1 - p_comb), 1)),
+  Cumple = rep("Sí ($\\geq 5$)", 4)
+)
+
+knitr::kable(tab_sup,
+             col.names = c("Condición", "Valor", "¿Cumple?"),
+             caption = "Verificación de conteos esperados para la prueba de proporciones",
+             align = "ccc")
+```
+
+Todos los conteos esperados superan $5$ (Tabla
+\@ref(tab:tab-supuestos-prop)). La aproximación normal es válida.
+
+### Prueba de dos proporciones ($z$-test)
+
+El estadístico de prueba es:
+
+$$z = \frac{\hat{p}_A - \hat{p}_B}{\sqrt{\hat{p}_0(1 - \hat{p}_0)\left(\frac{1}{n_A} + \frac{1}{n_B}\right)}}$$
+
+(véase Wackerly, Mendenhall & Scheaffer, *Estadística Matemática con
+Aplicaciones*, 7ma ed., Cap. 10). La Tabla \@ref(tab:tab-proptest)
+presenta los resultados.
+
+```{r prop-test, echo=FALSE}
+test_prop <- prop.test(c(x_A, x_B), c(n_A, n_B),
+                       alternative = "two.sided", conf.level = 0.95,
+                       correct = FALSE)
+```
+
+```{r tab-proptest, echo=FALSE}
+tab_prop <- data.frame(
+  Chi2 = round(test_prop$statistic, 4),
+  z = round(sqrt(test_prop$statistic), 4),
+  p_valor = format.pval(test_prop$p.value, digits = 4),
+  IC_inf = round(test_prop$conf.int[1], 4),
+  IC_sup = round(test_prop$conf.int[2], 4),
+  Decision = ifelse(test_prop$p.value < 0.05,
+                    "Rechaza $H_0$", "No rechaza $H_0$")
+)
+
+knitr::kable(tab_prop,
+             col.names = c("$\\chi^2$", "$z$", "p-valor",
+                           "IC 95% inf.", "IC 95% sup.",
+                           "Decisión ($\\alpha=0.05$)"),
+             caption = "Prueba de dos proporciones (z-test) para la diferencia $p_A - p_B$",
+             align = "cccccc")
+```
+
+### Intervalo de confianza al 95% para $p_A - p_B$
+
+El intervalo de Wald para la diferencia de proporciones es:
+
+$$(\hat{p}_A - \hat{p}_B) \pm z_{\alpha/2} \sqrt{\frac{\hat{p}_A(1 - \hat{p}_A)}{n_A} + \frac{\hat{p}_B(1 - \hat{p}_B)}{n_B}}$$
+
+La Tabla \@ref(tab:tab-ic-prop) compara los intervalos obtenidos por los
+métodos de Wilson y Wald.
+
+```{r tab-ic-prop, echo=FALSE}
+se_diff_prop <- sqrt(prop_A * (1 - prop_A) / n_A +
+                     prop_B * (1 - prop_B) / n_B)
+z_crit <- qnorm(0.975)
+ic_wald <- (prop_A - prop_B) + c(-1, 1) * z_crit * se_diff_prop
+
+tab_ic_p <- data.frame(
+  Metodo = c("Wilson (prop.test)", "Wald"),
+  Dif = c(round(prop_A - prop_B, 4), round(prop_A - prop_B, 4)),
+  IC_inf = c(round(test_prop$conf.int[1], 4), round(ic_wald[1], 4)),
+  IC_sup = c(round(test_prop$conf.int[2], 4), round(ic_wald[2], 4)),
+  Contiene_cero = c(
+    ifelse(test_prop$conf.int[1] > 0 | test_prop$conf.int[2] < 0, "No", "Sí"),
+    ifelse(ic_wald[1] > 0 | ic_wald[2] < 0, "No", "Sí")
+  )
+)
+
+knitr::kable(tab_ic_p,
+             col.names = c("Método", "$\\hat{p}_A - \\hat{p}_B$",
+                           "IC 95% inf.", "IC 95% sup.",
+                           "¿Contiene 0?"),
+             caption = "Intervalos de confianza al 95% para la diferencia de proporciones",
+             align = "ccccc")
+```
+
+### Confirmación: prueba $\chi^2$ de independencia
+
+Como verificación complementaria, se aplica la prueba Chi-cuadrado de
+independencia con la medida $V$ de Cramér como tamaño del efecto:
+
+$$V = \sqrt{\frac{\chi^2}{n \cdot (\min(r, c) - 1)}}$$
+
+La Tabla \@ref(tab:tab-chi-teen) presenta los resultados.
+
+```{r tab-chi-teen, echo=FALSE}
+chi_test <- chisq.test(tabla_cont, correct = FALSE)
+
+V_cramer <- sqrt(chi_test$statistic /
+                (sum(tabla_cont) * (min(nrow(tabla_cont), ncol(tabla_cont)) - 1)))
+
+magnitud_V <- ifelse(V_cramer >= 0.5, "Grande",
+              ifelse(V_cramer >= 0.3, "Moderado",
+              ifelse(V_cramer >= 0.1, "Pequeño", "Despreciable")))
+
+tab_chi <- data.frame(
+  Chi2 = round(chi_test$statistic, 4),
+  gl = chi_test$parameter,
+  p_valor = format.pval(chi_test$p.value, digits = 4),
+  V = round(V_cramer, 4),
+  Magnitud = magnitud_V
+)
+
+knitr::kable(tab_chi,
+             col.names = c("$\\chi^2$", "gl", "p-valor",
+                           "$V$ de Cramér", "Magnitud"),
+             caption = "Prueba Chi-cuadrado de independencia y V de Cramér",
+             align = "ccccc")
+```
+
+### Visualización
+
+```{r fig-prop-teen, echo=FALSE, fig.width=8, fig.height=5, fig.cap="Proporción de aceptación e IC 95% según presencia de adolescentes"}
+props_plot <- c(prop_A, prop_B)
+se_props <- c(sqrt(prop_A * (1 - prop_A) / n_A),
+              sqrt(prop_B * (1 - prop_B) / n_B))
+li_props <- props_plot - 1.96 * se_props
+ls_props <- props_plot + 1.96 * se_props
+
+barplot_pos <- barplot(props_plot * 100,
+        names.arg = c("Sin adolescentes", "Con adolescentes"),
+        col = c(rgb(0.2, 0.5, 0.8, 0.5), rgb(0.8, 0.3, 0.2, 0.5)),
+        ylim = c(0, max(ls_props * 100) + 5),
+        ylab = "Tasa de aceptación (%)",
+        main = "Proporción de aceptación por presencia de adolescentes")
+
+arrows(barplot_pos, li_props * 100, barplot_pos, ls_props * 100,
+       angle = 90, code = 3, length = 0.1, lwd = 2)
+
+text(barplot_pos, ls_props * 100 + 1.5,
+     paste0(round(props_plot * 100, 1), "%"), cex = 0.9, font = 2)
+```
+
+### Interpretación
+
+La proporción de clientes que aceptaron la campaña es
+significativamente mayor entre quienes no tienen adolescentes en el
+hogar, como muestran la Tabla \@ref(tab:tab-proptest) y la Figura
+\@ref(fig:fig-prop-teen). La diferencia es estadísticamente
+significativa al nivel $\alpha = 0.05$. Los intervalos de confianza al
+95% para $p_A - p_B$ (Tabla \@ref(tab:tab-ic-prop)) no contienen el
+cero, y la prueba $\chi^2$ (Tabla \@ref(tab:tab-chi-teen)) confirma la
+asociación.
+
+Este resultado es coherente con los hallazgos de la Actividad 1, donde
+se observó que la presencia de dependientes en el hogar se asocia con
+menor disposición a aceptar nuevos productos, posiblemente por
+restricciones presupuestarias o diferencias en prioridades de consumo.
+
+
+## Resumen comparativo de las tres preguntas
+
+La Tabla \@ref(tab:tab-resumen-p6) resume los resultados de las tres
+pruebas realizadas.
+
+```{r tab-resumen-p6, echo=FALSE}
+resumen <- data.frame(
+  Pregunta = c(
+    "1. Diferencia de ingreso medio",
+    "2. Gasto total mayor en grupo Aceptó",
+    "3. Diferencia de proporción de aceptación"
+  ),
+  Prueba = c(
+    "t de Welch (bilateral)",
+    "Mann-Whitney + t Welch + Bootstrap (unilateral)",
+    "z-test de dos proporciones"
+  ),
+  Supuestos = c(
+    "TLC + Shapiro-Wilk + prueba F + Levene",
+    "Independencia + dominancia estocástica (MW) + TLC (t Welch)",
+    "Conteos esperados $\\geq 5$"
+  ),
+  Decision = c(
+    ifelse(t_income$p.value < 0.05,
+           "Rechaza $H_0$", "No rechaza $H_0$"),
+    ifelse(wilcox_mnt$p.value < 0.05,
+           "Rechaza $H_0$", "No rechaza $H_0$"),
+    ifelse(test_prop$p.value < 0.05,
+           "Rechaza $H_0$", "No rechaza $H_0$")
+  )
+)
+
+knitr::kable(resumen,
+             col.names = c("Pregunta", "Prueba utilizada",
+                           "Supuestos verificados",
+                           "Decisión ($\\alpha = 0.05$)"),
+             caption = "Resumen de las tres pruebas de hipótesis",
+             align = "llll")
+```
+
+Las tres preguntas de investigación han sido resueltas mediante pruebas
+de hipótesis apropiadas, con verificación explícita de supuestos en cada
+caso. Los intervalos de confianza complementan la información del
+$p$-valor al proporcionar la magnitud y dirección de las diferencias
+estimadas. Los resultados son coherentes con el análisis exploratorio de
+la Actividad 1 y refuerzan las siguientes conclusiones:
+
+1.  El **ingreso anual** es significativamente mayor en el grupo que
+    aceptó la campaña, lo que confirma la capacidad económica como
+    factor asociado a la receptividad comercial.
+
+2.  El **gasto total acumulado** es significativamente superior en
+    quienes aceptaron, con un tamaño del efecto moderado a grande. Esto
+    identifica al gasto histórico como el principal indicador conductual
+    de respuesta.
+
+3.  La **composición del hogar** (presencia de adolescentes) se asocia
+    significativamente con la tasa de aceptación, con menor receptividad
+    entre hogares con adolescentes.
+
+Estos hallazgos proporcionan criterios objetivos para la segmentación de
+clientes en futuras campañas de marketing directo.

@@ -1,0 +1,18 @@
+book_filename: "Actividad-3"
+delete_merged_file: true
+new_session: no
+
+rmd_files:
+  - "index.Rmd"
+  - "seccion1.Rmd"
+  - "seccion2.Rmd"
+  - "seccion3.Rmd"
+  - "seccion4.Rmd"
+  - "seccion5.Rmd"
+  - "seccion6.Rmd"
+  - "seccion7.Rmd"
+  - "referencias.Rmd"
+  - "anexos.Rmd"
+  
+
+output_dir: "docs"

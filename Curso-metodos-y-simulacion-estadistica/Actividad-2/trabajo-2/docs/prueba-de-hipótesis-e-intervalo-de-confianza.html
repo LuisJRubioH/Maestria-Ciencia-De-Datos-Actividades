@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Prueba de hipótesis e intervalo de confianza | Actividad 2</title>
+  <meta name="description" content="6 Prueba de hipótesis e intervalo de confianza | Actividad 2" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Prueba de hipótesis e intervalo de confianza | Actividad 2" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Prueba de hipótesis e intervalo de confianza | Actividad 2" />
+  
+  
+  
+
+<meta name="author" content="Oriana Giraldo Arcia (Grupo A)" />
+<meta name="author" content="Luis Javier Rubio Hernández (Grupo B)" />
+
+
+<meta name="date" content="2026-03-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"/>
+<link rel="next" href="referencias.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html"><i class="fa fa-check"></i><b>1</b> <strong>Estimación de la probabilidad y la media</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#problema-1"><i class="fa fa-check"></i><b>1.1</b> <strong>Problema 1</strong></a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#c%C3%A1lculo-de-probabilidad-te%C3%B3rica"><i class="fa fa-check"></i><b>1.1.1</b> <strong>Cálculo de probabilidad teórica</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#simulaci%C3%B3n-con-una-muestra"><i class="fa fa-check"></i><b>1.1.2</b> <strong>Simulación con una muestra</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#an%C3%A1lisis-de-la-variabilidad-entre-muestras"><i class="fa fa-check"></i><b>1.1.3</b> <strong>Análisis de la variabilidad entre muestras</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral"><i class="fa fa-check"></i><b>1.1.4</b> <strong>Impacto del tamaño muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.5" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#convergencia-de-la-media-muestral"><i class="fa fa-check"></i><b>1.1.5</b> <strong>Convergencia de la media muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.6" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral-en-la-media"><i class="fa fa-check"></i><b>1.1.6</b> <strong>Impacto del tamaño muestral en la media</strong>:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html"><i class="fa fa-check"></i><b>2</b> <strong>Propiedades de los estimadores</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#problema-2"><i class="fa fa-check"></i><b>2.1</b> <strong>Problema 2</strong></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#simulaci%C3%B3n-de-estimadores"><i class="fa fa-check"></i><b>2.1.1</b> <strong>Simulación de estimadores</strong></a></li>
+<li class="chapter" data-level="2.1.2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#insesgadez"><i class="fa fa-check"></i><b>2.1.2</b> <strong>Insesgadez</strong></a></li>
+<li class="chapter" data-level="2.1.3" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#consistencia"><i class="fa fa-check"></i><b>2.1.3</b> <strong>Consistencia</strong></a></li>
+<li class="chapter" data-level="2.1.4" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#eficiencia"><i class="fa fa-check"></i><b>2.1.4</b> <strong>Eficiencia</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html"><i class="fa fa-check"></i><b>3</b> <strong>Teorema del límite central</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#problema-3"><i class="fa fa-check"></i><b>3.1</b> <strong>Problema 3</strong></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#c%C3%A1lculo-de-la-media-y-varianza-de-la-poblaci%C3%B3n"><i class="fa fa-check"></i><b>3.1.1</b> <strong>Cálculo de la media y varianza de la población</strong></a></li>
+<li class="chapter" data-level="3.1.2" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#gr%C3%A1fico-de-la-curva-de-densidad"><i class="fa fa-check"></i><b>3.1.2</b> <strong>Gráfico de la curva de densidad</strong></a></li>
+<li class="chapter" data-level="3.1.3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#comparaci%C3%B3n-de-par%C3%A1metros-estimadores-y-estimaciones"><i class="fa fa-check"></i><b>3.1.3</b> <strong>Comparación de parámetros, estimadores y estimaciones</strong></a></li>
+<li class="chapter" data-level="3.1.4" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-para-n-200"><i class="fa fa-check"></i><b>3.1.4</b> <strong>Aplicación del Teorema del Límite Central para <span class="math inline">\(n = 200\)</span></strong></a></li>
+<li class="chapter" data-level="3.1.5" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-variando-n"><i class="fa fa-check"></i><b>3.1.5</b> <strong>Aplicación del Teorema del Límite Central variando <span class="math inline">\(n\)</span></strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html"><i class="fa fa-check"></i><b>4</b> <strong>Estimación de intervalos de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#normalidad"><i class="fa fa-check"></i><b>4.0.1</b> <strong>Normalidad</strong></a></li>
+<li class="chapter" data-level="4.0.2" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico"><i class="fa fa-check"></i><b>4.0.2</b> <strong>Método paramétrico</strong></a></li>
+<li class="chapter" data-level="4.0.3" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap"><i class="fa fa-check"></i><b>4.0.3</b> <strong>Procedimiento bootstrap</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><i class="fa fa-check"></i><b>5</b> <strong>Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#problema-5"><i class="fa fa-check"></i><b>5.1</b> <strong>Problema 5</strong></a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#errores-de-decisi%C3%B3n-tipo-i-y-tipo-ii"><i class="fa fa-check"></i><b>5.1.1</b> Errores de decisión: Tipo I y Tipo II</a></li>
+<li class="chapter" data-level="5.1.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#potencia-estad%C3%ADstica"><i class="fa fa-check"></i><b>5.1.2</b> Potencia estadística</a></li>
+<li class="chapter" data-level="5.1.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tama%C3%B1o-del-efecto-de-cohen"><i class="fa fa-check"></i><b>5.1.3</b> Tamaño del efecto de Cohen</a></li>
+<li class="chapter" data-level="5.1.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#funci%C3%B3n-de-potencia-exacta-distribuci%C3%B3n-t-no-central"><i class="fa fa-check"></i><b>5.1.4</b> Función de potencia exacta: distribución <span class="math inline">\(t\)</span> no central</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-computacional"><i class="fa fa-check"></i><b>5.2</b> <strong>Análisis computacional</strong></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#configuraci%C3%B3n-general"><i class="fa fa-check"></i><b>5.2.1</b> Configuración general</a></li>
+<li class="chapter" data-level="5.2.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.10"><i class="fa fa-check"></i><b>5.2.2</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.10\)</span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.05"><i class="fa fa-check"></i><b>5.2.3</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.05\)</span></a></li>
+<li class="chapter" data-level="5.2.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.01"><i class="fa fa-check"></i><b>5.2.4</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.01\)</span></a></li>
+<li class="chapter" data-level="5.2.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#comparaci%C3%B3n-de-los-tres-niveles-de-significancia"><i class="fa fa-check"></i><b>5.2.5</b> Comparación de los tres niveles de significancia</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tabla-de-tama%C3%B1os-m%C3%ADnimos-de-muestra"><i class="fa fa-check"></i><b>5.3</b> <strong>Tabla de tamaños mínimos de muestra</strong></a></li>
+<li class="chapter" data-level="5.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#curva-de-rendimientos-marginales-de-la-potencia"><i class="fa fa-check"></i><b>5.4</b> <strong>Curva de rendimientos marginales de la potencia</strong></a></li>
+<li class="chapter" data-level="5.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#respuesta-a-las-preguntas-orientadoras"><i class="fa fa-check"></i><b>5.5</b> <strong>Respuesta a las preguntas orientadoras</strong></a></li>
+<li class="chapter" data-level="5.6" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#propuesta-final-del-dise%C3%B1o-del-estudio"><i class="fa fa-check"></i><b>5.6</b> <strong>Propuesta final del diseño del estudio</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html"><i class="fa fa-check"></i><b>6</b> <strong>Prueba de hipótesis e intervalo de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#problema-6"><i class="fa fa-check"></i><b>6.1</b> <strong>Problema 6</strong></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#contexto-informe-descriptivo-de-la-actividad-1"><i class="fa fa-check"></i><b>6.1.1</b> Contexto: Informe descriptivo de la Actividad 1</a></li>
+<li class="chapter" data-level="6.1.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#carga-y-preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.1.2</b> Carga y preparación de los datos</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.2</b> Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal"><i class="fa fa-check"></i><b>6.2.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.2.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos"><i class="fa fa-check"></i><b>6.2.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.2.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-t-de-welch"><i class="fa fa-check"></i><b>6.2.3</b> Prueba de hipótesis: <span class="math inline">\(t\)</span> de Welch</a></li>
+<li class="chapter" data-level="6.2.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.2.4</b> Intervalo de confianza al 95% para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.2.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.5</b> Visualización</a></li>
+<li class="chapter" data-level="6.2.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.6</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.3</b> Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-1"><i class="fa fa-check"></i><b>6.3.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.3.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-1"><i class="fa fa-check"></i><b>6.3.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.3.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-no-param%C3%A9trica-mann-whitney-wilcoxon"><i class="fa fa-check"></i><b>6.3.3</b> Prueba no paramétrica: Mann-Whitney-Wilcoxon</a></li>
+<li class="chapter" data-level="6.3.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tama%C3%B1o-del-efecto-correlaci%C3%B3n-biserial-de-rango"><i class="fa fa-check"></i><b>6.3.4</b> Tamaño del efecto: Correlación biserial de rango</a></li>
+<li class="chapter" data-level="6.3.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-t-de-welch-confirmaci%C3%B3n-asint%C3%B3tica"><i class="fa fa-check"></i><b>6.3.5</b> Prueba <span class="math inline">\(t\)</span> de Welch (confirmación asintótica)</a></li>
+<li class="chapter" data-level="6.3.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-bootstrap-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.3.6</b> Intervalo de confianza Bootstrap para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.3.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#comparaci%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.3.7</b> Comparación de resultados</a></li>
+<li class="chapter" data-level="6.3.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.3.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-3-la-proporci%C3%B3n-de-aceptaci%C3%B3n-de-la-campa%C3%B1a-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar"><i class="fa fa-check"></i><b>6.4</b> Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-2"><i class="fa fa-check"></i><b>6.4.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.4.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.4.2</b> Preparación de los datos</a></li>
+<li class="chapter" data-level="6.4.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-2"><i class="fa fa-check"></i><b>6.4.3</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.4.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-dos-proporciones-z-test"><i class="fa fa-check"></i><b>6.4.4</b> Prueba de dos proporciones (<span class="math inline">\(z\)</span>-test)</a></li>
+<li class="chapter" data-level="6.4.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-p_a---p_b"><i class="fa fa-check"></i><b>6.4.5</b> Intervalo de confianza al 95% para <span class="math inline">\(p_A - p_B\)</span></a></li>
+<li class="chapter" data-level="6.4.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#confirmaci%C3%B3n-prueba-chi2-de-independencia"><i class="fa fa-check"></i><b>6.4.6</b> Confirmación: prueba <span class="math inline">\(\chi^2\)</span> de independencia</a></li>
+<li class="chapter" data-level="6.4.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.4.7</b> Visualización</a></li>
+<li class="chapter" data-level="6.4.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-2"><i class="fa fa-check"></i><b>6.4.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#resumen-comparativo-de-las-tres-preguntas"><i class="fa fa-check"></i><b>6.5</b> Resumen comparativo de las tres preguntas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>7</b> Referencias</a></li>
+<li class="chapter" data-level="8" data-path="anexos.html"><a href="anexos.html"><i class="fa fa-check"></i><b>8</b> Anexos</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad 2</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="prueba-de-hipótesis-e-intervalo-de-confianza" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> <strong>Prueba de hipótesis e intervalo de confianza</strong><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-e-intervalo-de-confianza" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="problema-6" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> <strong>Problema 6</strong><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#problema-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Teniendo en cuenta el contexto y los datos utilizados en el informe estadístico desarrollado
+en la Actividad 1, formulamos tres preguntas de investigación relevantes. Para cada pregunta,
+realizamos el análisis correspondiente utilizando pruebas de hipótesis e intervalos de confianza.
+Además, verificamos el cumplimiento de los supuestos necesarios para garantizar
+la validez de los procedimientos estadísticos aplicados.</p>
+<div id="contexto-informe-descriptivo-de-la-actividad-1" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Contexto: Informe descriptivo de la Actividad 1<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#contexto-informe-descriptivo-de-la-actividad-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En la Actividad 1 se desarrolló un análisis exploratorio y descriptivo
+sobre datos provenientes de una <strong>campaña piloto de marketing directo</strong>
+de una empresa que busca comercializar un nuevo dispositivo entre sus
+clientes existentes. El objetivo era identificar patrones y rasgos
+distintivos entre los clientes que aceptaron la oferta y aquellos que no
+lo hicieron, sentando las bases para la construcción de un modelo
+predictivo de respuesta.</p>
+<p>La base de datos original contenía <span class="math inline">\(2220\)</span> registros con información
+sociodemográfica (edad, nivel educativo, estado civil, composición del
+hogar, ingreso), comportamiento de compra (gasto por categoría de
+producto, número de compras por canal, visitas web) y respuesta a
+campañas de marketing previas y a la campaña piloto (variable
+<code>Response</code>).</p>
+<p>El proceso de depuración de la Actividad 1 comprendió las siguientes
+etapas:</p>
+<ul>
+<li><strong>Eliminación de duplicados:</strong> Se identificaron y removieron <span class="math inline">\(179\)</span>
+registros duplicados (<span class="math inline">\(8.06\%\)</span>), reduciendo el dataset a <span class="math inline">\(n = 2041\)</span>.</li>
+<li><strong>Corrección de inconsistencias:</strong> Se corrigieron <span class="math inline">\(6\)</span> errores de
+codificación en <code>marital_Divorced</code>, se descartaron <span class="math inline">\(2\)</span> registros con
+edades biológicamente imposibles (<span class="math inline">\(240\)</span> años) y se recalcularon <span class="math inline">\(3\)</span>
+valores negativos en <code>MntRegularProds</code>.</li>
+<li><strong>Imputación de datos faltantes:</strong> Se imputaron los valores
+faltantes de <code>Income</code> (<span class="math inline">\(68\)</span> valores, <span class="math inline">\(3.33\%\)</span>) y <code>MntWines</code> (<span class="math inline">\(20\)</span>
+valores, <span class="math inline">\(0.98\%\)</span>) mediante el método CART, verificando la
+preservación de distribuciones y correlaciones.</li>
+</ul>
+<p>El <strong>dataset final</strong> quedó conformado por <span class="math inline">\(n = 2039\)</span> observaciones
+limpias y completas. Los principales hallazgos del análisis exploratorio
+fueron:</p>
+<ul>
+<li>Las <strong>variables económicas</strong> (ingreso anual y gasto total acumulado)
+presentan la mayor capacidad discriminante entre los grupos de
+respuesta.</li>
+<li>Las <strong>compras por catálogo</strong> constituyen el canal con mayor poder
+diferenciador.</li>
+<li>Las <strong>variables demográficas clásicas</strong> (edad) no discriminan entre
+grupos, pero el nivel educativo, estado civil y composición del
+hogar sí presentan asociaciones significativas.</li>
+<li>La <strong>presencia de dependientes</strong> en el hogar se asocia con menor
+proporción de aceptación.</li>
+</ul>
+<p>Las tres preguntas de investigación que se formulan a continuación se
+derivan directamente de estos hallazgos y se abordan con las
+herramientas de inferencia estadística desarrolladas en los Problemas 1
+a 5 de esta actividad.</p>
+</div>
+<div id="carga-y-preparación-de-los-datos" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Carga y preparación de los datos<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#carga-y-preparaci%C3%B3n-de-los-datos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-resumen-datos-p6">6.1</a> presenta un resumen del dataset
+utilizado.</p>
+<table>
+<caption><span id="tab:tab-resumen-datos-p6">Table 6.1: </span>Distribución de la variable Response en el dataset</caption>
+<thead>
+<tr class="header">
+<th align="left">Grupo</th>
+<th align="center">n</th>
+<th align="center">Porcentaje</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No aceptó (Response = 0)</td>
+<td align="center">1726</td>
+<td align="center">84.6%</td>
+</tr>
+<tr class="even">
+<td align="left">Aceptó (Response = 1)</td>
+<td align="center">313</td>
+<td align="center">15.4%</td>
+</tr>
+<tr class="odd">
+<td align="left">Total</td>
+<td align="center">2039</td>
+<td align="center">100%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campaña" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campa%C3%B1a" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="planteamiento-formal" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Planteamiento formal<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sea <span class="math inline">\(\mu_1\)</span> la media poblacional de <code>Income</code> para el grupo que aceptó la
+campaña (<span class="math inline">\(\text{Response} = 1\)</span>) y <span class="math inline">\(\mu_0\)</span> la media para el grupo que no
+aceptó (<span class="math inline">\(\text{Response} = 0\)</span>). Se desea contrastar:</p>
+<p><span class="math display">\[H_0: \mu_1 = \mu_0 \qquad \text{vs} \qquad H_1: \mu_1 \neq \mu_0\]</span></p>
+<p>al nivel de significancia <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+</div>
+<div id="verificación-de-supuestos" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Verificación de supuestos<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="independencia" class="section level4 hasAnchor" number="6.2.2.1">
+<h4><span class="header-section-number">6.2.2.1</span> Independencia<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#independencia" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Las muestras corresponden a clientes distintos, seleccionados
+aleatoriamente durante la campaña piloto. Las observaciones dentro de
+cada grupo y entre grupos son independientes.</p>
+</div>
+<div id="normalidad-1" class="section level4 hasAnchor" number="6.2.2.2">
+<h4><span class="header-section-number">6.2.2.2</span> Normalidad<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#normalidad-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Dado que <span class="math inline">\(n_0 = 1726\)</span> y <span class="math inline">\(n_1 = 313\)</span>, ambos tamaños son suficientemente
+grandes para invocar el <strong>Teorema del Límite Central</strong> (TLC). Según
+este resultado (véase Casella &amp; Berger, <em>Statistical Inference</em>, 2nd
+ed., Sec. 5.5), la distribución de la media muestral
+<span class="math inline">\(\bar{X} \xrightarrow{d} N(\mu, \sigma^2/n)\)</span> cuando <span class="math inline">\(n \to \infty\)</span>,
+independientemente de la distribución poblacional, siempre que la
+varianza sea finita.</p>
+<p>No obstante, realizamos una verificación gráfica y formal. Las Figuras
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:normalidad-income">6.1</a> y <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:qq-income">6.2</a> presentan los
+histogramas y gráficos Q-Q de cada grupo.</p>
+<div class="figure"><span style="display:block;" id="fig:normalidad-income"></span>
+<img src="Actividad-2_files/figure-html/normalidad-income-1.png" alt="Histogramas de Income por grupo de respuesta" width="80%" />
+<p class="caption">
+Figure 6.1: Histogramas de Income por grupo de respuesta
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:qq-income"></span>
+<img src="Actividad-2_files/figure-html/qq-income-1.png" alt="Q-Q plots de Income por grupo" width="80%" />
+<p class="caption">
+Figure 6.2: Q-Q plots de Income por grupo
+</p>
+</div>
+<p>Se aplican las pruebas de <strong>Shapiro-Wilk</strong> y <strong>Lilliefors
+(Kolmogorov-Smirnov corregido)</strong> a cada grupo. En R, la función
+<code>shapiro.test()</code> admite muestras de tamaño <span class="math inline">\(3 \leq n \leq 5000\)</span>; dado
+que ambos grupos (<span class="math inline">\(n_0 = 1726\)</span> y <span class="math inline">\(n_1 = 313\)</span>) están dentro de este
+rango, la prueba es aplicable. La Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-normalidad-income">6.2</a> resume los resultados.</p>
+<table>
+<caption><span id="tab:tab-normalidad-income">Table 6.2: </span>Pruebas de normalidad para Income por grupo</caption>
+<colgroup>
+<col width="14%" />
+<col width="18%" />
+<col width="17%" />
+<col width="12%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Grupo</th>
+<th align="center">Prueba</th>
+<th align="center">Estadístico</th>
+<th align="center">p-valor</th>
+<th align="center">Decisión (<span class="math inline">\(\alpha = 0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">No aceptó</td>
+<td align="center">Shapiro-Wilk</td>
+<td align="center">0.9864</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">No aceptó</td>
+<td align="center">Lilliefors</td>
+<td align="center">0.0437</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Aceptó</td>
+<td align="center">Shapiro-Wilk</td>
+<td align="center">0.9585</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">Aceptó</td>
+<td align="center">Lilliefors</td>
+<td align="center">0.0967</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Nota sobre la interpretación con muestras grandes:</strong> Con tamaños
+muestrales del orden de <span class="math inline">\(n = 1726\)</span>, las pruebas de normalidad poseen una
+potencia muy elevada y pueden rechazar <span class="math inline">\(H_0\)</span> ante desviaciones mínimas
+de la normalidad que carecen de relevancia práctica. En estos casos, la
+evaluación visual (histogramas y Q-Q plots) cobra mayor importancia. Los
+gráficos de las Figuras <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:normalidad-income">6.1</a> y
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:qq-income">6.2</a> muestran distribuciones aproximadamente simétricas
+y unimodales. Además, dado el tamaño muestral, el <strong>TLC garantiza la
+validez asintótica</strong> de la prueba <span class="math inline">\(t\)</span>, independientemente de la
+distribución subyacente (siempre que la varianza sea finita).</p>
+</div>
+<div id="homogeneidad-de-varianzas" class="section level4 hasAnchor" number="6.2.2.3">
+<h4><span class="header-section-number">6.2.2.3</span> Homogeneidad de varianzas<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#homogeneidad-de-varianzas" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Se aplica la prueba <span class="math inline">\(F\)</span> de Fisher:</p>
+<p><span class="math display">\[H_0: \sigma_0^2 = \sigma_1^2 \qquad \text{vs} \qquad H_1: \sigma_0^2 \neq \sigma_1^2\]</span></p>
+<p><strong>Nota:</strong> La prueba <span class="math inline">\(F\)</span> de Fisher es sensible a desviaciones de la
+normalidad (véase Montgomery &amp; Runger, <em>Probabilidad y Estadística
+Aplicadas a la Ingeniería</em>, 6ta ed., Sec. 10.5). Dado que con muestras
+grandes los tests de normalidad pueden rechazar <span class="math inline">\(H_0\)</span> ante desviaciones
+mínimas, complementamos la prueba <span class="math inline">\(F\)</span> con la <strong>prueba de Levene</strong>, que
+es robusta a no-normalidad ya que opera sobre las desviaciones absolutas
+respecto a la mediana grupal.</p>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-vartest-income">6.3</a> presenta los resultados de ambas
+pruebas.</p>
+<table>
+<caption><span id="tab:tab-vartest-income">Table 6.3: </span>Pruebas de igualdad de varianzas para Income</caption>
+<colgroup>
+<col width="4%" />
+<col width="17%" />
+<col width="17%" />
+<col width="12%" />
+<col width="49%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Prueba</th>
+<th align="center">Estadístico</th>
+<th align="center">p-valor</th>
+<th align="center">Decisión (<span class="math inline">\(\alpha = 0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="center">F de Fisher</td>
+<td align="center">0.7482</td>
+<td align="center">0.0005</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span>: varianzas desiguales</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="center">Levene</td>
+<td align="center">20.0299</td>
+<td align="center">0.0000</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span>: varianzas desiguales</td>
+</tr>
+</tbody>
+</table>
+<p>Dado el resultado de la Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-vartest-income">6.3</a>, se emplea
+la prueba <span class="math inline">\(t\)</span> de Welch, que no asume homocedasticidad.</p>
+</div>
+</div>
+<div id="prueba-de-hipótesis-t-de-welch" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Prueba de hipótesis: <span class="math inline">\(t\)</span> de Welch<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-t-de-welch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El estadístico de prueba es:</p>
+<p><span class="math display">\[t = \frac{\bar{X}_1 - \bar{X}_0}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_0^2}{n_0}}}\]</span></p>
+<p>con grados de libertad estimados mediante la aproximación de
+Satterthwaite (véase Montgomery &amp; Runger, <em>Probabilidad y Estadística
+Aplicadas a la Ingeniería</em>, 6ta ed., Cap. 10).</p>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-descriptivos-income">6.4</a> presenta los estadísticos
+descriptivos por grupo y la Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ttest-income">6.5</a> los
+resultados de la prueba.</p>
+<table>
+<caption><span id="tab:tab-descriptivos-income">Table 6.4: </span>Estadísticos descriptivos de Income por grupo</caption>
+<colgroup>
+<col width="47%" />
+<col width="8%" />
+<col width="15%" />
+<col width="14%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Grupo</th>
+<th align="center"><span class="math inline">\(n\)</span></th>
+<th align="center"><span class="math inline">\(\bar{X}\)</span></th>
+<th align="center"><span class="math inline">\(S\)</span></th>
+<th align="center">Mediana</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">No aceptó (<span class="math inline">\(\text{Response}=0\)</span>)</td>
+<td align="center">1726</td>
+<td align="center">501831.9</td>
+<td align="center">198439.5</td>
+<td align="center">501385</td>
+</tr>
+<tr class="even">
+<td align="center">Aceptó (<span class="math inline">\(\text{Response}=1\)</span>)</td>
+<td align="center">313</td>
+<td align="center">601688.6</td>
+<td align="center">229412.6</td>
+<td align="center">639980</td>
+</tr>
+</tbody>
+</table>
+<table style="width:100%;">
+<caption><span id="tab:tab-ttest-income">Table 6.5: </span>Prueba t de Welch bilateral para <span class="math inline">\(\mu_1 - \mu_0\)</span> (Income)</caption>
+<colgroup>
+<col width="3%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="14%" />
+<col width="14%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(t\)</span></th>
+<th align="center">gl</th>
+<th align="center">p-valor</th>
+<th align="center">IC 95% inf.</th>
+<th align="center">IC 95% sup.</th>
+<th align="center">Decisión (<span class="math inline">\(\alpha=0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">t</td>
+<td align="center">7.2261</td>
+<td align="center">401.07</td>
+<td align="center">0.000000000002526</td>
+<td align="center">72690.1</td>
+<td align="center">127023.2</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="intervalo-de-confianza-al-95-para-mu_1---mu_0" class="section level3 hasAnchor" number="6.2.4">
+<h3><span class="header-section-number">6.2.4</span> Intervalo de confianza al 95% para <span class="math inline">\(\mu_1 - \mu_0\)</span><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-mu_1---mu_0" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La prueba <span class="math inline">\(t\)</span> de Welch proporciona simultáneamente el intervalo de
+confianza para la diferencia de medias:</p>
+<p><span class="math display">\[(\bar{X}_1 - \bar{X}_0) \pm t_{\alpha/2,\;\nu} \cdot \sqrt{\frac{S_1^2}{n_1} + \frac{S_0^2}{n_0}}\]</span></p>
+<p>Según la Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ttest-income">6.5</a>, el IC al 95% para
+<span class="math inline">\(\mu_1 - \mu_0\)</span> es
+<span class="math inline">\([72690.1,\; 127023.18]\)</span>.</p>
+</div>
+<div id="visualización" class="section level3 hasAnchor" number="6.2.5">
+<h3><span class="header-section-number">6.2.5</span> Visualización<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="figure"><span style="display:block;" id="fig:fig-ic-income"></span>
+<img src="Actividad-2_files/figure-html/fig-ic-income-1.png" alt="Medias e IC 95% de Income por grupo de respuesta" width="80%" />
+<p class="caption">
+Figure 6.3: Medias e IC 95% de Income por grupo de respuesta
+</p>
+</div>
+</div>
+<div id="interpretación" class="section level3 hasAnchor" number="6.2.6">
+<h3><span class="header-section-number">6.2.6</span> Interpretación<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Los clientes que aceptaron la campaña presentan un ingreso medio anual
+significativamente superior al de quienes no la aceptaron, como muestra
+la Figura <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:fig-ic-income">6.3</a>. La diferencia es estadísticamente
+significativa al nivel <span class="math inline">\(\alpha = 0.05\)</span> (Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ttest-income">6.5</a>). El intervalo de confianza al 95% para la
+diferencia de medias no contiene el cero, reforzando la conclusión.
+Desde el punto de vista práctico, el ingreso constituye un factor
+relevante para la segmentación de clientes en futuras campañas.</p>
+<hr />
+</div>
+</div>
+<div id="pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campaña" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campa%C3%B1a" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="planteamiento-formal-1" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Planteamiento formal<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sea <span class="math inline">\(\mu_1\)</span> la media poblacional de <code>MntTotal</code> para
+<span class="math inline">\(\text{Response}=1\)</span> y <span class="math inline">\(\mu_0\)</span> para <span class="math inline">\(\text{Response}=0\)</span>. Dado que el
+análisis exploratorio de la Actividad 1 sugiere que el grupo que aceptó
+gasta más, formulamos una prueba <strong>unilateral</strong>:</p>
+<p><span class="math display">\[H_0: \mu_1 \leq \mu_0 \qquad \text{vs} \qquad H_1: \mu_1 &gt; \mu_0\]</span></p>
+<p>al nivel <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+</div>
+<div id="verificación-de-supuestos-1" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Verificación de supuestos<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="normalidad-2" class="section level4 hasAnchor" number="6.3.2.1">
+<h4><span class="header-section-number">6.3.2.1</span> Normalidad<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#normalidad-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>La Figura <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:normalidad-mnt">6.4</a> presenta los histogramas de
+<code>MntTotal</code> por grupo.</p>
+<div class="figure"><span style="display:block;" id="fig:normalidad-mnt"></span>
+<img src="Actividad-2_files/figure-html/normalidad-mnt-1.png" alt="Histogramas de MntTotal por grupo de respuesta" width="80%" />
+<p class="caption">
+Figure 6.4: Histogramas de MntTotal por grupo de respuesta
+</p>
+</div>
+<p>Se evalúa la asimetría y se aplican pruebas formales de normalidad. La
+Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-normalidad-mnt">6.6</a> resume los resultados.</p>
+<table>
+<caption><span id="tab:tab-normalidad-mnt">Table 6.6: </span>Evaluación de normalidad para MntTotal por grupo</caption>
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="17%" />
+<col width="12%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Grupo</th>
+<th align="center">Prueba</th>
+<th align="center">Estadístico</th>
+<th align="center">p-valor</th>
+<th align="center">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">No aceptó</td>
+<td align="center">Asimetría (skewness)</td>
+<td align="center">0.9534</td>
+<td align="center">—</td>
+<td align="center">Asimetría moderada</td>
+</tr>
+<tr class="even">
+<td align="center">No aceptó</td>
+<td align="center">Shapiro-Wilk</td>
+<td align="center">0.8549</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">No aceptó</td>
+<td align="center">Lilliefors</td>
+<td align="center">0.1667</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">Aceptó</td>
+<td align="center">Asimetría (skewness)</td>
+<td align="center">0.1325</td>
+<td align="center">—</td>
+<td align="center">Asimetría moderada</td>
+</tr>
+<tr class="odd">
+<td align="center">Aceptó</td>
+<td align="center">Shapiro-Wilk</td>
+<td align="center">0.9247</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">Aceptó</td>
+<td align="center">Lilliefors</td>
+<td align="center">0.1164</td>
+<td align="center">0</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>La Figura <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:normalidad-mnt">6.4</a> y la Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-normalidad-mnt">6.6</a> confirman que <code>MntTotal</code> presenta
+<strong>asimetría positiva marcada</strong> y <strong>rechaza normalidad</strong> en ambos grupos.
+Esto motiva el uso de tres enfoques complementarios:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Prueba no paramétrica de Mann-Whitney-Wilcoxon</strong> (no requiere
+normalidad).</li>
+<li><strong>Prueba <span class="math inline">\(t\)</span> de Welch</strong> (válida asintóticamente por el TLC dado el
+tamaño muestral grande).</li>
+<li><strong>Intervalo de confianza Bootstrap percentil</strong> para la diferencia de
+medias (libre de distribución).</li>
+</ol>
+</div>
+</div>
+<div id="prueba-no-paramétrica-mann-whitney-wilcoxon" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Prueba no paramétrica: Mann-Whitney-Wilcoxon<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-no-param%C3%A9trica-mann-whitney-wilcoxon" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La prueba de Mann-Whitney-Wilcoxon contrasta si una distribución tiende
+a producir valores mayores que la otra, es decir, evalúa la <strong>dominancia
+estocástica</strong>: <span class="math inline">\(H_0: P(X_1 &gt; X_0) = 0.5\)</span> vs. <span class="math inline">\(H_1: P(X_1 &gt; X_0) &gt; 0.5\)</span>.
+No requiere el supuesto de normalidad (véase Hollander, Wolfe &amp; Chicken,
+<em>Nonparametric Statistical Methods</em>, 3rd ed., Cap. 4).</p>
+<p>Es importante señalar que la hipótesis de Mann-Whitney es sobre
+dominancia estocástica, no directamente sobre medias. La equivalencia
+entre ambas interpretaciones se cumple estrictamente solo cuando las
+distribuciones de los dos grupos difieren únicamente en localización
+(misma forma, desplazadas). Dado que <code>MntTotal</code> presenta asimetrías y
+dispersiones distintas entre grupos (como muestran la Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-normalidad-mnt">6.6</a> y la Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ttest-mnt">6.9</a>),
+las distribuciones difieren tanto en localización como en forma. Por esta
+razón, la prueba de Mann-Whitney se complementa con la prueba <span class="math inline">\(t\)</span> de
+Welch (que sí contrasta medias directamente, válida por el TLC) y con el
+intervalo Bootstrap, para obtener una conclusión robusta.</p>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-wilcox-mnt">6.7</a> presenta los resultados.</p>
+<table>
+<caption><span id="tab:tab-wilcox-mnt">Table 6.7: </span>Prueba de Mann-Whitney-Wilcoxon unilateral para MntTotal</caption>
+<colgroup>
+<col width="4%" />
+<col width="24%" />
+<col width="33%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Estadístico <span class="math inline">\(W\)</span></th>
+<th align="center">p-valor</th>
+<th align="center">Decisión (<span class="math inline">\(\alpha=0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">W</td>
+<td align="center">373,217.5</td>
+<td align="center">&lt; 0.00000000000000022</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tamaño-del-efecto-correlación-biserial-de-rango" class="section level3 hasAnchor" number="6.3.4">
+<h3><span class="header-section-number">6.3.4</span> Tamaño del efecto: Correlación biserial de rango<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tama%C3%B1o-del-efecto-correlaci%C3%B3n-biserial-de-rango" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para cuantificar la magnitud de la diferencia se calcula la correlación
+biserial de rango <span class="math inline">\(r_{rb}\)</span>, definida como:</p>
+<p><span class="math display">\[r_{rb} = \frac{2U}{n_1 \cdot n_0} - 1\]</span></p>
+<p>donde <span class="math inline">\(U\)</span> es el estadístico de Mann-Whitney. Es importante notar que en
+R la función <code>wilcox.test()</code> devuelve <span class="math inline">\(W\)</span> (la suma de rangos de
+Wilcoxon), no <span class="math inline">\(U\)</span>. La conversión es:</p>
+<p><span class="math display">\[U = W - \frac{n_1(n_1 + 1)}{2}\]</span></p>
+<p>donde <span class="math inline">\(n_1\)</span> es el tamaño del primer grupo pasado a la función (véase
+Hollander, Wolfe &amp; Chicken, <em>Nonparametric Statistical Methods</em>, 3rd
+ed., Cap. 4). Umbrales interpretativos: <span class="math inline">\(|r| &lt; 0.1\)</span> (despreciable),
+<span class="math inline">\(0.1 \leq |r| &lt; 0.3\)</span> (pequeño), <span class="math inline">\(0.3 \leq |r| &lt; 0.5\)</span> (moderado),
+<span class="math inline">\(|r| \geq 0.5\)</span> (grande).</p>
+<table>
+<caption><span id="tab:tab-efecto-mnt">Table 6.8: </span>Tamaño del efecto para la diferencia en MntTotal</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(W\)</span> (Wilcoxon)</th>
+<th align="center"><span class="math inline">\(U\)</span> (Mann-Whitney)</th>
+<th align="center"><span class="math inline">\(r_{rb}\)</span></th>
+<th align="center">Magnitud</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">W</td>
+<td align="center">373,217.5</td>
+<td align="center">324,076.5</td>
+<td align="center">0.1998</td>
+<td align="center">Pequeño</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="prueba-t-de-welch-confirmación-asintótica" class="section level3 hasAnchor" number="6.3.5">
+<h3><span class="header-section-number">6.3.5</span> Prueba <span class="math inline">\(t\)</span> de Welch (confirmación asintótica)<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-t-de-welch-confirmaci%C3%B3n-asint%C3%B3tica" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Aunque la normalidad no se cumple, el TLC justifica el uso de la prueba
+<span class="math inline">\(t\)</span> con muestras de este tamaño como verificación cruzada. La Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ttest-mnt">6.9</a> presenta los descriptivos y la Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ttest-mnt-result">6.10</a> los resultados.</p>
+<table>
+<caption><span id="tab:tab-ttest-mnt">Table 6.9: </span>Estadísticos descriptivos de MntTotal por grupo</caption>
+<thead>
+<tr class="header">
+<th align="center">Grupo</th>
+<th align="center"><span class="math inline">\(n\)</span></th>
+<th align="center"><span class="math inline">\(\bar{X}\)</span></th>
+<th align="center"><span class="math inline">\(S\)</span></th>
+<th align="center">Mediana</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">No aceptó</td>
+<td align="center">1726</td>
+<td align="center">539.93</td>
+<td align="center">552.60</td>
+<td align="center">316.5</td>
+</tr>
+<tr class="even">
+<td align="center">Aceptó</td>
+<td align="center">313</td>
+<td align="center">976.37</td>
+<td align="center">709.48</td>
+<td align="center">1053.0</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:tab-ttest-mnt-result">Table 6.10: </span>Prueba t de Welch unilateral para MntTotal</caption>
+<colgroup>
+<col width="3%" />
+<col width="10%" />
+<col width="9%" />
+<col width="26%" />
+<col width="20%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(t\)</span></th>
+<th align="center">gl</th>
+<th align="center">p-valor</th>
+<th align="center">IC 95% lím. inf.</th>
+<th align="center">Decisión (<span class="math inline">\(\alpha=0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">t</td>
+<td align="center">10.3298</td>
+<td align="center">383.59</td>
+<td align="center">&lt; 0.00000000000000022</td>
+<td align="center">366.78</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="intervalo-de-confianza-bootstrap-para-mu_1---mu_0" class="section level3 hasAnchor" number="6.3.6">
+<h3><span class="header-section-number">6.3.6</span> Intervalo de confianza Bootstrap para <span class="math inline">\(\mu_1 - \mu_0\)</span><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-bootstrap-para-mu_1---mu_0" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dado que la distribución de <code>MntTotal</code> es fuertemente asimétrica, se
+construye un intervalo de confianza <strong>Bootstrap percentil</strong>, que no
+requiere normalidad (Efron &amp; Tibshirani, <em>An Introduction to the
+Bootstrap</em>, Chapman &amp; Hall, 1993). Dado que la hipótesis es unilateral
+(<span class="math inline">\(H_1: \mu_1 &gt; \mu_0\)</span>), se calcula tanto el intervalo bilateral al 95%
+como el límite inferior unilateral al 95% (<span class="math inline">\(Q_{0.05}\)</span>), que es coherente
+con el planteamiento de la prueba. La Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-bootstrap-mnt">6.11</a> presenta los resultados.</p>
+<table style="width:100%;">
+<caption><span id="tab:tab-bootstrap-mnt">Table 6.11: </span>Intervalo Bootstrap percentil (B = 10000) para la diferencia de medias de MntTotal. Se presenta tanto el IC bilateral como el límite inferior unilateral, coherente con <span class="math inline">\(H_1: \mu_1 &gt; \mu_0\)</span>.</caption>
+<colgroup>
+<col width="4%" />
+<col width="24%" />
+<col width="13%" />
+<col width="7%" />
+<col width="16%" />
+<col width="16%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(\bar{X}_1 - \bar{X}_0\)</span> obs.</th>
+<th align="center">Media bootstrap</th>
+<th align="center">Sesgo</th>
+<th align="center">IC bilat. 95% inf.</th>
+<th align="center">IC bilat. 95% sup.</th>
+<th align="center">IC unilat. 95% inf.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2.5%</td>
+<td align="center">436.44</td>
+<td align="center">436.12</td>
+<td align="center">-0.3169</td>
+<td align="center">354.63</td>
+<td align="center">518.19</td>
+<td align="center">366.23</td>
+</tr>
+</tbody>
+</table>
+<p>La Figura <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:hist-boot-mnt">6.5</a> muestra la distribución bootstrap de
+la diferencia de medias.</p>
+<div class="figure"><span style="display:block;" id="fig:hist-boot-mnt"></span>
+<img src="Actividad-2_files/figure-html/hist-boot-mnt-1.png" alt="Distribución bootstrap de la diferencia de medias de MntTotal" width="80%" />
+<p class="caption">
+Figure 6.5: Distribución bootstrap de la diferencia de medias de MntTotal
+</p>
+</div>
+</div>
+<div id="comparación-de-resultados" class="section level3 hasAnchor" number="6.3.7">
+<h3><span class="header-section-number">6.3.7</span> Comparación de resultados<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#comparaci%C3%B3n-de-resultados" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-comparacion-mnt">6.12</a> compara los tres métodos
+empleados.</p>
+<table style="width:100%;">
+<caption><span id="tab:tab-comparacion-mnt">Table 6.12: </span>Comparación de métodos para la diferencia de medias de MntTotal</caption>
+<colgroup>
+<col width="34%" />
+<col width="25%" />
+<col width="23%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Método</th>
+<th align="center">p-valor</th>
+<th align="center">IC 95%</th>
+<th align="center">Decisión</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Mann-Whitney-Wilcoxon</td>
+<td align="center">&lt; 0.00000000000000022</td>
+<td align="center">—</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">t de Welch (asintótico)</td>
+<td align="center">&lt; 0.00000000000000022</td>
+<td align="center">[366.78, <span class="math inline">\(+\infty\)</span>)</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Bootstrap Percentil (unilat.)</td>
+<td align="center">—</td>
+<td align="center">[366.23, <span class="math inline">\(+\infty\)</span>)</td>
+<td align="center">Significativo</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="interpretación-1" class="section level3 hasAnchor" number="6.3.8">
+<h3><span class="header-section-number">6.3.8</span> Interpretación<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Los tres métodos convergen en la misma conclusión: el gasto total medio
+de los clientes que aceptaron la campaña es <strong>significativamente mayor</strong>
+que el de quienes no la aceptaron (Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-comparacion-mnt">6.12</a>). La prueba no paramétrica confirma la
+dominancia estocástica del grupo que aceptó (valores sistemáticamente
+mayores), y la prueba <span class="math inline">\(t\)</span> de Welch —que sí contrasta medias
+directamente, válida por el TLC— confirma que la diferencia de medias es
+estadísticamente significativa. El intervalo
+Bootstrap unilateral al 95% tiene un límite inferior mayor que cero (Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-bootstrap-mnt">6.11</a> y Figura <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:hist-boot-mnt">6.5</a>), y el
+tamaño del efecto (Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-efecto-mnt">6.8</a>) indica una
+diferencia de magnitud práctica relevante.</p>
+<p>Este resultado es coherente con los hallazgos de la Actividad 1, donde
+<code>MntTotal</code> fue identificada como la variable con mayor poder
+discriminante entre ambos grupos de respuesta.</p>
+<hr />
+</div>
+</div>
+<div id="pregunta-3-la-proporción-de-aceptación-de-la-campaña-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-3-la-proporci%C3%B3n-de-aceptaci%C3%B3n-de-la-campa%C3%B1a-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="planteamiento-formal-2" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Planteamiento formal<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Definimos dos poblaciones según la presencia de adolescentes:</p>
+<ul>
+<li>Grupo A: clientes <strong>sin</strong> adolescentes (<span class="math inline">\(\text{Teenhome} = 0\)</span>).</li>
+<li>Grupo B: clientes <strong>con</strong> al menos un adolescente
+(<span class="math inline">\(\text{Teenhome} \geq 1\)</span>).</li>
+</ul>
+<p>Sea <span class="math inline">\(p_A\)</span> la proporción poblacional de aceptación en el Grupo A y <span class="math inline">\(p_B\)</span>
+en el Grupo B. Las hipótesis son:</p>
+<p><span class="math display">\[H_0: p_A = p_B \qquad \text{vs} \qquad H_1: p_A \neq p_B\]</span></p>
+<p>al nivel <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+</div>
+<div id="preparación-de-los-datos" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Preparación de los datos<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#preparaci%C3%B3n-de-los-datos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-contingencia-teen">6.13</a> presenta la tabla de
+contingencia y las proporciones de aceptación.</p>
+<table>
+<caption><span id="tab:tab-contingencia-teen">Table 6.13: </span>Tabla de contingencia y proporciones de aceptación por presencia de adolescentes</caption>
+<colgroup>
+<col width="26%" />
+<col width="16%" />
+<col width="11%" />
+<col width="10%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Grupo</th>
+<th align="center">No aceptó</th>
+<th align="center">Aceptó</th>
+<th align="center">Total</th>
+<th align="center"><span class="math inline">\(\hat{p}\)</span> (aceptación)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Sin adolescentes</td>
+<td align="center">831</td>
+<td align="center">222</td>
+<td align="center">1053</td>
+<td align="center">21.08%</td>
+</tr>
+<tr class="even">
+<td align="center">Con adolescentes</td>
+<td align="center">895</td>
+<td align="center">91</td>
+<td align="center">986</td>
+<td align="center">9.23%</td>
+</tr>
+<tr class="odd">
+<td align="center">Total</td>
+<td align="center">1726</td>
+<td align="center">313</td>
+<td align="center">2039</td>
+<td align="center">15.35%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="verificación-de-supuestos-2" class="section level3 hasAnchor" number="6.4.3">
+<h3><span class="header-section-number">6.4.3</span> Verificación de supuestos<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La prueba de dos proporciones basada en la aproximación normal requiere
+que los conteos esperados bajo <span class="math inline">\(H_0\)</span> sean suficientemente grandes:</p>
+<p><span class="math display">\[n_A \hat{p}_0 \geq 5, \quad n_A(1-\hat{p}_0) \geq 5, \quad n_B \hat{p}_0 \geq 5, \quad n_B(1-\hat{p}_0) \geq 5\]</span></p>
+<p>donde
+<span class="math inline">\(\hat{p}_0 = \frac{x_A + x_B}{n_A + n_B}\)</span>
+es la proporción combinada bajo <span class="math inline">\(H_0\)</span>. La Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-supuestos-prop">6.14</a> verifica estas condiciones.</p>
+<table>
+<caption><span id="tab:tab-supuestos-prop">Table 6.14: </span>Verificación de conteos esperados para la prueba de proporciones</caption>
+<thead>
+<tr class="header">
+<th align="center">Condición</th>
+<th align="center">Valor</th>
+<th align="center">¿Cumple?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n_A \times \hat{p}_0\)</span></td>
+<td align="center">161.6</td>
+<td align="center">Sí (<span class="math inline">\(\geq 5\)</span>)</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(n_A \times (1 - \hat{p}_0)\)</span></td>
+<td align="center">891.4</td>
+<td align="center">Sí (<span class="math inline">\(\geq 5\)</span>)</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n_B \times \hat{p}_0\)</span></td>
+<td align="center">151.4</td>
+<td align="center">Sí (<span class="math inline">\(\geq 5\)</span>)</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(n_B \times (1 - \hat{p}_0)\)</span></td>
+<td align="center">834.6</td>
+<td align="center">Sí (<span class="math inline">\(\geq 5\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<p>Todos los conteos esperados superan <span class="math inline">\(5\)</span> (Tabla
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-supuestos-prop">6.14</a>). La aproximación normal es válida.</p>
+</div>
+<div id="prueba-de-dos-proporciones-z-test" class="section level3 hasAnchor" number="6.4.4">
+<h3><span class="header-section-number">6.4.4</span> Prueba de dos proporciones (<span class="math inline">\(z\)</span>-test)<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-dos-proporciones-z-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El estadístico de prueba es:</p>
+<p><span class="math display">\[z = \frac{\hat{p}_A - \hat{p}_B}{\sqrt{\hat{p}_0(1 - \hat{p}_0)\left(\frac{1}{n_A} + \frac{1}{n_B}\right)}}\]</span></p>
+<p>(véase Wackerly, Mendenhall &amp; Scheaffer, <em>Estadística Matemática con
+Aplicaciones</em>, 7ma ed., Cap. 10). La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-proptest">6.15</a>
+presenta los resultados.</p>
+<table style="width:100%;">
+<caption><span id="tab:tab-proptest">Table 6.15: </span>Prueba de dos proporciones (z-test) para la diferencia <span class="math inline">\(p_A - p_B\)</span></caption>
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="8%" />
+<col width="19%" />
+<col width="13%" />
+<col width="13%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(\chi^2\)</span></th>
+<th align="center"><span class="math inline">\(z\)</span></th>
+<th align="center">p-valor</th>
+<th align="center">IC 95% inf.</th>
+<th align="center">IC 95% sup.</th>
+<th align="center">Decisión (<span class="math inline">\(\alpha=0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">X-squared</td>
+<td align="center">55.0585</td>
+<td align="center">7.4201</td>
+<td align="center">0.000000000000117</td>
+<td align="center">0.088</td>
+<td align="center">0.1491</td>
+<td align="center">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="intervalo-de-confianza-al-95-para-p_a---p_b" class="section level3 hasAnchor" number="6.4.5">
+<h3><span class="header-section-number">6.4.5</span> Intervalo de confianza al 95% para <span class="math inline">\(p_A - p_B\)</span><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-p_a---p_b" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El intervalo de Wald para la diferencia de proporciones es:</p>
+<p><span class="math display">\[(\hat{p}_A - \hat{p}_B) \pm z_{\alpha/2} \sqrt{\frac{\hat{p}_A(1 - \hat{p}_A)}{n_A} + \frac{\hat{p}_B(1 - \hat{p}_B)}{n_B}}\]</span></p>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ic-prop">6.16</a> compara los intervalos obtenidos por los
+métodos de Wilson y Wald.</p>
+<table>
+<caption><span id="tab:tab-ic-prop">Table 6.16: </span>Intervalos de confianza al 95% para la diferencia de proporciones</caption>
+<colgroup>
+<col width="23%" />
+<col width="29%" />
+<col width="15%" />
+<col width="15%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Método</th>
+<th align="center"><span class="math inline">\(\hat{p}_A - \hat{p}_B\)</span></th>
+<th align="center">IC 95% inf.</th>
+<th align="center">IC 95% sup.</th>
+<th align="center">¿Contiene 0?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Wilson (prop.test)</td>
+<td align="center">0.1185</td>
+<td align="center">0.088</td>
+<td align="center">0.1491</td>
+<td align="center">No</td>
+</tr>
+<tr class="even">
+<td align="center">Wald</td>
+<td align="center">0.1185</td>
+<td align="center">0.088</td>
+<td align="center">0.1491</td>
+<td align="center">No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="confirmación-prueba-chi2-de-independencia" class="section level3 hasAnchor" number="6.4.6">
+<h3><span class="header-section-number">6.4.6</span> Confirmación: prueba <span class="math inline">\(\chi^2\)</span> de independencia<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#confirmaci%C3%B3n-prueba-chi2-de-independencia" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Como verificación complementaria, se aplica la prueba Chi-cuadrado de
+independencia con la medida <span class="math inline">\(V\)</span> de Cramér como tamaño del efecto:</p>
+<p><span class="math display">\[V = \sqrt{\frac{\chi^2}{n \cdot (\min(r, c) - 1)}}\]</span></p>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-chi-teen">6.17</a> presenta los resultados.</p>
+<table>
+<caption><span id="tab:tab-chi-teen">Table 6.17: </span>Prueba Chi-cuadrado de independencia y V de Cramér</caption>
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="5%" />
+<col width="27%" />
+<col width="22%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(\chi^2\)</span></th>
+<th align="center">gl</th>
+<th align="center">p-valor</th>
+<th align="center"><span class="math inline">\(V\)</span> de Cramér</th>
+<th align="center">Magnitud</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">X-squared</td>
+<td align="center">55.0585</td>
+<td align="center">1</td>
+<td align="center">0.000000000000117</td>
+<td align="center">0.1643</td>
+<td align="center">Pequeño</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="visualización-1" class="section level3 hasAnchor" number="6.4.7">
+<h3><span class="header-section-number">6.4.7</span> Visualización<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="figure"><span style="display:block;" id="fig:fig-prop-teen"></span>
+<img src="Actividad-2_files/figure-html/fig-prop-teen-1.png" alt="Proporción de aceptación e IC 95% según presencia de adolescentes" width="80%" />
+<p class="caption">
+Figure 6.6: Proporción de aceptación e IC 95% según presencia de adolescentes
+</p>
+</div>
+</div>
+<div id="interpretación-2" class="section level3 hasAnchor" number="6.4.8">
+<h3><span class="header-section-number">6.4.8</span> Interpretación<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La proporción de clientes que aceptaron la campaña es
+significativamente mayor entre quienes no tienen adolescentes en el
+hogar, como muestran la Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-proptest">6.15</a> y la Figura
+<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#fig:fig-prop-teen">6.6</a>. La diferencia es estadísticamente
+significativa al nivel <span class="math inline">\(\alpha = 0.05\)</span>. Los intervalos de confianza al
+95% para <span class="math inline">\(p_A - p_B\)</span> (Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-ic-prop">6.16</a>) no contienen el
+cero, y la prueba <span class="math inline">\(\chi^2\)</span> (Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-chi-teen">6.17</a>) confirma la
+asociación.</p>
+<p>Este resultado es coherente con los hallazgos de la Actividad 1, donde
+se observó que la presencia de dependientes en el hogar se asocia con
+menor disposición a aceptar nuevos productos, posiblemente por
+restricciones presupuestarias o diferencias en prioridades de consumo.</p>
+</div>
+</div>
+<div id="resumen-comparativo-de-las-tres-preguntas" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Resumen comparativo de las tres preguntas<a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#resumen-comparativo-de-las-tres-preguntas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La Tabla <a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tab:tab-resumen-p6">6.18</a> resume los resultados de las tres
+pruebas realizadas.</p>
+<table>
+<caption><span id="tab:tab-resumen-p6">Table 6.18: </span>Resumen de las tres pruebas de hipótesis</caption>
+<colgroup>
+<col width="23%" />
+<col width="27%" />
+<col width="33%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Pregunta</th>
+<th align="left">Prueba utilizada</th>
+<th align="left">Supuestos verificados</th>
+<th align="left">Decisión (<span class="math inline">\(\alpha = 0.05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1. Diferencia de ingreso medio</td>
+<td align="left">t de Welch (bilateral)</td>
+<td align="left">TLC + Shapiro-Wilk + prueba F + Levene</td>
+<td align="left">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">2. Gasto total mayor en grupo Aceptó</td>
+<td align="left">Mann-Whitney + t Welch + Bootstrap (unilateral)</td>
+<td align="left">Independencia + dominancia estocástica (MW) + TLC (t Welch)</td>
+<td align="left">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">3. Diferencia de proporción de aceptación</td>
+<td align="left">z-test de dos proporciones</td>
+<td align="left">Conteos esperados <span class="math inline">\(\geq 5\)</span></td>
+<td align="left">Rechaza <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Las tres preguntas de investigación han sido resueltas mediante pruebas
+de hipótesis apropiadas, con verificación explícita de supuestos en cada
+caso. Los intervalos de confianza complementan la información del
+<span class="math inline">\(p\)</span>-valor al proporcionar la magnitud y dirección de las diferencias
+estimadas. Los resultados son coherentes con el análisis exploratorio de
+la Actividad 1 y refuerzan las siguientes conclusiones:</p>
+<ol style="list-style-type: decimal">
+<li><p>El <strong>ingreso anual</strong> es significativamente mayor en el grupo que
+aceptó la campaña, lo que confirma la capacidad económica como
+factor asociado a la receptividad comercial.</p></li>
+<li><p>El <strong>gasto total acumulado</strong> es significativamente superior en
+quienes aceptaron, con un tamaño del efecto moderado a grande. Esto
+identifica al gasto histórico como el principal indicador conductual
+de respuesta.</p></li>
+<li><p>La <strong>composición del hogar</strong> (presencia de adolescentes) se asocia
+significativamente con la tasa de aceptación, con menor receptividad
+entre hogares con adolescentes.</p></li>
+</ol>
+<p>Estos hallazgos proporcionan criterios objetivos para la segmentación de
+clientes en futuras campañas de marketing directo.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="referencias.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

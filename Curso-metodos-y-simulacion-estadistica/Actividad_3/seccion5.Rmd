@@ -1,0 +1,628 @@
+# Análisis de datos atípicos e influyentes {#sec-atipicos}
+
+## Criterios de detección
+
+Una observación puede ser **atípica** ($|r_i| > 2$), **de alto apalancamiento** ($h_{ii}$ extremo) o **influyente** (modifica $\hat\beta$ al excluirla). Indicadores estándar (Belsley, Kuh y Welsch, 1980; Montgomery y Runger, 2021, §11-7):
+
+| Indicador | Fórmula | Umbral |
+|---|---|---|
+| Residual estandarizado | $r_i = \varepsilon_i / (\hat\sigma\sqrt{1 - h_{ii}})$ | $\|r_i\| > 2$ |
+| Leverage | $h_{ii} = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{S_{xx}}$ | $h_{ii} > 4/n$ |
+| Distancia de Cook | $D_i = \frac{r_i^2}{p+1} \cdot \frac{h_{ii}}{1-h_{ii}}$ | $D_i > 4/n$ |
+| DFFITS | $DFFITS_i = r_i^* \sqrt{h_{ii}/(1-h_{ii})}$ | $\|DFFITS_i\| > 2\sqrt{(p+1)/n}$ |
+
+```{r umbrales, include=FALSE}
+p <- 1
+umbral_cook_mat   <- 4 / n_mat
+umbral_lev_mat    <- 2 * (p + 1) / n_mat
+umbral_dffits_mat <- 2 * sqrt((p + 1) / n_mat)
+umbral_cook_por   <- 4 / n_por
+umbral_lev_por    <- 2 * (p + 1) / n_por
+umbral_dffits_por <- 2 * sqrt((p + 1) / n_por)
+```
+
+Con $p = 1$: MAT — Cook/leverage = $`r round(umbral_cook_mat,4)`$, DFFITS = $`r round(umbral_dffits_mat,4)`$; POR — Cook/leverage = $`r round(umbral_cook_por,4)`$, DFFITS = $`r round(umbral_dffits_por,4)`$.
+
+## Diagnóstico de influencia — Matemáticas (MAT) {#sec-infl-mat}
+
+```{r calculos-infl-mat, include=FALSE}
+# ============================================================
+# INDICADORES DE INFLUENCIA — MAT
+# ============================================================
+cook_mat    <- cooks.distance(modelo_mat)
+lev_mat     <- hatvalues(modelo_mat)
+rstd_mat    <- rstandard(modelo_mat)
+rstu_mat    <- rstudent(modelo_mat)
+dffit_mat   <- dffits(modelo_mat)
+
+flag_cook_mat <- cook_mat      > umbral_cook_mat
+flag_lev_mat  <- lev_mat       > umbral_lev_mat
+flag_rsd_mat  <- abs(rstd_mat) > 2
+flag_dff_mat  <- abs(dffit_mat) > umbral_dffits_mat
+flag_any_mat  <- flag_cook_mat | flag_lev_mat | flag_rsd_mat | flag_dff_mat
+
+n_cook_mat <- sum(flag_cook_mat)
+n_lev_mat  <- sum(flag_lev_mat)
+n_rsd_mat  <- sum(flag_rsd_mat)
+n_dff_mat  <- sum(flag_dff_mat)
+n_any_mat  <- sum(flag_any_mat)
+
+idx_infl_mat <- which(flag_any_mat)
+
+df_infl_mat <- data.frame(
+  Observación       = idx_infl_mat,
+  G2                = mat$G2[idx_infl_mat],
+  G3                = mat$G3[idx_infl_mat],
+  `r_i (estand.)`   = round(rstd_mat[idx_infl_mat],  4),
+  `h_ii (leverage)` = round(lev_mat[idx_infl_mat],   4),
+  `D_i (Cook)`      = round(cook_mat[idx_infl_mat],  6),
+  `DFFITS_i`        = round(dffit_mat[idx_infl_mat], 4),
+  `Flag Cook`   = ifelse(flag_cook_mat[idx_infl_mat], "✓", ""),
+  `Flag Lev`    = ifelse(flag_lev_mat[idx_infl_mat],  "✓", ""),
+  `Flag |r|>2`  = ifelse(flag_rsd_mat[idx_infl_mat],  "✓", ""),
+  `Flag DFFITS` = ifelse(flag_dff_mat[idx_infl_mat],  "✓", ""),
+  check.names   = FALSE
+)
+```
+
+### Visualización combinada
+
+```{r fig-bubble-mat, fig.cap="Gráfico de influencia para Matemáticas (MAT): eje horizontal, apalancamiento $h_{ii}$; eje vertical, residual estandarizado $r_i$; tamaño de burbuja proporcional a la distancia de Cook $D_i$. Las líneas discontinuas grises delimitan las zonas de atipicidad ($|r_i| = 2$) y de alto apalancamiento ($h_{ii} = 4/n$). Las observaciones flagueadas se muestran en rojo quemado; sus etiquetas se reposicionan automáticamente para evitar solapamientos.", fig.width=11, fig.height=6.5, echo=FALSE}
+# ============================================================
+# BUBBLE PLOT PRIMERO (reordenamiento respecto a la otra version)
+# Paleta sobria — etiquetas con ggrepel para evitar solapamientos
+# ============================================================
+
+df_mat_infl <- data.frame(
+  idx   = seq_along(cook_mat),
+  cook  = cook_mat,
+  lev   = lev_mat,
+  rstd  = rstd_mat,
+  flag  = flag_any_mat,
+  G2    = mat$G2,
+  G3    = mat$G3
+)
+
+# ggrepel para etiquetas sin superposición (carga bajo demanda)
+if (!requireNamespace("ggrepel", quietly = TRUE)) {
+  # Fallback sin ggrepel: usar geom_text con nudge
+  usar_repel <- FALSE
+} else {
+  usar_repel <- TRUE
+}
+
+p_bubble_mat <- ggplot(df_mat_infl, aes(x = lev, y = rstd)) +
+  geom_hline(yintercept = c(-2, 2),
+             linetype = "dashed", colour = paleta$referencia,
+             linewidth = 0.5) +
+  geom_vline(xintercept = umbral_lev_mat,
+             linetype = "dashed", colour = paleta$referencia,
+             linewidth = 0.5) +
+  geom_point(aes(size = cook),
+             alpha = 0.40, colour = paleta$punto,
+             data = df_mat_infl[!df_mat_infl$flag, ]) +
+  geom_point(aes(size = cook),
+             alpha = 0.85, colour = paleta$destacado,
+             data = df_mat_infl[df_mat_infl$flag, ])
+
+if (usar_repel) {
+  p_bubble_mat <- p_bubble_mat +
+    ggrepel::geom_text_repel(
+      data = df_mat_infl[df_mat_infl$flag, ],
+      aes(label = idx),
+      size = 3, colour = paleta$destacado,
+      box.padding   = 0.40,
+      point.padding = 0.30,
+      segment.colour = paleta$referencia,
+      segment.size   = 0.3,
+      max.overlaps   = 30
+    )
+} else {
+  p_bubble_mat <- p_bubble_mat +
+    geom_text(data = df_mat_infl[df_mat_infl$flag, ],
+              aes(label = idx),
+              size = 3, vjust = -0.9, colour = paleta$destacado)
+}
+
+p_bubble_mat <- p_bubble_mat +
+  scale_size_continuous(name = expression(D[i]~"(Cook)"),
+                         range = c(1.2, 7)) +
+  labs(title    = "Matemáticas (MAT): gráfico de influencia",
+       subtitle = paste0("Referencia: |r_i| = 2 y h_ii = ",
+                         round(umbral_lev_mat, 4)),
+       x        = expression(h[ii]~"(apalancamiento)"),
+       y        = expression(r[i]~"(residual estandarizado)"))
+
+p_bubble_mat
+```
+
+### Distancia de Cook por índice
+
+```{r fig-cook-mat, fig.cap="Distancia de Cook por índice de observación para Matemáticas (MAT). La línea horizontal discontinua marca el umbral $4/n$. Las observaciones que superan el umbral se destacan en rojo quemado y sus índices se etiquetan en el margen superior.", fig.width=11, fig.height=4.5, echo=FALSE}
+# ============================================================
+# COOK POR ÍNDICE — segundo
+# Etiquetas de umbral en la esquina superior derecha para no
+# superponerse con las barras.
+# ============================================================
+
+y_max_plot <- max(df_mat_infl$cook) * 1.15
+
+p_cook_mat <- ggplot(df_mat_infl, aes(x = idx, y = cook)) +
+  geom_col(aes(fill = flag), width = 0.7) +
+  geom_hline(yintercept = umbral_cook_mat,
+             colour = paleta$referencia, linetype = "dashed",
+             linewidth = 0.6) +
+  scale_fill_manual(values = c("FALSE" = paleta$sombra,
+                                "TRUE"  = paleta$destacado),
+                    guide  = "none") +
+  annotate("label",
+           x = max(df_mat_infl$idx) * 0.98,
+           y = y_max_plot,
+           label = paste0("Umbral 4/n = ", round(umbral_cook_mat, 4)),
+           hjust = 1, vjust = 1,
+           size = 3.2, fontface = "italic",
+           colour = paleta$referencia,
+           fill = "white", label.size = 0.2)
+
+if (usar_repel) {
+  p_cook_mat <- p_cook_mat +
+    ggrepel::geom_text_repel(
+      data = df_mat_infl[df_mat_infl$flag, ],
+      aes(label = idx),
+      size = 2.8, colour = paleta$destacado,
+      direction = "y",
+      nudge_y = 0.01,
+      segment.colour = paleta$referencia,
+      segment.size   = 0.3,
+      max.overlaps   = 30
+    )
+}
+
+p_cook_mat + labs(title = "Matemáticas (MAT): distancia de Cook por observación",
+                   x = "Índice de observación",
+                   y = expression(D[i]~"(Cook)"))
+```
+
+### Conteo y detalle de observaciones flagueadas
+
+```{r resumen-flags-mat, echo=FALSE}
+# ============================================================
+# CONTEO DE FLAGS — MAT
+# ============================================================
+tabla_flags_mat <- data.frame(
+  Criterio    = c("Residual estandarizado |r_i| > 2",
+                  paste0("Leverage h_ii > ", round(umbral_lev_mat, 4)),
+                  paste0("Cook D_i > ", round(umbral_cook_mat, 4)),
+                  paste0("DFFITS > ", round(umbral_dffits_mat, 4)),
+                  "Al menos un criterio"),
+  `N° obs.`   = c(n_rsd_mat, n_lev_mat, n_cook_mat, n_dff_mat, n_any_mat),
+  `% del total` = round(c(n_rsd_mat, n_lev_mat, n_cook_mat,
+                           n_dff_mat, n_any_mat) / n_mat * 100, 2),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_flags_mat,
+  caption  = "Conteo de observaciones que superan cada umbral de influencia en Matemáticas (MAT).",
+  align    = c("l","c","c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(5, bold = TRUE)
+```
+
+```{r tab-infl-mat, echo=FALSE}
+# ============================================================
+# DETALLE DE OBSERVACIONES INFLUYENTES — MAT
+# ============================================================
+if (nrow(df_infl_mat) == 0) {
+  cat("No se detectaron observaciones que superen ningún umbral en MAT.")
+} else {
+  knitr::kable(
+    df_infl_mat,
+    caption  = paste0("Observaciones que superan al menos un umbral de influencia ",
+                      "en Matemáticas (MAT) — ", nrow(df_infl_mat), " de ",
+                      n_mat, " (", round(nrow(df_infl_mat)/n_mat*100, 2),
+                      "% del total)."),
+    align    = c("c","c","c","c","c","c","c","c","c","c","c"),
+    booktabs = TRUE,
+    row.names = FALSE
+  ) |>
+    kableExtra::kable_styling(
+      bootstrap_options = c("striped","bordered","condensed","responsive"),
+      full_width = TRUE, font_size = 11
+    ) |>
+    kableExtra::add_footnote(
+      paste0("Umbrales empleados: |r_i| > 2; h_ii > ", round(umbral_lev_mat, 4),
+             "; D_i > ", round(umbral_cook_mat, 4),
+             "; |DFFITS_i| > ", round(umbral_dffits_mat, 4), "."),
+      notation = "symbol"
+    )
+}
+```
+
+Figuras \@ref(fig:fig-bubble-mat), \@ref(fig:fig-cook-mat) y Tablas \@ref(tab:resumen-flags-mat), \@ref(tab:tab-infl-mat): **`r n_any_mat` observaciones** (`r round(n_any_mat/n_mat*100,2)` %) superan al menos un umbral en MAT. La mayoría corresponde a estudiantes con G2 extremo —alto apalancamiento por ubicación en las colas del predictor, comportamiento esperable (Belsley et al., 1980)—. Las observaciones con $|r_i| > 2$ son estudiantes cuya G3 se aparta de lo pronosticado por G2, lo que recoge factores no incluidos en el modelo simple.
+
+## Diagnóstico de influencia — Portugués (POR) {#sec-infl-por}
+
+```{r calculos-infl-por, include=FALSE}
+# ============================================================
+# INDICADORES DE INFLUENCIA — POR
+# ============================================================
+cook_por    <- cooks.distance(modelo_por)
+lev_por     <- hatvalues(modelo_por)
+rstd_por    <- rstandard(modelo_por)
+dffit_por   <- dffits(modelo_por)
+
+flag_cook_por <- cook_por      > umbral_cook_por
+flag_lev_por  <- lev_por       > umbral_lev_por
+flag_rsd_por  <- abs(rstd_por) > 2
+flag_dff_por  <- abs(dffit_por) > umbral_dffits_por
+flag_any_por  <- flag_cook_por | flag_lev_por | flag_rsd_por | flag_dff_por
+
+n_cook_por <- sum(flag_cook_por)
+n_lev_por  <- sum(flag_lev_por)
+n_rsd_por  <- sum(flag_rsd_por)
+n_dff_por  <- sum(flag_dff_por)
+n_any_por  <- sum(flag_any_por)
+
+idx_infl_por <- which(flag_any_por)
+
+df_por_infl <- data.frame(
+  idx   = seq_along(cook_por),
+  cook  = cook_por,
+  lev   = lev_por,
+  rstd  = rstd_por,
+  flag  = flag_any_por
+)
+```
+
+### Visualización combinada
+
+```{r fig-bubble-por, fig.cap="Gráfico de influencia para Portugués (POR), con la misma estructura que la Figura \\@ref(fig:fig-bubble-mat). La dispersión de los residuales estandarizados es razonablemente acotada, coherente con un modelo bien ajustado, aunque con mayor varianza residual que en MAT ($\\hat{\\sigma} = `r sigma_por`$ frente a $`r sigma_hat`$).", fig.width=11, fig.height=6.5, echo=FALSE}
+# ============================================================
+# BUBBLE PLOT — POR
+# ============================================================
+
+p_bubble_por <- ggplot(df_por_infl, aes(x = lev, y = rstd)) +
+  geom_hline(yintercept = c(-2, 2),
+             linetype = "dashed", colour = paleta$referencia,
+             linewidth = 0.5) +
+  geom_vline(xintercept = umbral_lev_por,
+             linetype = "dashed", colour = paleta$referencia,
+             linewidth = 0.5) +
+  geom_point(aes(size = cook),
+             alpha = 0.35, colour = paleta$punto,
+             data = df_por_infl[!df_por_infl$flag, ]) +
+  geom_point(aes(size = cook),
+             alpha = 0.80, colour = paleta$destacado,
+             data = df_por_infl[df_por_infl$flag, ])
+
+if (usar_repel) {
+  p_bubble_por <- p_bubble_por +
+    ggrepel::geom_text_repel(
+      data = df_por_infl[df_por_infl$flag, ],
+      aes(label = idx),
+      size = 2.8, colour = paleta$destacado,
+      box.padding   = 0.40,
+      point.padding = 0.30,
+      segment.colour = paleta$referencia,
+      segment.size   = 0.3,
+      max.overlaps   = 30
+    )
+} else {
+  p_bubble_por <- p_bubble_por +
+    geom_text(data = df_por_infl[df_por_infl$flag, ],
+              aes(label = idx),
+              size = 2.8, vjust = -0.9, colour = paleta$destacado)
+}
+
+p_bubble_por <- p_bubble_por +
+  scale_size_continuous(name = expression(D[i]~"(Cook)"),
+                         range = c(1.0, 6)) +
+  labs(title    = "Portugués (POR): gráfico de influencia",
+       subtitle = paste0("Referencia: |r_i| = 2 y h_ii = ",
+                         round(umbral_lev_por, 4)),
+       x        = expression(h[ii]~"(apalancamiento)"),
+       y        = expression(r[i]~"(residual estandarizado)"))
+
+p_bubble_por
+```
+
+### Distancia de Cook por índice
+
+```{r fig-cook-por, fig.cap="Distancia de Cook por índice de observación en Portugués (POR). Misma convención que la Figura \\@ref(fig:fig-cook-mat).", fig.width=11, fig.height=4.5, echo=FALSE}
+# ============================================================
+# COOK POR ÍNDICE — POR
+# ============================================================
+
+y_max_por <- max(df_por_infl$cook) * 1.15
+
+p_cook_por <- ggplot(df_por_infl, aes(x = idx, y = cook)) +
+  geom_col(aes(fill = flag), width = 0.5) +
+  geom_hline(yintercept = umbral_cook_por,
+             colour = paleta$referencia, linetype = "dashed",
+             linewidth = 0.6) +
+  scale_fill_manual(values = c("FALSE" = paleta$sombra,
+                                "TRUE"  = paleta$destacado),
+                    guide  = "none") +
+  annotate("label",
+           x = max(df_por_infl$idx) * 0.98,
+           y = y_max_por,
+           label = paste0("Umbral 4/n = ", round(umbral_cook_por, 4)),
+           hjust = 1, vjust = 1,
+           size = 3.2, fontface = "italic",
+           colour = paleta$referencia,
+           fill = "white", label.size = 0.2)
+
+if (usar_repel) {
+  p_cook_por <- p_cook_por +
+    ggrepel::geom_text_repel(
+      data = df_por_infl[df_por_infl$flag, ],
+      aes(label = idx),
+      size = 2.5, colour = paleta$destacado,
+      direction = "y",
+      nudge_y = 0.005,
+      segment.colour = paleta$referencia,
+      segment.size   = 0.3,
+      max.overlaps   = 30
+    )
+}
+
+p_cook_por + labs(title = "Portugués (POR): distancia de Cook por observación",
+                   x = "Índice de observación",
+                   y = expression(D[i]~"(Cook)"))
+```
+
+### Conteo de flagueadas en POR
+
+```{r tab-flags-por, echo=FALSE}
+# ============================================================
+# CONTEO DE FLAGS — POR
+# ============================================================
+tabla_flags_por <- data.frame(
+  Criterio    = c("Residual estandarizado |r_i| > 2",
+                  paste0("Leverage h_ii > ", round(umbral_lev_por, 4)),
+                  paste0("Cook D_i > ", round(umbral_cook_por, 4)),
+                  paste0("DFFITS > ", round(umbral_dffits_por, 4)),
+                  "Al menos un criterio"),
+  `N° obs.`   = c(n_rsd_por, n_lev_por, n_cook_por, n_dff_por, n_any_por),
+  `% del total` = round(c(n_rsd_por, n_lev_por, n_cook_por,
+                           n_dff_por, n_any_por) / n_por * 100, 2),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_flags_por,
+  caption  = "Conteo de observaciones que superan cada umbral de influencia en Portugués (POR).",
+  align    = c("l","c","c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(5, bold = TRUE)
+```
+
+```{r tab-infl-por, echo=FALSE}
+# ============================================================
+# DETALLE DE OBSERVACIONES INFLUYENTES — POR (paridad con MAT)
+# Se muestran las 20 observaciones con mayor D_i para no
+# sobrecargar la presentación; la lista completa está en anexos.
+# ============================================================
+df_infl_por <- data.frame(
+  Observación       = idx_infl_por,
+  G2                = por$G2[idx_infl_por],
+  G3                = por$G3[idx_infl_por],
+  `r_i (estand.)`   = round(rstd_por[idx_infl_por],  4),
+  `h_ii (leverage)` = round(lev_por[idx_infl_por],   4),
+  `D_i (Cook)`      = round(cook_por[idx_infl_por],  6),
+  `DFFITS_i`        = round(dffit_por[idx_infl_por], 4),
+  `Flag Cook`   = ifelse(flag_cook_por[idx_infl_por], "✓", ""),
+  `Flag Lev`    = ifelse(flag_lev_por[idx_infl_por],  "✓", ""),
+  `Flag |r|>2`  = ifelse(flag_rsd_por[idx_infl_por],  "✓", ""),
+  `Flag DFFITS` = ifelse(flag_dff_por[idx_infl_por],  "✓", ""),
+  check.names   = FALSE
+)
+
+# Ordenar por D_i descendente y mostrar las 20 con mayor influencia
+df_infl_por_top <- df_infl_por[order(-df_infl_por$`D_i (Cook)`), ][
+  seq_len(min(20, nrow(df_infl_por))), ]
+
+if (nrow(df_infl_por_top) == 0) {
+  cat("No se detectaron observaciones que superen ningún umbral en POR.")
+} else {
+  knitr::kable(
+    df_infl_por_top,
+    caption  = paste0("Top 20 observaciones con mayor distancia de Cook entre las ",
+                      nrow(df_infl_por), " flagueadas en Portugués (POR) — total ",
+                      nrow(df_infl_por), " de ", n_por, " (",
+                      round(nrow(df_infl_por)/n_por*100, 2),
+                      "% del total). La lista completa se presenta en los anexos."),
+    align    = c("c","c","c","c","c","c","c","c","c","c","c"),
+    booktabs = TRUE,
+    row.names = FALSE
+  ) |>
+    kableExtra::kable_styling(
+      bootstrap_options = c("striped","bordered","condensed","responsive"),
+      full_width = TRUE, font_size = 11
+    ) |>
+    kableExtra::add_footnote(
+      paste0("Umbrales empleados: |r_i| > 2; h_ii > ", round(umbral_lev_por, 4),
+             "; D_i > ", round(umbral_cook_por, 4),
+             "; |DFFITS_i| > ", round(umbral_dffits_por, 4), "."),
+      notation = "symbol"
+    )
+}
+```
+
+```{r outlier-extremo-por, include=FALSE}
+# Caso del residual estandarizado más extremo en POR
+idx_ext_por  <- which.min(rstd_por)
+g2_ext_por   <- por$G2[idx_ext_por]
+g3_ext_por   <- por$G3[idx_ext_por]
+rstd_ext_por <- round(rstd_por[idx_ext_por], 2)
+lev_ext_por  <- round(lev_por[idx_ext_por], 4)
+cook_ext_por <- round(cook_por[idx_ext_por], 5)
+```
+
+> *Caso atípico extremo en POR.* La observación de mayor magnitud residual corresponde a un estudiante con $G2 = `r g2_ext_por`$ y $G3 = `r g3_ext_por`$ ($r_i^* = `r rstd_ext_por`$). Pese a la severidad, su leverage es **bajo** ($h_{ii} = `r lev_ext_por`$) y su distancia de Cook **modesta** ($D_i = `r cook_ext_por`$): no afecta materialmente $\hat\beta_1$, pero conecta con la severidad del rechazo de normalidad de §\@ref(sec-diag-por). El patrón (G2 alto seguido de G3 = 0) sugiere un caso administrativo que sobrevivió al filtro de §\@ref(sec-g3cero); dado su impacto nulo sobre los estimadores, se conserva (Kutner et al., 2005, §10.5).
+
+## Impacto sobre los parámetros del modelo {#sec-impacto-infl}
+
+Se reajustan ambos modelos excluyendo las observaciones que superan al menos un umbral y se comparan contra el modelo completo.
+
+```{r modelos-sin-infl, include=FALSE}
+# ============================================================
+# MODELOS SIN INFLUYENTES
+# ============================================================
+mat_sin_infl <- mat[!flag_any_mat, ]
+por_sin_infl <- por[!flag_any_por, ]
+
+modelo_mat_si <- lm(G3 ~ G2, data = mat_sin_infl)
+modelo_por_si <- lm(G3 ~ G2, data = por_sin_infl)
+
+b0_mat_si  <- round(coef(modelo_mat_si)["(Intercept)"], 4)
+b1_mat_si  <- round(coef(modelo_mat_si)["G2"],          4)
+r2_mat_si  <- round(summary(modelo_mat_si)$r.squared,   4)
+sig_mat_si <- round(summary(modelo_mat_si)$sigma,       4)
+
+b0_por_si  <- round(coef(modelo_por_si)["(Intercept)"], 4)
+b1_por_si  <- round(coef(modelo_por_si)["G2"],          4)
+r2_por_si  <- round(summary(modelo_por_si)$r.squared,   4)
+sig_por_si <- round(summary(modelo_por_si)$sigma,       4)
+
+delta_b1_mat <- round((b1_mat_si - beta1_hat) / abs(beta1_hat) * 100, 2)
+delta_r2_mat <- round((r2_mat_si - r2_mat)    / r2_mat    * 100, 2)
+delta_b1_por <- round((b1_por_si - b1p)       / abs(b1p)  * 100, 2)
+delta_r2_por <- round((r2_por_si - r2_por)    / r2_por    * 100, 2)
+
+texto_robustez <- if (max(abs(delta_b1_mat), abs(delta_b1_por)) < 5) {
+  paste0("Puesto que los cambios relativos en $\\hat{\\beta}_1$ quedan por debajo del 5%, ",
+         "ambos modelos pueden calificarse como robustos: la exclusión de las ",
+         "observaciones influyentes no modifica sustancialmente las conclusiones ",
+         "inferenciales.")
+} else {
+  paste0("Los cambios en $\\hat{\\beta}_1$ rebasan el 5%, de modo que las observaciones ",
+         "influyentes ejercen un efecto no trivial sobre los estimadores. En tal ",
+         "escenario se recomienda reportar ambos modelos y discutir las fuentes ",
+         "de influencia.")
+}
+```
+
+```{r tab-impacto-infl, echo=FALSE}
+# ============================================================
+# COMPARACIÓN CON/SIN INFLUYENTES
+# ============================================================
+tabla_impacto <- data.frame(
+  Métrica = c(
+    "$n$ (observaciones)",
+    "$\\hat{\\beta}_0$",
+    "$\\hat{\\beta}_1$ (G2)",
+    "$\\Delta\\hat{\\beta}_1$ (%)",
+    "$R^2$",
+    "$\\Delta R^2$ (%)",
+    "$\\hat{\\sigma}$"
+  ),
+  `MAT — completo`     = c(n_mat, beta0_hat, beta1_hat, "—",
+                             r2_mat, "—", sigma_hat),
+  `MAT — sin infl.`    = c(n_mat - n_any_mat, b0_mat_si, b1_mat_si,
+                             paste0(delta_b1_mat, "%"),
+                             r2_mat_si, paste0(delta_r2_mat, "%"), sig_mat_si),
+  `POR — completo`     = c(n_por, b0p, b1p, "—",
+                             r2_por, "—", sigma_por),
+  `POR — sin infl.`    = c(n_por - n_any_por, b0_por_si, b1_por_si,
+                             paste0(delta_b1_por, "%"),
+                             r2_por_si, paste0(delta_r2_por, "%"), sig_por_si),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_impacto,
+  caption  = "Comparación de los parámetros del modelo G3 ~ G2 con y sin observaciones
+              influyentes. Los cambios relativos Δ% cuantifican la sensibilidad del modelo.",
+  align    = c("l","c","c","c","c"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::add_header_above(
+    c(" " = 1, "Matemáticas" = 2, "Portugués" = 2)
+  ) |>
+  kableExtra::row_spec(c(3,5), bold = TRUE) |>
+  kableExtra::add_footnote(
+    "Las observaciones influyentes se definen como aquellas que superan al menos
+     uno de los cuatro umbrales presentados en la Sección 5.1. La decisión sobre
+     su exclusión se fundamenta en la magnitud relativa del impacto sobre β₁ y R².",
+    notation = "symbol"
+  )
+```
+
+```{r fig-impacto-visual, fig.cap="Comparación visual de las rectas ajustadas con el conjunto completo (línea sólida azul marino) y excluyendo las observaciones influyentes (línea discontinua en gris antracita), en Matemáticas (panel izquierdo) y Portugués (panel derecho). Los triángulos rojos identifican las observaciones excluidas. Un desplazamiento mínimo entre las dos rectas indica robustez del modelo.", fig.width=12, fig.height=5.5, echo=FALSE}
+# ============================================================
+# IMPACTO VISUAL DE INFLUYENTES — paleta sobria unificada
+# ============================================================
+plot_impacto <- function(datos, modelo_full, modelo_si,
+                         datos_infl, titulo) {
+
+  rng  <- range(datos$G2)
+  xseq <- data.frame(G2 = seq(rng[1], rng[2], length.out = 200))
+
+  df_full <- data.frame(G2 = xseq$G2,
+                        G3 = predict(modelo_full, newdata = xseq),
+                        Modelo = "Completo")
+  df_si   <- data.frame(G2 = xseq$G2,
+                        G3 = predict(modelo_si,   newdata = xseq),
+                        Modelo = "Sin influyentes")
+
+  df_lines <- bind_rows(df_full, df_si)
+
+  ggplot() +
+    geom_point(data = datos,
+               aes(x = G2, y = G3),
+               alpha = 0.25, size = 1.2, colour = paleta$sombra) +
+    geom_point(data = datos[datos_infl, ],
+               aes(x = G2, y = G3),
+               colour = paleta$destacado, size = 2.3,
+               shape = 17, alpha = 0.85) +
+    geom_line(data = df_lines,
+              aes(x = G2, y = G3,
+                  colour   = Modelo,
+                  linetype = Modelo),
+              linewidth = 1.0) +
+    scale_colour_manual(values = c("Completo"        = paleta$linea,
+                                    "Sin influyentes" = paleta$punto)) +
+    scale_linetype_manual(values = c("Completo"        = "solid",
+                                     "Sin influyentes" = "dashed")) +
+    scale_x_continuous(breaks = seq(0, 20, 2)) +
+    scale_y_continuous(breaks = seq(0, 20, 2)) +
+    labs(title    = titulo,
+         x        = "G2",
+         y        = "G3",
+         colour   = "Modelo",
+         linetype = "Modelo") +
+    theme(legend.position = "bottom")
+}
+
+p_imp_mat <- plot_impacto(datos = mat, modelo_full = modelo_mat,
+                           modelo_si = modelo_mat_si,
+                           datos_infl = which(flag_any_mat),
+                           titulo = "Matemáticas (MAT)")
+p_imp_por <- plot_impacto(datos = por, modelo_full = modelo_por,
+                           modelo_si = modelo_por_si,
+                           datos_infl = which(flag_any_por),
+                           titulo = "Portugués (POR)")
+
+p_imp_mat | p_imp_por
+```
+
+Tabla \@ref(tab:tab-impacto-infl) y Figura \@ref(fig:fig-impacto-visual): la pendiente varía `r abs(delta_b1_mat)` % en MAT y `r abs(delta_b1_por)` % en POR al excluir las influyentes. `r texto_robustez` Los triángulos rojos en la Figura \@ref(fig:fig-impacto-visual) muestran que en POR dominan las observaciones de alto apalancamiento en las colas de G2, mientras que en MAT coexisten con residuales atípicos en el rango central. La práctica coincidencia entre ambas rectas confirma que ninguna observación ejerce influencia desproporcionada (Belsley et al., 1980, Cap. 2).
+
+**Se conserva el modelo con el conjunto completo** para los IC e IP de las Secciones \@ref(sec-ic-pred-mat) y \@ref(sec-ic-pred-por), dado que las observaciones influyentes no presentan errores de registro y corresponden a casos legítimos del espectro académico.

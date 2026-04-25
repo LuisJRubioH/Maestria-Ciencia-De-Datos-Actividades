@@ -1,0 +1,1044 @@
+# **Estimación de intervalos de confianza**
+
+```{r setup-problema4, echo=FALSE, message=FALSE, warning=FALSE}
+# En este problema se usa kbl() de kableExtra (en lugar de kbl())
+# para las tablas que requieren kable_styling(), evitando la doble
+# numeración que produce bookdown cuando ambos paquetes interactúan.
+```
+
+
+Una empresa dedicada a la generación de energía renovable desea evaluar el rendimiento
+de sus 20 generadores eléctricos portátiles, alimentados con biocombustible. Estos
+generadores se utilizan en proyectos remotos, donde la eficiencia energética es crucial
+para minimizar costos y reducir la huella ambiental. Para el estudio, se mide la eficiencia
+energética de cada generador, expresada en kilovatios-hora por litro de combustible
+(kWh/L). Los resultados son:
+```r
+# Muestra de eficiencia energética (kWh/L)
+muestra <- c(6.12, 5.87, 5.45, 6.33, 5.71, 6.04, 5.92, 5.65, 6.18,
+             5.78, 5.95, 6.21, 5.63, 5.79, 6.11, 5.88, 6.02, 5.76, 5.85, 6.10)
+```
+
+El objetivo es determinar intervalos de confianza al 95% para la eficiencia media.
+
+Realiza las siguientes actividades:
+
+### **Normalidad** {#normalidad}
+
+   - Elabora un histograma y una curva de densidad de la muestra. ¿Podría
+     considerarse normal la población de origen de la muestra?
+   - Aplica pruebas para evaluar la normalidad. Expón claramente las hipótesis nula y
+     alternativa. Determina el nivel de significancia adecuado. Argumenta el valor del
+     nivel de significancia que uses.
+   - Comenta si los resultados sugieren la viabilidad de usar métodos paramétricos
+     para calcular intervalos de confianza.
+
+La Tabla \@ref(tab:tab-resumen-muestra) presenta los estadísticos
+descriptivos de la muestra.
+
+```{r tab-resumen-muestra, echo=FALSE}
+muestra <- c(6.12, 5.87, 5.45, 6.33, 5.71, 6.04, 5.92, 5.65, 6.18,
+             5.78, 5.95, 6.21, 5.63, 5.79, 6.11, 5.88, 6.02, 5.76, 5.85, 6.10)
+
+resumen <- data.frame(
+  Estadistico = c(
+                  "Media muestral",
+                  "Desviación estándar",
+                  "Mínimo",
+                  "Máximo"),
+  Simbolo     = c(
+                  "$\\bar{x}$",
+                  "$s$",
+                  "$x_{(1)}$",
+                  "$x_{(n)}$"),
+  Valor       = c(
+                  round(mean(muestra), 4),
+                  round(sd(muestra),   4),
+                  min(muestra),
+                  max(muestra)),
+  Unidad      = c(
+                  "kWh/L",
+                  "kWh/L",
+                  "kWh/L",
+                  "kWh/L")
+)
+
+kbl(
+  resumen,
+  caption   = "Estadísticos descriptivos de la muestra de eficiencia energética de los $n = 20$ generadores eléctricos portátiles.",
+  col.names = c("Estadístico", "Símbolo", "Valor", "Unidad"),
+  align     = c("l", "c", "c", "l"),
+  escape    = FALSE
+)
+```
+
+A continuación, elaboramos un histograma y una curva de densidad de la muestra.
+
+```{r fig-hist-normalidad, echo=FALSE, fig.cap= "Histograma y curva de densidad"}
+hist(muestra, breaks = 8, freq = FALSE,
+     col = rgb(0, 0.5, 0.8, 0.3), border = "white",
+     main = "Histograma Eficiencia energética",
+     xlab = "Eficiencia (kWh/L)",
+     ylab = "Densidad")
+
+# Curva de densidad estimada (kernel)
+lines(density(muestra), col = "blue", lwd = 2)
+
+# Curva normal teórica con media y desviación muestrales
+x_seq <- seq(min(muestra) - 0.5, max(muestra) + 0.5, length.out = 500)
+lines(x_seq, dnorm(x_seq, mean = mean(muestra), sd = sd(muestra)),
+      col = "red", lwd = 2, lty = 2)
+
+legend("topright",
+       legend = c("Densidad kernel", "Normal teórica"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2, cex = 0.85)
+```
+
+El histograma de la Figura \@ref(fig:fig-hist-normalidad) ofrece
+una visión global de la distribución empírica, pero con $n = 20$
+no puede caracterizar con precisión el comportamiento de las colas
+ni detectar valores atípicos individuales. Para subsanar estas
+limitaciones se complementa el análisis con dos herramientas
+adicionales que responden preguntas distintas:
+
+```{r fig-qq-normalidad, echo=FALSE, fig.cap=" Q-Q: Eficiencia energética"}
+qqnorm(muestra,
+       main = "Q-Q: Eficiencia energética",
+       pch = 16, col = rgb(0, 0, 1, 0.6))
+qqline(muestra, col = "red", lwd = 2)
+```
+
+El **gráfico Q-Q** (Figura \@ref(fig:fig-qq-normalidad)) evalúa
+  específicamente si los cuantiles empíricos de la muestra son
+  consistentes con los cuantiles teóricos de la distribución normal,
+  con especial sensibilidad al comportamiento de las colas.
+
+```{r boxplot-normalidad, echo=FALSE, fig.cap="Boxplot: Eficiencia energética"}
+boxplot(muestra, horizontal = TRUE, col = rgb(0, 0.5, 0.8, 0.3),
+        xlab = "Eficiencia (kWh/L)")
+```
+
+
+El boxplot Figura \@ref(fig:boxplot-normalidad) es aproximadamente simétrico respecto a la mediana. No se observan valores atípicos (*outliers*). La distribución no muestra asimetría marcada.
+
+
+Ahora, vamos aplicar algunas pruebas de normalidad. Para todas las pruebas se plantean las mismas hipótesis:
+
+$$H_0: \text{La muestra proviene de una población con distribución normal}$$
+$$H_1: \text{La muestra NO proviene de una población con distribución normal}$$
+
+Se utiliza $\alpha = 0.05$. Este valor es el estándar convencional en análisis estadístico y proporciona un equilibrio adecuado entre los errores tipo I (rechazar $H_0$ cuando es verdadera) y tipo II (no rechazar $H_0$ cuando es falsa). Con $n = 20$, un nivel más estricto ($\alpha = 0.01$) reduciría excesivamente la potencia de las pruebas, dificultando detectar desviaciones reales de la normalidad.
+
+
+**Regla de decisión:** Si $p \geq 0.05$, no se rechaza $H_0$ (evidencia compatible con normalidad).
+
+- **Prueba 1: Shapiro-Wilk (`sw <- shapiro.test(muestra)`)**
+
+Es la prueba más recomendada para muestras pequeñas ($n \leq 50$) por su alta potencia para detectar desviaciones de la normalidad.
+
+
+- **Prueba 2: Lilliefors (Kolmogorov-Smirnov corregido `ks <- lillie.test(muestra)}`)**
+
+A diferencia del test K-S clásico, la corrección de Lilliefors es apropiada cuando los parámetros de la distribución se estiman a partir de la muestra.
+
+
+**Prueba 3: Anderson-Darling (`ad <- ad.test(muestra)`)**
+
+Esta prueba es especialmente sensible a desviaciones en las colas de la distribución.
+
+
+```{r resumen-norm, echo=FALSE}
+sw <- shapiro.test(muestra)
+ks <- lillie.test(muestra)
+ad <- ad.test(muestra)
+
+resumen_norm <- data.frame(
+  Prueba = c("Shapiro-Wilk", "Lilliefors (K-S)", "Anderson-Darling"),
+  Estadistico = c(round(sw$statistic, 4), round(ks$statistic, 4), round(ad$statistic, 4)),
+  p_valor = c(round(sw$p.value, 4), round(ks$p.value, 4), round(ad$p.value, 4)),
+  Decision = c(
+    ifelse(sw$p.value >= 0.05, "No se rechaza H₀", "Se rechaza H₀"),
+    ifelse(ks$p.value >= 0.05, "No se rechaza H₀", "Se rechaza H₀"),
+    ifelse(ad$p.value >= 0.05, "No se rechaza H₀", "Se rechaza H₀")
+  )
+)
+
+kbl(resumen_norm, col.names = c("Prueba", "Estadístico", "p-valor", "Decisión (α = 0.05)"),
+             caption = "Resumen de pruebas de normalidad")
+```
+
+
+A partir del análisis gráfico presentado en la Figura \@ref(fig:fig-hist-normalidad) (histograma con densidad kernel y curva normal teórica) y del gráfico Q–Q mostrado en la Figura \@ref(fig:fig-qq-normalidad), no se observan desviaciones evidentes respecto a la forma que caracterizaría a una distribución normal. En particular, la distribución empírica no muestra asimetrías pronunciadas ni indicios claros de multimodalidad, y la curva normal $N(\bar{x}, s^2)$ se superpone razonablemente con la densidad estimada de los datos.
+
+Adicionalmente, las pruebas formales de normalidad cuyos resultados se resumen en la Tabla \@ref(tab:resumen-norm) producen valores $p$ elevados, por lo que **no existe evidencia estadística suficiente para rechazar la hipótesis nula de normalidad** al nivel de significancia considerado.
+
+No obstante, debe señalarse que el tamaño muestral es relativamente pequeño ($n = 20$), lo cual limita la potencia de las pruebas de normalidad y reduce la capacidad de los métodos gráficos para detectar desviaciones moderadas respecto a la distribución normal. En consecuencia, **los resultados no demuestran que la población sea normal**, sino que indican que **los datos observados son compatibles con un modelo normal**.
+
+Por tanto, bajo la evidencia disponible, **resulta razonable adoptar el supuesto de normalidad poblacional como aproximación para los procedimientos inferenciales posteriores (métodos paramétricos)**, particularmente para la construcción del intervalo de confianza basado en la distribución $t$ de Student, que es el procedimiento adecuado cuando:
+
+1. La población es aproximadamente normal.
+2. El tamaño de muestra es pequeño ($n = 20 < 30$).
+3. La varianza poblacional $\sigma^2$ es desconocida (se estima con $s^2$).
+
+Adicionalmente, cabe señalar que el estadístico $t$ es **relativamente robusto** ante desviaciones moderadas de la normalidad cuando la distribución subyacente es unimodal y aproximadamente simétrica (véase Montgomery & Runger, *Probabilidad y Estadística Aplicadas a la Ingeniería*, 6ta ed., Sec. 8.1). En este caso, tanto el histograma como el boxplot confirman que la distribución es unimodal, simétrica y libre de valores atípicos, condiciones bajo las cuales el intervalo $t$ mantiene un nivel de cobertura cercano al nominal incluso con $n = 20$.
+
+
+ 
+### **Método paramétrico** {#metodo-parametrico}
+
+   - Si se cumplen las condiciones para su aplicación, calcula un intervalo de
+     confianza paramétrico.
+   - Compara e interpreta este intervalo con los obtenidos mediante métodos no
+     paramétricos.
+
+
+Dado que en la sección anterior el análisis gráfico conjunto
+(Figuras \@ref(fig:fig-hist-normalidad), \@ref(fig:fig-qq-normalidad)
+y \@ref(fig:boxplot-normalidad)) y las tres pruebas formales de
+normalidad (Tabla \@ref(tab:resumen-norm)) convergieron en no rechazar
+el modelo normal al nivel $\alpha = 0.05$, se cumplen los supuestos
+necesarios para aplicar un método paramétrico. Adicionalmente, la
+varianza poblacional $\sigma^2$ es desconocida y debe estimarse a partir
+de la muestra, lo que determina el procedimiento a utilizar.
+
+**Supuestos requeridos para la validez del intervalo $t$ de Student:**
+
+1. $X_1, X_2, \ldots, X_n \overset{\text{i.i.d.}}{\sim} N(\mu, \sigma^2)$
+   con $\sigma^2$ **desconocida**. (Verificado en la sección anterior.)
+2. Las observaciones son **independientes** entre sí. (Garantizado por
+   el proceso de medición independiente de cada generador.)
+
+Bajo estos supuestos, el estadístico pivotal es:
+
+$$T = \frac{\bar{X} - \mu}{S / \sqrt{n}} \sim t_{n-1}$$
+
+donde $S = \sqrt{\frac{1}{n-1}\sum_{i=1}^n(X_i - \bar{X})^2}$ es la
+desviación estándar muestral, calculada a partir de la varianza muestral
+insesgada $S^2$ (nótese que $S^2$ es un estimador insesgado de $\sigma^2$,
+es decir $E[S^2] = \sigma^2$, pero $S$ en sí no es insesgado para $\sigma$
+debido a la concavidad de la raíz cuadrada, por la desigualdad de Jensen:
+$E[S] = E[\sqrt{S^2}] < \sqrt{E[S^2]} = \sigma$; sin embargo, el sesgo
+es pequeño y decrece con $n$). Este resultado es **exacto**
+(no una aproximación asintótica) bajo normalidad de la población. El
+intervalo de confianza al $(1-\alpha)\times 100\%$ para $\mu$ es:
+
+$$\bar{X} \pm t_{\alpha/2,\, n-1} \cdot \frac{S}{\sqrt{n}}$$
+
+donde $t_{\alpha/2,\, n-1} = F_{t_{n-1}}^{-1}(1-\alpha/2)$ es el
+cuantil de orden $1-\alpha/2$ de la distribución $t$ de Student con
+$n-1$ grados de libertad.
+
+
+```{r calculos-ic-t, echo=FALSE}
+muestra <- c(6.12, 5.87, 5.45, 6.33, 5.71, 6.04, 5.92, 5.65, 6.18,
+             5.78, 5.95, 6.21, 5.63, 5.79, 6.11, 5.88, 6.02, 5.76,
+             5.85, 6.10)
+
+n              <- length(muestra)
+x_bar          <- mean(muestra)
+s              <- sd(muestra)
+alpha          <- 0.05
+gl             <- n - 1
+t_crit         <- qt(1 - alpha/2, df = gl)
+error_estandar <- s / sqrt(n)
+margen         <- t_crit * error_estandar
+LI             <- x_bar - margen
+LS             <- x_bar + margen
+```
+
+```{r tab-elementos-ic, echo=FALSE}
+tab_elementos <- data.frame(
+  Elemento  = c("Tamaño muestral",
+                "Media muestral",
+                "Desviación estándar muestral",
+                "Grados de libertad",
+                "Nivel de confianza",
+                "Nivel de significancia",
+                "Valor crítico",
+                "Error estándar",
+                "Margen de error"),
+  Simbolo   = c("$n$",
+                "$\\bar{x}$",
+                "$s$",
+                "$n - 1$",
+                "$1 - \\alpha$",
+                "$\\alpha$",
+                "$t_{\\alpha/2,\\, n-1} = t_{0.025,\\, 19}$",
+                "$s / \\sqrt{n}$",
+                "$t_{0.025,19} \\cdot s/\\sqrt{n}$"),
+  Valor     = c(n,
+                round(x_bar,          4),
+                round(s,              4),
+                gl,
+                paste0(100*(1-alpha), "%"),
+                alpha,
+                round(t_crit,         4),
+                round(error_estandar, 4),
+                round(margen,         4)),
+  Unidad    = c("observaciones",
+                "kWh/L",
+                "kWh/L",
+                "—",
+                "—",
+                "—",
+                "—",
+                "kWh/L",
+                "kWh/L")
+)
+
+kbl(
+  tab_elementos,
+  caption   = "Elementos del intervalo de confianza al $95\\%$ para la eficiencia media $\\mu$",
+  col.names = c("Elemento", "Símbolo", "Valor", "Unidad"),
+  align     = c("l", "c", "c", "l"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(7, bold = TRUE, background = "#eaf3fb")
+```
+
+La Tabla \@ref(tab:tab-elementos-ic) reúne todos los elementos
+necesarios para construir el intervalo. El valor crítico
+$t_{0.025,\, 19} = `r round(t_crit, 4)`$ refleja la mayor incertidumbre
+asociada al uso de $s$ en lugar de $\sigma$: es mayor que el cuantil
+normal $z_{0.025} = 1.96$, diferencia que se acentúa con muestras
+pequeñas y se reduce conforme $n \to \infty$ (la distribución $t_{n-1}$
+converge a la $N(0,1)$).
+
+
+```{r tab-resultado-ic, echo=FALSE}
+ic_t <- t.test(muestra, conf.level = 0.95)
+
+tab_ic <- data.frame(
+  Concepto  = c("Límite inferior",
+                "Media muestral (centro)",
+                "Límite superior",
+                "Amplitud del intervalo"),
+  Expresion = c("$\\bar{x} - t_{0.025,19} \\cdot s/\\sqrt{n}$",
+                "$\\bar{x}$",
+                "$\\bar{x} + t_{0.025,19} \\cdot s/\\sqrt{n}$",
+                "$2\\, t_{0.025,19} \\cdot s/\\sqrt{n}$"),
+  Valor     = c(round(LI,           4),
+                round(x_bar,        4),
+                round(LS,           4),
+                round(2 * margen,   4)),
+  Unidad    = rep("kWh/L", 4)
+)
+
+kbl(
+  tab_ic,
+  caption   = "Intervalo de confianza al $95\\%$ para la eficiencia media $\\mu$ de los generadores, obtenido mediante el procedimiento $t$ de Student.",
+  col.names = c("Concepto", "Expresión", "Valor (kWh/L)", "Unidad"),
+  align     = c("l", "c", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(c(1, 3), bold = TRUE, background = "#eaf3fb") %>%
+  row_spec(2, italic = TRUE)
+```
+
+```{r tab-verificacion-ttest, echo=FALSE}
+tab_ver <- data.frame(
+  Metodo    = c("Cálculo manual (fórmula $t$)",
+                "Función `t.test()` de R"),
+  LI        = c(round(LI,                    4),
+                round(ic_t$conf.int[1],      4)),
+  LS        = c(round(LS,                    4),
+                round(ic_t$conf.int[2],      4)),
+  Amplitud  = c(round(2 * margen,            4),
+                round(diff(ic_t$conf.int),   4))
+)
+
+kbl(
+  tab_ver,
+  caption   = "Verificación cruzada del intervalo de confianza al $95\\%$: cálculo manual mediante la fórmula $t$ de Student versus resultado de la función `t.test()` de R.",
+  col.names = c("Método de cálculo",
+                "Límite inferior (kWh/L)",
+                "Límite superior (kWh/L)",
+                "Amplitud (kWh/L)"),
+  align     = c("l", "c", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE)
+```
+
+```{r fig-ic-parametrico, echo=FALSE, fig.width=8, fig.height=3.5, fig.cap="Intervalo de confianza al $95\\%$ para la eficiencia media $\\mu$ de los generadores eléctricos portátiles"}
+
+par(mar = c(4, 2, 3, 2))
+
+plot(NULL,
+     xlim = c(LI - 0.05, LS + 0.05),
+     ylim = c(0.5, 1.5),
+     xlab = "Eficiencia media \u03bc (kWh/L)",
+     ylab = "",
+     yaxt = "n",
+     main = expression(paste("IC 95% para ", mu,
+                             "  \u2014  Distribución ", italic(t), " de Student")))
+
+# Segmento del intervalo
+segments(LI, 1, LS, 1, col = "steelblue", lwd = 3)
+
+# Marcas en los extremos
+segments(LI, 0.90, LI, 1.10, col = "steelblue", lwd = 2)
+segments(LS, 0.90, LS, 1.10, col = "steelblue", lwd = 2)
+
+# Punto central (media muestral)
+points(x_bar, 1, pch = 19, cex = 1.6, col = "steelblue")
+
+# Etiquetas numéricas
+text(LI,   0.78, round(LI,    4), cex = 0.88, col = "steelblue")
+text(LS,   0.78, round(LS,    4), cex = 0.88, col = "steelblue")
+text(x_bar, 1.22,
+     paste0(expression(bar(x)), " = ", round(x_bar, 4)),
+     cex = 0.88, col = "steelblue")
+```
+
+
+Las Tablas \@ref(tab:tab-elementos-ic), \@ref(tab:tab-resultado-ic) y
+\@ref(tab:tab-verificacion-ttest), junto con la Figura
+\@ref(fig:fig-ic-parametrico), presentan de forma desagregada la
+construcción y el resultado del intervalo de confianza. El intervalo
+obtenido es:
+
+$$\text{IC}_{95\%}(\mu) =
+\left[\bar{x} - t_{0.025,19}\cdot\frac{s}{\sqrt{n}},\;
+      \bar{x} + t_{0.025,19}\cdot\frac{s}{\sqrt{n}}\right]
+= [`r round(LI, 4)`,\; `r round(LS, 4)`] \text{ kWh/L}$$
+
+
+Si el procedimiento de muestreo se replicara un número muy grande de veces bajo idénticas condiciones, aproximadamente el $95\%$ de los intervalos construidos
+de esta forma contendrían el verdadero valor de $\mu$. Esta probabilidad
+es una propiedad del **procedimiento**, no del intervalo particular
+obtenido de esta muestra. Una vez calculados los límites
+$[`r round(LI,4)`,\, `r round(LS,4)`]$, $\mu$ o está o no está en
+ese intervalo; no es correcto afirmar que *"$\mu$ tiene una probabilidad
+del $95\%$ de estar en este intervalo"*, ya que $\mu$ es un parámetro
+fijo en el enfoque frecuentista.
+
+ El intervalo es estrecho (amplitud $= `r round(2*margen, 4)`$ kWh/L, aproximadamente el $`r round(100*2*margen/x_bar, 1)`\%$ de $\bar{x}$), lo que refleja
+la baja variabilidad observada en la muestra ($s = `r round(s,4)`$
+kWh/L). Esta consistencia es coherente con lo observado en el boxplot
+(Figura \@ref(fig:boxplot-normalidad)): la caja era estrecha, sin
+valores atípicos, y la dispersión muestral era moderada. Un intervalo
+estrecho con $n = 20$ es posible precisamente porque la muestra es
+homogénea, característica que ya era visible en los gráficos de la
+sección anterior.
+
+La amplitud del intervalo está determinada por:
+
+$$\text{Amplitud} = 2\,t_{0.025,19}\cdot\frac{s}{\sqrt{n}}
+= 2 \times `r round(t_crit,4)` \times \frac{`r round(s,4)`}{\sqrt{20}}
+= `r round(2*margen, 4)` \text{ kWh/L}$$
+
+Con $n = 20$, el valor crítico $t_{0.025,19} = `r round(t_crit,4)`$
+es sensiblemente mayor que $z_{0.025} = 1.96$ (diferencia del
+$`r round(100*(t_crit-1.96)/1.96, 1)`\%$), lo que penaliza la precisión
+del intervalo respecto al caso en que $\sigma$ fuera conocida.
+Incrementar la muestra reduciría simultáneamente el error estándar
+$s/\sqrt{n}$ y acercaría $t_{\alpha/2,\,n-1}$ a $z_{\alpha/2}$,
+produciendo intervalos más estrechos.
+
+La comparación detallada con los intervalos bootstrap se realiza en la
+sección siguiente. Se anticipa que, dado que el supuesto de normalidad
+se verifica (Tabla \@ref(tab:resumen-norm)), el intervalo $t$ es el
+procedimiento de referencia: produce el intervalo de menor amplitud
+esperada dentro de la clase de procedimientos con nivel de confianza
+exacto del $95\%$, en el sentido de que utiliza toda la información
+paramétrica disponible bajo el modelo normal.
+
+
+
+### **Procedimiento bootstrap** {#procedimiento-bootstrap}
+
+   - Calcula 2 tipos de intervalos de confianza para la media mediante Bootstrap.
+   - Compara ambos intervalos: ¿Son similares o presentan diferencias
+     significativas?
+     
+     
+Dado que en la sección anterior se calculó el intervalo $t$ de Student
+(Tabla \@ref(tab:tab-resultado-ic)) como referencia paramétrica, esta
+sección construye dos intervalos de confianza al $95\%$ mediante el
+método bootstrap, que no requiere supuestos distribucionales sobre la
+población. La comparación entre los tres métodos permite evaluar si el
+supuesto de normalidad verificado en la sección \@ref(normalidad) tiene
+consecuencias prácticas sobre los límites del intervalo.
+
+**Definición formal (bootstrap no paramétrico).** Sea
+$\mathbf{x} = (x_1, \ldots, x_n)$ la muestra original y
+$\hat{F}_n(x) = n^{-1}\sum_{i=1}^n \mathbf{1}_{\{x_i \leq x\}}$
+la **función de distribución empírica**. Una **muestra bootstrap**
+$\mathbf{x}^* = (X_1^*, \ldots, X_n^*)$ se obtiene muestreando con
+reemplazo de $\hat{F}_n$:
+
+$$X_1^*, \ldots, X_n^* \overset{\text{i.i.d.}}{\sim} \hat{F}_n$$
+
+El **estadístico bootstrap** es $\bar{X}^* = n^{-1}\sum_{i=1}^n X_i^*$.
+Su distribución empírica sobre $B$ réplicas aproxima la distribución
+muestral de $\bar{X}$ bajo $F$. La justificación teórica es que
+$\hat{F}_n \to F$ casi seguramente (Teorema de Glivenko-Cantelli), de
+modo que la distribución de $\bar{X}^*$ bajo $\hat{F}_n$ converge a la
+distribución de $\bar{X}$ bajo $F$ (Efron & Tibshirani, 1993, Cap. 6).
+
+Se calcularán dos tipos de intervalos:
+
+1. **Bootstrap Percentil:** utiliza directamente los cuantiles empíricos
+   $Q_{\alpha/2}(\bar{X}^*)$ y $Q_{1-\alpha/2}(\bar{X}^*)$ de la
+   distribución bootstrap.
+2. **Bootstrap BCa** (*Bias-Corrected and Accelerated*): corrige el
+   sesgo ($\hat{z}_0$) y la asimetría ($\hat{a}$) de la distribución
+   bootstrap mediante ajustes a los percentiles utilizados.
+
+
+
+```{r config-bootstrap, echo=FALSE}
+muestra <- c(6.12, 5.87, 5.45, 6.33, 5.71, 6.04, 5.92, 5.65, 6.18,
+             5.78, 5.95, 6.21, 5.63, 5.79, 6.11, 5.88, 6.02, 5.76,
+             5.85, 6.10)
+
+set.seed(123)
+n     <- length(muestra)
+B     <- 10000
+alpha <- 0.05
+x_bar <- mean(muestra)
+
+# Generar B medias bootstrap
+medias_boot <- replicate(B, mean(sample(muestra, size = n, replace = TRUE)))
+```
+
+```{r tab-dist-bootstrap, echo=FALSE}
+tab_boot_desc <- data.frame(
+  Concepto  = c("Número de réplicas",
+                "Media muestral original",
+                "Media de las réplicas $\\bar{X}^{**}$",
+                "Desviación estándar bootstrap $\\widehat{\\text{SE}}$",
+                "Sesgo bootstrap $\\bar{X}^{**} - \\bar{x}$"),
+  Simbolo   = c("$B$",
+                "$\\bar{x}$",
+                "$\\bar{X}^{**} = B^{-1}\\sum_{b=1}^B \\bar{X}^*_b$",
+                "$\\hat{\\sigma}_{\\text{boot}}$",
+                "$\\hat{\\text{Sesgo}}$"),
+  Valor     = c(B,
+                round(x_bar,                          4),
+                round(mean(medias_boot),              4),
+                round(sd(medias_boot),                4),
+                round(mean(medias_boot) - x_bar,      4)),
+  Unidad    = c("réplicas", "kWh/L", "kWh/L", "kWh/L", "kWh/L")
+)
+
+kbl(
+  tab_boot_desc,
+  caption   = "Estadísticos descriptivos de la distribución bootstrap de $\\bar{X}^*$ obtenida con $B = 10{,}000$ réplicas ($\\texttt{set.seed(123)}$). El sesgo bootstrap mide la diferencia sistemática entre la media de las réplicas y el estadístico original $\\bar{x} = 5.9175$ kWh/L.",
+  col.names = c("Concepto", "Símbolo", "Valor", "Unidad"),
+  align     = c("l", "l", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(5, background = "#eaf3fb")
+```
+
+La Tabla \@ref(tab:tab-dist-bootstrap) muestra que el sesgo bootstrap
+es prácticamente nulo ($\approx `r round(mean(medias_boot) - x_bar, 4)`$
+kWh/L). Esto anticipa que las correcciones del método BCa serán
+mínimas y que los tres intervalos deberían ser muy similares entre sí,
+resultado coherente con la normalidad de la población verificada en la
+Tabla \@ref(tab:resumen-norm).
+
+
+
+```{r fig-hist-bootstrap, echo=FALSE, fig.width=8, fig.height=5, fig.cap="Distribución bootstrap de la media muestral $\\bar{X}^*$ basada en $B = 10{,}000$ réplicas con reemplazo de la muestra original ($n = 20$). La curva azul es la densidad kernel de las réplicas; la curva roja punteada es la densidad $N(\\bar{X}^{**},\\, \\hat{\\sigma}^2_{\\text{boot}})$ ajustada a las réplicas. La línea verde punteada marca la media muestral original $\\bar{x} = 5.9175$ kWh/L. La estrecha concordancia entre la densidad kernel y la curva normal confirma que la distribución bootstrap es aproximadamente normal, lo que es consistente con el supuesto de normalidad de la población verificado en la sección anterior."}
+
+x_seq <- seq(min(medias_boot) - 0.2, max(medias_boot) + 0.2,
+             length.out = 500)
+
+hist(medias_boot, breaks = 40, freq = FALSE,
+     col    = rgb(0, 0.5, 0.8, 0.25),
+     border = "white",
+     main   = expression(paste("Distribución bootstrap de ",
+                               bar(X), "* (B = 10,000)")),
+     xlab   = expression(bar(X)*"*  (kWh/L)"),
+     ylab   = "Densidad")
+
+lines(density(medias_boot), col = "blue",      lwd = 2)
+lines(x_seq,
+      dnorm(x_seq, mean(medias_boot), sd(medias_boot)),
+      col = "red", lwd = 2, lty = 2)
+abline(v = x_bar, col = "darkgreen", lty = 2, lwd = 2)
+
+legend("topright",
+       legend = c("Densidad kernel bootstrap",
+                  expression(paste("Normal ajustada N(",
+                                   bar(X)^"**", ", ",
+                                   hat(sigma)[boot]^2, ")")),
+                  bquote(bar(x) == .(round(x_bar, 4)))),
+       col  = c("blue", "red", "darkgreen"),
+       lty  = c(1, 2, 2),
+       lwd  = 2,
+       cex  = 0.85,
+       bg   = "white")
+```
+
+La Figura \@ref(fig:fig-hist-bootstrap) confirma visualmente lo
+anticipado en la Tabla \@ref(tab:tab-dist-bootstrap): la distribución
+bootstrap de $\bar{X}^*$ es simétrica, unimodal y prácticamente
+indistinguible de una normal. Dado que la población original es normal
+(sección \@ref(normalidad)), esto es el resultado esperado: por el
+Teorema Central del Límite, $\bar{X} \overset{\text{aprox}}{\sim}
+N(\mu, \sigma^2/n)$, y la distribución bootstrap replica este
+comportamiento usando $\hat{F}_n$ en lugar de $F$.
+
+
+El intervalo percentil utiliza directamente los cuantiles empíricos de
+la distribución bootstrap:
+
+$$\text{IC}_{\text{perc}}
+= \left[\, Q_{\alpha/2}(\bar{X}^*),\;\; Q_{1-\alpha/2}(\bar{X}^*) \,\right]$$
+
+donde $Q_p(\bar{X}^*)$ es el cuantil empírico de orden $p$ de las $B$
+réplicas (Efron & Tibshirani, 1993, expresión 13.3).
+
+```{r calcular-ic-percentil, echo=FALSE}
+ic_percentil <- quantile(medias_boot,
+                         probs = c(alpha/2, 1 - alpha/2))
+```
+
+```{r tab-ic-percentil, echo=FALSE}
+tab_perc <- data.frame(
+  Elemento  = c("Percentil utilizado (límite inferior)",
+                "Percentil utilizado (límite superior)",
+                "Límite inferior",
+                "Límite superior",
+                "Amplitud"),
+  Simbolo   = c("$\\alpha/2 = 0.025$",
+                "$1 - \\alpha/2 = 0.975$",
+                "$Q_{0.025}(\\bar{X}^*)$",
+                "$Q_{0.975}(\\bar{X}^*)$",
+                "$Q_{0.975} - Q_{0.025}$"),
+  Valor     = c("2.5%", "97.5%",
+                round(ic_percentil[1],                       4),
+                round(ic_percentil[2],                       4),
+                round(ic_percentil[2] - ic_percentil[1],    4)),
+  Unidad    = c("—", "—", "kWh/L", "kWh/L", "kWh/L")
+)
+
+kbl(
+  tab_perc,
+  caption   = "Intervalo de confianza al $95\\%$ mediante bootstrap percentil. Los cuantiles empíricos $Q_{0.025}$ y $Q_{0.975}$ se calculan directamente sobre las $B = 10{,}000$ réplicas bootstrap.",
+  col.names = c("Elemento", "Símbolo", "Valor", "Unidad"),
+  align     = c("l", "c", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(c(3, 4), bold = TRUE, background = "#eaf3fb")
+```
+
+
+
+El método BCa corrige dos fuentes de error en la distribución bootstrap.
+El factor de aceleración $\hat{a}$ mide la tasa a la que el error
+estándar del estadístico cambia en función del parámetro, y se estima
+mediante el **método jackknife**: $\bar{X}_{(-i)} =
+(n-1)^{-1}\sum_{j \neq i} x_j$ es la media sin la $i$-ésima
+observación y $\bar{X}_{(\cdot)} = n^{-1}\sum_{i=1}^n \bar{X}_{(-i)}$
+es la media de las medias jackknife.
+
+$$\hat{z}_0 = \Phi^{-1}\!\left(\frac{\#\{\bar{X}^*_b < \bar{x}\}}{B}\right), \qquad
+\hat{a} = \frac{\sum_{i=1}^{n}
+  \left(\bar{X}_{(\cdot)} - \bar{X}_{(-i)}\right)^3}
+  {6\left[\sum_{i=1}^{n}
+  \left(\bar{X}_{(\cdot)} - \bar{X}_{(-i)}\right)^2
+  \right]^{3/2}}$$
+
+Los percentiles ajustados son:
+
+$$\alpha_1 = \Phi\!\left(\hat{z}_0 + \frac{\hat{z}_0 + z_{\alpha/2}}
+{1 - \hat{a}(\hat{z}_0 + z_{\alpha/2})}\right), \qquad
+\alpha_2 = \Phi\!\left(\hat{z}_0 + \frac{\hat{z}_0 + z_{1-\alpha/2}}
+{1 - \hat{a}(\hat{z}_0 + z_{1-\alpha/2})}\right)$$
+
+```{r calcular-ic-bca, echo=FALSE}
+# 1. Corrección de sesgo
+z0 <- qnorm(mean(medias_boot < x_bar))
+
+# 2. Factor de aceleración (jackknife)
+theta_jack  <- sapply(1:n, function(i) mean(muestra[-i]))
+theta_punto <- mean(theta_jack)
+numerador   <- sum((theta_punto - theta_jack)^3)
+denominador <- 6 * (sum((theta_punto - theta_jack)^2))^(3/2)
+a_hat       <- numerador / denominador
+
+# 3. Percentiles ajustados
+z_inf  <- qnorm(alpha / 2)
+z_sup  <- qnorm(1 - alpha / 2)
+alpha1 <- pnorm(z0 + (z0 + z_inf) / (1 - a_hat * (z0 + z_inf)))
+alpha2 <- pnorm(z0 + (z0 + z_sup) / (1 - a_hat * (z0 + z_sup)))
+
+ic_bca <- quantile(medias_boot, probs = c(alpha1, alpha2))
+```
+
+```{r tab-ic-bca, echo=FALSE}
+tab_bca <- data.frame(
+  Elemento  = c("Corrección de sesgo",
+                "Factor de aceleración",
+                "Percentil ajustado inferior",
+                "Percentil ajustado superior",
+                "Límite inferior",
+                "Límite superior",
+                "Amplitud"),
+  Simbolo   = c("$\\hat{z}_0$",
+                "$\\hat{a}$",
+                "$\\alpha_1$",
+                "$\\alpha_2$",
+                "$Q_{\\alpha_1}(\\bar{X}^*)$",
+                "$Q_{\\alpha_2}(\\bar{X}^*)$",
+                "$Q_{\\alpha_2} - Q_{\\alpha_1}$"),
+  Valor     = c(round(z0,                        4),
+                round(a_hat,                     6),
+                round(alpha1,                    4),
+                round(alpha2,                    4),
+                round(ic_bca[1],                 4),
+                round(ic_bca[2],                 4),
+                round(ic_bca[2] - ic_bca[1],     4)),
+  Unidad    = c("—", "—", "—", "—",
+                "kWh/L", "kWh/L", "kWh/L")
+)
+
+kbl(
+  tab_bca,
+  caption   = "Intervalo de confianza al $95\\%$ mediante bootstrap BCa. Las correcciones $\\hat{z}_0 \\approx 0$ y $\\hat{a} \\approx 0$ indican que la distribución bootstrap no presenta sesgo ni asimetría apreciables, lo que explica la práctica coincidencia con el intervalo percentil de la Tabla \\ref{tab:tab-ic-percentil}.",
+  col.names = c("Elemento", "Símbolo", "Valor", "Unidad"),
+  align     = c("l", "c", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(c(5, 6), bold = TRUE, background = "#eaf3fb") %>%
+  row_spec(c(1, 2), background = "#fff8e1")
+```
+
+Las filas resaltadas en amarillo de la Tabla \@ref(tab:tab-ic-bca)
+contienen las correcciones del método BCa. El valor
+$\hat{z}_0 = `r round(z0, 4)`$ indica que la proporción de réplicas
+bootstrap menores que $\bar{x}$ es prácticamente del $50\%$, lo que
+confirma la simetría de la distribución bootstrap. El valor
+$\hat{a} = `r round(a_hat, 6)`$ es cercano a cero, indicando que el
+error estándar de $\bar{X}$ no varía apreciablemente con $\mu$.
+Ambas correcciones son despreciables, lo cual es consecuencia directa
+de la normalidad de la población (Tabla \@ref(tab:resumen-norm)).
+
+
+```{r verificacion-boot, echo=FALSE, message=FALSE, warning=FALSE}
+library(boot)
+
+media_fn     <- function(datos, indices) mean(datos[indices])
+boot_result  <- boot(muestra, statistic = media_fn, R = B)
+ic_perc_pkg  <- boot.ci(boot_result, conf = 0.95, type = "perc")
+ic_bca_pkg   <- boot.ci(boot_result, conf = 0.95, type = "bca")
+```
+
+```{r tab-verificacion-boot, echo=FALSE}
+tab_verif <- data.frame(
+  Metodo    = c("Cálculo manual — Percentil",
+                "Paquete `boot` — Percentil",
+                "Cálculo manual — BCa",
+                "Paquete `boot` — BCa"),
+  LI        = c(round(ic_percentil[1],          4),
+                round(ic_perc_pkg$percent[4],   4),
+                round(ic_bca[1],                4),
+                round(ic_bca_pkg$bca[4],        4)),
+  LS        = c(round(ic_percentil[2],          4),
+                round(ic_perc_pkg$percent[5],   4),
+                round(ic_bca[2],                4),
+                round(ic_bca_pkg$bca[5],        4)),
+  Amplitud  = c(
+    round(ic_percentil[2] - ic_percentil[1],    4),
+    round(ic_perc_pkg$percent[5] - ic_perc_pkg$percent[4], 4),
+    round(ic_bca[2] - ic_bca[1],                4),
+    round(ic_bca_pkg$bca[5] - ic_bca_pkg$bca[4], 4)
+  )
+)
+
+kbl(
+  tab_verif,
+  caption   = "Verificación cruzada de los intervalos bootstrap: cálculo manual versus paquete `boot` de R. Las pequeñas discrepancias entre métodos equivalentes son atribuibles al uso de semillas distintas internamente por el paquete `boot`; los resultados son sustancialmente idénticos.",
+  col.names = c("Método", "Límite inferior (kWh/L)",
+                "Límite superior (kWh/L)", "Amplitud (kWh/L)"),
+  align     = c("l", "c", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  pack_rows("Intervalo Percentil", 1, 2) %>%
+  pack_rows("Intervalo BCa",       3, 4)
+```
+
+La Tabla \@ref(tab:tab-verificacion-boot) confirma que el cálculo
+manual implementado reproduce fielmente los resultados del paquete
+`boot`, lo que valida la correcta aplicación de las fórmulas de
+corrección BCa.
+
+
+```{r tab-comparacion-final, echo=FALSE}
+ic_t <- t.test(muestra, conf.level = 0.95)
+
+amp_t    <- diff(ic_t$conf.int)
+amp_perc <- ic_percentil[2] - ic_percentil[1]
+amp_bca  <- ic_bca[2] - ic_bca[1]
+
+tab_comp <- data.frame(
+  Metodo    = c("$t$ de Student (paramétrico)",
+                "Bootstrap Percentil",
+                "Bootstrap BCa"),
+  Supuesto  = c("Normalidad (requerida)",
+                "Ninguno",
+                "Ninguno"),
+  LI        = c(round(ic_t$conf.int[1], 4),
+                round(ic_percentil[1],  4),
+                round(ic_bca[1],        4)),
+  LS        = c(round(ic_t$conf.int[2], 4),
+                round(ic_percentil[2],  4),
+                round(ic_bca[2],        4)),
+  Amplitud  = c(round(amp_t,    4),
+                round(amp_perc, 4),
+                round(amp_bca,  4)),
+  Razon     = c(round(amp_t    / amp_t, 4),
+                round(amp_perc / amp_t, 4),
+                round(amp_bca  / amp_t, 4))
+)
+
+kbl(
+  tab_comp,
+  caption   = "Comparación de los tres intervalos de confianza al $95\\%$ para la eficiencia media $\\mu$. La razón de amplitudes $R = \\text{Amplitud} / \\text{Amplitud}_{t}$ se calcula respecto al intervalo $t$ de Student como referencia ($R = 1.0000$). Valores $R \\approx 1$ indican equivalencia práctica. Los supuestos indican si el método requiere distribución poblacional específica.",
+  col.names = c("Método", "Supuesto distribucional",
+                "L. inferior (kWh/L)", "L. superior (kWh/L)",
+                "Amplitud (kWh/L)", "Razón $R$"),
+  align     = c("l", "l", "c", "c", "c", "c"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = TRUE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(1, bold = TRUE, background = "#eaf3fb")
+```
+
+```{r fig-comparacion-ic, echo=FALSE, fig.width=9, fig.height=4, fig.cap="Comparación visual de los tres intervalos de confianza al $95\\%$ para la eficiencia media $\\mu$."}
+
+metodos <- c("Bootstrap BCa", "Bootstrap Percentil", "$t$ de Student")
+li_v    <- c(ic_bca[1],        ic_percentil[1],       ic_t$conf.int[1])
+ls_v    <- c(ic_bca[2],        ic_percentil[2],       ic_t$conf.int[2])
+cols    <- c("darkorange",      "darkgreen",            "steelblue")
+
+par(mar = c(4.5, 9, 3, 2))
+
+plot(NULL,
+     xlim = c(min(li_v) - 0.04, max(ls_v) + 0.04),
+     ylim = c(0.5, 3.5),
+     xlab = expression(paste("Eficiencia media ", mu, " (kWh/L)")),
+     ylab = "",
+     yaxt = "n",
+     main = expression(paste("IC 95% para ", mu,
+                             " — tres métodos")))
+
+axis(2, at = 1:3, labels = metodos, las = 1, cex.axis = 0.90)
+
+for (i in 1:3) {
+  segments(li_v[i], i, ls_v[i], i,       col = cols[i], lwd = 3)
+  segments(li_v[i], i-0.15, li_v[i], i+0.15, col = cols[i], lwd = 2)
+  segments(ls_v[i], i-0.15, ls_v[i], i+0.15, col = cols[i], lwd = 2)
+  points(x_bar, i, pch = 19, cex = 1.4, col = cols[i])
+}
+
+abline(v = x_bar, col = "gray50", lty = 3, lwd = 1.5)
+```
+
+
+La Tabla \@ref(tab:tab-comparacion-final) y la Figura
+\@ref(fig:fig-comparacion-ic) presentan los tres intervalos de
+confianza de forma unificada. Los resultados permiten las siguientes
+observaciones:
+
+Las razones de amplitud son $R \approx 1$
+para los tres métodos, con diferencias inferiores a
+$`r round(max(amp_perc, amp_bca)/amp_t - 1, 4)*100`\%$ respecto al
+intervalo $t$. Esta equivalencia no es casual: es la consecuencia
+esperada cuando la distribución poblacional es normal. En ese caso,
+la distribución bootstrap de $\bar{X}^*$ es aproximadamente normal
+(verificado en la Figura \@ref(fig:fig-hist-bootstrap)), las
+correcciones BCa son despreciables (Tabla \@ref(tab:tab-ic-bca)), y
+el intervalo percentil coincide con el BCa.
+
+El intervalo $t$ es exactamente simétrico alrededor de
+$\bar{x}$ por construcción. Los intervalos bootstrap pueden ser
+ligeramente asimétricos cuando $\hat{z}_0 \neq 0$ o $\hat{a} \neq 0$;
+en este caso ambas correcciones son prácticamente nulas, por lo que
+la asimetría observada es mínima.
+
+Si la población no fuera normal
+(por ejemplo, con asimetría pronunciada o colas pesadas), la
+distribución bootstrap de $\bar{X}^*$ sería asimétrica,
+$\hat{z}_0 \neq 0$ y $\hat{a} \neq 0$, y el intervalo BCa produciría
+límites distintos a los del método $t$. En ese escenario, los
+intervalos bootstrap serían más confiables, mientras que el intervalo
+$t$ podría tener un nivel de cobertura real inferior al $95\%$
+declarado.
+
+
+El análisis desarrollado a lo largo de las secciones \@ref(normalidad),
+\@ref(metodo-parametrico) y \@ref(procedimiento-bootstrap) permite
+establecer una conclusión estructurada en tres niveles.
+
+
+El punto de partida metodológico fue la evaluación de la normalidad de
+la población mediante tres pruebas formales independientes
+(Tabla \@ref(tab:resumen-norm)) y tres herramientas gráficas
+complementarias (Figuras \@ref(fig:fig-hist-normalidad),
+\@ref(fig:fig-qq-normalidad) y \@ref(fig:boxplot-normalidad)).
+Las tres pruebas —Shapiro-Wilk, Lilliefors y Anderson-Darling— no
+rechazaron $H_0$ al nivel $\alpha = 0.05$, y los gráficos mostraron
+simetría, ausencia de valores atípicos y colas compatibles con la
+normal. Esta convergencia de evidencias justificó el uso del método
+paramétrico $t$ de Student.
+
+Es importante recordar, sin embargo, que con $n = 20$ las pruebas de
+normalidad tienen **potencia limitada**: no rechazar $H_0$ no prueba
+la normalidad, solo establece compatibilidad con ella. El análisis
+gráfico complementario fue esencial precisamente para compensar
+esta limitación.
+
+
+Los estadísticos descriptivos de la muestra
+(Tabla \@ref(tab:tab-resumen-muestra)) mostraron una eficiencia media
+de $\bar{x} = `r round(mean(muestra), 4)`$ kWh/L con una desviación
+estándar de $s = `r round(sd(muestra), 4)`$ kWh/L. La baja
+variabilidad relativa ($\text{CV} =
+`r round(100*sd(muestra)/mean(muestra), 2)`\%$) sugería de entrada
+que el intervalo de confianza sería estrecho, lo cual fue confirmado.
+
+El intervalo $t$ de Student (Tabla \@ref(tab:tab-resultado-ic))
+produjo:
+
+$$\text{IC}_{95\%}(\mu) = [`r round(ic_t$conf.int[1], 4)`,\;
+`r round(ic_t$conf.int[2], 4)`] \text{ kWh/L}$$
+
+con una amplitud de `r round(diff(ic_t$conf.int), 4)` kWh/L. Este
+resultado tiene una interpretación directa en el contexto del problema:
+con un $95\%$ de confianza, la eficiencia media poblacional de los
+generadores se estima entre
+$`r round(ic_t$conf.int[1], 4)`$ y
+$`r round(ic_t$conf.int[2], 4)`$ kWh/L, un rango que representa
+apenas el $`r round(100*diff(ic_t$conf.int)/mean(muestra), 1)`\%$
+de la media muestral. Esto indica un rendimiento **consistente** y
+**preciso** de los generadores evaluados.
+
+
+La comparación entre el método paramétrico y los dos métodos bootstrap
+(Tabla \@ref(tab:tab-comparacion-final) y Figura
+\@ref(fig:fig-comparacion-ic)) reveló que los tres intervalos son
+prácticamente equivalentes, con razones de amplitud $R \approx 1$.
+Este resultado tiene dos lecturas:
+
+**Desde la perspectiva del método $t$:** la equivalencia confirma que
+el supuesto de normalidad es adecuado y que el intervalo $t$ no está
+sobreestimando ni subestimando la incertidumbre. Si hubiera habido
+no-normalidad, el bootstrap habría producido límites distintos.
+
+**Desde la perspectiva del bootstrap:** los métodos no paramétricos
+replican el resultado del método paramétrico sin imponer ningún
+supuesto distribucional. La corrección BCa
+(Tabla \@ref(tab:tab-ic-bca)) arrojó $\hat{z}_0 \approx 0$ y
+$\hat{a} \approx 0$, lo que confirma que no hay sesgo ni asimetría
+en la distribución bootstrap, resultado coherente con la normalidad
+de la población.
+
+
+```{r tab-conclusion-p4, echo=FALSE}
+tab_concl <- data.frame(
+  Aspecto    = c("Normalidad de la población",
+                 "Método de estimación",
+                 "Estimación puntual de $\\mu$",
+                 "IC$_{95\\%}$ — $t$ de Student",
+                 "IC$_{95\\%}$ — Bootstrap Percentil",
+                 "IC$_{95\\%}$ — Bootstrap BCa",
+                 "Equivalencia entre métodos",
+                 "Robustez del resultado"),
+  Resultado  = c("Compatible ($p > 0.05$ en tres pruebas)",
+                 "$t$ de Student ($n-1 = 19$ g.l.)",
+                 paste0(round(mean(muestra), 4), " kWh/L"),
+                 paste0("[", round(ic_t$conf.int[1],4), ", ",
+                        round(ic_t$conf.int[2],4), "] kWh/L"),
+                 paste0("[", round(ic_percentil[1],4), ", ",
+                        round(ic_percentil[2],4), "] kWh/L"),
+                 paste0("[", round(ic_bca[1],4), ", ",
+                        round(ic_bca[2],4), "] kWh/L"),
+                 paste0("$R \\approx 1$ (diferencia $< 1\\%$)"),
+                 "Alta: bootstrap replica el intervalo $t$")
+)
+
+kbl(
+  tab_concl,
+  caption   = "Síntesis de los resultados del Problema 4. La coincidencia de los tres intervalos de confianza y la validación de supuestos proporcionan una estimación robusta y confiable de la eficiencia media poblacional $\\mu$ de los generadores eléctricos.",
+  col.names = c("Aspecto", "Resultado"),
+  align     = c("l", "l"),
+  escape    = FALSE
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = TRUE,
+    position          = "center"
+  ) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(c(4, 5, 6), background = "#eaf3fb") %>%
+  row_spec(7, bold = TRUE, background = "#e8f5e9") %>%
+  pack_rows("Diagnóstico de supuestos",   1, 1) %>%
+  pack_rows("Estimación",                 2, 3) %>%
+  pack_rows("Intervalos de confianza",    4, 6) %>%
+  pack_rows("Comparación de métodos",     7, 8)
+```
+
+La Tabla \@ref(tab:tab-conclusion-p4) sintetiza los resultados de las
+tres secciones del Problema 4. La conclusión central es que la
+eficiencia energética media de los generadores puede estimarse con
+alta precisión y confianza: el intervalo
+$[`r round(ic_t$conf.int[1],4)`,\, `r round(ic_t$conf.int[2],4)`]$
+kWh/L es robusto en el sentido de que tres procedimientos
+estadísticamente distintos —uno paramétrico y dos no paramétricos—
+convergen al mismo resultado. Esta convergencia no es trivial: es la
+manifestación empírica de que el modelo normal es adecuado para
+estos datos y de que la muestra, aunque pequeña ($n = 20$),
+es suficientemente homogénea como para producir estimaciones
+confiables.

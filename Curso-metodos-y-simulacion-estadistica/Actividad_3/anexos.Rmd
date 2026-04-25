@@ -1,0 +1,457 @@
+# Anexos {#sec-anexos}
+
+## Anexos de código comentado
+
+Los siguientes bloques de código documentan de forma comentada todos los procedimientos realizados. El código completo está disponible en el archivo `.Rmd` adjunto; aquí se presentan los fragmentos centrales organizados por etapa analítica.
+
+### A1. Carga y preparación de datos
+
+```{r anexo-carga, eval=FALSE, echo=TRUE}
+# ── Carga de datos ──────────────────────────────────────────────────────────
+# Los archivos CSV usan ";" como separador de campo (no ",")
+mat_raw <- read.table("data/studentmat.csv", sep = ";", header = TRUE,
+                      stringsAsFactors = FALSE)
+por_raw <- read.table("data/studentpor.csv", sep = ";", header = TRUE,
+                      stringsAsFactors = FALSE)
+
+# G1 y G2 aparecen entre comillas en el CSV original; se fuerza conversión
+mat_raw$G1 <- as.numeric(as.character(mat_raw$G1))
+mat_raw$G2 <- as.numeric(as.character(mat_raw$G2))
+por_raw$G1 <- as.numeric(as.character(por_raw$G1))
+por_raw$G2 <- as.numeric(as.character(por_raw$G2))
+
+# ── Tratamiento de G3 = 0 ───────────────────────────────────────────────────
+# Cortez & Silva (2008): G3=0 corresponde a no-presentación al examen final
+# (codificación administrativa). Se excluyen del análisis de rendimiento.
+mat <- mat_raw[mat_raw$G3 > 0, ]   # 395 → n_mat observaciones
+por <- por_raw[por_raw$G3 > 0, ]   # 649 → n_por observaciones
+
+# Test exacto de Fisher: G3 = 0 ⇒ absences = 0 (asociación determinística)
+fisher_mat <- fisher.test(table(mat_raw$G3 == 0, mat_raw$absences == 0),
+                          alternative = "greater")
+fisher_por <- fisher.test(table(por_raw$G3 == 0, por_raw$absences == 0),
+                          alternative = "greater")
+
+# Guardar conjuntos limpios para uso en secciones posteriores
+saveRDS(mat, "data/mat_clean.rds")
+saveRDS(por, "data/por_clean.rds")
+```
+
+### A2. Análisis de correlación
+
+```{r anexo-correlacion, eval=FALSE, echo=TRUE}
+# ── Correlaciones de Pearson y Spearman con G3 ──────────────────────────────
+vars_q <- c("age","Medu","Fedu","traveltime","studytime","failures",
+            "famrel","freetime","goout","Dalc","Walc","health",
+            "absences","G1","G2")
+
+# Pearson: cuantifica asociación lineal
+r_pearson_mat <- sapply(vars_q, function(v)
+  cor(mat[[v]], mat$G3, method = "pearson", use = "complete.obs"))
+
+# Spearman: robusto ante outliers y no-linealidad monótona (Faraway, 2014, §3.7)
+r_spearman_mat <- sapply(vars_q, function(v)
+  cor(mat[[v]], mat$G3, method = "spearman", use = "complete.obs"))
+
+# Mapa de calor de correlaciones (todas las variables cuantitativas)
+mat_cor <- cor(mat[, c(vars_q, "G3")], use = "complete.obs")
+corrplot::corrplot(mat_cor, method = "color", type = "lower",
+                   tl.srt = 45, addCoef.col = "#2C3E50", number.cex = 0.55)
+```
+
+### A3. Ajuste y evaluación del modelo
+
+```{r anexo-modelo, eval=FALSE, echo=TRUE}
+# ── Ajuste del modelo RLS (MCO = MV bajo normalidad) ────────────────────────
+modelo_mat <- lm(G3 ~ G2, data = mat)   # Matemáticas
+modelo_por <- lm(G3 ~ G2, data = por)   # Portugués
+
+# Resumen completo: coeficientes, SE, t, p-valor, R², F, σ̂
+summary(modelo_mat)
+summary(modelo_por)
+
+# ── Tabla ANOVA (descomposición SST = SSR + SSE) ─────────────────────────────
+anova(modelo_mat)    # SSR: variabilidad explicada; SSE: variabilidad residual
+
+# ── Intervalos de confianza al 95% para β₀ y β₁ ─────────────────────────────
+confint(modelo_mat, level = 0.95)
+confint(modelo_por, level = 0.95)
+
+# ── IC para media condicional e IP para observación individual ───────────────
+nuevos <- data.frame(G2 = c(6, 8, 10, 12, 14, 16, 18))
+
+# IC: banda más estrecha — estimación de E(G3|G2=x₀)
+predict(modelo_mat, newdata = nuevos, interval = "confidence", level = 0.95)
+
+# IP: banda más amplia — predicción de un estudiante específico con G2=x₀
+predict(modelo_mat, newdata = nuevos, interval = "prediction",  level = 0.95)
+```
+
+### A4. Diagnóstico de supuestos
+
+```{r anexo-diagnostico, eval=FALSE, echo=TRUE}
+# ── Gráficos base R (4 paneles estándar) ─────────────────────────────────────
+par(mfrow = c(2, 2))
+plot(modelo_mat)    # Res vs Fitted | Q-Q | Scale-Location | Res vs Leverage
+
+# ── Prueba de linealidad (S1) — RESET de Ramsey ─────────────────────────────
+# H₀: el modelo está correctamente especificado (sin curvatura omitida)
+lmtest::resettest(modelo_mat, power = 2:3, type = "fitted")
+
+# ── Prueba de normalidad (S2) ────────────────────────────────────────────────
+shapiro.test(residuals(modelo_mat))         # Shapiro-Wilk
+nortest::lillie.test(residuals(modelo_mat)) # Lilliefors (preferible para n grande)
+
+# ── Prueba de homocedasticidad (S3) ──────────────────────────────────────────
+# H₀: varianza constante  vs  H₁: varianza función lineal del predictor
+lmtest::bptest(modelo_mat)    # Breusch-Pagan; estadístico ~ χ²(1) bajo H₀
+
+# ── Prueba de independencia (S4) ─────────────────────────────────────────────
+# H₀: sin autocorrelación de 1er orden  |  DW ≈ 2(1 - ρ̂)
+lmtest::dwtest(modelo_mat, alternative = "two.sided")
+
+# Los mismos procedimientos aplican para modelo_por
+```
+
+### A5. Análisis de observaciones influyentes
+
+```{r anexo-influyentes, eval=FALSE, echo=TRUE}
+# ── Extracción de indicadores ─────────────────────────────────────────────────
+n       <- nrow(mat)
+p       <- 1                          # número de predictores
+
+cook    <- cooks.distance(modelo_mat)     # distancia de Cook
+lev     <- hatvalues(modelo_mat)          # leverage (diagonal de H)
+rstd    <- rstandard(modelo_mat)          # residuales estandarizados internos
+rstu    <- rstudent(modelo_mat)           # residuales estudentizados externos
+dffit   <- dffits(modelo_mat)             # DFFITS
+
+# ── Umbrales ─────────────────────────────────────────────────────────────────
+umbral_cook  <- 4 / n                     # Cook: 4/n
+umbral_lev   <- 2 * (p + 1) / n          # leverage: 2(p+1)/n = 4/n para p=1
+umbral_dff   <- 2 * sqrt((p + 1) / n)    # DFFITS: 2√((p+1)/n)
+
+# ── Detección ────────────────────────────────────────────────────────────────
+flag_cook <- cook  > umbral_cook
+flag_lev  <- lev   > umbral_lev
+flag_rsd  <- abs(rstd) > 2
+flag_dff  <- abs(dffit) > umbral_dff
+
+# Observaciones que superan AL MENOS UN criterio
+flag_any  <- flag_cook | flag_lev | flag_rsd | flag_dff
+
+# ── Modelo sin influyentes (análisis de sensibilidad) ────────────────────────
+modelo_mat_si <- lm(G3 ~ G2, data = mat[!flag_any, ])
+summary(modelo_mat_si)     # comparar con summary(modelo_mat)
+```
+
+## Anexos de validación estadística formal
+
+Los anexos siguientes desarrollan el detalle de los controles de validación aludidos en la Sección \@ref(sec-validacion). Todos los cálculos se realizan con los objetos `modelo_mat` y `modelo_por` ya construidos en las Secciones \@ref(sec-modelo-mat) y \@ref(sec-modelo-por), y con la semilla `set.seed(42)` para garantizar reproducibilidad.
+
+### A6. Comparación formal de modelos candidatos (AIC/BIC) {#sec-anexo-aic}
+
+Los criterios de información de Akaike y Bayesiano de Schwarz permiten cotejar modelos con distinto número de parámetros penalizando la complejidad (Akaike, 1974; Schwarz, 1978):
+
+$$AIC = n\ln(2\pi\hat{\sigma}^2) + n + 2(p+2), \qquad BIC = n\ln(2\pi\hat{\sigma}^2) + n + (p+2)\ln(n)$$
+
+donde $\hat{\sigma}^2 = SSE/n$ es el estimador de máxima verosimilitud de la varianza del error y $p + 2$ es el número de parámetros del modelo gaussiano (intercepto, $p$ pendientes y varianza). Estas fórmulas coinciden con las calculadas por la función `AIC()` de R. Convencionalmente, una diferencia $\Delta AIC > 2$ se interpreta como evidencia sustancial a favor del modelo con menor AIC; $\Delta AIC > 10$ como evidencia fuerte (Burnham y Anderson, 2002).
+
+```{r tab-anexo-aic, echo=FALSE}
+knitr::kable(
+  rbind(
+    cbind(Dataset = "MAT", tabla_aic_mat),
+    cbind(Dataset = "POR", tabla_aic_por)
+  ),
+  caption  = "Anexo A6 — Comparación de modelos candidatos mediante AIC, BIC y RMSE de
+              validación cruzada 10-fold. Ordenados por AIC ascendente dentro de cada
+              dataset. ΔAIC = AIC_i − AIC_min.",
+  align    = c("l","l","c","c","c","c","c","c"),
+  booktabs = TRUE,
+  digits   = 2
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(c(1, 6), bold = TRUE) |>
+  kableExtra::add_footnote(
+    paste0("ΔAIC < 2: diferencia no sustancial. ΔAIC 2–7: evidencia moderada. ",
+           "ΔAIC > 10: evidencia fuerte contra el modelo con mayor AIC ",
+           "(Burnham y Anderson, 2002)."),
+    notation = "symbol"
+  )
+```
+
+En ambas asignaturas, **G3 ~ G2** se impone como modelo preferido: registra simultáneamente el menor AIC, el menor BIC y el menor $RMSE_{CV}$. La diferencia $\Delta AIC$ respecto al segundo candidato es de `r tabla_aic_mat[2,"ΔAIC"]` unidades en MAT y `r tabla_aic_por[2,"ΔAIC"]` en POR —evidencia fuerte en ambos casos (Burnham y Anderson, 2002)—.
+
+### A7. Validación cruzada $k$-fold y tamaño del efecto {#sec-anexo-cv}
+
+La validación cruzada con $k$ pliegues particiona aleatoriamente el conjunto de datos en $k$ subconjuntos $F_1, \ldots, F_k$ de tamaño aproximadamente igual. En cada iteración $j = 1, \ldots, k$, el modelo se ajusta con los $k-1$ pliegues restantes y se evalúa sobre $F_j$, garantizando que cada observación sea predicha exactamente **una vez fuera de muestra**. Sea $\hat{G3}_i^{(-F_j)}$ la predicción de la observación $i \in F_j$ con el modelo ajustado sin las observaciones de $F_j$. La métrica de error fuera de muestra agregada es:
+
+$$RMSE_{CV} = \sqrt{\frac{1}{n}\sum_{j=1}^{k}\sum_{i \in F_j}\bigl(G3_i - \hat{G3}_i^{(-F_j)}\bigr)^2}$$
+
+Se adopta $k = 10$, valor estándar que ofrece un buen compromiso sesgo-varianza del estimador del error de generalización (Hastie, Tibshirani y Friedman, 2009, Cap. 7). Para $n$ grande y $k = 10$, los valores de $RMSE_{CV}^{(k)}$ y de su análogo Leave-One-Out ($k = n$) son numéricamente próximos.
+
+```{r tab-anexo-cv, echo=FALSE}
+tabla_cv <- data.frame(
+  Dataset   = c("MAT", "MAT", "POR", "POR"),
+  Modelo    = c("G3 ~ G2", "G3 ~ failures", "G3 ~ G2", "G3 ~ failures"),
+  `R² (muestra)`    = c(r2_mat, r2_fail_mat, r2_por, r2_fail_por),
+  `RMSE (muestra)`  = c(rmse_in_mat_g2, rmse_in_mat_fail,
+                         rmse_in_por_g2, rmse_in_por_fail),
+  `RMSE_CV (k=10)`  = c(rmse_cv_mat_g2, rmse_cv_mat_fail,
+                         rmse_cv_por_g2, rmse_cv_por_fail),
+  `R²_CV (k=10)`    = c(r2_cv_mat_g2, r2_cv_mat_fail,
+                         r2_cv_por_g2, r2_cv_por_fail),
+  check.names = FALSE
+)
+knitr::kable(
+  tabla_cv,
+  caption  = "Anexo A7.1 — Resultados de validación cruzada 10-fold (caret, set.seed(42))
+              para los modelos G3 ~ G2 y G3 ~ failures en MAT y POR.",
+  align    = c("l","l","c","c","c","c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(c(1, 3), bold = TRUE) |>
+  kableExtra::add_footnote(
+    paste0("Una diferencia RMSE_CV − RMSE(muestra) < 0.15 puntos indica ausencia ",
+           "práctica de sobreajuste."),
+    notation = "symbol"
+  )
+```
+
+Para el modelo MAT con predictor G2, $RMSE_{CV} = `r rmse_cv_mat_g2`$ frente a un $RMSE$ dentro de muestra de $`r rmse_in_mat_g2`$: la diferencia de `r delta_rmse_mat` puntos es `r texto_sobreajuste_mat`. En POR, la diferencia es de $`r delta_rmse_por`$ puntos, `r texto_sobreajuste_por`. Los valores de $R^2_{CV} = `r r2_cv_mat_g2`$ (MAT) y $`r r2_cv_por_g2`$ (POR) son consistentes con los $R^2$ dentro de muestra, lo cual respalda que la capacidad predictiva **se mantiene fuera de muestra**.
+
+Para cuantificar la magnitud estandarizada del efecto, se emplea el estadístico $f^2$ de Cohen (1988, Cap. 9):
+
+$$f^2 = \frac{R^2}{1 - R^2}$$
+
+con las convenciones estándar (Cohen 1988, §9.2.1): $0.02 \leq f^2 < 0.15$ (pequeño), $0.15 \leq f^2 < 0.35$ (mediano), $f^2 \geq 0.35$ (grande); $f^2 < 0.02$ se considera trivial.
+
+```{r tab-anexo-efecto, echo=FALSE}
+clasif_f2 <- function(f2) {
+  dplyr::case_when(
+    f2 >= 0.35 ~ "Grande",
+    f2 >= 0.15 ~ "Mediano",
+    f2 >= 0.02 ~ "Pequeño",
+    TRUE       ~ "Despreciable")
+}
+clasif_r <- function(r) {
+  a <- abs(r)
+  dplyr::case_when(
+    a >= 0.50 ~ "Grande",
+    a >= 0.30 ~ "Mediano",
+    a >= 0.10 ~ "Pequeño",
+    TRUE      ~ "Despreciable")
+}
+tabla_efecto <- data.frame(
+  Dataset   = c("MAT","MAT","POR","POR"),
+  Predictor = c("G2","failures","G2","failures"),
+  `R²`         = c(r2_mat, r2_fail_mat, r2_por, r2_fail_por),
+  `f² (Cohen)` = c(f2_mat_g2, f2_mat_fail, f2_por_g2, f2_por_fail),
+  `Clasificación f²` = c(clasif_f2(f2_mat_g2), clasif_f2(f2_mat_fail),
+                          clasif_f2(f2_por_g2), clasif_f2(f2_por_fail)),
+  `r Pearson`  = c(r_mat_g2, r_mat_fail, r_por_g2, r_por_fail),
+  `Clasificación |r|` = c(clasif_r(r_mat_g2), clasif_r(r_mat_fail),
+                           clasif_r(r_por_g2), clasif_r(r_por_fail)),
+  check.names = FALSE
+)
+knitr::kable(
+  tabla_efecto,
+  caption  = "Anexo A7.2 — Tamaño del efecto: coeficiente f² de Cohen y correlación
+              de Pearson r.",
+  align    = c("l","l","c","c","l","c","l"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(c(1, 3), bold = TRUE)
+```
+
+El modelo G3 ~ G2 exhibe un efecto **grande** en ambas asignaturas: $f^2 = `r f2_mat_g2`$ en MAT y $`r f2_por_g2`$ en POR, netamente por encima del umbral $0.35$ propuesto por Cohen (1988). El modelo G3 ~ failures registra un efecto no despreciable ($f^2 = `r f2_mat_fail`$ en MAT; $`r f2_por_fail`$ en POR), aunque de menor magnitud.
+
+### A8. Análisis formal de robustez ante influyentes {#sec-anexo-hc3}
+
+En la Sección \@ref(sec-impacto-infl) se identificaron las observaciones influyentes y se computaron los cambios relativos en $\hat{\beta}_1$. Aquí se formaliza la decisión estadística mediante una prueba directa sobre la diferencia entre los coeficientes estimados con y sin influyentes. Sean $\hat{\beta}_1^{\text{full}}$ y $\hat{\beta}_1^{\text{si}}$ las pendientes estimadas con el conjunto completo y sin las observaciones flagueadas, con errores estándar $SE_{\text{full}}$ y $SE_{\text{si}}$. Bajo $H_0: \beta_1^{\text{full}} = \beta_1^{\text{si}}$, asumiendo independencia aproximada entre las dos estimaciones (los conjuntos comparten la mayoría de observaciones, por lo que esta es una cota conservadora), el estadístico
+
+$$z = \frac{\hat{\beta}_1^{\text{full}} - \hat{\beta}_1^{\text{si}}}{\sqrt{SE_{\text{full}}^2 + SE_{\text{si}}^2}}$$
+
+se distribuye aproximadamente $\mathcal{N}(0, 1)$. Se rechaza $H_0$ al $\alpha = 0.05$ si $|z| > 1.96$. Como criterio cuantitativo complementario, se exige adicionalmente $|\Delta\hat{\beta}_1| < 5\%$ para considerar el modelo prácticamente robusto.
+
+> *Nota sobre el criterio de solapamiento de IC.* Como criterio gráfico podría compararse el solapamiento de los IC al 95%, pero **dos IC al 95% que se solapan no son equivalentes a no rechazar $H_0$ al $\alpha = 0.05$** (Schenker y Gentleman, 2001, *The American Statistician*, 55: 182–186); el equivalente formal requeriría IC al $\approx 83.4\%$ (Cumming y Finch, 2005). Por ello, la decisión formal se apoya en el estadístico $z$ y en el cambio relativo $|\Delta\hat{\beta}_1|$, no en la inspección de solapamiento.
+
+```{r tab-anexo-robustez, echo=FALSE}
+# Errores estándar de β̂₁ en cada modelo (completo y sin influyentes)
+se_b1_mat_full <- summary(modelo_mat)$coefficients["G2", "Std. Error"]
+se_b1_mat_si   <- summary(modelo_mat_si)$coefficients["G2", "Std. Error"]
+se_b1_por_full <- summary(modelo_por)$coefficients["G2", "Std. Error"]
+se_b1_por_si   <- summary(modelo_por_si)$coefficients["G2", "Std. Error"]
+
+# Estadístico z bajo H0 de igualdad de coeficientes
+z_mat <- (beta1_hat - b1_mat_si) / sqrt(se_b1_mat_full^2 + se_b1_mat_si^2)
+z_por <- (b1p       - b1_por_si) / sqrt(se_b1_por_full^2 + se_b1_por_si^2)
+p_z_mat <- 2 * (1 - pnorm(abs(z_mat)))
+p_z_por <- 2 * (1 - pnorm(abs(z_por)))
+
+robusto_mat <- (abs(z_mat) < 1.96) & (abs(delta_b1_mat) < 5)
+robusto_por <- (abs(z_por) < 1.96) & (abs(delta_b1_por) < 5)
+
+tabla_rob <- data.frame(
+  Dataset = c("MAT", "POR"),
+  `β̂₁ (completo)`     = c(beta1_hat, b1p),
+  `β̂₁ (sin infl.)`    = c(b1_mat_si, b1_por_si),
+  `Δβ̂₁ (%)`           = c(paste0(delta_b1_mat, "%"),
+                            paste0(delta_b1_por, "%")),
+  `Estadístico z`     = c(round(z_mat, 4), round(z_por, 4)),
+  `p-valor`           = c(
+    ifelse(p_z_mat < 0.001, "< 0.001", round(p_z_mat, 4)),
+    ifelse(p_z_por < 0.001, "< 0.001", round(p_z_por, 4))
+  ),
+  `Decisión (α=0.05)` = c(
+    ifelse(abs(z_mat) > 1.96, "Rechaza $H_0$ — Sensible", "No rechaza $H_0$ — Robusto"),
+    ifelse(abs(z_por) > 1.96, "Rechaza $H_0$ — Sensible", "No rechaza $H_0$ — Robusto")
+  ),
+  check.names  = FALSE
+)
+knitr::kable(
+  tabla_rob,
+  caption  = "Anexo A8.1 — Análisis formal de robustez: prueba bilateral
+              $H_0: \\beta_1^{\\text{full}} = \\beta_1^{\\text{si}}$ mediante estadístico $z$.
+              La columna Δβ̂₁ aporta el criterio cuantitativo complementario.",
+  align    = c("l","c","c","c","c","c","l"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::row_spec(which(c(robusto_mat, robusto_por)), italic = TRUE) |>
+  kableExtra::add_footnote(
+    paste0("Criterio formal: |z| < 1.96 al α = 0.05. Criterio práctico: ",
+           "|Δβ̂₁| < 5% se considera cambio prácticamente irrelevante. ",
+           "Ambos criterios deben cumplirse simultáneamente para concluir robustez."),
+    notation = "symbol"
+  )
+```
+
+En MAT, $z = `r round(z_mat, 4)`$ ($p = `r ifelse(p_z_mat < 0.001, "< 0.001", round(p_z_mat, 4))`$); en POR, $z = `r round(z_por, 4)`$ ($p = `r ifelse(p_z_por < 0.001, "< 0.001", round(p_z_por, 4))`$). En ambos casos **no se rechaza $H_0$** al $\alpha = 0.05$, y $|\Delta\hat{\beta}_1| < 1\%$ confirma que la diferencia tampoco es prácticamente relevante. **Decisión formal:** se conserva el modelo ajustado con el conjunto completo de observaciones; las observaciones influyentes no alteran de manera estadística ni prácticamente significativa los estimadores.
+
+### A9. Errores estándar robustos a heterocedasticidad (HC3)
+
+Dado que el diagnóstico de la Sección \@ref(sec-diag-mat) detectó heterocedasticidad en MAT (Breusch-Pagan, $p < 0.001$), los errores estándar clásicos de MCO pueden estar sesgados. Como verificación adicional de robustez, se recalculan los IC para $\hat{\beta}_1$ con el estimador **HC3** de White (1980), implementado en `sandwich::vcovHC`. El HC3 es preferible al HC1 en muestras finitas por su mejor comportamiento frente a observaciones de alto apalancamiento (Long y Ervin, 2000).
+
+```{r tab-anexo-hc3, echo=FALSE}
+tabla_hc3 <- data.frame(
+  Dataset = c("MAT", "POR"),
+  `β̂₁` = c(beta1_hat, b1p),
+  `SE clásico` = c(se_beta1, se_b1p),
+  `SE HC3 (robusto)` = c(round(se_hc3_mat, 4), round(se_hc3_por, 4)),
+  `IC 95% clásico` = c(
+    paste0("[", round(ic_full_mat[1],4), ", ", round(ic_full_mat[2],4), "]"),
+    paste0("[", round(ic_full_por[1],4), ", ", round(ic_full_por[2],4), "]")),
+  `IC 95% HC3` = c(
+    paste0("[", round(ic_hc3_mat[1],4), ", ", round(ic_hc3_mat[2],4), "]"),
+    paste0("[", round(ic_hc3_por[1],4), ", ", round(ic_hc3_por[2],4), "]")),
+  check.names = FALSE
+)
+knitr::kable(
+  tabla_hc3,
+  caption = "Anexo A9 — Comparación de errores estándar e IC al 95% para β̂₁ bajo
+             especificación clásica MCO y con estimador robusto HC3 de White (1980).",
+  align   = c("l","c","c","c","c","c"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  ) |>
+  kableExtra::add_footnote(
+    "HC3 = heteroscedasticity-consistent (versión 3); preferible en muestras
+     finitas (Long y Ervin, 2000).",
+    notation = "symbol"
+  )
+```
+
+En MAT, el IC clásico $[`r round(ic_full_mat[1],4)`, `r round(ic_full_mat[2],4)`]$ se compara con el IC robusto $[`r round(ic_hc3_mat[1],4)`, `r round(ic_hc3_mat[2],4)`]$: ambos excluyen el cero y tienen amplitudes semejantes. La conclusión inferencial (rechazo de $H_0: \beta_1 = 0$) se mantiene independientemente del supuesto de homocedasticidad, lo cual refuerza la **robustez global** del resultado.
+
+### A10. Cobertura empírica de los intervalos de predicción {#sec-anexo-coverage}
+
+La inferencia clásica sobre $\hat{\beta}_j$ está protegida asintóticamente por el TCL aun bajo desviaciones moderadas de la normalidad de $\varepsilon$. Sin embargo, la cobertura nominal del 95 % de los **intervalos de predicción individuales** (IP) reportados en §\@ref(sec-ic-pred-mat) y §\@ref(sec-ic-pred-por) sí depende directamente de que $\varepsilon \sim \mathcal{N}(0, \sigma^2)$, ya que la fórmula
+
+$$\hat{Y}_0 \pm t_{\alpha/2,\, n-2}\hat{\sigma}\sqrt{1 + \tfrac{1}{n} + \tfrac{(x_0 - \bar{x})^2}{S_{xx}}}$$
+
+emplea cuantiles $t$ que solo son exactos bajo errores gaussianos. Dado que en §\@ref(sec-diag-mat) y §\@ref(sec-diag-por) las pruebas de normalidad rechazaron $H_0$, evaluamos empíricamente la cobertura efectiva de los IP construidos por bootstrap no paramétrico de pares (Davison y Hinkley, 1997, §6.3).
+
+```{r cobertura-bootstrap, echo=TRUE, cache=TRUE}
+# Cobertura empírica de IP al 95% para una observación nueva en x0 = mediana(G2)
+# Bootstrap no paramétrico de pares (G2, G3) — Davison y Hinkley (1997, §6.3)
+set.seed(42)
+B <- 2000
+
+cobertura_ip_boot <- function(datos, x0, B = 2000, nivel = 0.95) {
+  n     <- nrow(datos)
+  cubre <- logical(B)
+  for (b in 1:B) {
+    idx_b   <- sample.int(n, n, replace = TRUE)
+    datos_b <- datos[idx_b, ]
+    mod_b   <- lm(G3 ~ G2, data = datos_b)
+    ip_b    <- predict(mod_b, newdata = data.frame(G2 = x0),
+                       interval = "prediction", level = nivel)
+    candidatos <- datos$G3[abs(datos$G2 - x0) <= 1]
+    if (length(candidatos) == 0) candidatos <- datos$G3
+    y_nuevo   <- sample(candidatos, 1)
+    cubre[b]  <- (y_nuevo >= ip_b[, "lwr"]) & (y_nuevo <= ip_b[, "upr"])
+  }
+  mean(cubre)
+}
+
+cob_mat_g12 <- cobertura_ip_boot(mat, x0 = 12, B = B)
+cob_por_g12 <- cobertura_ip_boot(por, x0 = 12, B = B)
+```
+
+```{r tab-anexo-cobertura, echo=FALSE}
+tabla_cob <- data.frame(
+  Dataset = c("MAT", "POR"),
+  `n` = c(n_mat, n_por),
+  `Punto $x_0$` = c(12, 12),
+  `Cobertura nominal` = c("95.0 %", "95.0 %"),
+  `Cobertura empírica` = c(
+    paste0(round(cob_mat_g12 * 100, 1), " %"),
+    paste0(round(cob_por_g12 * 100, 1), " %")
+  ),
+  `Brecha (pp)` = c(
+    round((cob_mat_g12 - 0.95) * 100, 1),
+    round((cob_por_g12 - 0.95) * 100, 1)
+  ),
+  check.names = FALSE
+)
+knitr::kable(
+  tabla_cob,
+  caption  = "Anexo A10 — Cobertura empírica de los intervalos de predicción al 95% nominal,
+              estimada por bootstrap no paramétrico de pares con B = 2000 réplicas
+              (Davison y Hinkley, 1997, §6.3). Una brecha cercana a 0 indica que la
+              cobertura efectiva coincide con la nominal pese al rechazo de normalidad.",
+  align    = c("l","c","c","c","c","c"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped","bordered","condensed"),
+    full_width = FALSE
+  )
+```
+
+La Tabla \@ref(tab:tab-anexo-cobertura) cuantifica empíricamente la cobertura de los IP. La brecha entre cobertura nominal y empírica es de magnitud `r round(abs(cob_mat_g12 - 0.95)*100, 1)` puntos porcentuales en MAT y `r round(abs(cob_por_g12 - 0.95)*100, 1)` en POR. Estos resultados acotan empíricamente la advertencia teórica: con $n > 350$, la robustez del IP gaussiano frente a las desviaciones de normalidad observadas es razonable en magnitud práctica, **aunque no exacta**. Para predicciones de alta consecuencia individual sería preferible reportar IP por bootstrap o regresión cuantílica como alternativa metodológica.
+
+## Anexo final — Aplicación Shiny
+
+El código de la aplicación Shiny se entrega en el archivo `app.R` incluido en el archivo `actividad3.zip`. La aplicación implementa los modelos G3 ~ G2 (predictor principal) y G3 ~ failures (predictor alternativo) para los conjuntos de Matemáticas y Portugués, con las siguientes pestañas: Correlaciones · Modelo · Diagnóstico · Atípicos e influyentes · Predicción.

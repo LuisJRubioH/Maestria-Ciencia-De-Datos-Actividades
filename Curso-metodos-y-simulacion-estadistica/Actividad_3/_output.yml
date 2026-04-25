@@ -1,0 +1,8 @@
+bookdown::gitbook:
+  css: style.css
+  split_by: chapter
+  config:
+    toc:
+      collapse: section
+      smooth_scroll: true
+    code_folding: hide

@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Teorema del límite central | Actividad 2</title>
+  <meta name="description" content="3 Teorema del límite central | Actividad 2" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Teorema del límite central | Actividad 2" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Teorema del límite central | Actividad 2" />
+  
+  
+  
+
+<meta name="author" content="Oriana Giraldo Arcia (Grupo A)" />
+<meta name="author" content="Luis Javier Rubio Hernández (Grupo B)" />
+
+
+<meta name="date" content="2026-03-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="propiedades-de-los-estimadores.html"/>
+<link rel="next" href="estimación-de-intervalos-de-confianza.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html"><i class="fa fa-check"></i><b>1</b> <strong>Estimación de la probabilidad y la media</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#problema-1"><i class="fa fa-check"></i><b>1.1</b> <strong>Problema 1</strong></a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#c%C3%A1lculo-de-probabilidad-te%C3%B3rica"><i class="fa fa-check"></i><b>1.1.1</b> <strong>Cálculo de probabilidad teórica</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#simulaci%C3%B3n-con-una-muestra"><i class="fa fa-check"></i><b>1.1.2</b> <strong>Simulación con una muestra</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#an%C3%A1lisis-de-la-variabilidad-entre-muestras"><i class="fa fa-check"></i><b>1.1.3</b> <strong>Análisis de la variabilidad entre muestras</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral"><i class="fa fa-check"></i><b>1.1.4</b> <strong>Impacto del tamaño muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.5" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#convergencia-de-la-media-muestral"><i class="fa fa-check"></i><b>1.1.5</b> <strong>Convergencia de la media muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.6" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral-en-la-media"><i class="fa fa-check"></i><b>1.1.6</b> <strong>Impacto del tamaño muestral en la media</strong>:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html"><i class="fa fa-check"></i><b>2</b> <strong>Propiedades de los estimadores</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#problema-2"><i class="fa fa-check"></i><b>2.1</b> <strong>Problema 2</strong></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#simulaci%C3%B3n-de-estimadores"><i class="fa fa-check"></i><b>2.1.1</b> <strong>Simulación de estimadores</strong></a></li>
+<li class="chapter" data-level="2.1.2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#insesgadez"><i class="fa fa-check"></i><b>2.1.2</b> <strong>Insesgadez</strong></a></li>
+<li class="chapter" data-level="2.1.3" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#consistencia"><i class="fa fa-check"></i><b>2.1.3</b> <strong>Consistencia</strong></a></li>
+<li class="chapter" data-level="2.1.4" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#eficiencia"><i class="fa fa-check"></i><b>2.1.4</b> <strong>Eficiencia</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html"><i class="fa fa-check"></i><b>3</b> <strong>Teorema del límite central</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#problema-3"><i class="fa fa-check"></i><b>3.1</b> <strong>Problema 3</strong></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#c%C3%A1lculo-de-la-media-y-varianza-de-la-poblaci%C3%B3n"><i class="fa fa-check"></i><b>3.1.1</b> <strong>Cálculo de la media y varianza de la población</strong></a></li>
+<li class="chapter" data-level="3.1.2" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#gr%C3%A1fico-de-la-curva-de-densidad"><i class="fa fa-check"></i><b>3.1.2</b> <strong>Gráfico de la curva de densidad</strong></a></li>
+<li class="chapter" data-level="3.1.3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#comparaci%C3%B3n-de-par%C3%A1metros-estimadores-y-estimaciones"><i class="fa fa-check"></i><b>3.1.3</b> <strong>Comparación de parámetros, estimadores y estimaciones</strong></a></li>
+<li class="chapter" data-level="3.1.4" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-para-n-200"><i class="fa fa-check"></i><b>3.1.4</b> <strong>Aplicación del Teorema del Límite Central para <span class="math inline">\(n = 200\)</span></strong></a></li>
+<li class="chapter" data-level="3.1.5" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-variando-n"><i class="fa fa-check"></i><b>3.1.5</b> <strong>Aplicación del Teorema del Límite Central variando <span class="math inline">\(n\)</span></strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html"><i class="fa fa-check"></i><b>4</b> <strong>Estimación de intervalos de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#normalidad"><i class="fa fa-check"></i><b>4.0.1</b> <strong>Normalidad</strong></a></li>
+<li class="chapter" data-level="4.0.2" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico"><i class="fa fa-check"></i><b>4.0.2</b> <strong>Método paramétrico</strong></a></li>
+<li class="chapter" data-level="4.0.3" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap"><i class="fa fa-check"></i><b>4.0.3</b> <strong>Procedimiento bootstrap</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><i class="fa fa-check"></i><b>5</b> <strong>Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#problema-5"><i class="fa fa-check"></i><b>5.1</b> <strong>Problema 5</strong></a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#errores-de-decisi%C3%B3n-tipo-i-y-tipo-ii"><i class="fa fa-check"></i><b>5.1.1</b> Errores de decisión: Tipo I y Tipo II</a></li>
+<li class="chapter" data-level="5.1.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#potencia-estad%C3%ADstica"><i class="fa fa-check"></i><b>5.1.2</b> Potencia estadística</a></li>
+<li class="chapter" data-level="5.1.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tama%C3%B1o-del-efecto-de-cohen"><i class="fa fa-check"></i><b>5.1.3</b> Tamaño del efecto de Cohen</a></li>
+<li class="chapter" data-level="5.1.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#funci%C3%B3n-de-potencia-exacta-distribuci%C3%B3n-t-no-central"><i class="fa fa-check"></i><b>5.1.4</b> Función de potencia exacta: distribución <span class="math inline">\(t\)</span> no central</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-computacional"><i class="fa fa-check"></i><b>5.2</b> <strong>Análisis computacional</strong></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#configuraci%C3%B3n-general"><i class="fa fa-check"></i><b>5.2.1</b> Configuración general</a></li>
+<li class="chapter" data-level="5.2.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.10"><i class="fa fa-check"></i><b>5.2.2</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.10\)</span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.05"><i class="fa fa-check"></i><b>5.2.3</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.05\)</span></a></li>
+<li class="chapter" data-level="5.2.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.01"><i class="fa fa-check"></i><b>5.2.4</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.01\)</span></a></li>
+<li class="chapter" data-level="5.2.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#comparaci%C3%B3n-de-los-tres-niveles-de-significancia"><i class="fa fa-check"></i><b>5.2.5</b> Comparación de los tres niveles de significancia</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tabla-de-tama%C3%B1os-m%C3%ADnimos-de-muestra"><i class="fa fa-check"></i><b>5.3</b> <strong>Tabla de tamaños mínimos de muestra</strong></a></li>
+<li class="chapter" data-level="5.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#curva-de-rendimientos-marginales-de-la-potencia"><i class="fa fa-check"></i><b>5.4</b> <strong>Curva de rendimientos marginales de la potencia</strong></a></li>
+<li class="chapter" data-level="5.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#respuesta-a-las-preguntas-orientadoras"><i class="fa fa-check"></i><b>5.5</b> <strong>Respuesta a las preguntas orientadoras</strong></a></li>
+<li class="chapter" data-level="5.6" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#propuesta-final-del-dise%C3%B1o-del-estudio"><i class="fa fa-check"></i><b>5.6</b> <strong>Propuesta final del diseño del estudio</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html"><i class="fa fa-check"></i><b>6</b> <strong>Prueba de hipótesis e intervalo de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#problema-6"><i class="fa fa-check"></i><b>6.1</b> <strong>Problema 6</strong></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#contexto-informe-descriptivo-de-la-actividad-1"><i class="fa fa-check"></i><b>6.1.1</b> Contexto: Informe descriptivo de la Actividad 1</a></li>
+<li class="chapter" data-level="6.1.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#carga-y-preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.1.2</b> Carga y preparación de los datos</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.2</b> Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal"><i class="fa fa-check"></i><b>6.2.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.2.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos"><i class="fa fa-check"></i><b>6.2.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.2.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-t-de-welch"><i class="fa fa-check"></i><b>6.2.3</b> Prueba de hipótesis: <span class="math inline">\(t\)</span> de Welch</a></li>
+<li class="chapter" data-level="6.2.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.2.4</b> Intervalo de confianza al 95% para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.2.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.5</b> Visualización</a></li>
+<li class="chapter" data-level="6.2.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.6</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.3</b> Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-1"><i class="fa fa-check"></i><b>6.3.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.3.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-1"><i class="fa fa-check"></i><b>6.3.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.3.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-no-param%C3%A9trica-mann-whitney-wilcoxon"><i class="fa fa-check"></i><b>6.3.3</b> Prueba no paramétrica: Mann-Whitney-Wilcoxon</a></li>
+<li class="chapter" data-level="6.3.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tama%C3%B1o-del-efecto-correlaci%C3%B3n-biserial-de-rango"><i class="fa fa-check"></i><b>6.3.4</b> Tamaño del efecto: Correlación biserial de rango</a></li>
+<li class="chapter" data-level="6.3.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-t-de-welch-confirmaci%C3%B3n-asint%C3%B3tica"><i class="fa fa-check"></i><b>6.3.5</b> Prueba <span class="math inline">\(t\)</span> de Welch (confirmación asintótica)</a></li>
+<li class="chapter" data-level="6.3.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-bootstrap-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.3.6</b> Intervalo de confianza Bootstrap para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.3.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#comparaci%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.3.7</b> Comparación de resultados</a></li>
+<li class="chapter" data-level="6.3.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.3.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-3-la-proporci%C3%B3n-de-aceptaci%C3%B3n-de-la-campa%C3%B1a-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar"><i class="fa fa-check"></i><b>6.4</b> Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-2"><i class="fa fa-check"></i><b>6.4.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.4.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.4.2</b> Preparación de los datos</a></li>
+<li class="chapter" data-level="6.4.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-2"><i class="fa fa-check"></i><b>6.4.3</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.4.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-dos-proporciones-z-test"><i class="fa fa-check"></i><b>6.4.4</b> Prueba de dos proporciones (<span class="math inline">\(z\)</span>-test)</a></li>
+<li class="chapter" data-level="6.4.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-p_a---p_b"><i class="fa fa-check"></i><b>6.4.5</b> Intervalo de confianza al 95% para <span class="math inline">\(p_A - p_B\)</span></a></li>
+<li class="chapter" data-level="6.4.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#confirmaci%C3%B3n-prueba-chi2-de-independencia"><i class="fa fa-check"></i><b>6.4.6</b> Confirmación: prueba <span class="math inline">\(\chi^2\)</span> de independencia</a></li>
+<li class="chapter" data-level="6.4.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.4.7</b> Visualización</a></li>
+<li class="chapter" data-level="6.4.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-2"><i class="fa fa-check"></i><b>6.4.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#resumen-comparativo-de-las-tres-preguntas"><i class="fa fa-check"></i><b>6.5</b> Resumen comparativo de las tres preguntas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>7</b> Referencias</a></li>
+<li class="chapter" data-level="8" data-path="anexos.html"><a href="anexos.html"><i class="fa fa-check"></i><b>8</b> Anexos</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad 2</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="teorema-del-límite-central" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> <strong>Teorema del límite central</strong><a href="teorema-del-límite-central.html#teorema-del-l%C3%ADmite-central" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="problema-3" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> <strong>Problema 3</strong><a href="teorema-del-límite-central.html#problema-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En una planta de fabricación de componentes electrónicos, se modela el tiempo (meses)
+de funcionamiento continuo de una máquina antes de necesitar mantenimiento mediante
+una distribución Exponencial. El análisis ha determinado que el tiempo hasta el primer
+mantenimiento sigue una distribución Exponencial con parámetro <span class="math inline">\(\lambda = 0.16\)</span>.</p>
+<p>A continuación, se presentan una serie de actividades para explorar esta distribución y su
+aplicación en el contexto del mantenimiento predictivo.</p>
+<div id="cálculo-de-la-media-y-varianza-de-la-población" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> <strong>Cálculo de la media y varianza de la población</strong><a href="teorema-del-límite-central.html#c%C3%A1lculo-de-la-media-y-varianza-de-la-poblaci%C3%B3n" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Determina la media y varianza de la población de los tiempos <span class="math inline">\(X\)</span> hasta que se
+requiere mantenimiento de las máquinas en este contexto.</li>
+<li>Interpreta los resultados en relación con el tiempo esperado antes del
+mantenimiento y la variabilidad en los tiempos.</li>
+</ul>
+<p>Sabemos que el tiempo <span class="math inline">\(X\)</span> (en meses) hasta que una máquina requiere mantenimiento sigue una distribución exponencial con parámetro <span class="math inline">\(\lambda = 0.16\)</span>:</p>
+<p><span class="math display">\[X \sim \text{Exp}(\lambda = 0.16)\]</span></p>
+<p>Si <span class="math inline">\(X \sim \text{Exp}(\lambda)\)</span>, la media y varianza están dadas por:</p>
+<p><span class="math display">\[\mu = E[X] = \frac{1}{\lambda}, \qquad \sigma^2 = \text{Var}(X) = \frac{1}{\lambda^2}\]</span></p>
+<p>Luego, reemplazando <span class="math inline">\(\lambda = 0.16\)</span>, se sigue que</p>
+<p><span class="math display">\[\mu = \frac{1}{0.16} = 6.25 \text{ meses}\]</span>
+y
+<span class="math display">\[\sigma^2 = \frac{1}{(0.16)^2} = \frac{1}{0.0256} = 39.0625 \text{ meses}^2\]</span>
+Además, la desviación estándar poblacional es</p>
+<p><span class="math display">\[\sigma = \sqrt{39.0625} = 6.25 \text{ meses}\]</span>
+De lo anterior, podemos afirmar que:</p>
+<ul>
+<li><p>En promedio, cada máquina opera de forma continua durante <strong>6.25</strong> meses antes de requerir su primer mantenimiento. Este valor constituye el punto de referencia para la planificación de mantenimiento preventivo.</p></li>
+<li><p>La desviación estándar es igual a la media <span class="math inline">\(\sigma = \mu = 6.25\)</span> meses, lo cual es una propiedad inherente de la distribución exponencial (<span class="math inline">\(\sigma = \mu = 1/\lambda\)</span>). Esto refleja una <strong>alta dispersión</strong> en los tiempos de fallo, de modo que, algunas máquinas fallarán mucho antes de los 6.25 meses y otras funcionarán considerablemente más tiempo.</p></li>
+<li><p>La distribución exponencial es fuertemente asimétrica a la derecha, es decir, la densidad es mayor cerca de 0, lo que implica mayor probabilidad de tiempos pequeños. De hecho, la probabilidad de que una máquina falle antes de la media es:</p></li>
+</ul>
+<p><span class="math display">\[P(X \leq \mu) = 1 - e^{-\lambda \mu} = 1 - e^{-1} \approx 0.6321\]</span></p>
+<p>Es decir, aproximadamente el <strong>63.21%</strong> de las máquinas requerirán mantenimiento antes de alcanzar los 6.25 meses.</p>
+<p>Por lo tanto, programar el mantenimiento preventivo exactamente a los 6.25 meses resultaría insuficiente, pues cerca de dos tercios de las máquinas ya habrían fallado. Un programa de mantenimiento predictivo eficaz debería considerar esta variabilidad y programar intervenciones antes de la media poblacional.</p>
+</div>
+<div id="gráfico-de-la-curva-de-densidad" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> <strong>Gráfico de la curva de densidad</strong><a href="teorema-del-límite-central.html#gr%C3%A1fico-de-la-curva-de-densidad" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Grafica la función de densidad de la distribución Exponencial que describe la
+población.</li>
+<li>Explica cómo el parámetro <span class="math inline">\(\lambda\)</span> afectan la forma de la curva.</li>
+<li>Interpreta el modelo en relación con el mantenimiento predictivo y la probabilidad
+de fallos prematuros o tardíos.</li>
+</ul>
+<p>La función de densidad de probabilidad (fdp) de una variable <span class="math inline">\(X \sim \text{Exp}(\lambda)\)</span> de parámetro <span class="math inline">\(\lambda &gt; 0\)</span> se define como:</p>
+<p><span class="math display">\[   f(x) = \left\{
+\begin{array}{ll}
+      \lambda \, e^{-\lambda x}, \quad x &gt; 0 \\
+      0 , \quad x\leq 0 \\
+\end{array}
+\right. \]</span></p>
+<p>Para <span class="math inline">\(\lambda = 0.16\)</span>, la densidad es <span class="math inline">\(f(x) = 0.16 , e^{-0.16 x}, \ x \geq 0\)</span>. La Figura <a href="teorema-del-límite-central.html#fig:fig-densidad-expo">3.1</a> muestra esta curva junto con la media poblacional.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-densidad-expo"></span>
+<img src="Actividad-2_files/figure-html/fig-densidad-expo-1.png" alt="Densidad exponencial con λ = 0.16" width="80%" />
+<p class="caption">
+Figure 3.1: Densidad exponencial con λ = 0.16
+</p>
+</div>
+<p>Para visualizar el efecto del parámetro <span class="math inline">\(\lambda\)</span>, la Figura <a href="teorema-del-límite-central.html#fig:fig-densidad-expo-comparacion">3.2</a> superpone densidades para varios <span class="math inline">\(\lambda\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-densidad-expo-comparacion"></span>
+<img src="Actividad-2_files/figure-html/fig-densidad-expo-comparacion-1.png" alt="Densidad Exponencial para distintos valores de λ" width="80%" />
+<p class="caption">
+Figure 3.2: Densidad Exponencial para distintos valores de λ
+</p>
+</div>
+<p><strong>Análisis del parámetro <span class="math inline">\(\lambda\)</span></strong>:</p>
+<ul>
+<li><p>Tasa de ocurrencia (forma): <span class="math inline">\(\lambda\)</span> determina la rapidez con que decae la densidad. Un <span class="math inline">\(\lambda\)</span> grande (p. ej., 0.5) concentra la probabilidad cerca de cero, indicando fallos muy tempranos; un <span class="math inline">\(\lambda\)</span> pequeño (0.08) extiende la cola derecha, haciendo más probables tiempos largos.</p></li>
+<li><p>Localización y dispersión (escala): El recíproco <span class="math inline">\(1/\lambda\)</span> es tanto la media como la desviación estándar. Así, <span class="math inline">\(\lambda\)</span> controla simultáneamente el centro y la variabilidad de la distribución.</p></li>
+</ul>
+<p><strong>Implicaciones para el mantenimiento predictivo</strong>:</p>
+<p>Para <span class="math inline">\(\lambda = 0.16\)</span>, se obtienen las siguientes probabilidades de interés:</p>
+<p><span class="math inline">\(P(X \leq 3) = 1 - e^{-0.16 \times 3} = 1 - e^{-0.48} \approx 0.3812\)</span>: el <strong>38.12%</strong> de las máquinas fallarán antes de los 3 meses.</p>
+<p><span class="math inline">\(P(X &gt; 12) = e^{-0.16 \times 12} = e^{-1.92} \approx 0.1466\)</span>: solo el <strong>14.66%</strong> superará el año sin mantenimiento.</p>
+<p>Además, la propiedad de falta de memoria de la exponencial implica que la probabilidad de fallo en un intervalo futuro no depende del tiempo acumulado de funcionamiento. Por tanto, una estrategia de mantenimiento basada en la edad (esperar a que la máquina “envejezca”) no es óptima. Lo recomendable es establecer un programa de mantenimiento periódico con intervalos fijos inferiores a la media (por ejemplo, cada 4 o 5 meses), reduciendo así la alta probabilidad de fallos tempranos.</p>
+</div>
+<div id="comparación-de-parámetros-estimadores-y-estimaciones" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> <strong>Comparación de parámetros, estimadores y estimaciones</strong><a href="teorema-del-límite-central.html#comparaci%C3%B3n-de-par%C3%A1metros-estimadores-y-estimaciones" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Toma 10 muestras aleatorias de tamaño <span class="math inline">\(n = 200\)</span> de la población Exponencial de parámetro <span class="math inline">\(\lambda\)</span> usando la función <code>rexp(n, rate=lambda)</code> de <strong>R</strong> y establece una semilla como por ejemplo
+<code>set.seed(123)</code> para asegurar la reproducibilidad de los resultados. Para cada
+muestra:</p>
+<ul>
+<li>Elabora un histograma e interpreta la distribución de los datos.</li>
+<li>Calcula la media y varianza muestral y compara con los valores poblacionales.</li>
+<li>Analiza los siguientes conceptos:
+<ul>
+<li>Parámetros: Identifica los valores poblacionales reales.</li>
+<li>Estimadores: Define las fórmulas utilizadas para estimar los parámetros.</li>
+<li>Estimaciones: Interpreta los valores obtenidos y su relación con las
+muestras.</li>
+</ul></li>
+</ul>
+<p>Se extraen 10 muestras aleatorias de tamaño <span class="math inline">\(n = 200\)</span> de la población <span class="math inline">\(X \sim \text{Exp}(\lambda = 0.16)\)</span>.</p>
+<p>La Figura <a href="teorema-del-límite-central.html#fig:fig-simulacion-histo">3.3</a> presenta los histogramas de las 10 muestras, junto con la densidad teórica (rojo) y las medias muestral (azul punteada) y poblacional (roja punteada).</p>
+<div class="figure"><span style="display:block;" id="fig:fig-simulacion-histo"></span>
+<img src="Actividad-2_files/figure-html/fig-simulacion-histo-1.png" alt="Distribución para 10 muestras de tamaño 200" width="80%" />
+<p class="caption">
+Figure 3.3: Distribución para 10 muestras de tamaño 200
+</p>
+</div>
+<p><strong>Observación</strong>: Todas las muestras reflejan la forma característica de la exponencial: asimetría positiva, alta concentración en valores pequeños y cola larga a la derecha. La densidad teórica se ajusta razonablemente, como cabe esperar con <span class="math inline">\(n=200\)</span>.</p>
+<p>La Tabla <a href="teorema-del-límite-central.html#tab:tab-media-varianza">3.1</a> resume las medias y varianzas muestrales, junto con los errores respecto a los valores poblacionales.</p>
+<table>
+<caption><span id="tab:tab-media-varianza">Table 3.1: </span>Estadísticos muestrales vs. valores poblacionales</caption>
+<thead>
+<tr class="header">
+<th align="right">Muestra</th>
+<th align="right">x̄</th>
+<th align="right">s²</th>
+<th align="right">Error en media</th>
+<th align="right">Error en varianza</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">6.2952</td>
+<td align="right">36.4925</td>
+<td align="right">0.0452</td>
+<td align="right">-2.5700</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">6.1182</td>
+<td align="right">31.7456</td>
+<td align="right">-0.1318</td>
+<td align="right">-7.3169</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">6.2651</td>
+<td align="right">40.1833</td>
+<td align="right">0.0151</td>
+<td align="right">1.1208</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">6.8534</td>
+<td align="right">47.0376</td>
+<td align="right">0.6034</td>
+<td align="right">7.9751</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">6.6550</td>
+<td align="right">41.9957</td>
+<td align="right">0.4050</td>
+<td align="right">2.9332</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">6.0208</td>
+<td align="right">32.4892</td>
+<td align="right">-0.2292</td>
+<td align="right">-6.5733</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">6.4115</td>
+<td align="right">45.1826</td>
+<td align="right">0.1615</td>
+<td align="right">6.1201</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">6.3959</td>
+<td align="right">37.5532</td>
+<td align="right">0.1459</td>
+<td align="right">-1.5093</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">6.0295</td>
+<td align="right">36.1454</td>
+<td align="right">-0.2205</td>
+<td align="right">-2.9171</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">6.1916</td>
+<td align="right">38.9570</td>
+<td align="right">-0.0584</td>
+<td align="right">-0.1055</td>
+</tr>
+</tbody>
+</table>
+<p>Las medias muestrales fluctúan alrededor de <span class="math inline">\(\mu = 6.25\)</span> y las varianzas muestrales alrededor de <span class="math inline">\(\sigma^2 = 39.0625\)</span>. Ninguna muestra reproduce exactamente los valores poblacionales, pero los promedios de los estadísticos muestrales se aproximan a los parámetros reales, lo cual es consistente con la propiedad de insesgadez de estos estimadores.</p>
+<p>Los <strong>parámetros</strong> son valores fijos (pero generalmente desconocidos) que caracterizan a la distribución poblacional. En este problema:</p>
+<table>
+<colgroup>
+<col width="40%" />
+<col width="33%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parámetro</th>
+<th>Símbolo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tasa de fallo</td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(0.16\)</span></td>
+</tr>
+<tr class="even">
+<td>Media poblacional</td>
+<td><span class="math inline">\(\mu = 1/\lambda\)</span></td>
+<td><span class="math inline">\(6.25\)</span> meses</td>
+</tr>
+<tr class="odd">
+<td>Varianza poblacional</td>
+<td><span class="math inline">\(\sigma^2 = 1/\lambda^2\)</span></td>
+<td><span class="math inline">\(39.0625\)</span> meses<span class="math inline">\(^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Los parámetros son <strong>constantes</strong> que describen la totalidad de la población y no dependen de ninguna muestra particular.</p>
+<p>Los <strong>estimadores</strong> son funciones de las observaciones muestrales <span class="math inline">\((X_1, X_2, \ldots, X_n)\)</span> que se utilizan para aproximar los parámetros poblacionales. Son <strong>variables aleatorias</strong> (su valor cambia de muestra a muestra).</p>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="35%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parámetro</th>
+<th>Estimador</th>
+<th>Fórmula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mu\)</span></td>
+<td>Media muestral <span class="math inline">\(\bar{X}\)</span></td>
+<td><span class="math inline">\(\displaystyle \bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_i\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sigma^2\)</span></td>
+<td>Varianza muestral <span class="math inline">\(S^2\)</span></td>
+<td><span class="math inline">\(\displaystyle S^2 = \frac{1}{n-1}\sum_{i=1}^{n}(X_i - \bar{X})^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Propiedades importantes:</p>
+<ul>
+<li><span class="math inline">\(\bar{X}\)</span> es un estimador <strong>insesgado</strong> de <span class="math inline">\(\mu\)</span>: <span class="math inline">\(\quad E[\bar{X}] = \mu\)</span></li>
+<li><span class="math inline">\(S^2\)</span> es un estimador <strong>insesgado</strong> de <span class="math inline">\(\sigma^2\)</span>: <span class="math inline">\(\quad E[S^2] = \sigma^2\)</span></li>
+</ul>
+<p>Las <strong>estimaciones</strong> son los valores numéricos concretos que se obtienen al evaluar los estimadores en una muestra particular. Son <strong>números fijos</strong> para cada muestra.</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-estimadoresxmuestras">Table 3.2: </span>Estimaciones obtenidas por muestra
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;font-weight: bold;">
+Muestra
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(\bar{x}\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+Error <span class="math inline">\(\bar{x} - \mu\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+<span class="math inline">\(s^2\)</span>
+</th>
+<th style="text-align:center;font-weight: bold;">
+Error <span class="math inline">\(s^2 - \sigma^2\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+6.2952
+</td>
+<td style="text-align:center;">
+0.0452
+</td>
+<td style="text-align:center;">
+36.4925
+</td>
+<td style="text-align:center;">
+-2.5700
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+6.1182
+</td>
+<td style="text-align:center;">
+-0.1318
+</td>
+<td style="text-align:center;">
+31.7456
+</td>
+<td style="text-align:center;">
+-7.3169
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+6.2651
+</td>
+<td style="text-align:center;">
+0.0151
+</td>
+<td style="text-align:center;">
+40.1833
+</td>
+<td style="text-align:center;">
+1.1208
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+6.8534
+</td>
+<td style="text-align:center;">
+0.6034
+</td>
+<td style="text-align:center;">
+47.0376
+</td>
+<td style="text-align:center;">
+7.9751
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+6.6550
+</td>
+<td style="text-align:center;">
+0.4050
+</td>
+<td style="text-align:center;">
+41.9957
+</td>
+<td style="text-align:center;">
+2.9332
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+6.0208
+</td>
+<td style="text-align:center;">
+-0.2292
+</td>
+<td style="text-align:center;">
+32.4892
+</td>
+<td style="text-align:center;">
+-6.5733
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+6.4115
+</td>
+<td style="text-align:center;">
+0.1615
+</td>
+<td style="text-align:center;">
+45.1826
+</td>
+<td style="text-align:center;">
+6.1201
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+6.3959
+</td>
+<td style="text-align:center;">
+0.1459
+</td>
+<td style="text-align:center;">
+37.5532
+</td>
+<td style="text-align:center;">
+-1.5093
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+6.0295
+</td>
+<td style="text-align:center;">
+-0.2205
+</td>
+<td style="text-align:center;">
+36.1454
+</td>
+<td style="text-align:center;">
+-2.9171
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+6.1916
+</td>
+<td style="text-align:center;">
+-0.0584
+</td>
+<td style="text-align:center;">
+38.9570
+</td>
+<td style="text-align:center;">
+-0.1055
+</td>
+</tr>
+</tbody>
+</table>
+<p>Las 10 muestras generan estimaciones diferentes para los mismos parámetros, lo cual ilustra la <strong>variabilidad muestral</strong>. Sin embargo, al ser <span class="math inline">\(\bar{X}\)</span> y <span class="math inline">\(S^2\)</span> estimadores insesgados, el promedio de las estimaciones tiende a los valores poblacionales conforme aumenta el número de muestras, verificando empíricamente la propiedad de insesgadez.</p>
+</div>
+<div id="aplicación-del-teorema-del-límite-central-para-n-200" class="section level3 hasAnchor" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> <strong>Aplicación del Teorema del Límite Central para <span class="math inline">\(n = 200\)</span></strong><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-para-n-200" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Genera 100 muestras de tamaño <span class="math inline">\(n = 200\)</span> de la población Exponencial.</li>
+<li>Calcula la media muestral de cada muestra y elabora un histograma de las 100
+medias muestrales.</li>
+<li>Obtén el promedio y la varianza de estas 100 medias muestrales.</li>
+<li>Aplica un test de normalidad (<span class="math inline">\(\alpha = 0.05\)</span>) a las 100 medias muestrales e
+interpreta los resultados.</li>
+<li>Explica cómo se evidencia el Teorema del Límite Central en el comportamiento
+de las medias muestrales, considerando:
+<ul>
+<li>Distribución de las medias muestrales.</li>
+<li>Comparación de la media y varianza muestral con las esperadas.</li>
+</ul></li>
+</ul>
+<p>El <strong>Teorema del Límite Central (TLC)</strong> establece que si <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> son variables aleatorias independientes e idénticamente distribuidas con media <span class="math inline">\(\mu\)</span> y varianza <span class="math inline">\(\sigma^2 &lt; \infty\)</span>, entonces la distribución de la media muestral estandarizada converge en distribución a una normal estándar conforme <span class="math inline">\(n \to \infty\)</span>:</p>
+<p><span class="math display">\[\frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \xrightarrow{d} N(0,\, 1)\]</span></p>
+<p>o equivalentemente, para <span class="math inline">\(n\)</span> grande, <span class="math inline">\(\bar{X}\)</span> se distribuye aproximadamente como:</p>
+<p><span class="math display">\[\bar{X} \;\dot\sim\; N\!\left(\mu,\; \frac{\sigma^2}{n}\right)\]</span></p>
+<p>La primera expresión es el enunciado formal del TLC, donde el límite es una distribución fija (<span class="math inline">\(N(0,1)\)</span>) que no depende de <span class="math inline">\(n\)</span>. La segunda es una convención práctica ampliamente utilizada que indica la distribución aproximada de <span class="math inline">\(\bar{X}\)</span> para un <span class="math inline">\(n\)</span> fijo suficientemente grande (véase Casella &amp; Berger, <em>Statistical Inference</em>, 2nd ed., Teorema 5.5.14).</p>
+<p>Para nuestra población <span class="math inline">\(X \sim \text{Exp}(\lambda = 0.16)\)</span>, los valores teóricos esperados para la distribución de <span class="math inline">\(\bar{X}\)</span> con <span class="math inline">\(n = 200\)</span> son:</p>
+<p><span class="math display">\[E[\bar{X}] = \mu = \frac{1}{\lambda} = 6.25\]</span></p>
+<p><span class="math display">\[\text{Var}(\bar{X}) = \frac{\sigma^2}{n} = \frac{1/\lambda^2}{n} = \frac{39.0625}{200} = 0.1953125\]</span></p>
+<p>Generamos las 100 muestras y calculamos las medias muestrales. Es importante señalar que se utilizan <span class="math inline">\(B = 100\)</span> réplicas, lo cual es adecuado para una ilustración pedagógica del TLC, pero introduce variabilidad apreciable en las estimaciones de segundo orden (como la varianza de las medias). Con <span class="math inline">\(B = 100\)</span>, el error estándar relativo de la varianza empírica es del orden de <span class="math inline">\(\sqrt{2/(B-1)} \approx 14\%\)</span>, por lo que discrepancias del <span class="math inline">\(15\)</span>-<span class="math inline">\(25\%\)</span> entre la varianza observada y la teórica son esperables y no invalidan el análisis.</p>
+<p>La Figura <a href="teorema-del-límite-central.html#fig:histograma-muestras">3.4</a> muestra el histograma de las 100 medias muestrales, junto con la curva normal teórica <span class="math inline">\(N(6.25, 0.1953)\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:histograma-muestras"></span>
+<img src="Actividad-2_files/figure-html/histograma-muestras-1.png" alt="Distribución de los promedios de las 100 muestras" width="80%" />
+<p class="caption">
+Figure 3.4: Distribución de los promedios de las 100 muestras
+</p>
+</div>
+<p>La Tabla <a href="teorema-del-límite-central.html#tab:promedio-varianza-muestras">3.3</a> compara los estadísticos observados con los valores teóricos del TLC.</p>
+<table class="table table-striped table-hover table-condensed table-bordered" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:promedio-varianza-muestras">Table 3.3: </span>Verificación empírica del Teorema del Límite Central (100 muestras, n = 200)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Concepto
+</th>
+<th style="text-align:right;">
+Valor Obtenido
+</th>
+<th style="text-align:right;">
+Valor Teórico (TLC)
+</th>
+<th style="text-align:right;">
+Error
+</th>
+<th style="text-align:center;">
+Expresión TLC
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Media de <span class="math inline">\(\bar{X}\)</span>
+</td>
+<td style="text-align:right;">
+6.2717
+</td>
+<td style="text-align:right;">
+6.2500
+</td>
+<td style="text-align:right;">
+0.0217
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(E[\bar{X}] = \mu\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Varianza de <span class="math inline">\(\bar{X}\)</span>
+</td>
+<td style="text-align:right;">
+0.1528
+</td>
+<td style="text-align:right;">
+0.1953
+</td>
+<td style="text-align:right;">
+-0.0425
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\text{Var}(\bar{X}) = \sigma^2/n\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Ahora aplicaremos un test de normalidad. En este punto es necesario aclarar que en el contexto de este ejercicio, el objetivo del test de normalidad no es verificar si los datos originales siguen una distribución normal, ya que se sabe teóricamente que <span class="math inline">\(X \sim \text{Exp}(\lambda)\)</span> la cual es una distribución claramente no normal y asimétrica.</p>
+<p>El propósito del test es evaluar empíricamente si la distribución de la media muestral obtenida mediante simulación es compatible con una distribución normal, tal como predice el Teorema del Límite Central.</p>
+<p>El test aplicado es el test de <strong>Shapiro-Wilk</strong>, ya que es uno de los procedimientos más potentes para detectar desviaciones de la normalidad en muestras pequeñas o moderadas (<span class="math inline">\(n \leq 5000\)</span>). Las hipótesis son:</p>
+<p><span class="math display">\[H_0: \text{Las medias muestrales provienen de una distribución normal}\]</span>
+<span class="math display">\[H_1: \text{Las medias muestrales NO provienen de una distribución normal}\]</span></p>
+<p>El estadístico del test se basa en la correlación entre los datos ordenados y los valores esperados de una muestra normal.</p>
+<p>Para este test la <strong>regla de decisión:</strong> establece que si el valor <span class="math inline">\(p \geq \alpha = 0.05\)</span>, no se rechaza <span class="math inline">\(H_0\)</span>. Los resultados se muestran en la Tabla <a href="teorema-del-límite-central.html#tab:shapiro-wilk">3.4</a>.</p>
+<table>
+<caption>
+<span id="tab:shapiro-wilk">Table 3.4: </span>Test de normalidad de Shapiro-Wilk sobre las medias muestrales
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Concepto
+</th>
+<th style="text-align:center;">
+Resultado
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Estadístico W
+</td>
+<td style="text-align:center;">
+0.9922
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Valor <span class="math inline">\(p\)</span>
+</td>
+<td style="text-align:center;">
+0.8347
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Nivel de significancia <span class="math inline">\(\alpha\)</span>
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+</tr>
+</tbody>
+</table>
+<p>En el experimento se obtuvo un valor <strong>p = 0.8347</strong>. Dado que <strong>p &gt; 0.05</strong>, no existe evidencia estadística suficiente para rechazar la hipótesis nula de normalidad. Es importante interpretar correctamente este resultado:</p>
+<ul>
+<li><p>El test no demuestra que la distribución sea normal.</p></li>
+<li><p>El resultado solo indica que los datos observados son compatibles con una distribución normal.</p></li>
+</ul>
+<p>Este resultado es consistente con la predicción del Teorema del Límite Central, según la cual la distribución de las medias muestrales debe aproximarse a una normal.</p>
+<p>Es importante tener en cuenta que en estudios relacionados con el Teorema del Límite Central, los tests formales de normalidad deben interpretarse con cautela por dos razones:</p>
+<ul>
+<li><p>Baja potencia para muestras pequeñas: cuando el número de simulaciones es limitado, el test puede no detectar desviaciones moderadas de la normalidad.</p></li>
+<li><p>Alta sensibilidad para muestras muy grandes: con tamaños muestrales muy grandes, el test puede detectar desviaciones irrelevantes desde el punto de vista práctico.</p></li>
+</ul>
+<p>Por esta razón, el análisis gráfico mediante histogramas o Q–Q plots suele considerarse un complemento importante del test formal.</p>
+<p>El gráfico <strong>Q-Q</strong> de la Figura <a href="teorema-del-límite-central.html#fig:fig-Q-Q">3.5</a> complementa la evaluación visual de normalidad.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-Q-Q"></span>
+<img src="Actividad-2_files/figure-html/fig-Q-Q-1.png" alt="Q-Q de las 100 medias muestrales" width="80%" />
+<p class="caption">
+Figure 3.5: Q-Q de las 100 medias muestrales
+</p>
+</div>
+<p>A pesar de que la población original es fuertemente asimétrica, el histograma de las medias muestrales (Figura <a href="teorema-del-límite-central.html#fig:histograma-muestras">3.4</a>) es aproximadamente simétrico y acampanado, asemejándose a una normal.</p>
+<p>El promedio de las 100 medias (<span class="math inline">\(\bar{\bar{x}} \approx 6.2717\)</span>) es muy cercano a <span class="math inline">\(\mu = 6.25\)</span>, confirmando la insesgadez. La varianza observada (<span class="math inline">\(0.1528\)</span>) es próxima al valor teórico <span class="math inline">\(0.1953\)</span>; la discrepancia (aproximadamente un <span class="math inline">\(22\%\)</span>) es esperable con solo <span class="math inline">\(B = 100\)</span> réplicas, como se discutió anteriormente.</p>
+<p>El <strong>p-valor = 0.8347</strong> es muy superior a <strong>0.05</strong>, por lo que no se rechaza <span class="math inline">\(H_0\)</span>. Además, el gráfico Q-Q muestra una alineación casi perfecta de los puntos con la recta teórica, indicando que la distribución de las medias es consistente con una normal.</p>
+<p>Con <span class="math inline">\(n=200\)</span>, la aproximación normal es excelente, como cabría esperar incluso para una distribución tan asimétrica como la exponencial.</p>
+</div>
+<div id="aplicación-del-teorema-del-límite-central-variando-n" class="section level3 hasAnchor" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> <strong>Aplicación del Teorema del Límite Central variando <span class="math inline">\(n\)</span></strong><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-variando-n" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Repite el análisis anterior extrayendo 100 muestras de cada uno de los
+siguientes tamaños: <span class="math inline">\(n = 5, 10, 80, 200, 500\)</span> y <span class="math inline">\(2{,}000\)</span>.</li>
+<li>Para cada tamaño de muestra <span class="math inline">\(n\)</span>:
+<ul>
+<li>Calcula el promedio y la varianza de las 100 medias muestrales.</li>
+<li>Elabora un histograma de las 100 medias muestrales.</li>
+<li>Aplica un test de normalidad (<span class="math inline">\(\alpha = 0.05\)</span>) y discute los resultados.</li>
+</ul></li>
+<li>Concluye sobre la relación entre el tamaño muestral y la validez del Teorema del
+Límite Central, analizando:
+<ul>
+<li>Comportamiento de la distribución de las medias muestrales.</li>
+<li>Convergencia de la media y varianza muestral hacia los valores teóricos.</li>
+</ul></li>
+</ul>
+<p>Según el TLC, para <span class="math inline">\(n\)</span> grande, <span class="math inline">\(\bar{X}\)</span> se distribuye aproximadamente como <span class="math inline">\(N(\mu, \sigma^2/n)\)</span>. A medida que <span class="math inline">\(n\)</span> aumenta, la aproximación mejora y la varianza decrece:</p>
+<p><span class="math display">\[\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} N(0, 1) \qquad \Longrightarrow \qquad \bar{X} \;\dot\sim\; N\!\left(6.25,\; \frac{39.0625}{n}\right)\]</span></p>
+<p>A medida que <span class="math inline">\(n\)</span> crece:</p>
+<ul>
+<li>La media de las medias muestrales converge a <span class="math inline">\(\mu = 6.25\)</span>.</li>
+<li>La varianza de las medias muestrales converge a <span class="math inline">\(\sigma^2/n\)</span>, que decrece con <span class="math inline">\(n\)</span>.</li>
+<li>La forma de la distribución de <span class="math inline">\(\bar{X}\)</span> se aproxima cada vez más a una normal.</li>
+</ul>
+<p>Generaremos muestras y cálculo de medias muestrales para cada <span class="math inline">\(n\)</span>. La Tabla <a href="teorema-del-límite-central.html#tab:tabla-resumen-tlc">3.5</a> resume los resultados para los diferentes tamaños muestrales.</p>
+<table style="width:100%;">
+<caption><span id="tab:tabla-resumen-tlc">Table 3.5: </span>Resumen del TLC para distintos tamaños de muestra (α = 0.05)</caption>
+<colgroup>
+<col width="4%" />
+<col width="10%" />
+<col width="11%" />
+<col width="14%" />
+<col width="11%" />
+<col width="14%" />
+<col width="6%" />
+<col width="7%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">n</th>
+<th align="right">Promedio x̄</th>
+<th align="right">Var(x̄) obs.</th>
+<th align="right">Var(x̄) teórica</th>
+<th align="right">Error media</th>
+<th align="right">Error varianza</th>
+<th align="right">W</th>
+<th align="right">p-valor</th>
+<th align="left">Decisión</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">6.2944</td>
+<td align="right">5.6364</td>
+<td align="right">7.8125</td>
+<td align="right">0.0444</td>
+<td align="right">-2.1761</td>
+<td align="right">0.9747</td>
+<td align="right">0.0510</td>
+<td align="left">No se rechaza H₀</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">6.4313</td>
+<td align="right">3.0202</td>
+<td align="right">3.9062</td>
+<td align="right">0.1813</td>
+<td align="right">-0.8860</td>
+<td align="right">0.9754</td>
+<td align="right">0.0584</td>
+<td align="left">No se rechaza H₀</td>
+</tr>
+<tr class="odd">
+<td align="right">80</td>
+<td align="right">6.2525</td>
+<td align="right">0.3985</td>
+<td align="right">0.4883</td>
+<td align="right">0.0025</td>
+<td align="right">-0.0898</td>
+<td align="right">0.9890</td>
+<td align="right">0.5823</td>
+<td align="left">No se rechaza H₀</td>
+</tr>
+<tr class="even">
+<td align="right">200</td>
+<td align="right">6.2676</td>
+<td align="right">0.1587</td>
+<td align="right">0.1953</td>
+<td align="right">0.0176</td>
+<td align="right">-0.0366</td>
+<td align="right">0.9869</td>
+<td align="right">0.4311</td>
+<td align="left">No se rechaza H₀</td>
+</tr>
+<tr class="odd">
+<td align="right">500</td>
+<td align="right">6.2293</td>
+<td align="right">0.0685</td>
+<td align="right">0.0781</td>
+<td align="right">-0.0207</td>
+<td align="right">-0.0096</td>
+<td align="right">0.9880</td>
+<td align="right">0.5087</td>
+<td align="left">No se rechaza H₀</td>
+</tr>
+<tr class="even">
+<td align="right">2000</td>
+<td align="right">6.2215</td>
+<td align="right">0.0144</td>
+<td align="right">0.0195</td>
+<td align="right">-0.0285</td>
+<td align="right">-0.0051</td>
+<td align="right">0.9940</td>
+<td align="right">0.9417</td>
+<td align="left">No se rechaza H₀</td>
+</tr>
+</tbody>
+</table>
+<p>Los histogramas de las 100 medias para cada <span class="math inline">\(n\)</span> se muestran en la Figura <a href="teorema-del-límite-central.html#fig:histogramas-varios-n">3.6</a>, y los correspondientes gráficos Q-Q en la Figura <a href="teorema-del-límite-central.html#fig:qqplots-varios-n">3.7</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:histogramas-varios-n"></span>
+<img src="Actividad-2_files/figure-html/histogramas-varios-n-1.png" alt="Histogramas para varios valores de n" width="80%" />
+<p class="caption">
+Figure 3.6: Histogramas para varios valores de n
+</p>
+</div>
+<p>Los gráficos <strong>Q-Q (quantile-quantile)</strong> permiten evaluar visualmente si la distribución de las medias muestrales se aproxima a una normal. En cada gráfico, los cuantiles observados de las 100 medias (para un tamaño de muestra <span class="math inline">\(n\)</span> dado) se representan frente a los cuantiles teóricos de una distribución normal estándar. Si la distribución empírica es aproximadamente normal, los puntos deberían alinearse sobre la recta roja <span class="math inline">\(y = x\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:qqplots-varios-n"></span>
+<img src="Actividad-2_files/figure-html/qqplots-varios-n-1.png" alt="Q-Q plots para varios valores de n" width="80%" />
+<p class="caption">
+Figure 3.7: Q-Q plots para varios valores de n
+</p>
+</div>
+<p>Finalmente, la Figura <a href="teorema-del-límite-central.html#fig:graficos-convergencia">3.8</a> ilustra cómo el promedio y la varianza de las medias convergen a los valores teóricos al aumentar <span class="math inline">\(n\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:graficos-convergencia"></span>
+<img src="Actividad-2_files/figure-html/graficos-convergencia-1.png" alt="Convergencia del promedio de medias muestrales" width="80%" />
+<p class="caption">
+Figure 3.8: Convergencia del promedio de medias muestrales
+</p>
+</div>
+<p>Podemos hacer el siguiente análisis:</p>
+<ul>
+<li><p>Para <span class="math inline">\(n = 5\)</span>: El histograma conserva una marcada asimetría positiva. El test de Shapiro-Wilk arroja un p-valor = 0.0510, extremadamente cercano al umbral de <span class="math inline">\(\alpha = 0.05\)</span>. Formalmente no se rechaza <span class="math inline">\(H_0\)</span>, pero este resultado es <strong>frágil</strong>: un cambio mínimo en la semilla o en la muestra podría invertir la decisión. Esta fragilidad es consistente con el hecho de que, con <span class="math inline">\(B = 100\)</span> medias de solo <span class="math inline">\(n = 5\)</span> observaciones de una distribución altamente asimétrica, la aproximación normal es claramente insuficiente. El gráfico Q-Q muestra una curvatura evidente que confirma esta conclusión. En este caso, el análisis gráfico resulta más informativo que la decisión binaria del test, cuya <strong>potencia es limitada</strong> con muestras de este tamaño.</p></li>
+<li><p>Para <span class="math inline">\(n = 10\)</span>: La asimetría disminuye ligeramente; el p-valor = 0.0584 sigue siendo no significativo, pero el Q-Q aún presenta desviaciones. La aproximación normal es marginal.</p></li>
+<li><p>Para <span class="math inline">\(n = 80\)</span>: El histograma es ya aproximadamente simétrico y acampanado; el p-valor = 0.5823 es holgadamente no significativo y el Q-Q muestra buena alineación. La transición hacia la normalidad es clara.</p></li>
+<li><p>Para <span class="math inline">\(n = 200\)</span>: La distribución es prácticamente normal (p = 0.4311), con Q-Q casi perfecto. La varianza observada (0.1587) se acerca a la teórica (0.1953).</p></li>
+<li><p>Para <span class="math inline">\(n = 500\)</span> y <span class="math inline">\(n = 2000\)</span>: La normalidad es excelente. Los p-valores son altos (0.5087 y 0.9417), los histogramas son estrechos y simétricos, y los Q-Q plots muestran puntos perfectamente alineados. La varianza observada converge a <span class="math inline">\(\sigma^2/n\)</span>.</p></li>
+</ul>
+<p>Por otra parte, la Figura <a href="teorema-del-límite-central.html#fig:graficos-convergencia">3.8</a> muestra cómo el promedio de las medias se estabiliza alrededor de <span class="math inline">\(\mu = 6.25\)</span> (errores que tienden a cero) y cómo la varianza observada sigue de cerca la curva teórica <span class="math inline">\(\sigma^2/n\)</span>, que decrece proporcionalmente a <span class="math inline">\(1/n\)</span>.</p>
+<p>En conclusión, el análisis empírico confirma plenamente el Teorema del Límite Central. Conforme aumenta <span class="math inline">\(n\)</span>, la distribución de <span class="math inline">\(\bar{X}\)</span> converge a una normal en tres aspectos simultáneos: forma (de asimétrica a simétrica y acampanada), centrado (<span class="math inline">\(E[\bar{X}] \to \mu\)</span>) y dispersión (<span class="math inline">\(\text{Var}(\bar{X}) \to \sigma^2/n\)</span>). Para la distribución exponencial con <span class="math inline">\(\lambda = 0.16\)</span>, se requiere un tamaño de muestra de al menos <span class="math inline">\(n \approx 80\)</span> para obtener una aproximación normal razonable; con <span class="math inline">\(n \geq 200\)</span> la aproximación es excelente y prácticamente indistinguible de la normalidad.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="propiedades-de-los-estimadores.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="estimación-de-intervalos-de-confianza.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,381 @@
+# Diagnóstico de supuestos {#sec-diagnostico}
+
+## Supuestos del modelo
+
+La inferencia de §\@ref(sec-modelo-mat) y §\@ref(sec-modelo-por) descansa sobre cuatro supuestos clásicos de $G3_i = \beta_0 + \beta_1 G2_i + \varepsilon_i$ (Montgomery y Runger, 2021, Cap. 11): **(S1)** linealidad de $E(G3 \mid G2)$; **(S2)** normalidad $\varepsilon_i \sim \mathcal{N}(0,\sigma^2)$; **(S3)** homocedasticidad $\text{Var}(\varepsilon_i) = \sigma^2$; **(S4)** independencia $\text{Cov}(\varepsilon_i, \varepsilon_j) = 0$. Cada supuesto se examina con prueba formal y respaldo gráfico. Con $n_{\text{MAT}} = `r n_mat`$, $n_{\text{POR}} = `r n_por`$, Shapiro-Wilk detecta desviaciones triviales con alta potencia; se complementa con Lilliefors (Conover, 1999). Por el TCL, violaciones moderadas de (S2) no invalidan la inferencia asintótica sobre $\hat\beta_1$ (Casella y Berger, 2002, Teo. 10.1.6); sin embargo, **la cobertura nominal de los IP individuales sí depende de la normalidad de $\varepsilon$** y se evaluará empíricamente por bootstrap en el Anexo \@ref(sec-anexo-coverage).
+
+## Diagnóstico — Matemáticas (MAT) {#sec-diag-mat}
+
+```{r calculos-diag-mat, include=FALSE}
+# ============================================================
+# RESIDUALES Y PRUEBAS FORMALES — MAT
+# ============================================================
+res_mat      <- residuals(modelo_mat)
+fitted_mat   <- fitted(modelo_mat)
+res_std_mat  <- rstandard(modelo_mat)
+
+sw_mat   <- shapiro.test(res_mat)
+lf_mat   <- nortest::lillie.test(res_mat)
+bp_mat   <- lmtest::bptest(modelo_mat)
+dw_mat   <- lmtest::dwtest(modelo_mat, alternative = "two.sided")
+reset_mat <- lmtest::resettest(modelo_mat, power = 2:3, type = "fitted")
+
+sw_W_mat   <- round(sw_mat$statistic,  4);  sw_p_mat   <- sw_mat$p.value
+lf_D_mat   <- round(lf_mat$statistic,  4);  lf_p_mat   <- lf_mat$p.value
+bp_chi_mat <- round(bp_mat$statistic,  4);  bp_p_mat   <- bp_mat$p.value
+dw_stat_mat <- round(dw_mat$statistic, 4);  dw_p_mat   <- dw_mat$p.value
+reset_F_mat <- round(reset_mat$statistic, 4); reset_p_mat <- reset_mat$p.value
+
+fmt_p <- function(p) ifelse(p < 0.001, "< 0.001", round(p, 4))
+dec   <- function(p, alpha = 0.05)
+  ifelse(p < alpha, "Rechaza $H_0$", "No rechaza $H_0$")
+
+# Textos condicionales pre-computados
+texto_norm_mat <- if (sw_p_mat < 0.05) {
+  paste0("Con n = ", n_mat,
+         ", estas pruebas detectan con alta potencia desviaciones ",
+         "estadísticamente significativas pero de magnitud práctica menor. ",
+         "El TCL garantiza la validez asintótica de la inferencia sobre $\\beta_1$ ",
+         "(Casella y Berger, 2002, Teo. 10.1.6); la cobertura nominal de los IP ",
+         "individuales asume normalidad y se examina por bootstrap en el ",
+         "Anexo \\@ref(sec-anexo-coverage).")
+} else {
+  "Los residuales son consistentes con el supuesto de normalidad."
+}
+
+texto_homo_mat <- if (bp_p_mat < 0.05) {
+  paste0("La heterocedasticidad detectada implica que los errores estándar ",
+         "clásicos basados en MCO pueden estar sesgados; en consecuencia, los IC ",
+         "y las pruebas t/F deben interpretarse con cautela. Como remedio estándar ",
+         "se recomiendan errores estándar robustos (HC0–HC3; White, 1980) o ",
+         "mínimos cuadrados ponderados (WLS).")
+} else {
+  "El supuesto de varianza constante se sostiene."
+}
+
+texto_bp_mat <- if (bp_p_mat < 0.05) {
+  paste0("BP = ", bp_chi_mat, ", p = ", fmt_p(bp_p_mat), ": rechaza $H_0$")
+} else {
+  paste0("BP = ", bp_chi_mat, ", p = ", fmt_p(bp_p_mat), ": no rechaza $H_0$")
+}
+
+texto_dw_mat <- if (dw_p_mat < 0.05) {
+  "p < 0.05: rechaza $H_0$, sugiere autocorrelación"
+} else {
+  "p $\\geq$ 0.05: no rechaza $H_0$, sin evidencia de autocorrelación"
+}
+```
+
+### Pruebas formales
+
+```{r tab-diag-mat, echo=FALSE}
+# ============================================================
+# PRUEBAS FORMALES DE SUPUESTOS — MAT (presentadas primero)
+# ============================================================
+tabla_diag_mat <- data.frame(
+  Supuesto = c("(S1) Linealidad",
+               "(S2) Normalidad","(S2) Normalidad",
+               "(S3) Homocedasticidad","(S4) Independencia"),
+  `Hipótesis nula ($H_0$)` = c(
+    "$E(G3|G2=x) = \\beta_0 + \\beta_1 x$ (especificación lineal)",
+    "Los residuales son normales",
+    "Los residuales son normales",
+    "Varianza constante (homocedasticidad)",
+    "No existe autocorrelación en los residuales"
+  ),
+  Prueba = c("RESET de Ramsey","Shapiro-Wilk","Lilliefors (KS)","Breusch-Pagan","Durbin-Watson"),
+  Estadístico = c(paste0("F = ", reset_F_mat),
+                   paste0("W = ",  sw_W_mat),
+                   paste0("D = ",  lf_D_mat),
+                   paste0("BP = ", bp_chi_mat),
+                   paste0("DW = ", dw_stat_mat)),
+  `p-valor` = c(fmt_p(reset_p_mat), fmt_p(sw_p_mat), fmt_p(lf_p_mat),
+                 fmt_p(bp_p_mat), fmt_p(dw_p_mat)),
+  `Decisión ($\\alpha = 0.05$)` = c(dec(reset_p_mat), dec(sw_p_mat), dec(lf_p_mat),
+                                      dec(bp_p_mat), dec(dw_p_mat)),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_diag_mat,
+  caption  = "Pruebas formales de supuestos del modelo G3 ~ G2 en Matemáticas (MAT).",
+  align    = c("l", "l", "l", "c", "c", "l"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = TRUE
+  ) |>
+  kableExtra::add_footnote(
+    paste0("Para n = ", n_mat, ", la prueba de Shapiro-Wilk es muy sensible a ",
+           "desviaciones triviales de la normalidad; Lilliefors es preferible en ",
+           "muestras grandes (Conover, 1999). La prueba DW se evalúa sobre el ",
+           "orden de ingreso de las observaciones; en datos de corte transversal ",
+           "su interpretación es referencial."),
+    notation = "symbol"
+  )
+```
+
+### Respaldo gráfico
+
+```{r fig-diag-mat, fig.cap="Gráficos de diagnóstico del modelo G3 ~ G2 en Matemáticas (MAT). Se presentan cuatro paneles: arriba izquierda, residuales vs valores ajustados (linealidad y homocedasticidad); arriba derecha, Q-Q normal (normalidad); abajo izquierda, Scale-Location (homocedasticidad); abajo derecha, residuales vs índice (independencia). La línea de referencia gris es la línea cero; la curva roja es un suavizador LOESS.", fig.width=12, fig.height=9, echo=FALSE}
+# ============================================================
+# CUATRO PANELES DIAGNÓSTICOS — MAT (ensamblados con grid.arrange)
+# Paleta sobria; líneas de referencia sin superposición de textos.
+# ============================================================
+
+df_diag_mat <- data.frame(
+  indice       = seq_along(res_mat),
+  resid        = res_mat,
+  fitted       = fitted_mat,
+  res_std      = res_std_mat,
+  sqrt_abs_res = sqrt(abs(res_std_mat))
+)
+
+p_rv_mat <- ggplot(df_diag_mat, aes(x = fitted, y = resid)) +
+  geom_hline(yintercept = 0, linetype = "dashed",
+             colour = paleta$referencia, linewidth = 0.6) +
+  geom_point(alpha = 0.40, size = 1.4, colour = paleta$punto) +
+  geom_smooth(method = "loess", formula = y ~ x,
+              colour = paleta$destacado, se = FALSE, linewidth = 0.8) +
+  labs(title = "(S1) Residuales vs valores ajustados",
+       x = "Valores ajustados (Ĝ3)", y = "Residuales")
+
+p_qq_mat <- ggplot(df_diag_mat, aes(sample = res_std)) +
+  stat_qq_line(colour = paleta$destacado, linewidth = 0.8, linetype = "dashed") +
+  stat_qq(alpha = 0.40, size = 1.4, colour = paleta$punto) +
+  labs(title = "(S2) Q-Q normal",
+       x = "Cuantiles teóricos", y = "Residuales estandarizados")
+
+p_sl_mat <- ggplot(df_diag_mat, aes(x = fitted, y = sqrt_abs_res)) +
+  geom_point(alpha = 0.40, size = 1.4, colour = paleta$punto) +
+  geom_smooth(method = "loess", formula = y ~ x,
+              colour = paleta$destacado, se = FALSE, linewidth = 0.8) +
+  labs(title = "(S3) Scale-Location",
+       x = "Valores ajustados (Ĝ3)",
+       y = expression(sqrt("|Res. estandarizados|")))
+
+p_ind_mat <- ggplot(df_diag_mat, aes(x = indice, y = resid)) +
+  geom_hline(yintercept = 0, linetype = "dashed",
+             colour = paleta$referencia, linewidth = 0.6) +
+  geom_line(alpha = 0.40, colour = paleta$sombra, linewidth = 0.4) +
+  geom_point(alpha = 0.40, size = 1.2, colour = paleta$punto) +
+  labs(title = "(S4) Residuales vs índice de observación",
+       x = "Índice de observación", y = "Residuales")
+
+gridExtra::grid.arrange(p_rv_mat, p_qq_mat, p_sl_mat, p_ind_mat, ncol = 2)
+```
+
+### Lectura del diagnóstico en MAT
+
+Tabla \@ref(tab:tab-diag-mat) y Figura \@ref(fig:fig-diag-mat):
+
+- **(S1) Linealidad.** LOESS plano sin curvatura sistemática. **RESET de Ramsey** (1969): $F = `r reset_F_mat`$, p = `r fmt_p(reset_p_mat)` — `r ifelse(reset_p_mat < 0.05, "rechaza $H_0$", "no rechaza $H_0$: compatible con especificación lineal")`. Las agrupaciones verticales reflejan el carácter discreto de G2 y G3, no violación del supuesto.
+- **(S2) Normalidad.** Q-Q con alineación central razonable y desviaciones en colas. Shapiro-Wilk ($W = `r sw_W_mat`$, p = `r fmt_p(sw_p_mat)`) y Lilliefors ($D = `r lf_D_mat`$, p = `r fmt_p(lf_p_mat)`) `r ifelse(sw_p_mat < 0.05, "rechazan $H_0$", "no rechazan $H_0$")`. `r texto_norm_mat`
+- **(S3) Homocedasticidad.** Breusch-Pagan: `r texto_bp_mat`. `r texto_homo_mat`
+- **(S4) Independencia.** $DW = `r dw_stat_mat`$ (`r texto_dw_mat`). Al ser datos de corte transversal, el DW es referencial; la independencia se sostiene por el diseño muestral (Cortez y Silva, 2008).
+
+## Diagnóstico — Portugués (POR) {#sec-diag-por}
+
+```{r calculos-diag-por, include=FALSE}
+# ============================================================
+# RESIDUALES Y PRUEBAS FORMALES — POR
+# ============================================================
+res_por      <- residuals(modelo_por)
+fitted_por   <- fitted(modelo_por)
+res_std_por  <- rstandard(modelo_por)
+
+sw_por   <- shapiro.test(res_por)
+lf_por   <- nortest::lillie.test(res_por)
+bp_por   <- lmtest::bptest(modelo_por)
+dw_por   <- lmtest::dwtest(modelo_por, alternative = "two.sided")
+reset_por <- lmtest::resettest(modelo_por, power = 2:3, type = "fitted")
+
+sw_W_por    <- round(sw_por$statistic,  4);  sw_p_por    <- sw_por$p.value
+lf_D_por    <- round(lf_por$statistic,  4);  lf_p_por    <- lf_por$p.value
+bp_chi_por  <- round(bp_por$statistic,  4);  bp_p_por    <- bp_por$p.value
+dw_stat_por <- round(dw_por$statistic,  4);  dw_p_por    <- dw_por$p.value
+reset_F_por <- round(reset_por$statistic, 4); reset_p_por <- reset_por$p.value
+
+texto_norm_por <- if (sw_p_por < 0.05) {
+  paste0("Con n = ", n_por,
+         " el TCL preserva la validez asintótica de la inferencia sobre $\\beta_1$; ",
+         "la cobertura nominal de los IP individuales asume normalidad y se examina ",
+         "por bootstrap en el Anexo \\@ref(sec-anexo-coverage).")
+} else {
+  "Los residuales son consistentes con el supuesto de normalidad."
+}
+
+texto_homo_por <- if (bp_p_por < 0.05) {
+  paste0("rechaza $H_0$, lo cual indica heterocedasticidad estadísticamente ",
+         "significativa. La mayor homogeneidad visual del panel Scale-Location ",
+         "respecto a MAT apunta a que su magnitud práctica es probablemente menor.")
+} else {
+  "no rechaza $H_0$: el supuesto de homocedasticidad se mantiene en Portugués."
+}
+
+texto_dw_por <- if (dw_p_por < 0.05) "p < 0.05" else "p $\\geq$ 0.05"
+```
+
+### Pruebas formales
+
+```{r tab-diag-por, echo=FALSE}
+# ============================================================
+# PRUEBAS FORMALES DE SUPUESTOS — POR
+# ============================================================
+tabla_diag_por <- data.frame(
+  Supuesto = c("(S1) Linealidad",
+               "(S2) Normalidad","(S2) Normalidad",
+               "(S3) Homocedasticidad","(S4) Independencia"),
+  `Hipótesis nula ($H_0$)` = c(
+    "$E(G3|G2=x) = \\beta_0 + \\beta_1 x$ (especificación lineal)",
+    "Los residuales son normales",
+    "Los residuales son normales",
+    "Varianza constante (homocedasticidad)",
+    "No existe autocorrelación en los residuales"
+  ),
+  Prueba = c("RESET de Ramsey","Shapiro-Wilk","Lilliefors (KS)","Breusch-Pagan","Durbin-Watson"),
+  Estadístico = c(paste0("F = ", reset_F_por),
+                   paste0("W = ",  sw_W_por),
+                   paste0("D = ",  lf_D_por),
+                   paste0("BP = ", bp_chi_por),
+                   paste0("DW = ", dw_stat_por)),
+  `p-valor` = c(fmt_p(reset_p_por), fmt_p(sw_p_por), fmt_p(lf_p_por),
+                 fmt_p(bp_p_por), fmt_p(dw_p_por)),
+  `Decisión ($\\alpha = 0.05$)` = c(dec(reset_p_por), dec(sw_p_por), dec(lf_p_por),
+                                      dec(bp_p_por), dec(dw_p_por)),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_diag_por,
+  caption  = "Pruebas formales de supuestos del modelo G3 ~ G2 en Portugués (POR).",
+  align    = c("l", "l", "l", "c", "c", "l"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed"),
+    full_width = TRUE
+  )
+```
+
+Para n = `r n_por`, aplican las mismas consideraciones metodológicas descritas en la Tabla \@ref(tab:tab-diag-mat)
+
+### Respaldo gráfico
+
+```{r fig-diag-por, fig.cap="Gráficos de diagnóstico del modelo G3 ~ G2 en Portugués (POR). Se replica la estructura de cuatro paneles de la Figura \\@ref(fig:fig-diag-mat) para permitir la comparación directa entre asignaturas.", fig.width=12, fig.height=9, echo=FALSE}
+# ============================================================
+# CUATRO PANELES DIAGNÓSTICOS — POR (misma paleta sobria)
+# ============================================================
+df_diag_por <- data.frame(
+  indice       = seq_along(res_por),
+  resid        = res_por,
+  fitted       = fitted_por,
+  res_std      = res_std_por,
+  sqrt_abs_res = sqrt(abs(res_std_por))
+)
+
+p_rv_por <- ggplot(df_diag_por, aes(x = fitted, y = resid)) +
+  geom_hline(yintercept = 0, linetype = "dashed",
+             colour = paleta$referencia, linewidth = 0.6) +
+  geom_point(alpha = 0.35, size = 1.2, colour = paleta$punto) +
+  geom_smooth(method = "loess", formula = y ~ x,
+              colour = paleta$destacado, se = FALSE, linewidth = 0.8) +
+  labs(title = "(S1) Residuales vs valores ajustados",
+       x = "Valores ajustados (Ĝ3)", y = "Residuales")
+
+p_qq_por <- ggplot(df_diag_por, aes(sample = res_std)) +
+  stat_qq_line(colour = paleta$destacado, linewidth = 0.8, linetype = "dashed") +
+  stat_qq(alpha = 0.35, size = 1.2, colour = paleta$punto) +
+  labs(title = "(S2) Q-Q normal",
+       x = "Cuantiles teóricos", y = "Residuales estandarizados")
+
+p_sl_por <- ggplot(df_diag_por, aes(x = fitted, y = sqrt_abs_res)) +
+  geom_point(alpha = 0.35, size = 1.2, colour = paleta$punto) +
+  geom_smooth(method = "loess", formula = y ~ x,
+              colour = paleta$destacado, se = FALSE, linewidth = 0.8) +
+  labs(title = "(S3) Scale-Location",
+       x = "Valores ajustados (Ĝ3)",
+       y = expression(sqrt("|Res. estandarizados|")))
+
+p_ind_por <- ggplot(df_diag_por, aes(x = indice, y = resid)) +
+  geom_hline(yintercept = 0, linetype = "dashed",
+             colour = paleta$referencia, linewidth = 0.6) +
+  geom_line(alpha = 0.30, colour = paleta$sombra, linewidth = 0.4) +
+  geom_point(alpha = 0.35, size = 1.0, colour = paleta$punto) +
+  labs(title = "(S4) Residuales vs índice de observación",
+       x = "Índice de observación", y = "Residuales")
+
+gridExtra::grid.arrange(p_rv_por, p_qq_por, p_sl_por, p_ind_por, ncol = 2)
+```
+
+### Lectura del diagnóstico en POR
+
+Tabla \@ref(tab:tab-diag-por) y Figura \@ref(fig:fig-diag-por):
+
+- **(S1) Linealidad.** LOESS aproximadamente plano. **RESET de Ramsey**: $F = `r reset_F_por`$, p = `r fmt_p(reset_p_por)` — `r ifelse(reset_p_por < 0.05, paste0("rechaza $H_0$. Con $n = ", n_por, "$ la prueba detecta con alta potencia curvaturas leves; la aproximación lineal sigue siendo funcional, con el matiz de que un término cuadrático en G2 podría mejorar marginalmente el ajuste"), "no rechaza $H_0$")`. La dispersión en torno a la recta es coherente con $\hat\sigma = `r sigma_por`$, mayor que en MAT.
+- **(S2) Normalidad.** Shapiro-Wilk ($W = `r sw_W_por`$, p = `r fmt_p(sw_p_por)`) y Lilliefors ($D = `r lf_D_por`$, p = `r fmt_p(lf_p_por)`) `r ifelse(sw_p_por < 0.05, "rechazan $H_0$", "no rechazan $H_0$")`. `r texto_norm_por`
+- **(S3) Homocedasticidad.** Breusch-Pagan: $BP = `r bp_chi_por`$, p = `r fmt_p(bp_p_por)` — `r texto_homo_por`
+- **(S4) Independencia.** $DW = `r dw_stat_por`$ (`r texto_dw_por`). Misma consideración que en MAT.
+
+## Resumen comparativo del diagnóstico {#sec-resumen-diag}
+
+```{r tab-resumen-diag, echo=FALSE}
+# ============================================================
+# CONSOLIDACIÓN DIAGNÓSTICA MAT vs POR
+# ============================================================
+tabla_resumen_diag <- data.frame(
+  Supuesto = c("(S1) Linealidad (RESET de Ramsey)",
+               "(S2) Normalidad (Shapiro-Wilk)",
+               "(S2) Normalidad (Lilliefors)",
+               "(S3) Homocedasticidad (Breusch-Pagan)",
+               "(S4) Independencia (Durbin-Watson)"),
+  `MAT — estadístico` = c(paste0("F = ", reset_F_mat),
+                           paste0("W = ",  sw_W_mat),
+                           paste0("D = ",  lf_D_mat),
+                           paste0("BP = ", bp_chi_mat),
+                           paste0("DW = ", dw_stat_mat)),
+  `MAT — p-valor` = c(fmt_p(reset_p_mat),
+                       fmt_p(sw_p_mat), fmt_p(lf_p_mat),
+                       fmt_p(bp_p_mat), fmt_p(dw_p_mat)),
+  `MAT — decisión` = c(dec(reset_p_mat),
+                        dec(sw_p_mat), dec(lf_p_mat),
+                        dec(bp_p_mat), dec(dw_p_mat)),
+  `POR — estadístico` = c(paste0("F = ", reset_F_por),
+                           paste0("W = ",  sw_W_por),
+                           paste0("D = ",  lf_D_por),
+                           paste0("BP = ", bp_chi_por),
+                           paste0("DW = ", dw_stat_por)),
+  `POR — p-valor` = c(fmt_p(reset_p_por),
+                       fmt_p(sw_p_por), fmt_p(lf_p_por),
+                       fmt_p(bp_p_por), fmt_p(dw_p_por)),
+  `POR — decisión` = c(dec(reset_p_por),
+                        dec(sw_p_por), dec(lf_p_por),
+                        dec(bp_p_por), dec(dw_p_por)),
+  check.names = FALSE
+)
+
+knitr::kable(
+  tabla_resumen_diag,
+  caption  = "Consolidado del diagnóstico de supuestos para los modelos de
+              Matemáticas (MAT) y Portugués (POR).",
+  align    = c("l", "c", "c", "l", "c", "c", "l"),
+  booktabs = TRUE,
+  escape   = FALSE
+) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    full_width = TRUE,
+    font_size  = 11
+  ) |>
+  kableExtra::add_header_above(
+    c(" " = 1, "Matemáticas (MAT)" = 3, "Portugués (POR)" = 3)
+  )
+```
+
+Decisión evaluada con $\alpha = 0.05$. Para (S2), el TCL protege la validez asintótica de la inferencia sobre $\beta_{1}$; la cobertura nominal de los IP individuales asume normalidad de $\epsilon$ y se examina por bootstrap (Anexo A). La prueba RESET de Ramsey (1969) complementa la inspección visual de linealidad; un análisis cuadrático adicional cuantifica la magnitud práctica de cualquier curvatura detectada.
+
+
+Tabla \@ref(tab:tab-resumen-diag): el patrón **difiere entre asignaturas**. En MAT: RESET no rechaza linealidad (p = `r fmt_p(reset_p_mat)`) pero Breusch-Pagan detecta heterocedasticidad (p = `r fmt_p(bp_p_mat)`). En POR: homocedasticidad compatible (p = `r fmt_p(bp_p_por)`) pero RESET rechaza linealidad estricta (p = `r fmt_p(reset_p_por)`); el suavizador LOESS se mantiene próximo a cero y la inclusión de un término cuadrático $G2^2$ aporta solo $\Delta R^2 \approx `r round(summary(lm(G3 ~ G2 + I(G2^2), data = por))$r.squared - r2_por, 4)`$, magnitud trivial que **confirma curvatura estadísticamente detectable pero prácticamente irrelevante**: la aproximación lineal sigue siendo defendible por parsimonia. La **normalidad** se rechaza en ambos modelos; el TCL garantiza la validez asintótica de la inferencia sobre $\hat\beta_1$ (Casella y Berger, 2002, Teo. 10.1.6) pero la cobertura nominal de los IP individuales asume normalidad de $\varepsilon$ —cuantificada empíricamente por bootstrap en el Anexo \@ref(sec-anexo-coverage)—. La **independencia** queda garantizada por el diseño muestral de corte transversal (Cortez y Silva, 2008). Para la heterocedasticidad de MAT, el análisis robusto HC3 del Anexo \@ref(sec-anexo-hc3) confirma que los IC de la Sección \@ref(sec-ic-pred-mat) mantienen validez aproximada.

@@ -1,0 +1,55 @@
+# Referencias bibliográficas {#sec-referencias}
+
+- Akaike, H. (1974). A new look at the statistical model identification. *IEEE Transactions on Automatic Control*, 19(6), 716–723.
+
+- Belsley, D. A., Kuh, E., y Welsch, R. E. (1980). *Regression diagnostics: Identifying influential data and sources of collinearity*. Wiley. [Caps. 1–2: leverage, distancia de Cook, DFFITS.]
+
+- Burnham, K. P., y Anderson, D. R. (2002). *Model selection and multimodel inference: A practical information-theoretic approach* (2.ª ed.). Springer.
+
+- Casella, G., y Berger, R. L. (2002). *Statistical inference* (2.ª ed.). Duxbury. [Teo. 10.1.6: normalidad asintótica de estimadores MCO; §11.3: IC para parámetros de regresión.]
+
+- Cohen, J. (1988). *Statistical power analysis for the behavioral sciences* (2.ª ed.). Lawrence Erlbaum.
+
+- Conover, W. J. (1999). *Practical nonparametric statistics* (3.ª ed.). Wiley.
+
+- Cook, R. D. (1977). Detection of influential observation in linear regression. *Technometrics*, 19(1), 15–18.
+
+- Cortez, P., y Silva, A. (2008). Using data mining to predict secondary school student performance. *Proceedings of FUBUTEC 2008*, 5–12.
+
+- Cumming, G., y Finch, S. (2005). Inference by eye: Confidence intervals and how to read pictures of data. *American Psychologist*, 60(2), 170–180.
+
+- Davison, A. C., y Hinkley, D. V. (1997). *Bootstrap methods and their application*. Cambridge University Press. [§6.3: bootstrap de pares en modelos de regresión.]
+
+- Faraway, J. J. (2014). *Linear models with R* (2.ª ed.). CRC Press.
+
+- Ferrari, S., y Cribari-Neto, F. (2004). Beta regression for modelling rates and proportions. *Journal of Applied Statistics*, 31(7), 799–815.
+
+- Galton, F. (1886). Regression towards mediocrity in hereditary stature. *Journal of the Anthropological Institute*, 15, 246–263.
+
+- Hastie, T., Tibshirani, R., y Friedman, J. (2009). *The elements of statistical learning* (2.ª ed.). Springer.
+
+- Kutner, M. H., Nachtsheim, C. J., Neter, J., y Li, W. (2005). *Applied linear statistical models* (5.ª ed.). McGraw-Hill.
+
+- Long, J. S., y Ervin, L. H. (2000). Using heteroscedasticity consistent standard errors in the linear regression model. *The American Statistician*, 54(3), 217–224.
+
+- MacKinnon, J. G., y White, H. (1985). Some heteroskedasticity-consistent covariance matrix estimators with improved finite sample properties. *Journal of Econometrics*, 29(3), 305–325.
+
+- Montgomery, D. C., y Runger, G. C. (2021). *Applied statistics and probability for engineers* (7.ª ed.). Wiley. [Cap. 11.]
+
+- Pearl, J. (2009). *Causality: Models, reasoning and inference* (2.ª ed.). Cambridge University Press.
+
+- Ramsey, J. B. (1969). Tests for specification errors in classical linear least-squares regression analysis. *Journal of the Royal Statistical Society. Series B*, 31(2), 350–371.
+
+- Rubin, D. B. (1974). Estimating causal effects of treatments in randomized and nonrandomized studies. *Journal of Educational Psychology*, 66(5), 688–701.
+
+- Schenker, N., y Gentleman, J. F. (2001). On judging the significance of differences by examining the overlap between confidence intervals. *The American Statistician*, 55(3), 182–186.
+
+- Schwarz, G. (1978). Estimating the dimension of a model. *The Annals of Statistics*, 6(2), 461–464.
+
+- Shmueli, G. (2010). To explain or to predict? *Statistical Science*, 25(3), 289–310.
+
+- White, H. (1980). A heteroskedasticity-consistent covariance matrix estimator and a direct test for heteroskedasticity. *Econometrica*, 48(4), 817–838.
+
+- Wooldridge, J. M. (2019). *Introductory econometrics: A modern approach* (7.ª ed.). Cengage. [§3.3: sesgo por variable omitida.]
+
+- Zeileis, A., y Hothorn, T. (2002). Diagnostic checking in regression relationships. *R News*, 2(3), 7–10.

@@ -1,0 +1,17 @@
+# Discusión y conclusiones {#sec-discusion}
+
+## Síntesis y limitaciones {#sec-discusion-resultados}
+
+La sección \@ref(sec-validacion) y los Anexos A6–A10 ratifican la elección de G2 como predictor: AIC, validación cruzada y tamaño del efecto convergen, y los modelos son globalmente significativos y robustos. **MAT aventaja a POR** en todos los indicadores de ajuste y precisión —mayor $R^2$, menor $\hat\sigma$, IC e IP más estrechos—, lectura plausible si se asume que el contenido matemático es jerárquico y acumulativo mientras Portugués integra componentes más heterogéneos. El **diagnóstico difiere entre asignaturas**: MAT presenta linealidad compatible y heterocedasticidad; POR, homocedasticidad y curvatura prácticamente trivial ($\Delta R^2$ cuadrático despreciable). La normalidad se rechaza en ambos pero el TCL preserva la inferencia asintótica sobre $\hat\beta_1$; la cobertura nominal de los IP individuales sí depende de la normalidad de $\varepsilon$ y se acota empíricamente por bootstrap en el Anexo \@ref(sec-anexo-coverage). La exclusión de G3 = 0 está respaldada por la implicación determinística G3 = 0 $\Rightarrow$ absences = 0 (Fisher, $p < 10^{-6}$): codificación administrativa de no-presentación al examen final, **no aprobación previa** —los estudiantes con G3 = 0 tienen $\bar G_2$ reprobatorio—.
+
+**Limitaciones.** **(1)** Un único predictor abre la puerta al sesgo por variable omitida; con datos observacionales, la interpretación causal requeriría identificación adicional (Pearl, 2009). **(2)** La inferencia paramétrica clásica asume errores con distribución continua y gaussiana; con $G3$ entera en $\{1, \ldots, 20\}$ esto opera como aproximación, lo que motiva alternativas como la regresión beta tras reescalar $G3$ al intervalo $(0, 1)$ (Ferrari y Cribari-Neto, 2004) o la regresión cuantílica. **(3)** La validez externa se circunscribe a dos escuelas portuguesas en 2005–2006. **(4)** Para $G2$ cerca de 20, el IP al 95% rebasa la cota física $G3 \leq 20$.
+
+## Conclusiones {#sec-conclusiones}
+
+**1.** G2 es el mejor predictor cuantitativo de G3 en ambas asignaturas ($r > 0.93$). Modelos significativos ($p < 0.001$) que explican el `r round(r2_mat*100,2)` % de la variabilidad en MAT y el `r round(r2_por*100,2)` % en POR. Ecuaciones: $\widehat{G3}_{\text{MAT}} = `r beta0_hat` + `r beta1_hat` \cdot G2$; $\widehat{G3}_{\text{POR}} = `r b0p` + `r b1p` \cdot G2$.
+
+**2.** MAT exhibe mejor ajuste y mayor precisión que POR.
+
+**3.** El diagnóstico respalda la linealidad. Las desviaciones de normalidad **no comprometen la inferencia asintótica sobre $\hat\beta_1$ por el TCL**, aunque la cobertura nominal de los IP individuales sí asume normalidad de $\varepsilon$ (verificación bootstrap en Anexo \@ref(sec-anexo-coverage), brecha modesta). Ambos modelos son robustos a influyentes (z-test formal, Anexo \@ref(sec-anexo-hc3)) y a heterocedasticidad (HC3 ≈ clásico).
+
+**4.** Para intervención educativa, **failures** es el predictor no-calificación de mayor utilidad práctica: observable antes de G2 y candidato a una lectura prescriptiva, mientras que G2 actúa como *proxy* sin valor accionable (§\@ref(sec-critica)).

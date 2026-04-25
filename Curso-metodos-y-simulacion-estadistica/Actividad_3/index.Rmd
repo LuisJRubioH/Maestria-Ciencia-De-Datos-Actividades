@@ -1,0 +1,136 @@
+---
+title: "Actividad 3"
+subtitle: "Regresión lineal simple: un estudio aplicado al rendimiento académico en secundaria"
+author:
+  - "Luis Javier Rubio Hernández"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+lang: es
+---
+
+```{r setup, warning=FALSE, message=FALSE, include=FALSE}
+
+knitr::opts_chunk$set(
+  eval      = TRUE,
+  echo      = FALSE,
+  message   = FALSE,
+  warning   = FALSE,
+  fig.width = 8,
+  fig.height = 4,
+  out.width = "80%",
+  fig.align = "center"
+)
+
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+options(scipen = 999, knitr.table.format = "html")
+set.seed(42)
+
+# ── Librerías ───────────────────────────────────────────────
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(patchwork)
+library(corrplot)
+library(ggcorrplot)
+library(e1071)
+library(scales)
+library(gridExtra)
+library(purrr)
+library(lmtest)
+library(nortest)
+library(sandwich)
+library(caret)
+library(bookdown)
+
+suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(gridExtra))
+```
+
+```{r tema-sobrio, include=FALSE}
+# ============================================================
+# PALETA SOBRIA Y FORMAL (GRISES + AZUL MARINO)
+# Sin fondos de color en paneles. Estilo académico minimalista.
+# ============================================================
+paleta <- list(
+  punto        = "#34495E",
+  linea        = "#1F4E79",
+  banda_ic     = "#AEB6BF",
+  banda_ip     = "#D5DBDB",
+  destacado    = "#922B21",
+  referencia   = "#6C7A89",
+  neutro       = "#566573",
+  sombra       = "#ABB2B9"
+)
+
+tema_sobrio <- theme_bw(base_size = 11) +
+  theme(
+    plot.title         = element_text(face = "bold", hjust = 0.5,
+                                       size = 12, colour = "#1B2631"),
+    plot.subtitle      = element_text(hjust = 0.5, size = 10,
+                                       colour = "#566573"),
+    axis.title         = element_text(size = 10, colour = "#34495E"),
+    axis.text          = element_text(size  = 9,  colour = "#34495E"),
+    panel.grid.major   = element_line(colour = "#EAECEE", linewidth = 0.3),
+    panel.grid.minor   = element_blank(),
+    panel.border       = element_rect(colour = "#BDC3C7", fill = NA),
+    panel.background   = element_rect(fill = "white", colour = NA),
+    plot.background    = element_rect(fill = "white", colour = NA),
+    legend.background  = element_rect(fill = "white", colour = NA),
+    legend.key         = element_rect(fill = "white", colour = NA),
+    legend.title       = element_text(size = 9),
+    legend.text        = element_text(size = 9),
+    strip.background   = element_rect(fill = "#F4F6F6", colour = "#BDC3C7"),
+    strip.text         = element_text(size = 10, face = "bold",
+                                       colour = "#1B2631")
+  )
+
+theme_set(tema_sobrio)
+```
+
+```{r carga-datos, include=FALSE}
+# ============================================================
+# CARGA Y PREPARACIÓN DE DATOS
+# ============================================================
+# Separador ";" — ver Cortez & Silva (2008)
+mat_raw <- read.table("data/studentmat.csv", sep = ";",
+                      header = TRUE, stringsAsFactors = FALSE)
+por_raw <- read.table("data/studentpor.csv", sep = ";",
+                      header = TRUE, stringsAsFactors = FALSE)
+
+# Conversión numérica robusta de G1 y G2
+mat_raw$G1 <- as.numeric(as.character(mat_raw$G1))
+mat_raw$G2 <- as.numeric(as.character(mat_raw$G2))
+por_raw$G1 <- as.numeric(as.character(por_raw$G1))
+por_raw$G2 <- as.numeric(as.character(por_raw$G2))
+
+# Filtrado de G3 = 0 — codificación administrativa de no-presentación
+# al examen final, justificado en Sección 1.3 (test exacto de Fisher)
+mat <- mat_raw[mat_raw$G3 > 0, ]
+por <- por_raw[por_raw$G3 > 0, ]
+n_mat <- nrow(mat)
+n_por <- nrow(por)
+```
+
+# Índice {-}
+
+1. Exploración de datos
+
+2. Modelo de regresión lineal simple — Matemáticas (MAT)
+
+3. Modelo de regresión lineal simple — Portugués (POR)
+
+4. Diagnóstico de supuestos
+
+5. Análisis de datos atípicos e influyentes
+
+6. Validación, comparación de modelos y tamaño del efecto
+
+7. Discusión y conclusiones
+
+8. Referencias
+
+9. Anexos

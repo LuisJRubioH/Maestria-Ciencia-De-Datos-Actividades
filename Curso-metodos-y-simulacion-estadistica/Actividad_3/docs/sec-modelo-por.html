@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Modelo de regresión lineal simple — Portugués (POR) | Actividad 3</title>
+  <meta name="description" content="3 Modelo de regresión lineal simple — Portugués (POR) | Actividad 3" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Modelo de regresión lineal simple — Portugués (POR) | Actividad 3" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Modelo de regresión lineal simple — Portugués (POR) | Actividad 3" />
+  
+  
+  
+
+<meta name="author" content="Luis Javier Rubio Hernández" />
+
+
+<meta name="date" content="2026-04-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-modelo-mat.html"/>
+<link rel="next" href="sec-diagnostico.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html"><i class="fa fa-check"></i><b>1</b> Exploración de datos</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#descripci%C3%B3n-del-conjunto-de-datos"><i class="fa fa-check"></i><b>1.1</b> Descripción del conjunto de datos</a></li>
+<li class="chapter" data-level="1.2" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#integridad-de-los-datos"><i class="fa fa-check"></i><b>1.2</b> Integridad de los datos</a></li>
+<li class="chapter" data-level="1.3" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#sec-g3cero"><i class="fa fa-check"></i><b>1.3</b> Tratamiento de observaciones con G3 = 0</a></li>
+<li class="chapter" data-level="1.4" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#an%C3%A1lisis-descriptivo-de-la-variable-respuesta"><i class="fa fa-check"></i><b>1.4</b> Análisis descriptivo de la variable respuesta</a></li>
+<li class="chapter" data-level="1.5" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#estad%C3%ADsticos-descriptivos-de-las-variables-cuantitativas-candidatas"><i class="fa fa-check"></i><b>1.5</b> Estadísticos descriptivos de las variables cuantitativas candidatas</a></li>
+<li class="chapter" data-level="1.6" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#an%C3%A1lisis-de-correlaci%C3%B3n-con-la-variable-respuesta"><i class="fa fa-check"></i><b>1.6</b> Análisis de correlación con la variable respuesta</a></li>
+<li class="chapter" data-level="1.7" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#sec-predictor"><i class="fa fa-check"></i><b>1.7</b> Selección de la variable predictora</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html"><i class="fa fa-check"></i><b>2</b> Modelo de regresión lineal simple — Matemáticas (MAT)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-espec-mat"><i class="fa fa-check"></i><b>2.1</b> Especificación y estimación del modelo</a></li>
+<li class="chapter" data-level="2.2" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-estim-mat"><i class="fa fa-check"></i><b>2.2</b> Estimación de parámetros</a></li>
+<li class="chapter" data-level="2.3" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-anova-mat"><i class="fa fa-check"></i><b>2.3</b> Prueba de hipótesis global — ANOVA y prueba F</a></li>
+<li class="chapter" data-level="2.4" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-r2-mat"><i class="fa fa-check"></i><b>2.4</b> Coeficiente de determinación</a></li>
+<li class="chapter" data-level="2.5" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-ic-params-mat"><i class="fa fa-check"></i><b>2.5</b> Intervalos de confianza para los parámetros</a></li>
+<li class="chapter" data-level="2.6" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-ic-pred-mat"><i class="fa fa-check"></i><b>2.6</b> Intervalos de confianza y predicción para G3</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html"><i class="fa fa-check"></i><b>3</b> Modelo de regresión lineal simple — Portugués (POR)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-estim-por"><i class="fa fa-check"></i><b>3.1</b> Estimación de parámetros</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-anova-por"><i class="fa fa-check"></i><b>3.2</b> Prueba de hipótesis global — ANOVA y prueba F</a></li>
+<li class="chapter" data-level="3.3" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-r2-por"><i class="fa fa-check"></i><b>3.3</b> Coeficiente de determinación</a></li>
+<li class="chapter" data-level="3.4" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-ic-params-por"><i class="fa fa-check"></i><b>3.4</b> Intervalos de confianza para los parámetros</a></li>
+<li class="chapter" data-level="3.5" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-ic-pred-por"><i class="fa fa-check"></i><b>3.5</b> Intervalos de confianza y predicción para G3</a></li>
+<li class="chapter" data-level="3.6" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-comparacion-modelos"><i class="fa fa-check"></i><b>3.6</b> Comparación de ambos modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html"><i class="fa fa-check"></i><b>4</b> Diagnóstico de supuestos</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#supuestos-del-modelo"><i class="fa fa-check"></i><b>4.1</b> Supuestos del modelo</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#sec-diag-mat"><i class="fa fa-check"></i><b>4.2</b> Diagnóstico — Matemáticas (MAT)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#pruebas-formales"><i class="fa fa-check"></i><b>4.2.1</b> Pruebas formales</a></li>
+<li class="chapter" data-level="4.2.2" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#respaldo-gr%C3%A1fico"><i class="fa fa-check"></i><b>4.2.2</b> Respaldo gráfico</a></li>
+<li class="chapter" data-level="4.2.3" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#lectura-del-diagn%C3%B3stico-en-mat"><i class="fa fa-check"></i><b>4.2.3</b> Lectura del diagnóstico en MAT</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#sec-diag-por"><i class="fa fa-check"></i><b>4.3</b> Diagnóstico — Portugués (POR)</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#pruebas-formales-1"><i class="fa fa-check"></i><b>4.3.1</b> Pruebas formales</a></li>
+<li class="chapter" data-level="4.3.2" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#respaldo-gr%C3%A1fico-1"><i class="fa fa-check"></i><b>4.3.2</b> Respaldo gráfico</a></li>
+<li class="chapter" data-level="4.3.3" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#lectura-del-diagn%C3%B3stico-en-por"><i class="fa fa-check"></i><b>4.3.3</b> Lectura del diagnóstico en POR</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#sec-resumen-diag"><i class="fa fa-check"></i><b>4.4</b> Resumen comparativo del diagnóstico</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-atipicos.html"><a href="sec-atipicos.html"><i class="fa fa-check"></i><b>5</b> Análisis de datos atípicos e influyentes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sec-atipicos.html"><a href="sec-atipicos.html#criterios-de-detecci%C3%B3n"><i class="fa fa-check"></i><b>5.1</b> Criterios de detección</a></li>
+<li class="chapter" data-level="5.2" data-path="sec-atipicos.html"><a href="sec-atipicos.html#sec-infl-mat"><i class="fa fa-check"></i><b>5.2</b> Diagnóstico de influencia — Matemáticas (MAT)</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-atipicos.html"><a href="sec-atipicos.html#visualizaci%C3%B3n-combinada"><i class="fa fa-check"></i><b>5.2.1</b> Visualización combinada</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-atipicos.html"><a href="sec-atipicos.html#distancia-de-cook-por-%C3%ADndice"><i class="fa fa-check"></i><b>5.2.2</b> Distancia de Cook por índice</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-atipicos.html"><a href="sec-atipicos.html#conteo-y-detalle-de-observaciones-flagueadas"><i class="fa fa-check"></i><b>5.2.3</b> Conteo y detalle de observaciones flagueadas</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-atipicos.html"><a href="sec-atipicos.html#sec-infl-por"><i class="fa fa-check"></i><b>5.3</b> Diagnóstico de influencia — Portugués (POR)</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="sec-atipicos.html"><a href="sec-atipicos.html#visualizaci%C3%B3n-combinada-1"><i class="fa fa-check"></i><b>5.3.1</b> Visualización combinada</a></li>
+<li class="chapter" data-level="5.3.2" data-path="sec-atipicos.html"><a href="sec-atipicos.html#distancia-de-cook-por-%C3%ADndice-1"><i class="fa fa-check"></i><b>5.3.2</b> Distancia de Cook por índice</a></li>
+<li class="chapter" data-level="5.3.3" data-path="sec-atipicos.html"><a href="sec-atipicos.html#conteo-de-flagueadas-en-por"><i class="fa fa-check"></i><b>5.3.3</b> Conteo de flagueadas en POR</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="sec-atipicos.html"><a href="sec-atipicos.html#sec-impacto-infl"><i class="fa fa-check"></i><b>5.4</b> Impacto sobre los parámetros del modelo</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sec-validacion.html"><a href="sec-validacion.html"><i class="fa fa-check"></i><b>6</b> Validación y discusión crítica</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sec-validacion.html"><a href="sec-validacion.html#sec-critica"><i class="fa fa-check"></i><b>6.1</b> Discusión crítica: poder explicativo vs. predictivo de G2</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sec-discusion.html"><a href="sec-discusion.html"><i class="fa fa-check"></i><b>7</b> Discusión y conclusiones</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sec-discusion.html"><a href="sec-discusion.html#sec-discusion-resultados"><i class="fa fa-check"></i><b>7.1</b> Síntesis y limitaciones</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-discusion.html"><a href="sec-discusion.html#sec-conclusiones"><i class="fa fa-check"></i><b>7.2</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="sec-referencias.html"><a href="sec-referencias.html"><i class="fa fa-check"></i><b>8</b> Referencias bibliográficas</a></li>
+<li class="chapter" data-level="9" data-path="sec-anexos.html"><a href="sec-anexos.html"><i class="fa fa-check"></i><b>9</b> Anexos</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="sec-anexos.html"><a href="sec-anexos.html#anexos-de-c%C3%B3digo-comentado"><i class="fa fa-check"></i><b>9.1</b> Anexos de código comentado</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="sec-anexos.html"><a href="sec-anexos.html#a1.-carga-y-preparaci%C3%B3n-de-datos"><i class="fa fa-check"></i><b>9.1.1</b> A1. Carga y preparación de datos</a></li>
+<li class="chapter" data-level="9.1.2" data-path="sec-anexos.html"><a href="sec-anexos.html#a2.-an%C3%A1lisis-de-correlaci%C3%B3n"><i class="fa fa-check"></i><b>9.1.2</b> A2. Análisis de correlación</a></li>
+<li class="chapter" data-level="9.1.3" data-path="sec-anexos.html"><a href="sec-anexos.html#a3.-ajuste-y-evaluaci%C3%B3n-del-modelo"><i class="fa fa-check"></i><b>9.1.3</b> A3. Ajuste y evaluación del modelo</a></li>
+<li class="chapter" data-level="9.1.4" data-path="sec-anexos.html"><a href="sec-anexos.html#a4.-diagn%C3%B3stico-de-supuestos"><i class="fa fa-check"></i><b>9.1.4</b> A4. Diagnóstico de supuestos</a></li>
+<li class="chapter" data-level="9.1.5" data-path="sec-anexos.html"><a href="sec-anexos.html#a5.-an%C3%A1lisis-de-observaciones-influyentes"><i class="fa fa-check"></i><b>9.1.5</b> A5. Análisis de observaciones influyentes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="sec-anexos.html"><a href="sec-anexos.html#anexos-de-validaci%C3%B3n-estad%C3%ADstica-formal"><i class="fa fa-check"></i><b>9.2</b> Anexos de validación estadística formal</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-aic"><i class="fa fa-check"></i><b>9.2.1</b> A6. Comparación formal de modelos candidatos (AIC/BIC)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-cv"><i class="fa fa-check"></i><b>9.2.2</b> A7. Validación cruzada <span class="math inline">\(k\)</span>-fold y tamaño del efecto</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-hc3"><i class="fa fa-check"></i><b>9.2.3</b> A8. Análisis formal de robustez ante influyentes</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sec-anexos.html"><a href="sec-anexos.html#a9.-errores-est%C3%A1ndar-robustos-a-heterocedasticidad-hc3"><i class="fa fa-check"></i><b>9.2.4</b> A9. Errores estándar robustos a heterocedasticidad (HC3)</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-coverage"><i class="fa fa-check"></i><b>9.2.5</b> A10. Cobertura empírica de los intervalos de predicción</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="sec-anexos.html"><a href="sec-anexos.html#anexo-final-aplicaci%C3%B3n-shiny"><i class="fa fa-check"></i><b>9.3</b> Anexo final — Aplicación Shiny</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad 3</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-modelo-por" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Modelo de regresión lineal simple — Portugués (POR)<a href="sec-modelo-por.html#sec-modelo-por" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Para POR se adopta la misma especificación de la Sección <a href="sec-modelo-mat.html#sec-espec-mat">2.1</a> sobre el conjunto <em>studentpor</em> depurado:</p>
+<p><span class="math display">\[G3_i = \beta_0 + \beta_1 \cdot G2_i + \varepsilon_i, \quad i = 1, \ldots, 634\]</span></p>
+<div id="sec-estim-por" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Estimación de parámetros<a href="sec-modelo-por.html#sec-estim-por" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-coef-por">Table 3.1: </span>Estimación de parámetros del modelo G3 ~ G2 en Portugués (POR).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Parámetro
+</th>
+<th style="text-align:center;">
+Estimación
+</th>
+<th style="text-align:center;">
+Error estándar
+</th>
+<th style="text-align:center;">
+Estadístico t
+</th>
+<th style="text-align:center;">
+p-valor
+</th>
+<th style="text-align:left;">
+Decisión (<span class="math inline">\(\alpha = 0.05\)</span>)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\hat{\beta}_0\)</span> (Intercepto)
+</td>
+<td style="text-align:center;">
+0.9480
+</td>
+<td style="text-align:center;">
+0.1756
+</td>
+<td style="text-align:center;">
+5.3995
+</td>
+<td style="text-align:center;">
+&lt; 0.001
+</td>
+<td style="text-align:left;">
+Rechaza <span class="math inline">\(H_0\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+<span class="math inline">\(\hat{\beta}_1\)</span> (G2)
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9563
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.0146
+</td>
+<td style="text-align:center;font-weight: bold;">
+65.6000
+</td>
+<td style="text-align:center;font-weight: bold;">
+&lt; 0.001
+</td>
+<td style="text-align:left;font-weight: bold;">
+Rechaza <span class="math inline">\(H_0\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Tabla <a href="sec-modelo-por.html#tab:tab-coef-por">3.1</a>: el modelo ajustado es</p>
+<p><span class="math display">\[\widehat{G3} = 0.948 + 0.9563 \cdot G2\]</span></p>
+<p>La pendiente <span class="math inline">\(\hat{\beta}_1 = 0.9563\)</span> es <strong>menor que la de MAT</strong> (<span class="math inline">\(\hat{\beta}_1 = 0.9903\)</span>): un valor por debajo de 1 sugiere una leve compresión hacia la media (fenómeno galtoniano, Galton 1886). El intercepto <span class="math inline">\(\hat\beta_0 = 0.948\)</span> es estadísticamente significativo al 5 % en POR (p &lt; 0.001), a diferencia de MAT donde no lo era — diferencia atribuible al mayor tamaño muestral (<span class="math inline">\(n_{\text{POR}} = 634\)</span>) que infla la potencia para detectar desviaciones modestas respecto de cero; sustantivamente, la extrapolación a <span class="math inline">\(G2 = 0\)</span> sigue careciendo de sentido por estar fuera del rango muestral. El error residual <span class="math inline">\(\hat{\sigma} = 0.964\)</span> excede el de MAT (<span class="math inline">\(0.8407\)</span>), señalando <strong>menor precisión predictiva</strong> en POR.</p>
+</div>
+<div id="sec-anova-por" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Prueba de hipótesis global — ANOVA y prueba F<a href="sec-modelo-por.html#sec-anova-por" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Misma estructura que la Sección <a href="sec-modelo-mat.html#sec-anova-mat">2.3</a>: <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_1: \beta_1 \neq 0\)</span>; <span class="math inline">\(F_0 = MSR/MSE \sim F_{1,n-2}\)</span> bajo <span class="math inline">\(H_0\)</span>.</p>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-anova-por">Table 3.2: </span>Análisis de varianza (ANOVA) del modelo G3 ~ G2 en Portugués (POR).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Fuente de variación
+</th>
+<th style="text-align:center;">
+Suma de cuadrados (SC)
+</th>
+<th style="text-align:center;">
+Grados de libertad (gl)
+</th>
+<th style="text-align:center;">
+Cuadrado medio (CM)
+</th>
+<th style="text-align:center;">
+Estadístico F
+</th>
+<th style="text-align:center;">
+p-valor
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Regresión (G2)
+</td>
+<td style="text-align:center;font-weight: bold;">
+3999.3168
+</td>
+<td style="text-align:center;font-weight: bold;">
+1
+</td>
+<td style="text-align:center;font-weight: bold;">
+3999.3168
+</td>
+<td style="text-align:center;font-weight: bold;">
+4303.362
+</td>
+<td style="text-align:center;font-weight: bold;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Error residual
+</td>
+<td style="text-align:center;">
+587.3473
+</td>
+<td style="text-align:center;">
+632
+</td>
+<td style="text-align:center;">
+0.9293
+</td>
+<td style="text-align:center;">
+NA
+</td>
+<td style="text-align:center;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-style: italic;">
+Total
+</td>
+<td style="text-align:center;font-style: italic;">
+4586.6641
+</td>
+<td style="text-align:center;font-style: italic;">
+633
+</td>
+<td style="text-align:center;font-style: italic;">
+NA
+</td>
+<td style="text-align:center;font-style: italic;">
+NA
+</td>
+<td style="text-align:center;font-style: italic;">
+NA
+</td>
+</tr>
+</tbody>
+</table>
+<p>Tabla <a href="sec-modelo-por.html#tab:tab-anova-por">3.2</a>: <span class="math inline">\(F_0 = 4303.3624\)</span> con 1 y 632 gl, p &lt; 0.001 → <strong>se rechaza <span class="math inline">\(H_0: \beta_1 = 0\)</span></strong>. El <span class="math inline">\(F\)</span> de POR (4303.3624) es menor que el de MAT (4892.5684), coherente con la correlación también menor (<span class="math inline">\(r = 0.9338\)</span> en POR vs. <span class="math inline">\(0.9656\)</span> en MAT).</p>
+</div>
+<div id="sec-r2-por" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Coeficiente de determinación<a href="sec-modelo-por.html#sec-r2-por" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-r2-por">Table 3.3: </span>Métricas de bondad de ajuste del modelo G3 ~ G2 en Portugués (POR).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Métrica
+</th>
+<th style="text-align:center;">
+Valor
+</th>
+<th style="text-align:left;">
+Interpretación
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+<span class="math inline">\(R^2\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.8719
+</td>
+<td style="text-align:left;font-weight: bold;">
+87.19% de la variabilidad de G3 es explicada por G2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(R^2\)</span> ajustado
+</td>
+<td style="text-align:center;">
+0.8717
+</td>
+<td style="text-align:left;">
+Ajustado por grados de libertad
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\hat{\sigma}\)</span> (Error estándar residual)
+</td>
+<td style="text-align:center;">
+0.9640
+</td>
+<td style="text-align:left;">
+Desviación típica de los residuales (en puntos de calificación)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(n\)</span> (observaciones)
+</td>
+<td style="text-align:center;">
+634.0000
+</td>
+<td style="text-align:left;">
+Observaciones con G3 &gt; 0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Tabla <a href="sec-modelo-por.html#tab:tab-r2-por">3.3</a>: <span class="math inline">\(R^2 = 0.8719\)</span> — el <strong>87.19 %</strong> de la variabilidad de G3 queda explicada por G2 (porcentaje inferior al de MAT: <span class="math inline">\(R^2 = 0.9323\)</span>; <span class="math inline">\(\Delta R^2 = -0.0604\)</span>). Una explicación plausible: el contenido matemático tiende a ser jerárquico y acumulativo, mientras que Portugués incorpora componentes más heterogéneos (comprensión lectora, producción escrita, competencia oral) que introducen mayor varianza residual entre períodos.</p>
+</div>
+<div id="sec-ic-params-por" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Intervalos de confianza para los parámetros<a href="sec-modelo-por.html#sec-ic-params-por" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Con <span class="math inline">\(t_{0.025,632} = 1.9637\)</span> (Casella y Berger, 2002, §11.3):</p>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-ic-params-por">Table 3.4: </span>Intervalos de confianza al 95% para los parámetros del modelo G3 ~ G2 en Portugués (POR).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Parámetro
+</th>
+<th style="text-align:center;">
+Estimación
+</th>
+<th style="text-align:center;">
+LC inferior (2.5%)
+</th>
+<th style="text-align:center;">
+LC superior (97.5%)
+</th>
+<th style="text-align:left;">
+Interpretación
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\beta_0\)</span> (Intercepto)
+</td>
+<td style="text-align:center;">
+0.9480
+</td>
+<td style="text-align:center;">
+0.6032
+</td>
+<td style="text-align:center;">
+1.2927
+</td>
+<td style="text-align:left;">
+Rango plausible del intercepto poblacional
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+<span class="math inline">\(\beta_1\)</span> (G2)
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9563
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9276
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9849
+</td>
+<td style="text-align:left;font-weight: bold;">
+Incremento medio de G3 por cada punto adicional en G2
+</td>
+</tr>
+</tbody>
+</table>
+<p>Tabla <a href="sec-modelo-por.html#tab:tab-ic-params-por">3.4</a>: IC al 95% para <span class="math inline">\(\beta_1 = [0.9276, 0.9849]\)</span>, cero excluido → <strong>se rechaza <span class="math inline">\(H_0\)</span></strong>. El IC es ligeramente más ancho que el de MAT (amplitud 0.0573 vs. 0.0557). Como <span class="math inline">\(SE(\hat\beta_1) = \hat\sigma/\sqrt{S_{xx}}\)</span>, el mayor <span class="math inline">\(S_{xx}\)</span> de POR (<span class="math inline">\(4373.6151\)</span> vs. <span class="math inline">\(3526.1064\)</span>) queda compensado por el mayor <span class="math inline">\(\hat\sigma\)</span> (<span class="math inline">\(0.964\)</span> vs. <span class="math inline">\(0.8407\)</span>), produciendo <span class="math inline">\(SE(\hat\beta_1) = 0.0146\)</span> vs. <span class="math inline">\(0.0142\)</span> en MAT.</p>
+</div>
+<div id="sec-ic-pred-por" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Intervalos de confianza y predicción para G3<a href="sec-modelo-por.html#sec-ic-pred-por" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-ic-pred-por">Table 3.5: </span>Predicción puntual, intervalos de confianza para la media condicional e
+intervalos de predicción para observaciones individuales, en valores
+representativos de G2. Modelo G3 ~ G2, Portugués (POR).
+</caption>
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="2">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+IC media condicional
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+IP obs. individual
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;">
+G2 (x₀)
+</th>
+<th style="text-align:center;">
+Ĝ3 (predicción)
+</th>
+<th style="text-align:center;">
+IC inf. (95%)
+</th>
+<th style="text-align:center;">
+IC sup. (95%)
+</th>
+<th style="text-align:center;">
+IP inf. (95%)
+</th>
+<th style="text-align:center;">
+IP sup. (95%)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+4.773
+</td>
+<td style="text-align:center;">
+4.539
+</td>
+<td style="text-align:center;">
+5.007
+</td>
+<td style="text-align:center;">
+2.865
+</td>
+<td style="text-align:center;">
+6.681
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+6.685
+</td>
+<td style="text-align:center;">
+6.504
+</td>
+<td style="text-align:center;">
+6.867
+</td>
+<td style="text-align:center;">
+4.784
+</td>
+<td style="text-align:center;">
+8.587
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8.598
+</td>
+<td style="text-align:center;">
+8.467
+</td>
+<td style="text-align:center;">
+8.729
+</td>
+<td style="text-align:center;">
+6.700
+</td>
+<td style="text-align:center;">
+10.496
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+10.510
+</td>
+<td style="text-align:center;">
+10.420
+</td>
+<td style="text-align:center;">
+10.601
+</td>
+<td style="text-align:center;">
+8.615
+</td>
+<td style="text-align:center;">
+12.406
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-weight: bold;">
+12
+</td>
+<td style="text-align:center;font-weight: bold;">
+12.423
+</td>
+<td style="text-align:center;font-weight: bold;">
+12.347
+</td>
+<td style="text-align:center;font-weight: bold;">
+12.499
+</td>
+<td style="text-align:center;font-weight: bold;">
+10.528
+</td>
+<td style="text-align:center;font-weight: bold;">
+14.318
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+14.335
+</td>
+<td style="text-align:center;">
+14.237
+</td>
+<td style="text-align:center;">
+14.434
+</td>
+<td style="text-align:center;">
+12.440
+</td>
+<td style="text-align:center;">
+16.231
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+16.248
+</td>
+<td style="text-align:center;">
+16.105
+</td>
+<td style="text-align:center;">
+16.391
+</td>
+<td style="text-align:center;">
+14.350
+</td>
+<td style="text-align:center;">
+18.146
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+18.161
+</td>
+<td style="text-align:center;">
+17.967
+</td>
+<td style="text-align:center;">
+18.354
+</td>
+<td style="text-align:center;">
+16.258
+</td>
+<td style="text-align:center;">
+20.063
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:center;">
+20.073
+</td>
+<td style="text-align:center;">
+19.825
+</td>
+<td style="text-align:center;">
+20.321
+</td>
+<td style="text-align:center;">
+18.164
+</td>
+<td style="text-align:center;">
+21.982
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>*</sup> S_xx = 4373.6151; media de G2 = 11.7539; t_{0.025, 632} = 1.9637.
+</td>
+</tr>
+</tfoot>
+</table>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-regresion-por"></span>
+<img src="Actividad-3_files/figure-html/fig-regresion-por-1.png" alt="Modelo G3 ~ G2 en Portugués (POR): recta de regresión ajustada (azul marino), banda del IC 95% para la media condicional (gris medio) y banda del IP 95% para observaciones individuales (gris claro). La información del modelo se ubica en la esquina superior izquierda para evitar superposiciones con los datos." width="80%" />
+<p class="caption">
+Figure 3.1: Modelo G3 ~ G2 en Portugués (POR): recta de regresión ajustada (azul marino), banda del IC 95% para la media condicional (gris medio) y banda del IP 95% para observaciones individuales (gris claro). La información del modelo se ubica en la esquina superior izquierda para evitar superposiciones con los datos.
+</p>
+</div>
+<p>Para <span class="math inline">\(G2 = 12\)</span> en POR: $ = $ <strong>12.423</strong>, IC 95% <span class="math inline">\([12.347, 12.499]\)</span>, IP 95% <span class="math inline">\([10.528, 14.318]\)</span>. El IP de POR (≈ 3.789 puntos) es más amplio que el de MAT (≈ 3.312), consistente con el mayor <span class="math inline">\(\hat\sigma\)</span>.</p>
+</div>
+<div id="sec-comparacion-modelos" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Comparación de ambos modelos<a href="sec-modelo-por.html#sec-comparacion-modelos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-comparacion">Table 3.6: </span>Cuadro comparativo de los modelos G3 ~ G2 en Matemáticas (MAT) y Portugués (POR).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Métrica
+</th>
+<th style="text-align:center;">
+MAT
+</th>
+<th style="text-align:center;">
+POR
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(n\)</span> (obs. con G3 &gt; 0)
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+634
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\hat{\beta}_0\)</span>
+</td>
+<td style="text-align:center;">
+0.2753
+</td>
+<td style="text-align:center;">
+0.948
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+<span class="math inline">\(\hat{\beta}_1\)</span> (G2)
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9903
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9563
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(SE(\hat{\beta}_1)\)</span>
+</td>
+<td style="text-align:center;">
+0.0142
+</td>
+<td style="text-align:center;">
+0.0146
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(t_0\)</span> para <span class="math inline">\(\beta_1\)</span>
+</td>
+<td style="text-align:center;">
+69.9469
+</td>
+<td style="text-align:center;">
+65.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(F_0\)</span> (prueba global)
+</td>
+<td style="text-align:center;">
+4892.5684
+</td>
+<td style="text-align:center;">
+4303.3624
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+<span class="math inline">\(R^2\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9323
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.8719
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(R^2\)</span> ajustado
+</td>
+<td style="text-align:center;">
+0.9322
+</td>
+<td style="text-align:center;">
+0.8717
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\hat{\sigma}\)</span>
+</td>
+<td style="text-align:center;">
+0.8407
+</td>
+<td style="text-align:center;">
+0.964
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IC 95% para <span class="math inline">\(\beta_1\)</span>
+</td>
+<td style="text-align:center;">
+[0.9625, 1.0182]
+</td>
+<td style="text-align:center;">
+[0.9276, 0.9849]
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>*</sup> Ambos modelos son globalmente significativos con p-valor &lt; 0.001.
+</td>
+</tr>
+</tfoot>
+</table>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-comparacion-bandas"></span>
+<img src="Actividad-3_files/figure-html/fig-comparacion-bandas-1.png" alt="Superposición de las rectas de regresión ajustadas para Matemáticas (línea sólida azul marino) y Portugués (línea discontinua gris oscuro), con sus intervalos de predicción al 95% en tonos grises. Las etiquetas de identificación se sitúan al extremo derecho de cada recta, en espacio libre." width="80%" />
+<p class="caption">
+Figure 3.2: Superposición de las rectas de regresión ajustadas para Matemáticas (línea sólida azul marino) y Portugués (línea discontinua gris oscuro), con sus intervalos de predicción al 95% en tonos grises. Las etiquetas de identificación se sitúan al extremo derecho de cada recta, en espacio libre.
+</p>
+</div>
+<p>Tabla <a href="sec-modelo-por.html#tab:tab-comparacion">3.6</a> y Figura <a href="sec-modelo-por.html#fig:fig-comparacion-bandas">3.2</a>: MAT supera a POR en <span class="math inline">\(R^2\)</span> (0.9323 vs. 0.8719), <span class="math inline">\(F_0\)</span> (4892.5684 vs. 4303.3624) y precisión residual (<span class="math inline">\(\hat\sigma = 0.8407\)</span> vs. 0.964). La pendiente en MAT (<span class="math inline">\(\hat\beta_1 = 0.9903\)</span>) es prácticamente una identidad G2 → G3; la de POR (<span class="math inline">\(0.9563\)</span>) sugiere ligera compresión hacia la media (fenómeno galtoniano clásico). Ambos modelos son globalmente significativos (<span class="math inline">\(p &lt; 0.001\)</span>); la validación de supuestos sigue en la Sección <a href="sec-diagnostico.html#sec-diagnostico">4</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-modelo-mat.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-diagnostico.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

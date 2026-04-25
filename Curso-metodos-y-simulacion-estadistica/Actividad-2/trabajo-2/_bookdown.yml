@@ -1,0 +1,16 @@
+book_filename: "Actividad-2"
+delete_merged_file: true
+new_session: no
+
+rmd_files:
+  - "index.Rmd"
+  - "problema1.Rmd"
+  - "problema2.Rmd"
+  - "problema3.Rmd"
+  - "problema4.Rmd"
+  - "problema5.Rmd"
+  - "problema6.Rmd"
+  - "referencias.Rmd"
+  - "anexos.Rmd"
+
+output_dir: "docs"

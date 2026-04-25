@@ -1,0 +1,691 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# **Propiedades de los estimadores**
+
+## **Problema 2**
+
+Un centro de atención médica registra el tiempo de espera (en minutos)
+de los pacientes antes de ser atendidos. Se sabe que estos tiempos
+siguen una distribución Gamma con parámetros conocidos $\alpha = 3$
+(forma) y $\sigma = 2$ (escala). El parámetro que se supone desconocido
+en este problema es la media poblacional $\mu = \alpha\sigma$.
+
+Sea $X_1, X_2, \ldots, X_n$ una muestra aleatoria de tamaño $n$
+independiente e idénticamente distribuida extraída de esta población. Se
+proponen los siguientes estimadores para $\mu$:
+
+1.  Estimador 1:
+
+$$\hat{\mu}_1 = \frac{1}{n}\sum_{i=1}^{n} X_i$$
+
+2.  Estimador 2:
+
+$$\hat{\mu}_2 = \frac{\min(X_1, \ldots, X_n) + \max(X_1, \ldots, X_n)}{2}$$
+
+3.  Estimador 3:
+
+$$\hat{\mu}_3 = X_{(1)}$$
+
+4.  Estimador 4:
+
+$$\hat{\mu}_4 = \frac{1}{n+1}\sum_{i=1}^{n} X_i$$
+
+Realiza las siguientes actividades:
+
+### **Simulación de estimadores**
+
+-   Genera 100 muestras de tamaño $n = 10$ de una distribución Gamma con
+    parámetros $\alpha = 3$ y $\sigma = 2$. Utiliza la función
+    `rgamma(n, shape = alpha, scale = sigma)` de **R** y establece una
+    semilla como por ejemplo `set.seed(123)` para asegurar la
+    reproducibilidad de los resultados.
+-   Para cada muestra, calcula los estimadores correspondientes. Luego,
+    grafica los resultados utilizando una curva de densidad o un
+    histograma de densidades para cada estimador.
+-   Realiza una interpretación de los gráficos obtenidos.
+
+Sea $X \sim \text{Gamma}(\alpha = 3, \sigma = 2)$. La media poblacional
+es: Se proponen cuatro estimadores para $\mu$ y se evalúan mediante
+simulación.
+
+$$\mu = \alpha\sigma = 3 \times 2 = 6$$
+
+Además, la varianza poblacional es $\text{Var}(X) = \alpha\sigma^2 = 3 \times 4 = 12$, por lo que la varianza teórica de la media muestral es:
+
+$$\text{Var}(\bar{X}) = \frac{\alpha\sigma^2}{n} = \frac{12}{n}$$
+
+Este valor servirá como referencia para evaluar los resultados de la simulación.
+
+|   Estimador   |             Expresión             |        Descripción        |
+|:------------------------------:|:------------------:|:------------------:|
+| $\hat{\mu}_1$ |  $\frac{1}{n}\sum_{i=1}^{n} X_i$  |      Media muestral       |
+| $\hat{\mu}_2$ |   $\frac{\min(X) + \max(X)}{2}$   |   Punto medio del rango   |
+| $\hat{\mu}_3$ |             $X_{(1)}$             |      Mínimo muestral      |
+| $\hat{\mu}_4$ | $\frac{1}{n+1}\sum_{i=1}^{n} X_i$ | Media muestral deflactada |
+
+
+Generamos 100 muestras de tamaño $n = 10$ de una distribución Gamma con
+parámetros $\alpha = 3$ y $\sigma = 2$. En la Tabla \@ref(tab:simulacion-estimadores) vemos los resultados de las primeras 20 muestras.
+    
+```{r simulacion-estimadores, echo=FALSE}
+set.seed(123)
+
+# Parámetros
+B     <- 100       # número de muestras
+n     <- 10        # tamaño de cada muestra
+alpha <- 3         # forma
+sigma <- 2         # escala
+mu    <- alpha * sigma  # media teórica = 6
+
+# Generar las B muestras (matriz B x n)
+muestras <- matrix(rgamma(B * n, shape = alpha, scale = sigma), nrow = B, ncol = n)
+
+# Calcular los 4 estimadores para cada muestra
+mu1 <- apply(muestras, 1, mean)
+mu2 <- apply(muestras, 1, function(x) (min(x) + max(x)) / 2)
+mu3 <- apply(muestras, 1, min)
+mu4 <- apply(muestras, 1, function(x) sum(x) / (n + 1))
+
+
+tabla <- data.frame(
+  Muestra = 1:20,
+  Mu1 = round(mu1[1:20], 4),
+  Mu2 = round(mu2[1:20], 4),
+  Mu3 = round(mu3[1:20], 4),
+  Mu4 = round(mu4[1:20], 4)
+)
+
+knitr::kable(tabla,
+             caption = "Valores de los 4 estimadores para las primeras 20 muestras (n = 10)",
+             col.names = c("Muestra",
+                           "$\\hat{\\mu}_1$ (Media)",
+                           "$\\hat{\\mu}_2$ (Rango medio)",
+                           "$\\hat{\\mu}_3$ (Mínimo)",
+                           "$\\hat{\\mu}_4$ (Deflactada)"),
+             align = "c")
+```
+
+A continuación en la Tabla \@ref(tab:tabla-propiedades), veremos algunas estadísticas de cada uno de los estimadores.
+
+```{r tabla-propiedades, echo=FALSE}
+# Calcular propiedades de cada estimador
+estimadores <- list(mu1, mu2, mu3, mu4)
+nombres <- c("$\\hat{\\mu}_1$", "$\\hat{\\mu}_2$", "$\\hat{\\mu}_3$", "$\\hat{\\mu}_4$")
+
+# Varianza teórica de la media muestral para referencia
+var_teorica_media <- alpha * sigma^2 / n  # 12/10 = 1.2
+
+props <- data.frame(
+  Estimador     = nombres,
+  Media         = round(sapply(estimadores, mean), 4),
+  Sesgo         = round(sapply(estimadores, mean) - mu, 4),
+  Varianza      = round(sapply(estimadores, var), 4),
+  ECM           = round(sapply(estimadores, function(e) mean((e - mu)^2)), 4),
+  Mediana       = round(sapply(estimadores, median), 4)
+)
+
+knitr::kable(props,
+             caption = "Propiedades estadísticas de los estimadores (B = 100 muestras, n = 10)",
+             col.names = c("Estimador",
+                           "Media estimada",
+                           "Sesgo ($E[\\hat{\\mu}] - \\mu$)",
+                           "Varianza",
+                           "MSE",
+                           "Mediana"),
+             align = "c")
+```
+
+Nótese que la varianza teórica de $\hat{\mu}_1 = \bar{X}$ es $\text{Var}(\bar{X}) = \alpha\sigma^2/n = 12/10 = 1.2$, valor que puede compararse con la varianza empírica reportada en la Tabla \@ref(tab:tabla-propiedades). La diferencia entre ambos valores se atribuye a la variabilidad inherente de utilizar solo $B = 100$ réplicas.
+
+En la Figura \@ref(fig:densidad-estimadores) se visualizan los resultados utilizando un histograma de densidades para cada estimador.
+
+
+```{r densidad-estimadores, echo=FALSE, fig.width=10, fig.height=8, fig.cap="Densidades estimadas de los cuatro estimadores"}
+par(mfrow = c(2, 2), mar = c(4.5, 4.5, 3, 1))
+
+# Colores para cada estimador
+colores <- c("steelblue", "darkorange", "forestgreen", "purple")
+titulos <- c(
+  expression(hat(mu)[1] * " = Media muestral"),
+  expression(hat(mu)[2] * " = Rango medio"),
+  expression(hat(mu)[3] * " = Mínimo muestral"),
+  expression(hat(mu)[4] * " = Media deflactada")
+)
+
+estimadores_lista <- list(mu1, mu2, mu3, mu4)
+
+for (k in 1:4) {
+  e <- estimadores_lista[[k]]
+  
+  # Histograma de densidad
+  hist(e, breaks = 15, probability = TRUE,
+       col = adjustcolor(colores[k], 0.3),
+       border = colores[k],
+       main = titulos[k],
+       xlab = expression(hat(mu)),
+       ylab = "Densidad",
+       xlim = c(min(e) - 1, max(e) + 1))
+  
+  # Curva de densidad suavizada
+  lines(density(e), col = colores[k], lwd = 2)
+  
+  # Línea de la media teórica
+  abline(v = mu, col = "red", lwd = 2, lty = 2)
+  
+  # Línea de la media del estimador
+  abline(v = mean(e), col = colores[k], lwd = 2, lty = 3)
+  
+  # Leyenda
+  legend("topright",
+         legend = c(expression(mu == 6), 
+                    paste0("Media est. = ", round(mean(e), 3))),
+         col = c("red", colores[k]),
+         lty = c(2, 3), lwd = 2, cex = 0.8, bg = "white")
+}
+```
+
+Podemos resaltar lo siguiente:
+
+- $\hat{\mu}_1$ (Media muestral): Su densidad se centra alrededor de
+$\mu = 6$ con dispersión moderada. Es un estimador **insesgado**, ya que
+$E[\bar{X}] = \mu$. Presenta la menor varianza entre los cuatro, lo que
+lo convierte en el más eficiente. Su MSE es el menor porque combina
+sesgo nulo con baja varianza.
+
+- $\hat{\mu}_2$ (Rango medio): La densidad se sitúa cercana a $\mu = 6$
+pero con mayor dispersión que $\hat{\mu}_1$. Su sesgo es pequeño pero no
+nulo, ya que el rango medio no es un estimador insesgado para la media
+de una Gamma (la distribución no es simétrica). Su varianza y MSE son
+mayores que los de $\hat{\mu}_1$.
+
+- $\hat{\mu}_3$ (Mínimo muestral): Su densidad se desplaza marcadamente a
+la izquierda de $\mu = 6$. Es un estimador **fuertemente sesgado**
+($E[X_{(1)}] \ll \mu$), ya que el mínimo de la muestra siempre subestima
+la media. Su MSE es el mayor de los cuatro debido a la combinación de
+sesgo grande y varianza considerable. Es el peor estimador de los
+propuestos.
+
+- $\hat{\mu}_4$ (Media deflactada): Su densidad tiene la misma forma que
+la de $\hat{\mu}_1$ pero desplazada a la izquierda, ya que
+$\hat{\mu}_4 = \frac{n}{n+1}\hat{\mu}_1$. Es un estimador **sesgado
+negativamente** con sesgo teórico $-\mu/(n+1)$. Aunque su varianza es
+ligeramente menor que la de $\hat{\mu}_1$, su MSE es mayor debido al
+sesgo sistemático.
+
+
+De lo anterior, tenemos que el estimador $\hat{\mu}_1$ (media muestral) es el **mejor estimador** entre los propuestos, ya que es insesgado (se verificará más adelante), tiene la menor varianza y el menor error cuadrático medio. Esto es consistente con el hecho de que la media muestral es el **estimador de máxima verosimilitud** para la media de una distribución Gamma cuando el parámetro de forma $\alpha$ es conocido. En efecto, si $\alpha$ es conocido, el MLE de $\sigma$ es $\hat{\sigma}_{\text{MLE}} = \bar{X}/\alpha$, por lo que el MLE de $\mu = \alpha\sigma$ es $\alpha \cdot (\bar{X}/\alpha) = \bar{X}$ (véase Casella & Berger, *Statistical Inference*, 2nd ed., Ejemplo 7.2.7).
+
+### **Insesgadez**
+
+-   Mediante una simulación computacional, estima la media de cada
+    estimador y compárala con el valor verdadero de la media de la
+    población.
+-   Realiza un análisis utilizando gráficos y las estadísticas
+    pertinentes para determinar cuál de los estimadores es el menos
+    sesgado.
+
+Sabemos que un estimador $\hat{\mu}$ es **insesgado** si $E[\hat{\mu}] = \mu$. El
+**sesgo** se define como:
+
+$$\text{Sesgo}(\hat{\mu}) = E[\hat{\mu}] - \mu$$
+
+Para la distribución $\text{Gamma}(\alpha = 3, \sigma = 2)$, la media
+poblacional es $\mu = \alpha\sigma = 6$.
+
+- $\hat{\mu}_1 = \bar{X}$: Por linealidad de la esperanza:
+
+$$E[\hat{\mu}_1] = E\!\left[\frac{1}{n}\sum_{i=1}^{n}X_i\right] = \frac{1}{n}\sum_{i=1}^{n}E[X_i] = \mu \implies \text{Sesgo} = 0$$
+
+- $\hat{\mu}_2 = \frac{X_{(1)} + X_{(n)}}{2}$: Para distribuciones
+asimétricas (como la Gamma), el punto medio del rango no es insesgado.
+En general $E[\hat{\mu}_2] \neq \mu$, y el sesgo depende de la asimetría
+de la distribución.
+
+- $\hat{\mu}_3 = X_{(1)}$: El mínimo muestral siempre subestima la media.
+Para $n = 10$ y $\text{Gamma}(3, 2)$, su esperanza es considerablemente
+menor que $\mu = 6$, produciendo un sesgo negativo grande.
+
+- $\hat{\mu}_4 = \frac{1}{n+1}\sum_{i=1}^{n}X_i$: Se puede escribir como
+$\hat{\mu}_4 = \frac{n}{n+1}\bar{X}$, entonces:
+
+$$E[\hat{\mu}_4] = \frac{n}{n+1}\mu \implies \text{Sesgo} = -\frac{\mu}{n+1} = -\frac{6}{11} \approx -0.5455$$
+
+Para estimar el sesgo empíricamente, se generan $B = 10{,}000$ muestras
+de tamaño $n = 10$ y se calcula cada estimador en cada muestra. La media
+de las $B$ réplicas aproxima $E[\hat{\mu}]$ por la Ley de los Grandes
+Números como muestra la Tabla \@ref(tab:tabla-media-estimador).
+
+```{r tabla-media-estimador, echo=FALSE}
+set.seed(123)
+
+# Parámetros
+B     <- 10000       # número de muestras
+n     <- 10        # tamaño de cada muestra
+alpha <- 3         # forma
+sigma <- 2         # escala
+mu    <- alpha * sigma  # media teórica = 6
+
+# Generar las B muestras (matriz B x n)
+muestras <- matrix(rgamma(B * n, shape = alpha, scale = sigma), nrow = B, ncol = n)
+
+# Calcular los 4 estimadores para cada muestra
+mu1 <- apply(muestras, 1, mean)
+mu2 <- apply(muestras, 1, function(x) (min(x) + max(x)) / 2)
+mu3 <- apply(muestras, 1, min)
+mu4 <- apply(muestras, 1, function(x) sum(x) / (n + 1))
+# Calcular propiedades de cada estimador
+estimadores <- list(mu1, mu2, mu3, mu4)
+nombres <- c("$\\hat{\\mu}_1$", "$\\hat{\\mu}_2$", "$\\hat{\\mu}_3$", "$\\hat{\\mu}_4$")
+
+props <- data.frame(
+  Estimador     = nombres,
+  Media         = round(sapply(estimadores, mean), 4),
+  Sesgo         = round(sapply(estimadores, mean) - mu, 4)
+)
+
+knitr::kable(props,
+             caption = "Propiedades estadísticas de los estimadores (B = 10000 muestras, n = 10)",
+             col.names = c("Estimador",
+                           "Media estimada",
+                           "Sesgo ($E[\\hat{\\mu}] - \\mu$)"
+                           ),
+             align = "c")
+```
+
+En el gráfico de la Figura \@ref(fig:densidad-sesgo), se puede observar la convergencia o no convergencia de la media de cada estimador a la media teórica, para la simulación con $B=10000$ muestras de tamaño $n=10$.
+
+```{r densidad-sesgo, echo=FALSE, fig.width=10, fig.height=8, fig.cap="Convergencia del sesgo estimado conforme aumenta B"}
+set.seed(123)
+# Parámetros
+B     <- 10000
+n     <- 10
+alpha <- 3
+sigma <- 2
+mu    <- alpha * sigma  # 6
+
+# Generar B muestras (matriz B x n)
+muestras <- matrix(rgamma(B * n, shape = alpha, scale = sigma), nrow = B, ncol = n)
+
+# Calcular estimadores
+mu1 <- apply(muestras, 1, mean)
+mu2 <- apply(muestras, 1, function(x) (min(x) + max(x)) / 2)
+mu3 <- apply(muestras, 1, min)
+mu4 <- apply(muestras, 1, function(x) sum(x) / (n + 1))
+
+par(mfrow = c(2, 2), mar = c(4.5, 4.5, 3, 1))
+
+titulos <- c(
+  expression(hat(mu)[1] * " (Media muestral)"),
+  expression(hat(mu)[2] * " (Rango medio)"),
+  expression(hat(mu)[3] * " (Mínimo)"),
+  expression(hat(mu)[4] * " (Deflactada)")
+)
+
+estimadores_lista <- list(mu1, mu2, mu3, mu4)
+
+for (k in 1:4) {
+  e <- estimadores_lista[[k]]
+  media_est <- mean(e)
+  
+  hist(e, breaks = 40, probability = TRUE,
+       col = adjustcolor(colores[k], 0.3),
+       border = colores[k],
+       main = titulos[k],
+       xlab = expression(hat(mu)),
+       ylab = "Densidad")
+  
+  lines(density(e), col = colores[k], lwd = 2)
+  
+  # Media teórica
+  abline(v = mu, col = "red", lwd = 2.5, lty = 2)
+  
+  # Media del estimador
+  abline(v = media_est, col = "black", lwd = 2, lty = 3)
+  
+  legend("topright",
+         legend = c(bquote(mu == 6),
+                    bquote(E[hat(mu)] == .(round(media_est, 3)))),
+         col = c("red", "black"),
+         lty = c(2, 3), lwd = 2, cex = 0.75, bg = "white")
+}
+```
+
+Podemos observar que:
+
+- $\hat{\mu}_1$ (Media muestral): Su media estimada prácticamente coincide
+con $\mu = 6$ y su sesgo es cercano a cero. La densidad se centra
+simétricamente sobre la línea roja. Es **insesgado**, consistente con el
+resultado teórico $E[\bar{X}] = \mu$. En el gráfico de convergencia, su
+sesgo oscila alrededor de cero sin alejarse.
+
+- $\hat{\mu}_2$ (Rango medio): Presenta un sesgo positivo pequeño. Esto se
+debe a la asimetría positiva de la distribución Gamma: la cola derecha
+empuja al máximo $X_{(n)}$ más lejos de la media que lo que el mínimo
+$X_{(1)}$ se acerca, haciendo que $\frac{X_{(1)} + X_{(n)}}{2} > \mu$ en
+promedio. No es insesgado, pero su sesgo es moderado.
+
+- $\hat{\mu}_3$ (Mínimo muestral): Es el **estimador más sesgado**. Su
+media estimada es notablemente inferior a $\mu = 6$ y su densidad se
+concentra muy a la izquierda de la línea roja. El sesgo es negativo y
+grande, ya que el mínimo de la muestra siempre subestima la media. En el
+gráfico de barras y el de convergencia se aprecia claramente que este
+sesgo es estable y no tiende a cero.
+
+- $\hat{\mu}_4$ (Media deflactada): Tiene un sesgo negativo moderado y
+estable, cercano a $-\mu/(n+1) = -6/11 \approx -0.5455$. Su densidad se
+desplaza a la izquierda de $\mu = 6$ de forma uniforme. El sesgo es
+sistemático y predecible.
+
+| Posición |   Estimador   |             |        Sesgo         |
+|:--------:|:-------------:|:-----------:|:--------------------:|
+|    1°    | $\hat{\mu}_1$ | $\approx 0$ |      Insesgado       |
+|    2°    | $\hat{\mu}_2$ |   Pequeño   |  Levemente sesgado   |
+|    3°    | $\hat{\mu}_4$ |  Moderado   | Sesgado (predecible) |
+|    4°    | $\hat{\mu}_3$ |   Grande    | Fuertemente sesgado  |
+
+
+
+### **Consistencia**
+
+-   Mediante una simulación computacional, incrementa el tamaño muestral
+    desde $n = 10$ hasta $n = 1{,}000$, utilizando un conjunto de
+    valores representativos como 5, 10, 20, 30, 50, 60, 70, 80, 90, 100,
+    200, 300, 400, 500, 600, entre otros. Grafica cómo cambia la
+    variabilidad relativa de los estimadores a medida que aumenta el
+    tamaño muestral.
+-   Realiza un análisis utilizando gráficos y las estadísticas
+    necesarias para evaluar la consistencia de los estimadores.
+
+
+Un estimador $\hat{\theta}_{n}$ es **consistente** para $\theta$ si converge en probabilidad al verdadero valor del parámetro cuando el tamaño muestral $n$ tiende a infinito. Formalmente:
+
+$$\hat{\theta}_n \xrightarrow{P} \theta \quad \Longleftrightarrow \quad \lim_{n\to \infty} P\!\left(\left\vert \hat{\theta}_{n} - \theta \right\vert > \varepsilon\right) = 0, \quad \forall\, \varepsilon > 0$$
+
+En otras palabras, al aumentar $n$, la distribución del estimador se concentra alrededor de $\theta$. Una condición suficiente para la consistencia es que tanto el sesgo como la varianza del estimador tiendan a cero, o equivalentemente, que el error cuadrático medio (MSE) tienda a cero:
+
+$$\text{MSE}(\hat{\theta}_n) = \text{Sesgo}^2(\hat{\theta}_n) + \text{Var}(\hat{\theta}_n) \xrightarrow{n \to \infty} 0$$
+
+A continuación, mediante simulación analizaremos cómo se comporta la variabilidad de los cuatro estimadores propuestos al incrementar el tamaño muestral. Utilizaremos dos métricas complementarias: el **Coeficiente de Variación** (CV), que mide la variabilidad relativa del estimador respecto a su propia media, y el **Error Cuadrático Medio** (MSE) respecto al verdadero parámetro $\mu = 6$, que captura simultáneamente el sesgo y la varianza.
+
+```{r consistencia-estimadores, echo=FALSE, warning=FALSE}
+# 1. Definir funciones para cada estimador del problema
+mu1 <- function(muestra) {
+  mean(muestra) # Promedio muestral
+}
+
+mu2 <- function(muestra) {
+  (min(muestra) + max(muestra)) / 2 # Rango medio
+}
+
+mu3 <- function(muestra) {
+  min(muestra) # Mínimo muestral
+}
+
+mu4 <- function(muestra) {
+  n <- length(muestra)
+  sum(muestra) / (n + 1) # Promedio ajustado
+}
+
+# 2. Establecer parámetros poblacionales y de simulación
+set.seed(123) # Para reproducibilidad
+alpha <- 3
+sigma <- 2
+mu_true <- alpha * sigma  # = 6
+num_simulaciones <- 10000  # Gran número de simulaciones para estabilidad
+tamaños_muestra <- c(5, 10, 20, 30, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 1000)
+
+# Inicializar data frames para almacenar resultados
+coef_variacion <- data.frame()
+mse_datos <- data.frame()
+
+# 3. Bucle principal para analizar cada tamaño de muestra
+for (n in tamaños_muestra) {
+  
+  # Generar matriz: cada columna es una muestra de tamaño n (distribución Gamma)
+  muestras <- matrix(rgamma(n * num_simulaciones, shape = alpha, scale = sigma), 
+                     nrow = n, ncol = num_simulaciones)
+  
+  # Aplicar las funciones de los estimadores a cada columna de la matriz
+  estimaciones1 <- apply(muestras, 2, mu1)
+  estimaciones2 <- apply(muestras, 2, mu2)
+  estimaciones3 <- apply(muestras, 2, mu3)
+  estimaciones4 <- apply(muestras, 2, mu4)
+  
+  # Calcular los coeficientes de variación (CV = sd / media)
+  cv_est1 <- sd(estimaciones1) / mean(estimaciones1)
+  cv_est2 <- sd(estimaciones2) / mean(estimaciones2)
+  cv_est3 <- sd(estimaciones3) / mean(estimaciones3)
+  cv_est4 <- sd(estimaciones4) / mean(estimaciones4)
+  
+  # Calcular MSE respecto al verdadero parámetro mu = 6
+  mse_est1 <- mean((estimaciones1 - mu_true)^2)
+  mse_est2 <- mean((estimaciones2 - mu_true)^2)
+  mse_est3 <- mean((estimaciones3 - mu_true)^2)
+  mse_est4 <- mean((estimaciones4 - mu_true)^2)
+  
+  # Almacenar los resultados de CV
+  coef_variacion <- rbind(coef_variacion, 
+                          data.frame(n = n, Estimador = "mu1", CV = cv_est1),
+                          data.frame(n = n, Estimador = "mu2", CV = cv_est2),
+                          data.frame(n = n, Estimador = "mu3", CV = cv_est3),
+                          data.frame(n = n, Estimador = "mu4", CV = cv_est4))
+  
+  # Almacenar los resultados de MSE
+  mse_datos <- rbind(mse_datos,
+                     data.frame(n = n, Estimador = "mu1", MSE = mse_est1),
+                     data.frame(n = n, Estimador = "mu2", MSE = mse_est2),
+                     data.frame(n = n, Estimador = "mu3", MSE = mse_est3),
+                     data.frame(n = n, Estimador = "mu4", MSE = mse_est4))
+}
+```
+
+```{r resumen-cv, echo=FALSE}
+# Preparar datos para la tabla en formato ancho (más legible para libros)
+tabla_resumen_cv <- coef_variacion %>%
+  filter(n %in% c(10, 50, 100, 500, 1000)) %>%
+  tidyr::pivot_wider(names_from = Estimador, values_from = CV) %>%
+  mutate(across(starts_with("mu"), ~round(., 4))) %>%
+  arrange(n)
+
+kable(tabla_resumen_cv,
+      caption = "Evolución del Coeficiente de Variación (CV) al incrementar n.",
+      col.names = c("Tamaño de Muestra (n)", 
+              "CV ($\\hat{\\mu}_1$)", 
+              "CV ($\\hat{\\mu}_2$)", 
+              "CV ($\\hat{\\mu}_3$)", 
+              "CV ($\\hat{\\mu}_4$)"),
+      align = c("c", "c", "c", "c", "c"))
+```
+
+```{r resumen-mse, echo=FALSE}
+# Tabla de MSE para complementar el análisis de consistencia
+tabla_resumen_mse <- mse_datos %>%
+  filter(n %in% c(10, 50, 100, 500, 1000)) %>%
+  tidyr::pivot_wider(names_from = Estimador, values_from = MSE) %>%
+  mutate(across(starts_with("mu"), ~round(., 4))) %>%
+  arrange(n)
+
+kable(tabla_resumen_mse,
+      caption = "Evolución del Error Cuadrático Medio (MSE) respecto a $\\mu = 6$ al incrementar n.",
+      col.names = c("Tamaño de Muestra (n)", 
+              "MSE ($\\hat{\\mu}_1$)", 
+              "MSE ($\\hat{\\mu}_2$)", 
+              "MSE ($\\hat{\\mu}_3$)", 
+              "MSE ($\\hat{\\mu}_4$)"),
+      align = c("c", "c", "c", "c", "c"))
+```
+
+```{r fig-consistencia, echo=FALSE, fig.cap="Evolución de consistencia (CV)"}
+ #Graficar el coeficiente de variación en función del tamaño de la muestra
+ggplot(coef_variacion, aes(x = n, y = CV, color = Estimador, shape = Estimador)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_line(alpha = 1) +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
+  scale_x_log10() +  # Escala logarítmica para separar mejor las muestras pequeñas de las grandes
+  labs(
+       x = "Tamaño de Muestra (n) con escala Logarítmica", 
+       y = "Coeficiente de Variación (CV)") +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank()
+  ) +
+  scale_color_brewer(palette = "Set1")
+```
+
+```{r fig-consistencia-mse, echo=FALSE, fig.cap="Evolución del MSE respecto a $\\mu = 6$ al incrementar n"}
+ggplot(mse_datos, aes(x = n, y = MSE, color = Estimador, shape = Estimador)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_line(alpha = 1) +
+  geom_hline(yintercept = 0, color = "black") +
+  scale_x_log10() +
+  labs(
+       x = "Tamaño de Muestra (n) con escala Logarítmica", 
+       y = "Error Cuadrático Medio (MSE)") +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank()
+  ) +
+  scale_color_brewer(palette = "Set1")
+```
+
+El análisis de la consistencia de los estimadores propuestos se fundamenta en observar su comportamiento asintótico; es decir, evaluar qué sucede con su variabilidad y su MSE a medida que el tamaño de la muestra ($n$) tiende a infinito. Un estimador consistente debe converger en probabilidad al verdadero parámetro poblacional (en este caso, $\mu = 6$), lo que implica que su MSE respecto a $\mu$ debe tender a cero.
+
+Al analizar los valores numéricos presentados en la **Tabla \@ref(tab:resumen-cv)** (CV) y la **Tabla \@ref(tab:resumen-mse)** (MSE), se evidencia un contraste marcado en la evolución de los cuatro estimadores cuando $n$ se incrementa desde 10 hasta 1000:
+
+* **Estimadores ($\hat{\mu}_1$ y $\hat{\mu}_4$):** Ambos muestran una reducción sistemática y monótona tanto en su CV como en su MSE. Para un tamaño muestral grande ($n = 1000$), sus valores de MSE son sumamente bajos, acercándose cada vez más a cero. Esto indica que la variabilidad de las estimaciones se desvanece y se concentran fuertemente alrededor del verdadero parámetro, cumpliendo así con la propiedad de **consistencia**. Para $\hat{\mu}_1$, esto se respalda directamente por la Ley Fuerte de los Grandes Números. Para $\hat{\mu}_4 = \frac{n}{n+1}\bar{X}$, dado que $\frac{n}{n+1} \to 1$ y $\bar{X} \xrightarrow{P} \mu$, el teorema de Slutsky garantiza que $\hat{\mu}_4 \xrightarrow{P} \mu$.
+
+* **($\hat{\mu}_2$, rango medio):** Su CV y MSE presentan valores altos y carecen de una tendencia decreciente sostenida. Esto se debe a que la distribución Gamma tiene soporte $(0, \infty)$, es decir, soporte **no acotado superiormente**. En consecuencia, $X_{(n)} = \max(X_1, \ldots, X_n) \xrightarrow{c.s.} \infty$ cuando $n \to \infty$ (ya que para cualquier $M > 0$, se tiene $P(X > M) > 0$, y con infinitas observaciones independientes el máximo diverge con probabilidad 1). Aunque $X_{(1)} \xrightarrow{c.s.} 0$, el rango medio $\frac{X_{(1)} + X_{(n)}}{2}$ diverge porque $X_{(n)}$ domina. Por tanto, $\hat{\mu}_2$ es **inconsistente**.
+
+* **($\hat{\mu}_3$, mínimo muestral):** Aunque el CV del mínimo decrece a medida que aumenta la muestra, la Tabla \@ref(tab:resumen-mse) revela que su MSE **no tiende a cero**, sino que se estabiliza en un valor positivo. Esto se debe a que $X_{(1)} \xrightarrow{c.s.} \inf\{x : F(x) > 0\} = 0$ para la distribución Gamma (cuyo soporte es $(0, \infty)$). Es decir, el mínimo converge al límite inferior del soporte ($0$), no a la media poblacional ($\mu = 6$). Por tanto, es un estimador sesgado asintóticamente y **no es consistente** para la media.
+
+Estas conclusiones numéricas se corroboran visualmente en la **Figura \@ref(fig:fig-consistencia)** (CV) y la **Figura \@ref(fig:fig-consistencia-mse)** (MSE). Al utilizar una escala logarítmica en el eje horizontal para los tamaños muestrales, los gráficos revelan claramente cómo las curvas de los **Estimadores 1 y 4** descienden suavemente hasta converger hacia la línea base ($y=0$). 
+
+Por el contrario, la trayectoria del **Estimador 2** exhibe fluctuaciones erráticas y se mantiene alejada del cero en MSE, ilustrando gráficamente su divergencia. El **Estimador 3** muestra un MSE que se estabiliza en un valor positivo, reflejando su convergencia hacia $0 \neq \mu$.
+
+Basados en la convergencia observada tanto en las tablas como en los gráficos de simulación computacional, se determina que **solo el Estimador 1 (la media muestral) y el Estimador 4 son estimadores consistentes** para la media poblacional $\mu$.
+
+
+### **Eficiencia**
+
+-   Mediante una simulación computacional, calcula la varianza muestral
+    y el coeficiente de variación de cada estimador, y compáralos.
+-   Realiza un análisis utilizando gráficos y las estadísticas
+    pertinentes para determinar cuál de los estimadores es el más
+    eficiente.
+
+La eficiencia de un estimador se refiere a su variabilidad: entre varios estimadores de un mismo parámetro, se considera más eficiente aquel que presenta menor varianza (o menor error cuadrático medio si están sesgados). En este apartado se compara la variabilidad de los cuatro estimadores mediante dos medidas:
+
+
+```{r, echo=FALSE}
+estimador1 <- function(muestra) mean(muestra)
+estimador2 <- function(muestra) (min(muestra) + max(muestra)) / 2
+estimador3 <- function(muestra) min(muestra)
+estimador4 <- function(muestra) sum(muestra) / (length(muestra) + 1)
+
+set.seed(123)
+alpha <- 3
+sigma <- 2
+mu_true <- alpha * sigma
+num_simulaciones <- 10000
+tamaños_muestra_ef <- c(10, 30, 50, 100)
+
+resultados_eficiencia <- data.frame()
+datos_grafico_n50 <- data.frame()
+
+etiquetas <- c("$\\hat{\\mu}_1$", "$\\hat{\\mu}_2$", 
+               "$\\hat{\\mu}_3$", "$\\hat{\\mu}_4$")
+
+for (n in tamaños_muestra_ef) {
+  muestras <- matrix(rgamma(n * num_simulaciones, shape = alpha, scale = sigma), 
+                     nrow = n, ncol = num_simulaciones)
+  
+  est1 <- apply(muestras, 2, estimador1)
+  est2 <- apply(muestras, 2, estimador2)
+  est3 <- apply(muestras, 2, estimador3)
+  est4 <- apply(muestras, 2, estimador4)
+  
+  resultados_eficiencia <- rbind(resultados_eficiencia,
+    data.frame(n = n, Estimador = etiquetas[1], Varianza = var(est1), CV = sd(est1)/mean(est1)),
+    data.frame(n = n, Estimador = etiquetas[2], Varianza = var(est2), CV = sd(est2)/mean(est2)),
+    data.frame(n = n, Estimador = etiquetas[3], Varianza = var(est3), CV = sd(est3)/mean(est3)),
+    data.frame(n = n, Estimador = etiquetas[4], Varianza = var(est4), CV = sd(est4)/mean(est4))
+  )
+  
+  if (n == 50) {
+    datos_grafico_n50 <- data.frame(
+      Valor = c(est1, est2, est3, est4),
+      Estimador = factor(rep(etiquetas, each = num_simulaciones), levels = etiquetas)
+    )
+  }
+}
+```
+
+
+```{r tab-eficiencia, echo=FALSE}
+tabla_efi_ancha <- resultados_eficiencia %>%
+  pivot_wider(names_from = Estimador, values_from = c(Varianza, CV)) %>%
+  select(n, 
+         `Varianza_$\\hat{\\mu}_1$`, `CV_$\\hat{\\mu}_1$`,
+         `Varianza_$\\hat{\\mu}_2$`, `CV_$\\hat{\\mu}_2$`,
+         `Varianza_$\\hat{\\mu}_3$`, `CV_$\\hat{\\mu}_3$`,
+         `Varianza_$\\hat{\\mu}_4$`, `CV_$\\hat{\\mu}_4$`) %>%
+  mutate(across(-n, ~round(., 4)))
+
+kable(tabla_efi_ancha, 
+      format = "markdown",
+      booktabs = TRUE,
+      caption = "Comparación de Varianza y Coeficiente de Variación (CV) por tamaño de muestra.",
+      col.names = c("$n$", 
+                    "$\\text{Var}(\\hat{\\mu}_1)$", "$\\text{CV}(\\hat{\\mu}_1)$",
+                    "$\\text{Var}(\\hat{\\mu}_2)$", "$\\text{CV}(\\hat{\\mu}_2)$",
+                    "$\\text{Var}(\\hat{\\mu}_3)$", "$\\text{CV}(\\hat{\\mu}_3)$",
+                    "$\\text{Var}(\\hat{\\mu}_4)$", "$\\text{CV}(\\hat{\\mu}_4)$"),
+      align = "c")
+```
+
+Nótese que la varianza teórica de $\hat{\mu}_1 = \bar{X}$ es $\text{Var}(\bar{X}) = \alpha\sigma^2/n = 12/n$. Para $n = 10$, esto da $1.2$; para $n = 50$, da $0.24$; para $n = 100$, da $0.12$. Los valores empíricos de la Tabla \@ref(tab:tab-eficiencia) son consistentes con estos valores teóricos.
+
+```{r fig-eficiencia, echo=FALSE, fig.cap="Eficiencia de los Estimadores (n = 50)"}
+ggplot(datos_grafico_n50, aes(x = Estimador, y = Valor, fill = Estimador)) +
+  geom_boxplot(alpha = 0.7, outlier.alpha = 0.1) +
+  geom_hline(yintercept = 6, linetype = "dashed", color = "red", linewidth = 1) +
+  coord_cartesian(ylim = c(0, 15)) + 
+  scale_x_discrete(labels = c(
+    expression(hat(mu)[1]),
+    expression(hat(mu)[2]),
+    expression(hat(mu)[3]),
+    expression(hat(mu)[4])
+  )) +
+  labs(
+       subtitle = expression("Línea roja: media real " * (mu == 6)),
+       x = "Estimador",
+       y = "Valor Estimado") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set1")
+```
+
+Al evaluar la eficiencia de un estimador, el objetivo principal es identificar aquel que presente la menor varianza (es decir, una mayor concentración de las estimaciones) en torno al verdadero valor del parámetro, bajo la condición fundamental de que sea insesgado. Basándonos en las estadísticas de la Tabla \@ref(tab:tab-eficiencia) y la visualización de las distribuciones en la Figura \@ref(fig:fig-eficiencia), realizamos el siguiente análisis:
+
+Estimadores $\hat{\mu}_2$ y $\hat{\mu}_3$ (Ineficientes y Sesgados):
+
+La Figura \@ref(fig:fig-eficiencia) muestra claramente que el $\hat{\mu}_3$ tiene una varianza muy pequeña (la caja es sumamente estrecha), pero sus estimaciones se concentran cerca de cero, alejadas completamente del valor real $\mu = 6$ (línea roja punteada). Su aparente "baja varianza" es irrelevante porque es un estimador fuertemente sesgado que no apunta a la media poblacional.
+
+El $\hat{\mu}_2$ presenta en el gráfico una caja extremadamente alargada con una gran cantidad de valores atípicos en la parte superior. Como se corrobora en la Tabla \@ref(tab:tab-eficiencia), posee la varianza más alta de todos los estimadores. Esto lo hace altamente ineficiente y muy sensible a los valores extremos típicos de la cola derecha extendida de la distribución Gamma.
+
+Estimadores $\hat{\mu}_1$ y $\hat{\mu}_4$: Al observar la Tabla \@ref(tab:tab-eficiencia), notamos un detalle matemático clave: la varianza del Estimador ($\hat{\mu}_4$) es menor que la varianza del Estimador ($\hat{\mu}_1$) para todos los tamaños de muestra evaluados. Esto se debe a que $\hat{\mu}_4$ divide la suma total por $n+1$ en lugar de $n$, lo que comprime artificialmente la varianza por un factor de $\left(\frac{n}{n+1}\right)^2$.
+
+Sin embargo, la mayor eficiencia relativa de $\hat{\mu}_4$ tiene un costo: introduce un pequeño sesgo negativo (subestima ligeramente el valor real). Esto es visible en la Figura \@ref(fig:fig-eficiencia), donde la mediana de su caja se ubica levemente por debajo de la línea roja poblacional.
+
+Por el contrario, el Estimador $\hat{\mu}_1$ (la media muestral) está perfectamente centrado sobre la línea roja de $\mu=6$, demostrando ser un estimador insesgado que, a su vez, posee una varianza sumamente pequeña.
+
+En conclusión, si evaluamos de forma estricta la varianza sin considerar el sesgo, el Estimador $\hat{\mu}_4$ resulta tener numéricamente la menor varianza muestral. No obstante, en la teoría de la estimación estadística, la eficiencia suele evaluarse formalmente dentro de la clase de estimadores insesgados (buscando el UMVUE: Estimador Insesgado de Varianza Mínima Uniforme). La **Cota Inferior de Cramér-Rao** establece que, para un estimador insesgado $\hat{\theta}$ de $\theta$, se cumple:
+
+$$\text{Var}(\hat{\theta}) \geq \frac{1}{n\, I(\theta)}$$
+
+donde $I(\theta)$ es la información de Fisher. Para la distribución $\text{Gamma}(\alpha, \sigma)$ con $\alpha$ conocido, el parámetro de escala $\sigma$ tiene información de Fisher $I(\sigma) = \alpha/\sigma^2$. La varianza de $\hat{\mu}_1 = \bar{X}$ es $\text{Var}(\bar{X}) = \alpha\sigma^2/n$, y puede verificarse que esta coincide con la cota de Cramér-Rao para $\mu = \alpha\sigma$ (aplicando la regla de la cadena para reparametrización; véase Casella & Berger, *Statistical Inference*, 2nd ed., Sec. 7.3). Bajo este criterio fundamental, el Estimador $\hat{\mu}_1$ (la media muestral) es el estimador más eficiente, ya que garantiza la insesgadez y alcanza la mínima varianza posible para estimar correctamente el centro de esta población, siendo la opción más robusta y estándar en la práctica.

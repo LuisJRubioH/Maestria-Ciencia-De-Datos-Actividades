@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Estimación de intervalos de confianza | Actividad 2</title>
+  <meta name="description" content="4 Estimación de intervalos de confianza | Actividad 2" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Estimación de intervalos de confianza | Actividad 2" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Estimación de intervalos de confianza | Actividad 2" />
+  
+  
+  
+
+<meta name="author" content="Oriana Giraldo Arcia (Grupo A)" />
+<meta name="author" content="Luis Javier Rubio Hernández (Grupo B)" />
+
+
+<meta name="date" content="2026-03-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="teorema-del-límite-central.html"/>
+<link rel="next" href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html"><i class="fa fa-check"></i><b>1</b> <strong>Estimación de la probabilidad y la media</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#problema-1"><i class="fa fa-check"></i><b>1.1</b> <strong>Problema 1</strong></a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#c%C3%A1lculo-de-probabilidad-te%C3%B3rica"><i class="fa fa-check"></i><b>1.1.1</b> <strong>Cálculo de probabilidad teórica</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#simulaci%C3%B3n-con-una-muestra"><i class="fa fa-check"></i><b>1.1.2</b> <strong>Simulación con una muestra</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#an%C3%A1lisis-de-la-variabilidad-entre-muestras"><i class="fa fa-check"></i><b>1.1.3</b> <strong>Análisis de la variabilidad entre muestras</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral"><i class="fa fa-check"></i><b>1.1.4</b> <strong>Impacto del tamaño muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.5" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#convergencia-de-la-media-muestral"><i class="fa fa-check"></i><b>1.1.5</b> <strong>Convergencia de la media muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.6" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral-en-la-media"><i class="fa fa-check"></i><b>1.1.6</b> <strong>Impacto del tamaño muestral en la media</strong>:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html"><i class="fa fa-check"></i><b>2</b> <strong>Propiedades de los estimadores</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#problema-2"><i class="fa fa-check"></i><b>2.1</b> <strong>Problema 2</strong></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#simulaci%C3%B3n-de-estimadores"><i class="fa fa-check"></i><b>2.1.1</b> <strong>Simulación de estimadores</strong></a></li>
+<li class="chapter" data-level="2.1.2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#insesgadez"><i class="fa fa-check"></i><b>2.1.2</b> <strong>Insesgadez</strong></a></li>
+<li class="chapter" data-level="2.1.3" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#consistencia"><i class="fa fa-check"></i><b>2.1.3</b> <strong>Consistencia</strong></a></li>
+<li class="chapter" data-level="2.1.4" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#eficiencia"><i class="fa fa-check"></i><b>2.1.4</b> <strong>Eficiencia</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html"><i class="fa fa-check"></i><b>3</b> <strong>Teorema del límite central</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#problema-3"><i class="fa fa-check"></i><b>3.1</b> <strong>Problema 3</strong></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#c%C3%A1lculo-de-la-media-y-varianza-de-la-poblaci%C3%B3n"><i class="fa fa-check"></i><b>3.1.1</b> <strong>Cálculo de la media y varianza de la población</strong></a></li>
+<li class="chapter" data-level="3.1.2" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#gr%C3%A1fico-de-la-curva-de-densidad"><i class="fa fa-check"></i><b>3.1.2</b> <strong>Gráfico de la curva de densidad</strong></a></li>
+<li class="chapter" data-level="3.1.3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#comparaci%C3%B3n-de-par%C3%A1metros-estimadores-y-estimaciones"><i class="fa fa-check"></i><b>3.1.3</b> <strong>Comparación de parámetros, estimadores y estimaciones</strong></a></li>
+<li class="chapter" data-level="3.1.4" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-para-n-200"><i class="fa fa-check"></i><b>3.1.4</b> <strong>Aplicación del Teorema del Límite Central para <span class="math inline">\(n = 200\)</span></strong></a></li>
+<li class="chapter" data-level="3.1.5" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-variando-n"><i class="fa fa-check"></i><b>3.1.5</b> <strong>Aplicación del Teorema del Límite Central variando <span class="math inline">\(n\)</span></strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html"><i class="fa fa-check"></i><b>4</b> <strong>Estimación de intervalos de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#normalidad"><i class="fa fa-check"></i><b>4.0.1</b> <strong>Normalidad</strong></a></li>
+<li class="chapter" data-level="4.0.2" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico"><i class="fa fa-check"></i><b>4.0.2</b> <strong>Método paramétrico</strong></a></li>
+<li class="chapter" data-level="4.0.3" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap"><i class="fa fa-check"></i><b>4.0.3</b> <strong>Procedimiento bootstrap</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><i class="fa fa-check"></i><b>5</b> <strong>Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#problema-5"><i class="fa fa-check"></i><b>5.1</b> <strong>Problema 5</strong></a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#errores-de-decisi%C3%B3n-tipo-i-y-tipo-ii"><i class="fa fa-check"></i><b>5.1.1</b> Errores de decisión: Tipo I y Tipo II</a></li>
+<li class="chapter" data-level="5.1.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#potencia-estad%C3%ADstica"><i class="fa fa-check"></i><b>5.1.2</b> Potencia estadística</a></li>
+<li class="chapter" data-level="5.1.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tama%C3%B1o-del-efecto-de-cohen"><i class="fa fa-check"></i><b>5.1.3</b> Tamaño del efecto de Cohen</a></li>
+<li class="chapter" data-level="5.1.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#funci%C3%B3n-de-potencia-exacta-distribuci%C3%B3n-t-no-central"><i class="fa fa-check"></i><b>5.1.4</b> Función de potencia exacta: distribución <span class="math inline">\(t\)</span> no central</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-computacional"><i class="fa fa-check"></i><b>5.2</b> <strong>Análisis computacional</strong></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#configuraci%C3%B3n-general"><i class="fa fa-check"></i><b>5.2.1</b> Configuración general</a></li>
+<li class="chapter" data-level="5.2.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.10"><i class="fa fa-check"></i><b>5.2.2</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.10\)</span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.05"><i class="fa fa-check"></i><b>5.2.3</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.05\)</span></a></li>
+<li class="chapter" data-level="5.2.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.01"><i class="fa fa-check"></i><b>5.2.4</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.01\)</span></a></li>
+<li class="chapter" data-level="5.2.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#comparaci%C3%B3n-de-los-tres-niveles-de-significancia"><i class="fa fa-check"></i><b>5.2.5</b> Comparación de los tres niveles de significancia</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tabla-de-tama%C3%B1os-m%C3%ADnimos-de-muestra"><i class="fa fa-check"></i><b>5.3</b> <strong>Tabla de tamaños mínimos de muestra</strong></a></li>
+<li class="chapter" data-level="5.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#curva-de-rendimientos-marginales-de-la-potencia"><i class="fa fa-check"></i><b>5.4</b> <strong>Curva de rendimientos marginales de la potencia</strong></a></li>
+<li class="chapter" data-level="5.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#respuesta-a-las-preguntas-orientadoras"><i class="fa fa-check"></i><b>5.5</b> <strong>Respuesta a las preguntas orientadoras</strong></a></li>
+<li class="chapter" data-level="5.6" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#propuesta-final-del-dise%C3%B1o-del-estudio"><i class="fa fa-check"></i><b>5.6</b> <strong>Propuesta final del diseño del estudio</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html"><i class="fa fa-check"></i><b>6</b> <strong>Prueba de hipótesis e intervalo de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#problema-6"><i class="fa fa-check"></i><b>6.1</b> <strong>Problema 6</strong></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#contexto-informe-descriptivo-de-la-actividad-1"><i class="fa fa-check"></i><b>6.1.1</b> Contexto: Informe descriptivo de la Actividad 1</a></li>
+<li class="chapter" data-level="6.1.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#carga-y-preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.1.2</b> Carga y preparación de los datos</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.2</b> Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal"><i class="fa fa-check"></i><b>6.2.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.2.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos"><i class="fa fa-check"></i><b>6.2.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.2.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-t-de-welch"><i class="fa fa-check"></i><b>6.2.3</b> Prueba de hipótesis: <span class="math inline">\(t\)</span> de Welch</a></li>
+<li class="chapter" data-level="6.2.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.2.4</b> Intervalo de confianza al 95% para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.2.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.5</b> Visualización</a></li>
+<li class="chapter" data-level="6.2.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.6</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.3</b> Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-1"><i class="fa fa-check"></i><b>6.3.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.3.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-1"><i class="fa fa-check"></i><b>6.3.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.3.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-no-param%C3%A9trica-mann-whitney-wilcoxon"><i class="fa fa-check"></i><b>6.3.3</b> Prueba no paramétrica: Mann-Whitney-Wilcoxon</a></li>
+<li class="chapter" data-level="6.3.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tama%C3%B1o-del-efecto-correlaci%C3%B3n-biserial-de-rango"><i class="fa fa-check"></i><b>6.3.4</b> Tamaño del efecto: Correlación biserial de rango</a></li>
+<li class="chapter" data-level="6.3.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-t-de-welch-confirmaci%C3%B3n-asint%C3%B3tica"><i class="fa fa-check"></i><b>6.3.5</b> Prueba <span class="math inline">\(t\)</span> de Welch (confirmación asintótica)</a></li>
+<li class="chapter" data-level="6.3.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-bootstrap-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.3.6</b> Intervalo de confianza Bootstrap para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.3.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#comparaci%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.3.7</b> Comparación de resultados</a></li>
+<li class="chapter" data-level="6.3.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.3.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-3-la-proporci%C3%B3n-de-aceptaci%C3%B3n-de-la-campa%C3%B1a-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar"><i class="fa fa-check"></i><b>6.4</b> Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-2"><i class="fa fa-check"></i><b>6.4.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.4.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.4.2</b> Preparación de los datos</a></li>
+<li class="chapter" data-level="6.4.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-2"><i class="fa fa-check"></i><b>6.4.3</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.4.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-dos-proporciones-z-test"><i class="fa fa-check"></i><b>6.4.4</b> Prueba de dos proporciones (<span class="math inline">\(z\)</span>-test)</a></li>
+<li class="chapter" data-level="6.4.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-p_a---p_b"><i class="fa fa-check"></i><b>6.4.5</b> Intervalo de confianza al 95% para <span class="math inline">\(p_A - p_B\)</span></a></li>
+<li class="chapter" data-level="6.4.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#confirmaci%C3%B3n-prueba-chi2-de-independencia"><i class="fa fa-check"></i><b>6.4.6</b> Confirmación: prueba <span class="math inline">\(\chi^2\)</span> de independencia</a></li>
+<li class="chapter" data-level="6.4.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.4.7</b> Visualización</a></li>
+<li class="chapter" data-level="6.4.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-2"><i class="fa fa-check"></i><b>6.4.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#resumen-comparativo-de-las-tres-preguntas"><i class="fa fa-check"></i><b>6.5</b> Resumen comparativo de las tres preguntas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>7</b> Referencias</a></li>
+<li class="chapter" data-level="8" data-path="anexos.html"><a href="anexos.html"><i class="fa fa-check"></i><b>8</b> Anexos</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad 2</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="estimación-de-intervalos-de-confianza" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> <strong>Estimación de intervalos de confianza</strong><a href="estimación-de-intervalos-de-confianza.html#estimaci%C3%B3n-de-intervalos-de-confianza" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Una empresa dedicada a la generación de energía renovable desea evaluar el rendimiento
+de sus 20 generadores eléctricos portátiles, alimentados con biocombustible. Estos
+generadores se utilizan en proyectos remotos, donde la eficiencia energética es crucial
+para minimizar costos y reducir la huella ambiental. Para el estudio, se mide la eficiencia
+energética de cada generador, expresada en kilovatios-hora por litro de combustible
+(kWh/L). Los resultados son:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="estimación-de-intervalos-de-confianza.html#cb1-1" tabindex="-1"></a><span class="co"># Muestra de eficiencia energética (kWh/L)</span></span>
+<span id="cb1-2"><a href="estimación-de-intervalos-de-confianza.html#cb1-2" tabindex="-1"></a>muestra <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">6.12</span>, <span class="fl">5.87</span>, <span class="fl">5.45</span>, <span class="fl">6.33</span>, <span class="fl">5.71</span>, <span class="fl">6.04</span>, <span class="fl">5.92</span>, <span class="fl">5.65</span>, <span class="fl">6.18</span>,</span>
+<span id="cb1-3"><a href="estimación-de-intervalos-de-confianza.html#cb1-3" tabindex="-1"></a>             <span class="fl">5.78</span>, <span class="fl">5.95</span>, <span class="fl">6.21</span>, <span class="fl">5.63</span>, <span class="fl">5.79</span>, <span class="fl">6.11</span>, <span class="fl">5.88</span>, <span class="fl">6.02</span>, <span class="fl">5.76</span>, <span class="fl">5.85</span>, <span class="fl">6.10</span>)</span></code></pre></div>
+<p>El objetivo es determinar intervalos de confianza al 95% para la eficiencia media.</p>
+<p>Realiza las siguientes actividades:</p>
+<div id="normalidad" class="section level3 hasAnchor" number="4.0.1">
+<h3><span class="header-section-number">4.0.1</span> <strong>Normalidad</strong><a href="estimación-de-intervalos-de-confianza.html#normalidad" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Elabora un histograma y una curva de densidad de la muestra. ¿Podría
+considerarse normal la población de origen de la muestra?</li>
+<li>Aplica pruebas para evaluar la normalidad. Expón claramente las hipótesis nula y
+alternativa. Determina el nivel de significancia adecuado. Argumenta el valor del
+nivel de significancia que uses.</li>
+<li>Comenta si los resultados sugieren la viabilidad de usar métodos paramétricos
+para calcular intervalos de confianza.</li>
+</ul>
+<p>La Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-resumen-muestra">4.1</a> presenta los estadísticos
+descriptivos de la muestra.</p>
+<table>
+<caption>
+<span id="tab:tab-resumen-muestra">Table 4.1: </span>Estadísticos descriptivos de la muestra de eficiencia energética de los <span class="math inline">\(n = 20\)</span> generadores eléctricos portátiles.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Estadístico
+</th>
+<th style="text-align:center;">
+Símbolo
+</th>
+<th style="text-align:center;">
+Valor
+</th>
+<th style="text-align:left;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Media muestral
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{x}\)</span>
+</td>
+<td style="text-align:center;">
+5.9175
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Desviación estándar
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(s\)</span>
+</td>
+<td style="text-align:center;">
+0.2232
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mínimo
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(x_{(1)}\)</span>
+</td>
+<td style="text-align:center;">
+5.4500
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Máximo
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(x_{(n)}\)</span>
+</td>
+<td style="text-align:center;">
+6.3300
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+</tbody>
+</table>
+<p>A continuación, elaboramos un histograma y una curva de densidad de la muestra.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-hist-normalidad"></span>
+<img src="Actividad-2_files/figure-html/fig-hist-normalidad-1.png" alt="Histograma y curva de densidad" width="80%" />
+<p class="caption">
+Figure 4.1: Histograma y curva de densidad
+</p>
+</div>
+<p>El histograma de la Figura <a href="estimación-de-intervalos-de-confianza.html#fig:fig-hist-normalidad">4.1</a> ofrece
+una visión global de la distribución empírica, pero con <span class="math inline">\(n = 20\)</span>
+no puede caracterizar con precisión el comportamiento de las colas
+ni detectar valores atípicos individuales. Para subsanar estas
+limitaciones se complementa el análisis con dos herramientas
+adicionales que responden preguntas distintas:</p>
+<div class="figure"><span style="display:block;" id="fig:fig-qq-normalidad"></span>
+<img src="Actividad-2_files/figure-html/fig-qq-normalidad-1.png" alt=" Q-Q: Eficiencia energética" width="80%" />
+<p class="caption">
+Figure 4.2:  Q-Q: Eficiencia energética
+</p>
+</div>
+<p>El <strong>gráfico Q-Q</strong> (Figura <a href="estimación-de-intervalos-de-confianza.html#fig:fig-qq-normalidad">4.2</a>) evalúa
+específicamente si los cuantiles empíricos de la muestra son
+consistentes con los cuantiles teóricos de la distribución normal,
+con especial sensibilidad al comportamiento de las colas.</p>
+<div class="figure"><span style="display:block;" id="fig:boxplot-normalidad"></span>
+<img src="Actividad-2_files/figure-html/boxplot-normalidad-1.png" alt="Boxplot: Eficiencia energética" width="80%" />
+<p class="caption">
+Figure 4.3: Boxplot: Eficiencia energética
+</p>
+</div>
+<p>El boxplot Figura <a href="estimación-de-intervalos-de-confianza.html#fig:boxplot-normalidad">4.3</a> es aproximadamente simétrico respecto a la mediana. No se observan valores atípicos (<em>outliers</em>). La distribución no muestra asimetría marcada.</p>
+<p>Ahora, vamos aplicar algunas pruebas de normalidad. Para todas las pruebas se plantean las mismas hipótesis:</p>
+<p><span class="math display">\[H_0: \text{La muestra proviene de una población con distribución normal}\]</span>
+<span class="math display">\[H_1: \text{La muestra NO proviene de una población con distribución normal}\]</span></p>
+<p>Se utiliza <span class="math inline">\(\alpha = 0.05\)</span>. Este valor es el estándar convencional en análisis estadístico y proporciona un equilibrio adecuado entre los errores tipo I (rechazar <span class="math inline">\(H_0\)</span> cuando es verdadera) y tipo II (no rechazar <span class="math inline">\(H_0\)</span> cuando es falsa). Con <span class="math inline">\(n = 20\)</span>, un nivel más estricto (<span class="math inline">\(\alpha = 0.01\)</span>) reduciría excesivamente la potencia de las pruebas, dificultando detectar desviaciones reales de la normalidad.</p>
+<p><strong>Regla de decisión:</strong> Si <span class="math inline">\(p \geq 0.05\)</span>, no se rechaza <span class="math inline">\(H_0\)</span> (evidencia compatible con normalidad).</p>
+<ul>
+<li><strong>Prueba 1: Shapiro-Wilk (<code>sw &lt;- shapiro.test(muestra)</code>)</strong></li>
+</ul>
+<p>Es la prueba más recomendada para muestras pequeñas (<span class="math inline">\(n \leq 50\)</span>) por su alta potencia para detectar desviaciones de la normalidad.</p>
+<ul>
+<li><strong>Prueba 2: Lilliefors (Kolmogorov-Smirnov corregido <code>ks &lt;- lillie.test(muestra)}</code>)</strong></li>
+</ul>
+<p>A diferencia del test K-S clásico, la corrección de Lilliefors es apropiada cuando los parámetros de la distribución se estiman a partir de la muestra.</p>
+<p><strong>Prueba 3: Anderson-Darling (<code>ad &lt;- ad.test(muestra)</code>)</strong></p>
+<p>Esta prueba es especialmente sensible a desviaciones en las colas de la distribución.</p>
+<table>
+<caption>
+<span id="tab:resumen-norm">Table 4.2: </span>Resumen de pruebas de normalidad
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Prueba
+</th>
+<th style="text-align:right;">
+Estadístico
+</th>
+<th style="text-align:right;">
+p-valor
+</th>
+<th style="text-align:left;">
+Decisión (α = 0.05)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:left;">
+Shapiro-Wilk
+</td>
+<td style="text-align:right;">
+0.9884
+</td>
+<td style="text-align:right;">
+0.9955
+</td>
+<td style="text-align:left;">
+No se rechaza H₀
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+Lilliefors (K-S)
+</td>
+<td style="text-align:right;">
+0.0932
+</td>
+<td style="text-align:right;">
+0.9202
+</td>
+<td style="text-align:left;">
+No se rechaza H₀
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+Anderson-Darling
+</td>
+<td style="text-align:right;">
+0.1313
+</td>
+<td style="text-align:right;">
+0.9772
+</td>
+<td style="text-align:left;">
+No se rechaza H₀
+</td>
+</tr>
+</tbody>
+</table>
+<p>A partir del análisis gráfico presentado en la Figura <a href="estimación-de-intervalos-de-confianza.html#fig:fig-hist-normalidad">4.1</a> (histograma con densidad kernel y curva normal teórica) y del gráfico Q–Q mostrado en la Figura <a href="estimación-de-intervalos-de-confianza.html#fig:fig-qq-normalidad">4.2</a>, no se observan desviaciones evidentes respecto a la forma que caracterizaría a una distribución normal. En particular, la distribución empírica no muestra asimetrías pronunciadas ni indicios claros de multimodalidad, y la curva normal <span class="math inline">\(N(\bar{x}, s^2)\)</span> se superpone razonablemente con la densidad estimada de los datos.</p>
+<p>Adicionalmente, las pruebas formales de normalidad cuyos resultados se resumen en la Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:resumen-norm">4.2</a> producen valores <span class="math inline">\(p\)</span> elevados, por lo que <strong>no existe evidencia estadística suficiente para rechazar la hipótesis nula de normalidad</strong> al nivel de significancia considerado.</p>
+<p>No obstante, debe señalarse que el tamaño muestral es relativamente pequeño (<span class="math inline">\(n = 20\)</span>), lo cual limita la potencia de las pruebas de normalidad y reduce la capacidad de los métodos gráficos para detectar desviaciones moderadas respecto a la distribución normal. En consecuencia, <strong>los resultados no demuestran que la población sea normal</strong>, sino que indican que <strong>los datos observados son compatibles con un modelo normal</strong>.</p>
+<p>Por tanto, bajo la evidencia disponible, <strong>resulta razonable adoptar el supuesto de normalidad poblacional como aproximación para los procedimientos inferenciales posteriores (métodos paramétricos)</strong>, particularmente para la construcción del intervalo de confianza basado en la distribución <span class="math inline">\(t\)</span> de Student, que es el procedimiento adecuado cuando:</p>
+<ol style="list-style-type: decimal">
+<li>La población es aproximadamente normal.</li>
+<li>El tamaño de muestra es pequeño (<span class="math inline">\(n = 20 &lt; 30\)</span>).</li>
+<li>La varianza poblacional <span class="math inline">\(\sigma^2\)</span> es desconocida (se estima con <span class="math inline">\(s^2\)</span>).</li>
+</ol>
+<p>Adicionalmente, cabe señalar que el estadístico <span class="math inline">\(t\)</span> es <strong>relativamente robusto</strong> ante desviaciones moderadas de la normalidad cuando la distribución subyacente es unimodal y aproximadamente simétrica (véase Montgomery &amp; Runger, <em>Probabilidad y Estadística Aplicadas a la Ingeniería</em>, 6ta ed., Sec. 8.1). En este caso, tanto el histograma como el boxplot confirman que la distribución es unimodal, simétrica y libre de valores atípicos, condiciones bajo las cuales el intervalo <span class="math inline">\(t\)</span> mantiene un nivel de cobertura cercano al nominal incluso con <span class="math inline">\(n = 20\)</span>.</p>
+</div>
+<div id="metodo-parametrico" class="section level3 hasAnchor" number="4.0.2">
+<h3><span class="header-section-number">4.0.2</span> <strong>Método paramétrico</strong><a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Si se cumplen las condiciones para su aplicación, calcula un intervalo de
+confianza paramétrico.</li>
+<li>Compara e interpreta este intervalo con los obtenidos mediante métodos no
+paramétricos.</li>
+</ul>
+<p>Dado que en la sección anterior el análisis gráfico conjunto
+(Figuras <a href="estimación-de-intervalos-de-confianza.html#fig:fig-hist-normalidad">4.1</a>, <a href="estimación-de-intervalos-de-confianza.html#fig:fig-qq-normalidad">4.2</a>
+y <a href="estimación-de-intervalos-de-confianza.html#fig:boxplot-normalidad">4.3</a>) y las tres pruebas formales de
+normalidad (Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:resumen-norm">4.2</a>) convergieron en no rechazar
+el modelo normal al nivel <span class="math inline">\(\alpha = 0.05\)</span>, se cumplen los supuestos
+necesarios para aplicar un método paramétrico. Adicionalmente, la
+varianza poblacional <span class="math inline">\(\sigma^2\)</span> es desconocida y debe estimarse a partir
+de la muestra, lo que determina el procedimiento a utilizar.</p>
+<p><strong>Supuestos requeridos para la validez del intervalo <span class="math inline">\(t\)</span> de Student:</strong></p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(X_1, X_2, \ldots, X_n \overset{\text{i.i.d.}}{\sim} N(\mu, \sigma^2)\)</span>
+con <span class="math inline">\(\sigma^2\)</span> <strong>desconocida</strong>. (Verificado en la sección anterior.)</li>
+<li>Las observaciones son <strong>independientes</strong> entre sí. (Garantizado por
+el proceso de medición independiente de cada generador.)</li>
+</ol>
+<p>Bajo estos supuestos, el estadístico pivotal es:</p>
+<p><span class="math display">\[T = \frac{\bar{X} - \mu}{S / \sqrt{n}} \sim t_{n-1}\]</span></p>
+<p>donde <span class="math inline">\(S = \sqrt{\frac{1}{n-1}\sum_{i=1}^n(X_i - \bar{X})^2}\)</span> es la
+desviación estándar muestral, calculada a partir de la varianza muestral
+insesgada <span class="math inline">\(S^2\)</span> (nótese que <span class="math inline">\(S^2\)</span> es un estimador insesgado de <span class="math inline">\(\sigma^2\)</span>,
+es decir <span class="math inline">\(E[S^2] = \sigma^2\)</span>, pero <span class="math inline">\(S\)</span> en sí no es insesgado para <span class="math inline">\(\sigma\)</span>
+debido a la concavidad de la raíz cuadrada, por la desigualdad de Jensen:
+<span class="math inline">\(E[S] = E[\sqrt{S^2}] &lt; \sqrt{E[S^2]} = \sigma\)</span>; sin embargo, el sesgo
+es pequeño y decrece con <span class="math inline">\(n\)</span>). Este resultado es <strong>exacto</strong>
+(no una aproximación asintótica) bajo normalidad de la población. El
+intervalo de confianza al <span class="math inline">\((1-\alpha)\times 100\%\)</span> para <span class="math inline">\(\mu\)</span> es:</p>
+<p><span class="math display">\[\bar{X} \pm t_{\alpha/2,\, n-1} \cdot \frac{S}{\sqrt{n}}\]</span></p>
+<p>donde <span class="math inline">\(t_{\alpha/2,\, n-1} = F_{t_{n-1}}^{-1}(1-\alpha/2)\)</span> es el
+cuantil de orden <span class="math inline">\(1-\alpha/2\)</span> de la distribución <span class="math inline">\(t\)</span> de Student con
+<span class="math inline">\(n-1\)</span> grados de libertad.</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-elementos-ic">Table 4.3: </span>Elementos del intervalo de confianza al <span class="math inline">\(95\%\)</span> para la eficiencia media <span class="math inline">\(\mu\)</span>
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Elemento
+</th>
+<th style="text-align:center;font-weight: bold;">
+Símbolo
+</th>
+<th style="text-align:center;font-weight: bold;">
+Valor
+</th>
+<th style="text-align:left;font-weight: bold;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Tamaño muestral
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(n\)</span>
+</td>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:left;">
+observaciones
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Media muestral
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\bar{x}\)</span>
+</td>
+<td style="text-align:center;">
+5.9175
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Desviación estándar muestral
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(s\)</span>
+</td>
+<td style="text-align:center;">
+0.2232
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grados de libertad
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(n - 1\)</span>
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:left;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nivel de confianza
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1 - \alpha\)</span>
+</td>
+<td style="text-align:center;">
+95%
+</td>
+<td style="text-align:left;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nivel de significancia
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha\)</span>
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:left;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Valor crítico
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(t_{\alpha/2,\, n-1} = t_{0.025,\, 19}\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+2.093
+</td>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Error estándar
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(s / \sqrt{n}\)</span>
+</td>
+<td style="text-align:center;">
+0.0499
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Margen de error
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(t_{0.025,19} \cdot s/\sqrt{n}\)</span>
+</td>
+<td style="text-align:center;">
+0.1045
+</td>
+<td style="text-align:left;">
+kWh/L
+</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-elementos-ic">4.3</a> reúne todos los elementos
+necesarios para construir el intervalo. El valor crítico
+<span class="math inline">\(t_{0.025,\, 19} = 2.093\)</span> refleja la mayor incertidumbre
+asociada al uso de <span class="math inline">\(s\)</span> en lugar de <span class="math inline">\(\sigma\)</span>: es mayor que el cuantil
+normal <span class="math inline">\(z_{0.025} = 1.96\)</span>, diferencia que se acentúa con muestras
+pequeñas y se reduce conforme <span class="math inline">\(n \to \infty\)</span> (la distribución <span class="math inline">\(t_{n-1}\)</span>
+converge a la <span class="math inline">\(N(0,1)\)</span>).</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-resultado-ic">Table 4.4: </span>Intervalo de confianza al <span class="math inline">\(95\%\)</span> para la eficiencia media <span class="math inline">\(\mu\)</span> de los generadores, obtenido mediante el procedimiento <span class="math inline">\(t\)</span> de Student.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Concepto
+</th>
+<th style="text-align:center;font-weight: bold;">
+Expresión
+</th>
+<th style="text-align:center;font-weight: bold;">
+Valor (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Límite inferior
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(\bar{x} - t_{0.025,19} \cdot s/\sqrt{n}\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+5.8130
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-style: italic;">
+Media muestral (centro)
+</td>
+<td style="text-align:center;font-style: italic;">
+<span class="math inline">\(\bar{x}\)</span>
+</td>
+<td style="text-align:center;font-style: italic;">
+5.9175
+</td>
+<td style="text-align:center;font-style: italic;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Límite superior
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(\bar{x} + t_{0.025,19} \cdot s/\sqrt{n}\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+6.0220
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amplitud del intervalo
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(2\, t_{0.025,19} \cdot s/\sqrt{n}\)</span>
+</td>
+<td style="text-align:center;">
+0.2089
+</td>
+<td style="text-align:center;">
+kWh/L
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-verificacion-ttest">Table 4.5: </span>Verificación cruzada del intervalo de confianza al <span class="math inline">\(95\%\)</span>: cálculo manual mediante la fórmula <span class="math inline">\(t\)</span> de Student versus resultado de la función <code>t.test()</code> de R.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Método de cálculo
+</th>
+<th style="text-align:center;font-weight: bold;">
+Límite inferior (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Límite superior (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Amplitud (kWh/L)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cálculo manual (fórmula <span class="math inline">\(t\)</span>)
+</td>
+<td style="text-align:center;">
+5.813
+</td>
+<td style="text-align:center;">
+6.022
+</td>
+<td style="text-align:center;">
+0.2089
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Función <code>t.test()</code> de R
+</td>
+<td style="text-align:center;">
+5.813
+</td>
+<td style="text-align:center;">
+6.022
+</td>
+<td style="text-align:center;">
+0.2089
+</td>
+</tr>
+</tbody>
+</table>
+<div class="figure"><span style="display:block;" id="fig:fig-ic-parametrico"></span>
+<img src="Actividad-2_files/figure-html/fig-ic-parametrico-1.png" alt="Intervalo de confianza al $95\%$ para la eficiencia media $\mu$ de los generadores eléctricos portátiles" width="80%" />
+<p class="caption">
+Figure 4.4: Intervalo de confianza al <span class="math inline">\(95\%\)</span> para la eficiencia media <span class="math inline">\(\mu\)</span> de los generadores eléctricos portátiles
+</p>
+</div>
+<p>Las Tablas <a href="estimación-de-intervalos-de-confianza.html#tab:tab-elementos-ic">4.3</a>, <a href="estimación-de-intervalos-de-confianza.html#tab:tab-resultado-ic">4.4</a> y
+<a href="estimación-de-intervalos-de-confianza.html#tab:tab-verificacion-ttest">4.5</a>, junto con la Figura
+<a href="estimación-de-intervalos-de-confianza.html#fig:fig-ic-parametrico">4.4</a>, presentan de forma desagregada la
+construcción y el resultado del intervalo de confianza. El intervalo
+obtenido es:</p>
+<p><span class="math display">\[\text{IC}_{95\%}(\mu) =
+\left[\bar{x} - t_{0.025,19}\cdot\frac{s}{\sqrt{n}},\;
+      \bar{x} + t_{0.025,19}\cdot\frac{s}{\sqrt{n}}\right]
+= [5.813,\; 6.022] \text{ kWh/L}\]</span></p>
+<p>Si el procedimiento de muestreo se replicara un número muy grande de veces bajo idénticas condiciones, aproximadamente el <span class="math inline">\(95\%\)</span> de los intervalos construidos
+de esta forma contendrían el verdadero valor de <span class="math inline">\(\mu\)</span>. Esta probabilidad
+es una propiedad del <strong>procedimiento</strong>, no del intervalo particular
+obtenido de esta muestra. Una vez calculados los límites
+<span class="math inline">\([5.813,\, 6.022]\)</span>, <span class="math inline">\(\mu\)</span> o está o no está en
+ese intervalo; no es correcto afirmar que <em>“<span class="math inline">\(\mu\)</span> tiene una probabilidad
+del <span class="math inline">\(95\%\)</span> de estar en este intervalo”</em>, ya que <span class="math inline">\(\mu\)</span> es un parámetro
+fijo en el enfoque frecuentista.</p>
+<p>El intervalo es estrecho (amplitud <span class="math inline">\(= 0.2089\)</span> kWh/L, aproximadamente el <span class="math inline">\(3.5\%\)</span> de <span class="math inline">\(\bar{x}\)</span>), lo que refleja
+la baja variabilidad observada en la muestra (<span class="math inline">\(s = 0.2232\)</span>
+kWh/L). Esta consistencia es coherente con lo observado en el boxplot
+(Figura <a href="estimación-de-intervalos-de-confianza.html#fig:boxplot-normalidad">4.3</a>): la caja era estrecha, sin
+valores atípicos, y la dispersión muestral era moderada. Un intervalo
+estrecho con <span class="math inline">\(n = 20\)</span> es posible precisamente porque la muestra es
+homogénea, característica que ya era visible en los gráficos de la
+sección anterior.</p>
+<p>La amplitud del intervalo está determinada por:</p>
+<p><span class="math display">\[\text{Amplitud} = 2\,t_{0.025,19}\cdot\frac{s}{\sqrt{n}}
+= 2 \times 2.093 \times \frac{0.2232}{\sqrt{20}}
+= 0.2089 \text{ kWh/L}\]</span></p>
+<p>Con <span class="math inline">\(n = 20\)</span>, el valor crítico <span class="math inline">\(t_{0.025,19} = 2.093\)</span>
+es sensiblemente mayor que <span class="math inline">\(z_{0.025} = 1.96\)</span> (diferencia del
+<span class="math inline">\(6.8\%\)</span>), lo que penaliza la precisión
+del intervalo respecto al caso en que <span class="math inline">\(\sigma\)</span> fuera conocida.
+Incrementar la muestra reduciría simultáneamente el error estándar
+<span class="math inline">\(s/\sqrt{n}\)</span> y acercaría <span class="math inline">\(t_{\alpha/2,\,n-1}\)</span> a <span class="math inline">\(z_{\alpha/2}\)</span>,
+produciendo intervalos más estrechos.</p>
+<p>La comparación detallada con los intervalos bootstrap se realiza en la
+sección siguiente. Se anticipa que, dado que el supuesto de normalidad
+se verifica (Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:resumen-norm">4.2</a>), el intervalo <span class="math inline">\(t\)</span> es el
+procedimiento de referencia: produce el intervalo de menor amplitud
+esperada dentro de la clase de procedimientos con nivel de confianza
+exacto del <span class="math inline">\(95\%\)</span>, en el sentido de que utiliza toda la información
+paramétrica disponible bajo el modelo normal.</p>
+</div>
+<div id="procedimiento-bootstrap" class="section level3 hasAnchor" number="4.0.3">
+<h3><span class="header-section-number">4.0.3</span> <strong>Procedimiento bootstrap</strong><a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Calcula 2 tipos de intervalos de confianza para la media mediante Bootstrap.</li>
+<li>Compara ambos intervalos: ¿Son similares o presentan diferencias
+significativas?</li>
+</ul>
+<p>Dado que en la sección anterior se calculó el intervalo <span class="math inline">\(t\)</span> de Student
+(Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-resultado-ic">4.4</a>) como referencia paramétrica, esta
+sección construye dos intervalos de confianza al <span class="math inline">\(95\%\)</span> mediante el
+método bootstrap, que no requiere supuestos distribucionales sobre la
+población. La comparación entre los tres métodos permite evaluar si el
+supuesto de normalidad verificado en la sección <a href="estimación-de-intervalos-de-confianza.html#normalidad">4.0.1</a> tiene
+consecuencias prácticas sobre los límites del intervalo.</p>
+<p><strong>Definición formal (bootstrap no paramétrico).</strong> Sea
+<span class="math inline">\(\mathbf{x} = (x_1, \ldots, x_n)\)</span> la muestra original y
+<span class="math inline">\(\hat{F}_n(x) = n^{-1}\sum_{i=1}^n \mathbf{1}_{\{x_i \leq x\}}\)</span>
+la <strong>función de distribución empírica</strong>. Una <strong>muestra bootstrap</strong>
+<span class="math inline">\(\mathbf{x}^* = (X_1^*, \ldots, X_n^*)\)</span> se obtiene muestreando con
+reemplazo de <span class="math inline">\(\hat{F}_n\)</span>:</p>
+<p><span class="math display">\[X_1^*, \ldots, X_n^* \overset{\text{i.i.d.}}{\sim} \hat{F}_n\]</span></p>
+<p>El <strong>estadístico bootstrap</strong> es <span class="math inline">\(\bar{X}^* = n^{-1}\sum_{i=1}^n X_i^*\)</span>.
+Su distribución empírica sobre <span class="math inline">\(B\)</span> réplicas aproxima la distribución
+muestral de <span class="math inline">\(\bar{X}\)</span> bajo <span class="math inline">\(F\)</span>. La justificación teórica es que
+<span class="math inline">\(\hat{F}_n \to F\)</span> casi seguramente (Teorema de Glivenko-Cantelli), de
+modo que la distribución de <span class="math inline">\(\bar{X}^*\)</span> bajo <span class="math inline">\(\hat{F}_n\)</span> converge a la
+distribución de <span class="math inline">\(\bar{X}\)</span> bajo <span class="math inline">\(F\)</span> (Efron &amp; Tibshirani, 1993, Cap. 6).</p>
+<p>Se calcularán dos tipos de intervalos:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Bootstrap Percentil:</strong> utiliza directamente los cuantiles empíricos
+<span class="math inline">\(Q_{\alpha/2}(\bar{X}^*)\)</span> y <span class="math inline">\(Q_{1-\alpha/2}(\bar{X}^*)\)</span> de la
+distribución bootstrap.</li>
+<li><strong>Bootstrap BCa</strong> (<em>Bias-Corrected and Accelerated</em>): corrige el
+sesgo (<span class="math inline">\(\hat{z}_0\)</span>) y la asimetría (<span class="math inline">\(\hat{a}\)</span>) de la distribución
+bootstrap mediante ajustes a los percentiles utilizados.</li>
+</ol>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-dist-bootstrap">Table 4.6: </span>Estadísticos descriptivos de la distribución bootstrap de <span class="math inline">\(\bar{X}^*\)</span> obtenida con <span class="math inline">\(B = 10{,}000\)</span> réplicas (<span class="math inline">\(\texttt{set.seed(123)}\)</span>). El sesgo bootstrap mide la diferencia sistemática entre la media de las réplicas y el estadístico original <span class="math inline">\(\bar{x} = 5.9175\)</span> kWh/L.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Concepto
+</th>
+<th style="text-align:left;font-weight: bold;">
+Símbolo
+</th>
+<th style="text-align:center;font-weight: bold;">
+Valor
+</th>
+<th style="text-align:center;font-weight: bold;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Número de réplicas
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(B\)</span>
+</td>
+<td style="text-align:center;">
+10000.0000
+</td>
+<td style="text-align:center;">
+réplicas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Media muestral original
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\bar{x}\)</span>
+</td>
+<td style="text-align:center;">
+5.9175
+</td>
+<td style="text-align:center;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Media de las réplicas <span class="math inline">\(\bar{X}^{**}\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\bar{X}^{**} = B^{-1}\sum_{b=1}^B \bar{X}^*_b\)</span>
+</td>
+<td style="text-align:center;">
+5.9175
+</td>
+<td style="text-align:center;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Desviación estándar bootstrap <span class="math inline">\(\widehat{\text{SE}}\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\hat{\sigma}_{\text{boot}}\)</span>
+</td>
+<td style="text-align:center;">
+0.0488
+</td>
+<td style="text-align:center;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;">
+Sesgo bootstrap <span class="math inline">\(\bar{X}^{**} - \bar{x}\)</span>
+</td>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(\hat{\text{Sesgo}}\)</span>
+</td>
+<td style="text-align:center;background-color: rgba(234, 243, 251, 255) !important;">
+0.0000
+</td>
+<td style="text-align:center;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-dist-bootstrap">4.6</a> muestra que el sesgo bootstrap
+es prácticamente nulo (<span class="math inline">\(\approx 0\)</span>
+kWh/L). Esto anticipa que las correcciones del método BCa serán
+mínimas y que los tres intervalos deberían ser muy similares entre sí,
+resultado coherente con la normalidad de la población verificada en la
+Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:resumen-norm">4.2</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-hist-bootstrap"></span>
+<img src="Actividad-2_files/figure-html/fig-hist-bootstrap-1.png" alt="Distribución bootstrap de la media muestral $\bar{X}^*$ basada en $B = 10{,}000$ réplicas con reemplazo de la muestra original ($n = 20$). La curva azul es la densidad kernel de las réplicas; la curva roja punteada es la densidad $N(\bar{X}^{**},\, \hat{\sigma}^2_{\text{boot}})$ ajustada a las réplicas. La línea verde punteada marca la media muestral original $\bar{x} = 5.9175$ kWh/L. La estrecha concordancia entre la densidad kernel y la curva normal confirma que la distribución bootstrap es aproximadamente normal, lo que es consistente con el supuesto de normalidad de la población verificado en la sección anterior." width="80%" />
+<p class="caption">
+Figure 4.5: Distribución bootstrap de la media muestral <span class="math inline">\(\bar{X}^*\)</span> basada en <span class="math inline">\(B = 10{,}000\)</span> réplicas con reemplazo de la muestra original (<span class="math inline">\(n = 20\)</span>). La curva azul es la densidad kernel de las réplicas; la curva roja punteada es la densidad <span class="math inline">\(N(\bar{X}^{**},\, \hat{\sigma}^2_{\text{boot}})\)</span> ajustada a las réplicas. La línea verde punteada marca la media muestral original <span class="math inline">\(\bar{x} = 5.9175\)</span> kWh/L. La estrecha concordancia entre la densidad kernel y la curva normal confirma que la distribución bootstrap es aproximadamente normal, lo que es consistente con el supuesto de normalidad de la población verificado en la sección anterior.
+</p>
+</div>
+<p>La Figura <a href="estimación-de-intervalos-de-confianza.html#fig:fig-hist-bootstrap">4.5</a> confirma visualmente lo
+anticipado en la Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-dist-bootstrap">4.6</a>: la distribución
+bootstrap de <span class="math inline">\(\bar{X}^*\)</span> es simétrica, unimodal y prácticamente
+indistinguible de una normal. Dado que la población original es normal
+(sección <a href="estimación-de-intervalos-de-confianza.html#normalidad">4.0.1</a>), esto es el resultado esperado: por el
+Teorema Central del Límite, <span class="math inline">\(\bar{X} \overset{\text{aprox}}{\sim}
+N(\mu, \sigma^2/n)\)</span>, y la distribución bootstrap replica este
+comportamiento usando <span class="math inline">\(\hat{F}_n\)</span> en lugar de <span class="math inline">\(F\)</span>.</p>
+<p>El intervalo percentil utiliza directamente los cuantiles empíricos de
+la distribución bootstrap:</p>
+<p><span class="math display">\[\text{IC}_{\text{perc}}
+= \left[\, Q_{\alpha/2}(\bar{X}^*),\;\; Q_{1-\alpha/2}(\bar{X}^*) \,\right]\]</span></p>
+<p>donde <span class="math inline">\(Q_p(\bar{X}^*)\)</span> es el cuantil empírico de orden <span class="math inline">\(p\)</span> de las <span class="math inline">\(B\)</span>
+réplicas (Efron &amp; Tibshirani, 1993, expresión 13.3).</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-ic-percentil">Table 4.7: </span>Intervalo de confianza al <span class="math inline">\(95\%\)</span> mediante bootstrap percentil. Los cuantiles empíricos <span class="math inline">\(Q_{0.025}\)</span> y <span class="math inline">\(Q_{0.975}\)</span> se calculan directamente sobre las <span class="math inline">\(B = 10{,}000\)</span> réplicas bootstrap.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Elemento
+</th>
+<th style="text-align:center;font-weight: bold;">
+Símbolo
+</th>
+<th style="text-align:center;font-weight: bold;">
+Valor
+</th>
+<th style="text-align:center;font-weight: bold;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Percentil utilizado (límite inferior)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha/2 = 0.025\)</span>
+</td>
+<td style="text-align:center;">
+2.5%
+</td>
+<td style="text-align:center;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Percentil utilizado (límite superior)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1 - \alpha/2 = 0.975\)</span>
+</td>
+<td style="text-align:center;">
+97.5%
+</td>
+<td style="text-align:center;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Límite inferior
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(Q_{0.025}(\bar{X}^*)\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+5.8235
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Límite superior
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(Q_{0.975}(\bar{X}^*)\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+6.0125
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amplitud
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Q_{0.975} - Q_{0.025}\)</span>
+</td>
+<td style="text-align:center;">
+0.189
+</td>
+<td style="text-align:center;">
+kWh/L
+</td>
+</tr>
+</tbody>
+</table>
+<p>El método BCa corrige dos fuentes de error en la distribución bootstrap.
+El factor de aceleración <span class="math inline">\(\hat{a}\)</span> mide la tasa a la que el error
+estándar del estadístico cambia en función del parámetro, y se estima
+mediante el <strong>método jackknife</strong>: <span class="math inline">\(\bar{X}_{(-i)} =
+(n-1)^{-1}\sum_{j \neq i} x_j\)</span> es la media sin la <span class="math inline">\(i\)</span>-ésima
+observación y <span class="math inline">\(\bar{X}_{(\cdot)} = n^{-1}\sum_{i=1}^n \bar{X}_{(-i)}\)</span>
+es la media de las medias jackknife.</p>
+<p><span class="math display">\[\hat{z}_0 = \Phi^{-1}\!\left(\frac{\#\{\bar{X}^*_b &lt; \bar{x}\}}{B}\right), \qquad
+\hat{a} = \frac{\sum_{i=1}^{n}
+  \left(\bar{X}_{(\cdot)} - \bar{X}_{(-i)}\right)^3}
+  {6\left[\sum_{i=1}^{n}
+  \left(\bar{X}_{(\cdot)} - \bar{X}_{(-i)}\right)^2
+  \right]^{3/2}}\]</span></p>
+<p>Los percentiles ajustados son:</p>
+<p><span class="math display">\[\alpha_1 = \Phi\!\left(\hat{z}_0 + \frac{\hat{z}_0 + z_{\alpha/2}}
+{1 - \hat{a}(\hat{z}_0 + z_{\alpha/2})}\right), \qquad
+\alpha_2 = \Phi\!\left(\hat{z}_0 + \frac{\hat{z}_0 + z_{1-\alpha/2}}
+{1 - \hat{a}(\hat{z}_0 + z_{1-\alpha/2})}\right)\]</span></p>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-ic-bca">Table 4.8: </span>Intervalo de confianza al <span class="math inline">\(95\%\)</span> mediante bootstrap BCa. Las correcciones <span class="math inline">\(\hat{z}_0 \approx 0\)</span> y <span class="math inline">\(\hat{a} \approx 0\)</span> indican que la distribución bootstrap no presenta sesgo ni asimetría apreciables, lo que explica la práctica coincidencia con el intervalo percentil de la Tabla <span class="math inline">\(\ref{tab:tab-ic-percentil}\)</span>.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Elemento
+</th>
+<th style="text-align:center;font-weight: bold;">
+Símbolo
+</th>
+<th style="text-align:center;font-weight: bold;">
+Valor
+</th>
+<th style="text-align:center;font-weight: bold;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;background-color: rgba(255, 248, 225, 255) !important;">
+Corrección de sesgo
+</td>
+<td style="text-align:center;background-color: rgba(255, 248, 225, 255) !important;">
+<span class="math inline">\(\hat{z}_0\)</span>
+</td>
+<td style="text-align:center;background-color: rgba(255, 248, 225, 255) !important;">
+-0.000300
+</td>
+<td style="text-align:center;background-color: rgba(255, 248, 225, 255) !important;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: rgba(255, 248, 225, 255) !important;">
+Factor de aceleración
+</td>
+<td style="text-align:center;background-color: rgba(255, 248, 225, 255) !important;">
+<span class="math inline">\(\hat{a}\)</span>
+</td>
+<td style="text-align:center;background-color: rgba(255, 248, 225, 255) !important;">
+-0.004577
+</td>
+<td style="text-align:center;background-color: rgba(255, 248, 225, 255) !important;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Percentil ajustado inferior
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha_1\)</span>
+</td>
+<td style="text-align:center;">
+0.024000
+</td>
+<td style="text-align:center;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Percentil ajustado superior
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\alpha_2\)</span>
+</td>
+<td style="text-align:center;">
+0.973900
+</td>
+<td style="text-align:center;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Límite inferior
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(Q_{\alpha_1}(\bar{X}^*)\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+5.822500
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Límite superior
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(Q_{\alpha_2}(\bar{X}^*)\)</span>
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+6.011500
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Amplitud
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Q_{\alpha_2} - Q_{\alpha_1}\)</span>
+</td>
+<td style="text-align:center;">
+0.189000
+</td>
+<td style="text-align:center;">
+kWh/L
+</td>
+</tr>
+</tbody>
+</table>
+<p>Las filas resaltadas en amarillo de la Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-ic-bca">4.8</a>
+contienen las correcciones del método BCa. El valor
+<span class="math inline">\(\hat{z}_0 = -0.0003\)</span> indica que la proporción de réplicas
+bootstrap menores que <span class="math inline">\(\bar{x}\)</span> es prácticamente del <span class="math inline">\(50\%\)</span>, lo que
+confirma la simetría de la distribución bootstrap. El valor
+<span class="math inline">\(\hat{a} = -0.004577\)</span> es cercano a cero, indicando que el
+error estándar de <span class="math inline">\(\bar{X}\)</span> no varía apreciablemente con <span class="math inline">\(\mu\)</span>.
+Ambas correcciones son despreciables, lo cual es consecuencia directa
+de la normalidad de la población (Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:resumen-norm">4.2</a>).</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-verificacion-boot">Table 4.9: </span>Verificación cruzada de los intervalos bootstrap: cálculo manual versus paquete <code>boot</code> de R. Las pequeñas discrepancias entre métodos equivalentes son atribuibles al uso de semillas distintas internamente por el paquete <code>boot</code>; los resultados son sustancialmente idénticos.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Método
+</th>
+<th style="text-align:center;font-weight: bold;">
+Límite inferior (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Límite superior (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Amplitud (kWh/L)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr grouplength="2">
+<td colspan="4" style="border-bottom: 1px solid;">
+<strong>Intervalo Percentil</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Cálculo manual — Percentil
+</td>
+<td style="text-align:center;">
+5.8235
+</td>
+<td style="text-align:center;">
+6.0125
+</td>
+<td style="text-align:center;">
+0.189
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Paquete <code>boot</code> — Percentil
+</td>
+<td style="text-align:center;">
+5.8220
+</td>
+<td style="text-align:center;">
+6.0120
+</td>
+<td style="text-align:center;">
+0.190
+</td>
+</tr>
+<tr grouplength="2">
+<td colspan="4" style="border-bottom: 1px solid;">
+<strong>Intervalo BCa</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Cálculo manual — BCa
+</td>
+<td style="text-align:center;">
+5.8225
+</td>
+<td style="text-align:center;">
+6.0115
+</td>
+<td style="text-align:center;">
+0.189
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Paquete <code>boot</code> — BCa
+</td>
+<td style="text-align:center;">
+5.8205
+</td>
+<td style="text-align:center;">
+6.0105
+</td>
+<td style="text-align:center;">
+0.190
+</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-verificacion-boot">4.9</a> confirma que el cálculo
+manual implementado reproduce fielmente los resultados del paquete
+<code>boot</code>, lo que valida la correcta aplicación de las fórmulas de
+corrección BCa.</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-comparacion-final">Table 4.10: </span>Comparación de los tres intervalos de confianza al <span class="math inline">\(95\%\)</span> para la eficiencia media <span class="math inline">\(\mu\)</span>. La razón de amplitudes <span class="math inline">\(R = \text{Amplitud} / \text{Amplitud}_{t}\)</span> se calcula respecto al intervalo <span class="math inline">\(t\)</span> de Student como referencia (<span class="math inline">\(R = 1.0000\)</span>). Valores <span class="math inline">\(R \approx 1\)</span> indican equivalencia práctica. Los supuestos indican si el método requiere distribución poblacional específica.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+</th>
+<th style="text-align:left;font-weight: bold;">
+Método
+</th>
+<th style="text-align:left;font-weight: bold;">
+Supuesto distribucional
+</th>
+<th style="text-align:center;font-weight: bold;">
+L. inferior (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+L. superior (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Amplitud (kWh/L)
+</th>
+<th style="text-align:center;font-weight: bold;">
+Razón <span class="math inline">\(R\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+</td>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+<span class="math inline">\(t\)</span> de Student (paramétrico)
+</td>
+<td style="text-align:left;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+Normalidad (requerida)
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+5.8130
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+6.0220
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+0.2089
+</td>
+<td style="text-align:center;font-weight: bold;background-color: rgba(234, 243, 251, 255) !important;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.5%
+</td>
+<td style="text-align:left;">
+Bootstrap Percentil
+</td>
+<td style="text-align:left;">
+Ninguno
+</td>
+<td style="text-align:center;">
+5.8235
+</td>
+<td style="text-align:center;">
+6.0125
+</td>
+<td style="text-align:center;">
+0.1890
+</td>
+<td style="text-align:center;">
+0.9046
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.395233%
+</td>
+<td style="text-align:left;">
+Bootstrap BCa
+</td>
+<td style="text-align:left;">
+Ninguno
+</td>
+<td style="text-align:center;">
+5.8225
+</td>
+<td style="text-align:center;">
+6.0115
+</td>
+<td style="text-align:center;">
+0.1890
+</td>
+<td style="text-align:center;">
+0.9046
+</td>
+</tr>
+</tbody>
+</table>
+<div class="figure"><span style="display:block;" id="fig:fig-comparacion-ic"></span>
+<img src="Actividad-2_files/figure-html/fig-comparacion-ic-1.png" alt="Comparación visual de los tres intervalos de confianza al $95\%$ para la eficiencia media $\mu$." width="80%" />
+<p class="caption">
+Figure 4.6: Comparación visual de los tres intervalos de confianza al <span class="math inline">\(95\%\)</span> para la eficiencia media <span class="math inline">\(\mu\)</span>.
+</p>
+</div>
+<p>La Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-comparacion-final">4.10</a> y la Figura
+<a href="estimación-de-intervalos-de-confianza.html#fig:fig-comparacion-ic">4.6</a> presentan los tres intervalos de
+confianza de forma unificada. Los resultados permiten las siguientes
+observaciones:</p>
+<p>Las razones de amplitud son <span class="math inline">\(R \approx 1\)</span>
+para los tres métodos, con diferencias inferiores a
+<span class="math inline">\(-9.54\%\)</span> respecto al
+intervalo <span class="math inline">\(t\)</span>. Esta equivalencia no es casual: es la consecuencia
+esperada cuando la distribución poblacional es normal. En ese caso,
+la distribución bootstrap de <span class="math inline">\(\bar{X}^*\)</span> es aproximadamente normal
+(verificado en la Figura <a href="estimación-de-intervalos-de-confianza.html#fig:fig-hist-bootstrap">4.5</a>), las
+correcciones BCa son despreciables (Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-ic-bca">4.8</a>), y
+el intervalo percentil coincide con el BCa.</p>
+<p>El intervalo <span class="math inline">\(t\)</span> es exactamente simétrico alrededor de
+<span class="math inline">\(\bar{x}\)</span> por construcción. Los intervalos bootstrap pueden ser
+ligeramente asimétricos cuando <span class="math inline">\(\hat{z}_0 \neq 0\)</span> o <span class="math inline">\(\hat{a} \neq 0\)</span>;
+en este caso ambas correcciones son prácticamente nulas, por lo que
+la asimetría observada es mínima.</p>
+<p>Si la población no fuera normal
+(por ejemplo, con asimetría pronunciada o colas pesadas), la
+distribución bootstrap de <span class="math inline">\(\bar{X}^*\)</span> sería asimétrica,
+<span class="math inline">\(\hat{z}_0 \neq 0\)</span> y <span class="math inline">\(\hat{a} \neq 0\)</span>, y el intervalo BCa produciría
+límites distintos a los del método <span class="math inline">\(t\)</span>. En ese escenario, los
+intervalos bootstrap serían más confiables, mientras que el intervalo
+<span class="math inline">\(t\)</span> podría tener un nivel de cobertura real inferior al <span class="math inline">\(95\%\)</span>
+declarado.</p>
+<p>El análisis desarrollado a lo largo de las secciones <a href="estimación-de-intervalos-de-confianza.html#normalidad">4.0.1</a>,
+<a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico">4.0.2</a> y <a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap">4.0.3</a> permite
+establecer una conclusión estructurada en tres niveles.</p>
+<p>El punto de partida metodológico fue la evaluación de la normalidad de
+la población mediante tres pruebas formales independientes
+(Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:resumen-norm">4.2</a>) y tres herramientas gráficas
+complementarias (Figuras <a href="estimación-de-intervalos-de-confianza.html#fig:fig-hist-normalidad">4.1</a>,
+<a href="estimación-de-intervalos-de-confianza.html#fig:fig-qq-normalidad">4.2</a> y <a href="estimación-de-intervalos-de-confianza.html#fig:boxplot-normalidad">4.3</a>).
+Las tres pruebas —Shapiro-Wilk, Lilliefors y Anderson-Darling— no
+rechazaron <span class="math inline">\(H_0\)</span> al nivel <span class="math inline">\(\alpha = 0.05\)</span>, y los gráficos mostraron
+simetría, ausencia de valores atípicos y colas compatibles con la
+normal. Esta convergencia de evidencias justificó el uso del método
+paramétrico <span class="math inline">\(t\)</span> de Student.</p>
+<p>Es importante recordar, sin embargo, que con <span class="math inline">\(n = 20\)</span> las pruebas de
+normalidad tienen <strong>potencia limitada</strong>: no rechazar <span class="math inline">\(H_0\)</span> no prueba
+la normalidad, solo establece compatibilidad con ella. El análisis
+gráfico complementario fue esencial precisamente para compensar
+esta limitación.</p>
+<p>Los estadísticos descriptivos de la muestra
+(Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-resumen-muestra">4.1</a>) mostraron una eficiencia media
+de <span class="math inline">\(\bar{x} = 5.9175\)</span> kWh/L con una desviación
+estándar de <span class="math inline">\(s = 0.2232\)</span> kWh/L. La baja
+variabilidad relativa (<span class="math inline">\(\text{CV} =
+3.77\%\)</span>) sugería de entrada
+que el intervalo de confianza sería estrecho, lo cual fue confirmado.</p>
+<p>El intervalo <span class="math inline">\(t\)</span> de Student (Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-resultado-ic">4.4</a>)
+produjo:</p>
+<p><span class="math display">\[\text{IC}_{95\%}(\mu) = [5.813,\;
+6.022] \text{ kWh/L}\]</span></p>
+<p>con una amplitud de 0.2089 kWh/L. Este
+resultado tiene una interpretación directa en el contexto del problema:
+con un <span class="math inline">\(95\%\)</span> de confianza, la eficiencia media poblacional de los
+generadores se estima entre
+<span class="math inline">\(5.813\)</span> y
+<span class="math inline">\(6.022\)</span> kWh/L, un rango que representa
+apenas el <span class="math inline">\(3.5\%\)</span>
+de la media muestral. Esto indica un rendimiento <strong>consistente</strong> y
+<strong>preciso</strong> de los generadores evaluados.</p>
+<p>La comparación entre el método paramétrico y los dos métodos bootstrap
+(Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-comparacion-final">4.10</a> y Figura
+<a href="estimación-de-intervalos-de-confianza.html#fig:fig-comparacion-ic">4.6</a>) reveló que los tres intervalos son
+prácticamente equivalentes, con razones de amplitud <span class="math inline">\(R \approx 1\)</span>.
+Este resultado tiene dos lecturas:</p>
+<p><strong>Desde la perspectiva del método <span class="math inline">\(t\)</span>:</strong> la equivalencia confirma que
+el supuesto de normalidad es adecuado y que el intervalo <span class="math inline">\(t\)</span> no está
+sobreestimando ni subestimando la incertidumbre. Si hubiera habido
+no-normalidad, el bootstrap habría producido límites distintos.</p>
+<p><strong>Desde la perspectiva del bootstrap:</strong> los métodos no paramétricos
+replican el resultado del método paramétrico sin imponer ningún
+supuesto distribucional. La corrección BCa
+(Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-ic-bca">4.8</a>) arrojó <span class="math inline">\(\hat{z}_0 \approx 0\)</span> y
+<span class="math inline">\(\hat{a} \approx 0\)</span>, lo que confirma que no hay sesgo ni asimetría
+en la distribución bootstrap, resultado coherente con la normalidad
+de la población.</p>
+<table class="table table-striped table-hover table-condensed" style="color: black; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-conclusion-p4">Table 4.11: </span>Síntesis de los resultados del Problema 4. La coincidencia de los tres intervalos de confianza y la validación de supuestos proporcionan una estimación robusta y confiable de la eficiencia media poblacional <span class="math inline">\(\mu\)</span> de los generadores eléctricos.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Aspecto
+</th>
+<th style="text-align:left;font-weight: bold;">
+Resultado
+</th>
+</tr>
+</thead>
+<tbody>
+<tr grouplength="1">
+<td colspan="2" style="border-bottom: 1px solid;">
+<strong>Diagnóstico de supuestos</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Normalidad de la población
+</td>
+<td style="text-align:left;">
+Compatible (<span class="math inline">\(p &amp;gt; 0.05\)</span> en tres pruebas)
+</td>
+</tr>
+<tr grouplength="2">
+<td colspan="2" style="border-bottom: 1px solid;">
+<strong>Estimación</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Método de estimación
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(t\)</span> de Student (<span class="math inline">\(n-1 = 19\)</span> g.l.)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Estimación puntual de <span class="math inline">\(\mu\)</span>
+</td>
+<td style="text-align:left;">
+5.9175 kWh/L
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="2" style="border-bottom: 1px solid;">
+<strong>Intervalos de confianza</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;padding-left: 2em;" indentlevel="1">
+IC<span class="math inline">\(_{95\%}\)</span> — <span class="math inline">\(t\)</span> de Student
+</td>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;">
+[5.813, 6.022] kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;padding-left: 2em;" indentlevel="1">
+IC<span class="math inline">\(_{95\%}\)</span> — Bootstrap Percentil
+</td>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;">
+[5.8235, 6.0125] kWh/L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;padding-left: 2em;" indentlevel="1">
+IC<span class="math inline">\(_{95\%}\)</span> — Bootstrap BCa
+</td>
+<td style="text-align:left;background-color: rgba(234, 243, 251, 255) !important;">
+[5.8225, 6.0115] kWh/L
+</td>
+</tr>
+<tr grouplength="2">
+<td colspan="2" style="border-bottom: 1px solid;">
+<strong>Comparación de métodos</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;background-color: rgba(232, 245, 233, 255) !important;padding-left: 2em;" indentlevel="1">
+Equivalencia entre métodos
+</td>
+<td style="text-align:left;font-weight: bold;background-color: rgba(232, 245, 233, 255) !important;">
+<span class="math inline">\(R \approx 1\)</span> (diferencia <span class="math inline">\(&amp;lt; 1\%\)</span>)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Robustez del resultado
+</td>
+<td style="text-align:left;">
+Alta: bootstrap replica el intervalo <span class="math inline">\(t\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>La Tabla <a href="estimación-de-intervalos-de-confianza.html#tab:tab-conclusion-p4">4.11</a> sintetiza los resultados de las
+tres secciones del Problema 4. La conclusión central es que la
+eficiencia energética media de los generadores puede estimarse con
+alta precisión y confianza: el intervalo
+<span class="math inline">\([5.813,\, 6.022]\)</span>
+kWh/L es robusto en el sentido de que tres procedimientos
+estadísticamente distintos —uno paramétrico y dos no paramétricos—
+convergen al mismo resultado. Esta convergencia no es trivial: es la
+manifestación empírica de que el modelo normal es adecuado para
+estos datos y de que la muestra, aunque pequeña (<span class="math inline">\(n = 20\)</span>),
+es suficientemente homogénea como para producir estimaciones
+confiables.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="teorema-del-límite-central.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

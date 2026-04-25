@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Estimación de la probabilidad y la media | Actividad 2</title>
+  <meta name="description" content="1 Estimación de la probabilidad y la media | Actividad 2" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Estimación de la probabilidad y la media | Actividad 2" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Estimación de la probabilidad y la media | Actividad 2" />
+  
+  
+  
+
+<meta name="author" content="Oriana Giraldo Arcia (Grupo A)" />
+<meta name="author" content="Luis Javier Rubio Hernández (Grupo B)" />
+
+
+<meta name="date" content="2026-03-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="propiedades-de-los-estimadores.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html"><i class="fa fa-check"></i><b>1</b> <strong>Estimación de la probabilidad y la media</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#problema-1"><i class="fa fa-check"></i><b>1.1</b> <strong>Problema 1</strong></a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#c%C3%A1lculo-de-probabilidad-te%C3%B3rica"><i class="fa fa-check"></i><b>1.1.1</b> <strong>Cálculo de probabilidad teórica</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#simulaci%C3%B3n-con-una-muestra"><i class="fa fa-check"></i><b>1.1.2</b> <strong>Simulación con una muestra</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#an%C3%A1lisis-de-la-variabilidad-entre-muestras"><i class="fa fa-check"></i><b>1.1.3</b> <strong>Análisis de la variabilidad entre muestras</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral"><i class="fa fa-check"></i><b>1.1.4</b> <strong>Impacto del tamaño muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.5" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#convergencia-de-la-media-muestral"><i class="fa fa-check"></i><b>1.1.5</b> <strong>Convergencia de la media muestral</strong>:</a></li>
+<li class="chapter" data-level="1.1.6" data-path="estimación-de-la-probabilidad-y-la-media.html"><a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral-en-la-media"><i class="fa fa-check"></i><b>1.1.6</b> <strong>Impacto del tamaño muestral en la media</strong>:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html"><i class="fa fa-check"></i><b>2</b> <strong>Propiedades de los estimadores</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#problema-2"><i class="fa fa-check"></i><b>2.1</b> <strong>Problema 2</strong></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#simulaci%C3%B3n-de-estimadores"><i class="fa fa-check"></i><b>2.1.1</b> <strong>Simulación de estimadores</strong></a></li>
+<li class="chapter" data-level="2.1.2" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#insesgadez"><i class="fa fa-check"></i><b>2.1.2</b> <strong>Insesgadez</strong></a></li>
+<li class="chapter" data-level="2.1.3" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#consistencia"><i class="fa fa-check"></i><b>2.1.3</b> <strong>Consistencia</strong></a></li>
+<li class="chapter" data-level="2.1.4" data-path="propiedades-de-los-estimadores.html"><a href="propiedades-de-los-estimadores.html#eficiencia"><i class="fa fa-check"></i><b>2.1.4</b> <strong>Eficiencia</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html"><i class="fa fa-check"></i><b>3</b> <strong>Teorema del límite central</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#problema-3"><i class="fa fa-check"></i><b>3.1</b> <strong>Problema 3</strong></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#c%C3%A1lculo-de-la-media-y-varianza-de-la-poblaci%C3%B3n"><i class="fa fa-check"></i><b>3.1.1</b> <strong>Cálculo de la media y varianza de la población</strong></a></li>
+<li class="chapter" data-level="3.1.2" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#gr%C3%A1fico-de-la-curva-de-densidad"><i class="fa fa-check"></i><b>3.1.2</b> <strong>Gráfico de la curva de densidad</strong></a></li>
+<li class="chapter" data-level="3.1.3" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#comparaci%C3%B3n-de-par%C3%A1metros-estimadores-y-estimaciones"><i class="fa fa-check"></i><b>3.1.3</b> <strong>Comparación de parámetros, estimadores y estimaciones</strong></a></li>
+<li class="chapter" data-level="3.1.4" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-para-n-200"><i class="fa fa-check"></i><b>3.1.4</b> <strong>Aplicación del Teorema del Límite Central para <span class="math inline">\(n = 200\)</span></strong></a></li>
+<li class="chapter" data-level="3.1.5" data-path="teorema-del-límite-central.html"><a href="teorema-del-límite-central.html#aplicaci%C3%B3n-del-teorema-del-l%C3%ADmite-central-variando-n"><i class="fa fa-check"></i><b>3.1.5</b> <strong>Aplicación del Teorema del Límite Central variando <span class="math inline">\(n\)</span></strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html"><i class="fa fa-check"></i><b>4</b> <strong>Estimación de intervalos de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#normalidad"><i class="fa fa-check"></i><b>4.0.1</b> <strong>Normalidad</strong></a></li>
+<li class="chapter" data-level="4.0.2" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#metodo-parametrico"><i class="fa fa-check"></i><b>4.0.2</b> <strong>Método paramétrico</strong></a></li>
+<li class="chapter" data-level="4.0.3" data-path="estimación-de-intervalos-de-confianza.html"><a href="estimación-de-intervalos-de-confianza.html#procedimiento-bootstrap"><i class="fa fa-check"></i><b>4.0.3</b> <strong>Procedimiento bootstrap</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><i class="fa fa-check"></i><b>5</b> <strong>Análisis de potencia, tamaño del efecto y errores tipo I y II en una prueba de hipótesis</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#problema-5"><i class="fa fa-check"></i><b>5.1</b> <strong>Problema 5</strong></a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#errores-de-decisi%C3%B3n-tipo-i-y-tipo-ii"><i class="fa fa-check"></i><b>5.1.1</b> Errores de decisión: Tipo I y Tipo II</a></li>
+<li class="chapter" data-level="5.1.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#potencia-estad%C3%ADstica"><i class="fa fa-check"></i><b>5.1.2</b> Potencia estadística</a></li>
+<li class="chapter" data-level="5.1.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tama%C3%B1o-del-efecto-de-cohen"><i class="fa fa-check"></i><b>5.1.3</b> Tamaño del efecto de Cohen</a></li>
+<li class="chapter" data-level="5.1.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#funci%C3%B3n-de-potencia-exacta-distribuci%C3%B3n-t-no-central"><i class="fa fa-check"></i><b>5.1.4</b> Función de potencia exacta: distribución <span class="math inline">\(t\)</span> no central</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-computacional"><i class="fa fa-check"></i><b>5.2</b> <strong>Análisis computacional</strong></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#configuraci%C3%B3n-general"><i class="fa fa-check"></i><b>5.2.1</b> Configuración general</a></li>
+<li class="chapter" data-level="5.2.2" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.10"><i class="fa fa-check"></i><b>5.2.2</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.10\)</span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.05"><i class="fa fa-check"></i><b>5.2.3</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.05\)</span></a></li>
+<li class="chapter" data-level="5.2.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#an%C3%A1lisis-de-potencia-para-alpha-0.01"><i class="fa fa-check"></i><b>5.2.4</b> Análisis de potencia para <span class="math inline">\(\alpha = 0.01\)</span></a></li>
+<li class="chapter" data-level="5.2.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#comparaci%C3%B3n-de-los-tres-niveles-de-significancia"><i class="fa fa-check"></i><b>5.2.5</b> Comparación de los tres niveles de significancia</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#tabla-de-tama%C3%B1os-m%C3%ADnimos-de-muestra"><i class="fa fa-check"></i><b>5.3</b> <strong>Tabla de tamaños mínimos de muestra</strong></a></li>
+<li class="chapter" data-level="5.4" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#curva-de-rendimientos-marginales-de-la-potencia"><i class="fa fa-check"></i><b>5.4</b> <strong>Curva de rendimientos marginales de la potencia</strong></a></li>
+<li class="chapter" data-level="5.5" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#respuesta-a-las-preguntas-orientadoras"><i class="fa fa-check"></i><b>5.5</b> <strong>Respuesta a las preguntas orientadoras</strong></a></li>
+<li class="chapter" data-level="5.6" data-path="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html"><a href="análisis-de-potencia-tamaño-del-efecto-y-errores-tipo-i-y-ii-en-una-prueba-de-hipótesis.html#propuesta-final-del-dise%C3%B1o-del-estudio"><i class="fa fa-check"></i><b>5.6</b> <strong>Propuesta final del diseño del estudio</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html"><i class="fa fa-check"></i><b>6</b> <strong>Prueba de hipótesis e intervalo de confianza</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#problema-6"><i class="fa fa-check"></i><b>6.1</b> <strong>Problema 6</strong></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#contexto-informe-descriptivo-de-la-actividad-1"><i class="fa fa-check"></i><b>6.1.1</b> Contexto: Informe descriptivo de la Actividad 1</a></li>
+<li class="chapter" data-level="6.1.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#carga-y-preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.1.2</b> Carga y preparación de los datos</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-1-el-ingreso-medio-anual-difiere-entre-quienes-aceptaron-y-quienes-no-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.2</b> Pregunta 1: ¿El ingreso medio anual difiere entre quienes aceptaron y quienes no aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal"><i class="fa fa-check"></i><b>6.2.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.2.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos"><i class="fa fa-check"></i><b>6.2.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.2.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-hip%C3%B3tesis-t-de-welch"><i class="fa fa-check"></i><b>6.2.3</b> Prueba de hipótesis: <span class="math inline">\(t\)</span> de Welch</a></li>
+<li class="chapter" data-level="6.2.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.2.4</b> Intervalo de confianza al 95% para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.2.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.5</b> Visualización</a></li>
+<li class="chapter" data-level="6.2.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n"><i class="fa fa-check"></i><b>6.2.6</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-2-el-gasto-total-medio-en-productos-es-significativamente-mayor-en-quienes-aceptaron-la-campa%C3%B1a"><i class="fa fa-check"></i><b>6.3</b> Pregunta 2: ¿El gasto total medio en productos es significativamente mayor en quienes aceptaron la campaña?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-1"><i class="fa fa-check"></i><b>6.3.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.3.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-1"><i class="fa fa-check"></i><b>6.3.2</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.3.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-no-param%C3%A9trica-mann-whitney-wilcoxon"><i class="fa fa-check"></i><b>6.3.3</b> Prueba no paramétrica: Mann-Whitney-Wilcoxon</a></li>
+<li class="chapter" data-level="6.3.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#tama%C3%B1o-del-efecto-correlaci%C3%B3n-biserial-de-rango"><i class="fa fa-check"></i><b>6.3.4</b> Tamaño del efecto: Correlación biserial de rango</a></li>
+<li class="chapter" data-level="6.3.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-t-de-welch-confirmaci%C3%B3n-asint%C3%B3tica"><i class="fa fa-check"></i><b>6.3.5</b> Prueba <span class="math inline">\(t\)</span> de Welch (confirmación asintótica)</a></li>
+<li class="chapter" data-level="6.3.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-bootstrap-para-mu_1---mu_0"><i class="fa fa-check"></i><b>6.3.6</b> Intervalo de confianza Bootstrap para <span class="math inline">\(\mu_1 - \mu_0\)</span></a></li>
+<li class="chapter" data-level="6.3.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#comparaci%C3%B3n-de-resultados"><i class="fa fa-check"></i><b>6.3.7</b> Comparación de resultados</a></li>
+<li class="chapter" data-level="6.3.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.3.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#pregunta-3-la-proporci%C3%B3n-de-aceptaci%C3%B3n-de-la-campa%C3%B1a-difiere-entre-clientes-con-y-sin-adolescentes-en-el-hogar"><i class="fa fa-check"></i><b>6.4</b> Pregunta 3: ¿La proporción de aceptación de la campaña difiere entre clientes con y sin adolescentes en el hogar?</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#planteamiento-formal-2"><i class="fa fa-check"></i><b>6.4.1</b> Planteamiento formal</a></li>
+<li class="chapter" data-level="6.4.2" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#preparaci%C3%B3n-de-los-datos"><i class="fa fa-check"></i><b>6.4.2</b> Preparación de los datos</a></li>
+<li class="chapter" data-level="6.4.3" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#verificaci%C3%B3n-de-supuestos-2"><i class="fa fa-check"></i><b>6.4.3</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="6.4.4" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#prueba-de-dos-proporciones-z-test"><i class="fa fa-check"></i><b>6.4.4</b> Prueba de dos proporciones (<span class="math inline">\(z\)</span>-test)</a></li>
+<li class="chapter" data-level="6.4.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#intervalo-de-confianza-al-95-para-p_a---p_b"><i class="fa fa-check"></i><b>6.4.5</b> Intervalo de confianza al 95% para <span class="math inline">\(p_A - p_B\)</span></a></li>
+<li class="chapter" data-level="6.4.6" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#confirmaci%C3%B3n-prueba-chi2-de-independencia"><i class="fa fa-check"></i><b>6.4.6</b> Confirmación: prueba <span class="math inline">\(\chi^2\)</span> de independencia</a></li>
+<li class="chapter" data-level="6.4.7" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#visualizaci%C3%B3n-1"><i class="fa fa-check"></i><b>6.4.7</b> Visualización</a></li>
+<li class="chapter" data-level="6.4.8" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#interpretaci%C3%B3n-2"><i class="fa fa-check"></i><b>6.4.8</b> Interpretación</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="prueba-de-hipótesis-e-intervalo-de-confianza.html"><a href="prueba-de-hipótesis-e-intervalo-de-confianza.html#resumen-comparativo-de-las-tres-preguntas"><i class="fa fa-check"></i><b>6.5</b> Resumen comparativo de las tres preguntas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i><b>7</b> Referencias</a></li>
+<li class="chapter" data-level="8" data-path="anexos.html"><a href="anexos.html"><i class="fa fa-check"></i><b>8</b> Anexos</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad 2</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="estimación-de-la-probabilidad-y-la-media" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> <strong>Estimación de la probabilidad y la media</strong><a href="estimación-de-la-probabilidad-y-la-media.html#estimaci%C3%B3n-de-la-probabilidad-y-la-media" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="problema-1" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> <strong>Problema 1</strong><a href="estimación-de-la-probabilidad-y-la-media.html#problema-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Una empresa de servicio técnico recibe, en promedio, 5 solicitudes de
+reparación por hora. Suponiendo que el número de solicitudes sigue una
+distribución de Poisson, realiza las siguientes actividades:</p>
+<div id="cálculo-de-probabilidad-teórica" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> <strong>Cálculo de probabilidad teórica</strong><a href="estimación-de-la-probabilidad-y-la-media.html#c%C3%A1lculo-de-probabilidad-te%C3%B3rica" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Calcula la probabilidad de que en una hora lleguen exactamente 3
+solicitudes usando la fórmula de la distribución de Poisson. Expresa
+el resultado como <span class="math inline">\(P(X = 3)\)</span>.</li>
+</ul>
+<p>Primero, extraemos los datos clave que nos proporciona el problema:</p>
+<ul>
+<li><p><strong>Tasa promedio de ocurrencia (</strong><span class="math inline">\(\lambda\)</span>) La empresa recibe un
+promedio de 5 solicitudes por hora. Por lo tanto, <span class="math inline">\(\lambda = 5\)</span>.</p></li>
+<li><p><strong>Número de eventos deseado (</strong><span class="math inline">\(k\)</span>) Queremos calcular la
+probabilidad de recibir exactamente 3 solicitudes. Por lo tanto,
+<span class="math inline">\(k = 3\)</span>.</p></li>
+<li><p><strong>Constante matemática (</strong><span class="math inline">\(e\)</span>): La base de los logaritmos naturales,
+que equivale aproximadamente a <span class="math inline">\(2.71828\)</span>.</p></li>
+</ul>
+<p>La probabilidad de que ocurran exactamente <span class="math inline">\(k\)</span> eventos en un intervalo
+dado, cuando la tasa promedio es <span class="math inline">\(\lambda\)</span>, se calcula con la siguiente
+fórmula matemática:</p>
+<p><span class="math display">\[P(X=k) = \frac{(e^{-\lambda})\cdot\lambda^k}{k!}\]</span></p>
+<p>Luego, sustituyendo <span class="math inline">\(\lambda = 5\)</span> y <span class="math inline">\(k = 3\)</span>, se tiene</p>
+<p><span class="math display">\[
+\begin{align}
+P(X=3) &amp;= \frac{(e^{-5})(5^3)}{3!} \\
+       &amp;= \frac{125 e^{-5}}{6}\\
+       &amp;= \frac{(125)(0.0067379)}{6} \\
+       &amp;= \frac{0.8422375}{6} \\
+       &amp;\approx 0.1404
+\end{align}
+\]</span> La probabilidad teórica de que la empresa reciba exactamente 3
+solicitudes de reparación en una hora es aproximadamente del <span class="math inline">\(14.04\%\)</span>.</p>
+</div>
+<div id="simulación-con-una-muestra" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> <strong>Simulación con una muestra</strong><a href="estimación-de-la-probabilidad-y-la-media.html#simulaci%C3%B3n-con-una-muestra" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Genera una muestra aleatoria de tamaño <span class="math inline">\(n = 1,000\)</span> con
+<code>rpois(n, lambda = 5)</code>.</li>
+<li>Calcula la frecuencia relativa para <span class="math inline">\(X = 3\)</span> (<span class="math inline">\(f_n(X = 3)\)</span>).</li>
+<li>Compara e interpreta el resultado frente a la probabilidad teórica.</li>
+</ul>
+<p>Para realizar esta simulación, generamos <span class="math inline">\(1,000\)</span> valores aleatorios que
+siguen una distribución de Poisson con una tasa promedio <span class="math inline">\(\lambda = 5\)</span>.
+Luego, contamos cuántas veces aparece exactamente el valor <span class="math inline">\(3\)</span>
+(frecuencia absoluta) y lo dividimos entre el total de la muestra
+(<span class="math inline">\(1,000\)</span>) para obtener la frecuencia relativa.</p>
+<p>La tabla <a href="estimación-de-la-probabilidad-y-la-media.html#tab:tab-simulacion-n100">1.1</a> muestra los resultados de la
+simulación.</p>
+<table>
+<caption><span id="tab:tab-simulacion-n100">Table 1.1: </span>Comparación de Probabilidad Teórica vs. Empírica (Poisson λ=5, X=3)</caption>
+<colgroup>
+<col width="27%" />
+<col width="26%" />
+<col width="17%" />
+<col width="12%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Tamaño de la Muestra</th>
+<th align="center">Frecuencia Absoluta</th>
+<th align="center"><span class="math inline">\(f_n(X = 3)\)</span></th>
+<th align="center"><span class="math inline">\(P(X=3)\)</span></th>
+<th align="center">Diferencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1000</td>
+<td align="center">141</td>
+<td align="center">0.141</td>
+<td align="center">0.1404</td>
+<td align="center">0.0006</td>
+</tr>
+</tbody>
+</table>
+<p>La frecuencia relativa obtenida en la simulación
+<span class="math inline">\(f_n(X = 3) = 141/1000 = 0.141\)</span> es sumamente cercana a la probabilidad
+teórica calculada matemáticamente <span class="math inline">\(P(X=3) = 0.1404\)</span>.</p>
+<p>Este resultado ilustra la <strong>Ley de los Grandes Números</strong>. Esta ley
+establece que, a medida que aumentamos el tamaño de nuestra muestra (en
+este caso n = 1,000, que es un número bastante grande), la frecuencia
+relativa o empírica de un evento tiende a acercarse cada vez más a su
+probabilidad teórica real.</p>
+</div>
+<div id="análisis-de-la-variabilidad-entre-muestras" class="section level3 hasAnchor" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> <strong>Análisis de la variabilidad entre muestras</strong><a href="estimación-de-la-probabilidad-y-la-media.html#an%C3%A1lisis-de-la-variabilidad-entre-muestras" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Genera <span class="math inline">\(100\)</span> muestras aleatorias de tamaño <span class="math inline">\(n = 1{,}000\)</span>.</li>
+<li>Calcula la frecuencia relativa para <span class="math inline">\(X = 3\)</span> en cada muestra.</li>
+<li>Construye un gráfico de dispersión:
+<ul>
+<li>Eje <span class="math inline">\(X\)</span>: Indexación por cada muestra (1 a 100).</li>
+<li>Eje <span class="math inline">\(Y\)</span>: Frecuencias relativas <span class="math inline">\(f_n(X = 3)\)</span>.</li>
+</ul></li>
+<li>Dibuja una línea horizontal en <span class="math inline">\(P(X = 3)\)</span> y comenta si existe una
+tendencia.</li>
+</ul>
+<p>La gráfica <a href="estimación-de-la-probabilidad-y-la-media.html#fig:variabilidadmuestras">1.1</a> muestra el gráfico obtenido
+al generar <span class="math inline">\(100\)</span> muestras aleatorias de tamaño <span class="math inline">\(n = 1{,}000\)</span>. En él se
+observa:</p>
+<ul>
+<li><p>Cada punto azul representa la frecuencia relativa de una muestra.</p></li>
+<li><p>La línea roja continua marca la probabilidad teórica
+<span class="math inline">\(P(X=3) = 0.1404\)</span>.</p></li>
+</ul>
+<div class="figure"><span style="display:block;" id="fig:variabilidadmuestras"></span>
+<img src="Actividad-2_files/figure-html/variabilidadmuestras-1.png" alt="Variabilidad entre muestras" width="80%" />
+<p class="caption">
+Figure 1.1: Variabilidad entre muestras
+</p>
+</div>
+<p>Para cuantificar la variabilidad esperada por azar, se calculó el error
+estándar teórico (SE) de la frecuencia relativa. Sea
+<span class="math inline">\(p = P(X=3) = 0.1404\)</span>, entonces</p>
+<p><span class="math display">\[\text{SE} = \sqrt{\frac{p(1-p)}{n}} = \sqrt{\frac{(0.1404)(0.8596)}{1000}}\approx 0.0110\]</span>
+Se construyó una banda de <span class="math inline">\(\pm 1.96\)</span> errores estándar alrededor de <span class="math inline">\(p\)</span>,
+la cual estará limitada por el intervalo
+<span class="math inline">\([p - 1.96\,\text{SE},\; p + 1.96\,\text{SE}] \approx [0.1188,\; 0.1620]\)</span>.
+Esta banda contiene aproximadamente el <span class="math inline">\(95\%\)</span> de las frecuencias
+relativas si el modelo es correcto y el tamaño de muestra es grande
+(aproximación normal).</p>
+<div class="figure"><span style="display:block;" id="fig:banda"></span>
+<img src="Actividad-2_files/figure-html/banda-1.png" alt="Validación empírica de la probabilidad teórica mediante simulación: banda de confianza aproximada al 95%" width="80%" />
+<p class="caption">
+Figure 1.2: Validación empírica de la probabilidad teórica mediante simulación: banda de confianza aproximada al 95%
+</p>
+</div>
+<p>La gráfica <a href="estimación-de-la-probabilidad-y-la-media.html#fig:banda">1.2</a> muestra que la mayoría de las frecuencias
+relativas (<span class="math inline">\(95\)</span> de cada <span class="math inline">\(100\)</span>, en promedio) caen dentro de la banda
+gris. En este caso particular, con la semilla 1 (<code>set.seed(1)</code>), se
+puede contar cuántos puntos quedan fuera para verificar si se aproxima
+al <span class="math inline">\(5\%\)</span> esperado (por ejemplo, podrían ser 4 o 6). Esto confirma que la
+variabilidad observada es coherente con la teoría.</p>
+</div>
+<div id="impacto-del-tamaño-muestral" class="section level3 hasAnchor" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> <strong>Impacto del tamaño muestral</strong>:<a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Genera muestras aleatorias con tamaños: 5, 10, 20, 30, 40, 50, 60,
+70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900 y 1,000.
+Agrega valores si consideras que mejora el análisis de los
+resultados.</li>
+<li>Calcula la frecuencia relativa de <span class="math inline">\(X = 3\)</span> para cada tamaño.</li>
+<li>Construye un gráfico de dispersión:
+<ul>
+<li>Eje <span class="math inline">\(X\)</span>: Indexación (1 al 20) por cada tamaño muestral.</li>
+<li>Eje <span class="math inline">\(Y\)</span>: Frecuencias relativas <span class="math inline">\(f_n(X = 3)\)</span>.</li>
+</ul></li>
+<li>Dibuja la línea en <span class="math inline">\(P(X = 3)\)</span> y describe si aparece una tendencia.</li>
+</ul>
+<p>Se seleccionan los siguientes tamaños de muestras
+<span class="math inline">\(n \in \lbrace 5, 10, 20, 30, 40, 50, 60, 70, 80, 90,100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 5000, 10000 \rbrace\)</span></p>
+<p>Para cada tamaño, se genera una única muestra aleatoria de una
+distribución de Poisson con <span class="math inline">\(\lambda =5\)</span> utilizando la función <code>rpois</code>.
+Se emplea un diseño de <strong>muestreo anidado</strong>: se genera una sola muestra
+de tamaño <span class="math inline">\(n = 10{,}000\)</span> y se toman los primeros <span class="math inline">\(n\)</span> elementos para
+cada tamaño muestral. Este enfoque garantiza que la muestra de tamaño
+<span class="math inline">\(n\)</span> es un subconjunto de todas las muestras de tamaño mayor, lo que
+permite visualizar la convergencia acumulativa de la frecuencia relativa
+conforme se incorporan más observaciones de la misma realización.</p>
+<p>Luego, se calcula la frecuencia relativa <span class="math inline">\(f_n(X = 3)\)</span> como:</p>
+<p><span class="math display">\[f_n(X = 3) = \frac{\text{número de valores igual a 3 en la muestra de tamaño n}}{n}\]</span></p>
+<table style="width:100%;">
+<caption><span id="tab:impacto-frec-relativa">Table 1.2: </span>Frecuencia absoluta y relativa de X = 3, y error respecto a la probabilidad teórica</caption>
+<colgroup>
+<col width="18%" />
+<col width="26%" />
+<col width="29%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Tamaño muestral (n)</th>
+<th align="center">Frecuencia absoluta (éxitos)</th>
+<th align="center">Frecuencia relativa <span class="math inline">\(f_n(X = 3)\)</span></th>
+<th align="center">Error <span class="math inline">\(f_n(X = 3) - P(X=3)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">1</td>
+<td align="center">0.2000</td>
+<td align="center">0.0596</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">1</td>
+<td align="center">0.1000</td>
+<td align="center">-0.0404</td>
+</tr>
+<tr class="odd">
+<td align="center">20</td>
+<td align="center">3</td>
+<td align="center">0.1500</td>
+<td align="center">0.0096</td>
+</tr>
+<tr class="even">
+<td align="center">30</td>
+<td align="center">5</td>
+<td align="center">0.1667</td>
+<td align="center">0.0263</td>
+</tr>
+<tr class="odd">
+<td align="center">40</td>
+<td align="center">6</td>
+<td align="center">0.1500</td>
+<td align="center">0.0096</td>
+</tr>
+<tr class="even">
+<td align="center">50</td>
+<td align="center">6</td>
+<td align="center">0.1200</td>
+<td align="center">-0.0204</td>
+</tr>
+<tr class="odd">
+<td align="center">60</td>
+<td align="center">7</td>
+<td align="center">0.1167</td>
+<td align="center">-0.0237</td>
+</tr>
+<tr class="even">
+<td align="center">70</td>
+<td align="center">8</td>
+<td align="center">0.1143</td>
+<td align="center">-0.0261</td>
+</tr>
+<tr class="odd">
+<td align="center">80</td>
+<td align="center">8</td>
+<td align="center">0.1000</td>
+<td align="center">-0.0404</td>
+</tr>
+<tr class="even">
+<td align="center">90</td>
+<td align="center">11</td>
+<td align="center">0.1222</td>
+<td align="center">-0.0182</td>
+</tr>
+<tr class="odd">
+<td align="center">100</td>
+<td align="center">12</td>
+<td align="center">0.1200</td>
+<td align="center">-0.0204</td>
+</tr>
+<tr class="even">
+<td align="center">200</td>
+<td align="center">25</td>
+<td align="center">0.1250</td>
+<td align="center">-0.0154</td>
+</tr>
+<tr class="odd">
+<td align="center">300</td>
+<td align="center">49</td>
+<td align="center">0.1633</td>
+<td align="center">0.0230</td>
+</tr>
+<tr class="even">
+<td align="center">400</td>
+<td align="center">64</td>
+<td align="center">0.1600</td>
+<td align="center">0.0196</td>
+</tr>
+<tr class="odd">
+<td align="center">500</td>
+<td align="center">76</td>
+<td align="center">0.1520</td>
+<td align="center">0.0116</td>
+</tr>
+<tr class="even">
+<td align="center">600</td>
+<td align="center">85</td>
+<td align="center">0.1417</td>
+<td align="center">0.0013</td>
+</tr>
+<tr class="odd">
+<td align="center">700</td>
+<td align="center">96</td>
+<td align="center">0.1371</td>
+<td align="center">-0.0032</td>
+</tr>
+<tr class="even">
+<td align="center">800</td>
+<td align="center">110</td>
+<td align="center">0.1375</td>
+<td align="center">-0.0029</td>
+</tr>
+<tr class="odd">
+<td align="center">900</td>
+<td align="center">122</td>
+<td align="center">0.1356</td>
+<td align="center">-0.0048</td>
+</tr>
+<tr class="even">
+<td align="center">1000</td>
+<td align="center">141</td>
+<td align="center">0.1410</td>
+<td align="center">0.0006</td>
+</tr>
+<tr class="odd">
+<td align="center">2000</td>
+<td align="center">287</td>
+<td align="center">0.1435</td>
+<td align="center">0.0031</td>
+</tr>
+<tr class="even">
+<td align="center">5000</td>
+<td align="center">693</td>
+<td align="center">0.1386</td>
+<td align="center">-0.0018</td>
+</tr>
+<tr class="odd">
+<td align="center">10000</td>
+<td align="center">1380</td>
+<td align="center">0.1380</td>
+<td align="center">-0.0024</td>
+</tr>
+</tbody>
+</table>
+<p>Para tamaños pequeños (<span class="math inline">\(n \leq 50\)</span>): las frecuencias relativas presentan
+una gran variabilidad y pueden alejarse considerablemente del valor
+teórico como muestra la Tabla <a href="estimación-de-la-probabilidad-y-la-media.html#tab:impacto-frec-relativa">1.2</a>. Por
+ejemplo, con <span class="math inline">\(n=5\)</span> es posible obtener valores extremos (<span class="math inline">\(0\)</span>, <span class="math inline">\(0.2\)</span>,
+<span class="math inline">\(0.4\)</span>, etc.) debido al azar.</p>
+<p>A medida que <span class="math inline">\(n\)</span> aumenta: la frecuencia relativa tiende a estabilizarse
+y acercarse a la probabilidad teórica. Para <span class="math inline">\(n=1000\)</span>: la estimación
+suele ser muy próxima a <span class="math inline">\(0.1404\)</span>, aunque persiste una pequeña diferencia
+aleatoria.</p>
+<div class="figure"><span style="display:block;" id="fig:fig-efecto"></span>
+<img src="Actividad-2_files/figure-html/fig-efecto-1.png" alt="Efecto del tamaño muestral en la estimación de P(X=3)" width="80%" />
+<p class="caption">
+Figure 1.3: Efecto del tamaño muestral en la estimación de P(X=3)
+</p>
+</div>
+<p>Al incrementar el tamaño de la muestra, la frecuencia relativa converge
+hacia la probabilidad teórica. El gráfico de la Figura
+<a href="estimación-de-la-probabilidad-y-la-media.html#fig:fig-efecto">1.3</a> ilustra cómo el error de estimación disminuye
+conforme <span class="math inline">\(n\)</span> aumenta, lo que justifica el uso de muestras grandes para
+obtener estimaciones precisas.</p>
+<p>De acuerdo con lo anterior, el análisis empírico confirma que el tamaño
+muestral es un factor crítico en la precisión de las estimaciones.
+Muestras pequeñas pueden dar lugar a estimaciones muy variables y poco
+fiables, mientras que muestras grandes proporcionan valores más estables
+y cercanos al parámetro poblacional. Este principio fundamental de la
+estadística se visualiza claramente en la Figura
+<a href="estimación-de-la-probabilidad-y-la-media.html#fig:fig-efecto">1.3</a>.</p>
+</div>
+<div id="convergencia-de-la-media-muestral" class="section level3 hasAnchor" number="1.1.5">
+<h3><span class="header-section-number">1.1.5</span> <strong>Convergencia de la media muestral</strong>:<a href="estimación-de-la-probabilidad-y-la-media.html#convergencia-de-la-media-muestral" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Genera 100 muestras de tamaño <span class="math inline">\(n = 1,000\)</span>.</li>
+<li>Calcula el promedio muestral de solicitudes en cada muestra.</li>
+<li>Construye un gráfico de dispersión:
+<ul>
+<li>Eje <span class="math inline">\(X\)</span>: Indexación por cada muestra (1 a 100).</li>
+<li>Eje <span class="math inline">\(Y\)</span>: Promedios muestrales.</li>
+</ul></li>
+<li>Traza la línea horizontal en la media teórica (<span class="math inline">\(\lambda\)</span>) y analiza
+la tendencia.</li>
+</ul>
+<p>Analizaremos el comportamiento de la media muestral <span class="math inline">\(\overline{X}\)</span> como
+estimador de la media teórica <span class="math inline">\(\lambda = 5\)</span> en una distribución de
+Poisson. Para ello, se generan <span class="math inline">\(100\)</span> muestras independientes de tamaño
+<span class="math inline">\(n = 1000\)</span> y se calcula la media de cada una. Luego se representan
+gráficamente y se comparan con el valor poblacional.</p>
+<p>Se fija una semilla para reproducibilidad. Se generan <span class="math inline">\(B = 100\)</span>
+muestras, cada una de tamaño <span class="math inline">\(n = 1000\)</span>, de una población Poisson con
+<span class="math inline">\(\lambda = 5\)</span>. Para cada muestra <span class="math inline">\(i\)</span> se calcula la media muestral:</p>
+<p><span class="math display">\[\overline{X}_i = \frac{1}{n}\sum_{j=1}^{n} X_{ij}\]</span></p>
+<p>En la Tabla
+<a href="estimación-de-la-probabilidad-y-la-media.html#tab:tab-medias-muestrales">1.3</a> se presentan las medias muestrales
+obtenidas de las primeras 20 muestras (de un total de 100). Se incluye
+la diferencia respecto a la media teórica para evaluar visualmente la
+magnitud del error de estimación.</p>
+<table>
+<caption><span id="tab:tab-medias-muestrales">Table 1.3: </span>Medias muestrales de las primeras 20 muestras.</caption>
+<colgroup>
+<col width="11%" />
+<col width="43%" />
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Índice</th>
+<th align="center">Media muestral <span class="math inline">\(\overline{X}\)</span></th>
+<th align="center">Error <span class="math inline">\(\overline{X} - \lambda\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">5.027</td>
+<td align="center">0.027</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">4.922</td>
+<td align="center">-0.078</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">4.932</td>
+<td align="center">-0.068</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">5.007</td>
+<td align="center">0.007</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">5.036</td>
+<td align="center">0.036</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">5.110</td>
+<td align="center">0.110</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">5.139</td>
+<td align="center">0.139</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">4.931</td>
+<td align="center">-0.069</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">4.983</td>
+<td align="center">-0.017</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">4.971</td>
+<td align="center">-0.029</td>
+</tr>
+<tr class="odd">
+<td align="center">11</td>
+<td align="center">5.021</td>
+<td align="center">0.021</td>
+</tr>
+<tr class="even">
+<td align="center">12</td>
+<td align="center">4.981</td>
+<td align="center">-0.019</td>
+</tr>
+<tr class="odd">
+<td align="center">13</td>
+<td align="center">5.006</td>
+<td align="center">0.006</td>
+</tr>
+<tr class="even">
+<td align="center">14</td>
+<td align="center">4.937</td>
+<td align="center">-0.063</td>
+</tr>
+<tr class="odd">
+<td align="center">15</td>
+<td align="center">4.966</td>
+<td align="center">-0.034</td>
+</tr>
+<tr class="even">
+<td align="center">16</td>
+<td align="center">5.089</td>
+<td align="center">0.089</td>
+</tr>
+<tr class="odd">
+<td align="center">17</td>
+<td align="center">4.836</td>
+<td align="center">-0.164</td>
+</tr>
+<tr class="even">
+<td align="center">18</td>
+<td align="center">5.001</td>
+<td align="center">0.001</td>
+</tr>
+<tr class="odd">
+<td align="center">19</td>
+<td align="center">5.070</td>
+<td align="center">0.070</td>
+</tr>
+<tr class="even">
+<td align="center">20</td>
+<td align="center">5.085</td>
+<td align="center">0.085</td>
+</tr>
+</tbody>
+</table>
+<p>Podemos ver que las primeras <span class="math inline">\(20\)</span> medias muestrales mostradas oscilan
+muy cerca de <span class="math inline">\(\lambda = 5\)</span>, con errores del orden de <span class="math inline">\(\pm 0.1\)</span> o
+menores. Esto es consistente con lo que predice la Ley de los Grandes
+Números: para <span class="math inline">\(n = 1000\)</span> observaciones, <span class="math inline">\(\bar{X}_i\)</span> converge en
+probabilidad a <span class="math inline">\(\lambda\)</span>. Además, por el Teorema Central del Límite,
+cada <span class="math inline">\(\bar{X}_i\)</span> se distribuye aproximadamente como:</p>
+<p><span class="math display">\[\bar{X}_i\,\dot\sim N\left(\lambda, \frac{\lambda}{n}\right) = N\left(5, \frac{5}{1000}\right)\]</span>
+lo que da una desviación estándar de <span class="math inline">\(\sqrt{5/1000} \approx 0.0707\)</span>. Por
+eso los errores rara vez superan <span class="math inline">\(\pm 0.15\)</span> (aproximadamente <span class="math inline">\(2\)</span>
+desviaciones estándar).</p>
+<div class="figure"><span style="display:block;" id="fig:fig-convergencia-media-muestral"></span>
+<img src="Actividad-2_files/figure-html/fig-convergencia-media-muestral-1.png" alt="Convergencia de la media muestral (n = 1000)" width="80%" />
+<p class="caption">
+Figure 1.4: Convergencia de la media muestral (n = 1000)
+</p>
+</div>
+<p>El gráfico de la Figura <a href="estimación-de-la-probabilidad-y-la-media.html#fig:fig-convergencia-media-muestral">1.4</a>
+ilustra empíricamente que la media muestral converge en probabilidad
+hacia la media poblacional. Al aumentar <span class="math inline">\(n\)</span>, las estimaciones se
+concentran cada vez más cerca del valor verdadero.</p>
+<p>Por el <strong>Teorema Central del Límite</strong>, cada media muestral se distribuye
+aproximadamente como:</p>
+<p><span class="math display">\[\bar{X}_i \;\dot\sim\; N\!\left(\lambda,\; \frac{\lambda}{n}\right)\]</span></p>
+<p>Estandarizando:</p>
+<p><span class="math display">\[Z = \frac{\bar{X}_i - \lambda}{\sqrt{\lambda/n}} \;\sim\; N(0,1)\]</span></p>
+<p>De la distribución normal estándar se sabe que:</p>
+<p><span class="math display">\[P(-1.96 \leq Z \leq 1.96) = 0.95\]</span></p>
+<p>Sustituyendo y despejando:</p>
+<p><span class="math display">\[P\!\left(\lambda - 1.96\sqrt{\frac{\lambda}{n}} \;\leq\; \bar{X}_i \;\leq\; \lambda + 1.96\sqrt{\frac{\lambda}{n}}\right) = 0.95\]</span></p>
+<p>Con <span class="math inline">\(\lambda = 5\)</span> y <span class="math inline">\(n = 1000\)</span>:</p>
+<p><span class="math display">\[1.96\sqrt{\frac{5}{1000}} = 1.96 \times 0.0707 \approx 0.1386\]</span></p>
+<p>Por lo tanto, el <strong>intervalo del 95%</strong> es:</p>
+<p><span class="math display">\[(5 - 0.1386,\; 5 + 0.1386) = (4.8614,\; 5.1386)\]</span></p>
+<p>Esto significa que aproximadamente 95 de las 100 medias muestrales deben
+caer en ese intervalo, lo cual es exactamente lo que se observa en la
+figura.</p>
+<div class="figure"><span style="display:block;" id="fig:banda-95"></span>
+<img src="Actividad-2_files/figure-html/banda-95-1.png" alt="Medias muestrales con banda del 95% según el TCL" width="80%" />
+<p class="caption">
+Figure 1.5: Medias muestrales con banda del 95% según el TCL
+</p>
+</div>
+<p>El gráfico de dispersión de la Figura <a href="estimación-de-la-probabilidad-y-la-media.html#fig:banda-95">1.5</a> muestra los
+100 valores de <span class="math inline">\(\bar{X}_i\)</span> distribuidos en una banda estrecha alrededor
+de la línea roja <span class="math inline">\(\lambda = 5\)</span>, sin tendencia ni patrón sistemático.
+Esto confirma visualmente que:</p>
+<ul>
+<li>No hay sesgo: los puntos se reparten simétricamente arriba y abajo
+de <span class="math inline">\(\lambda = 5\)</span>, lo cual es esperable ya que <span class="math inline">\(E[\bar{X}] = \lambda\)</span>
+(estimador insesgado).</li>
+<li>Baja dispersión: la concentración de los puntos refleja la varianza
+<span class="math inline">\(\lambda/n = 0.005\)</span>, que es muy pequeña.</li>
+<li>Convergencia: con <span class="math inline">\(n = 1000\)</span>, la media muestral es un estimador
+preciso y confiable de <span class="math inline">\(\lambda\)</span>. En resumen, tanto la tabla como la
+figura ilustran empíricamente la Ley de los Grandes Números y son
+coherentes con la distribución teórica que predice el Teorema
+Central del Límite.</li>
+</ul>
+</div>
+<div id="impacto-del-tamaño-muestral-en-la-media" class="section level3 hasAnchor" number="1.1.6">
+<h3><span class="header-section-number">1.1.6</span> <strong>Impacto del tamaño muestral en la media</strong>:<a href="estimación-de-la-probabilidad-y-la-media.html#impacto-del-tama%C3%B1o-muestral-en-la-media" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Genera muestras aleatorias con tamaños: 5, 10, 20, 30, 40, 50, 60,
+70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900 y 1,000.
+Agrega valores si consideras que mejora el análisis de los
+resultados.</li>
+<li>Calcula el promedio muestral para cada tamaño.</li>
+<li>Construye un gráfico de dispersión:
+<ul>
+<li>Eje <span class="math inline">\(X\)</span>: Indexación (1 al 20) por cada tamaño muestral.</li>
+<li>Eje <span class="math inline">\(Y\)</span>: Promedios muestrales.</li>
+</ul></li>
+<li>Dibuja la línea horizontal en la media teórica (<span class="math inline">\(\lambda\)</span>) y compara
+si el promedio se aproxima a medida que crece el tamaño.</li>
+</ul>
+<p>Para una variable <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>, se tiene
+<span class="math inline">\(E[X] = \lambda\)</span> y <span class="math inline">\(\text{Var}(X) = \lambda\)</span>. La varianza de la media
+muestral es:</p>
+<p><span class="math display">\[\text{Var}(\bar{X}_n) = \frac{\lambda}{n}\]</span></p>
+<p>Por lo tanto, el <strong>error estándar</strong> decrece como:</p>
+<p><span class="math display">\[\text{SE}(\bar{X}_n) = \sqrt{\frac{\lambda}{n}}\]</span></p>
+<p>A mayor <span class="math inline">\(n\)</span>, menor dispersión alrededor de <span class="math inline">\(\lambda\)</span>, lo que garantiza
+la convergencia.</p>
+<p>Al igual que en la sección anterior, se emplea un diseño de muestreo
+anidado: se genera una única muestra de tamaño <span class="math inline">\(n = 10{,}000\)</span> y se
+calculan las medias muestrales sobre los primeros <span class="math inline">\(n\)</span> elementos para
+cada tamaño. De este modo, la convergencia observada corresponde a una
+misma realización del proceso aleatorio.</p>
+<table>
+<caption><span id="tab:tabla-impacto-tamano">Table 1.4: </span>Convergencia de la media muestral conforme crece n</caption>
+<colgroup>
+<col width="16%" />
+<col width="19%" />
+<col width="20%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Tamaño muestral <span class="math inline">\((n)\)</span></th>
+<th align="center">Media muestral <span class="math inline">\(\bar{X}_n\)</span></th>
+<th align="center">Error <span class="math inline">\(\bar{X}_n - \lambda\)</span></th>
+<th align="center">SE teórico <span class="math inline">\(\sqrt{\lambda/n}\)</span></th>
+<th align="center">Varianza teórica <span class="math inline">\(\lambda/n\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">4.8000</td>
+<td align="center">-0.2000</td>
+<td align="center">1.0000</td>
+<td align="center">1.000000</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">5.5000</td>
+<td align="center">0.5000</td>
+<td align="center">0.7071</td>
+<td align="center">0.500000</td>
+</tr>
+<tr class="odd">
+<td align="center">20</td>
+<td align="center">5.5500</td>
+<td align="center">0.5500</td>
+<td align="center">0.5000</td>
+<td align="center">0.250000</td>
+</tr>
+<tr class="even">
+<td align="center">30</td>
+<td align="center">5.2333</td>
+<td align="center">0.2333</td>
+<td align="center">0.4082</td>
+<td align="center">0.166667</td>
+</tr>
+<tr class="odd">
+<td align="center">40</td>
+<td align="center">5.1750</td>
+<td align="center">0.1750</td>
+<td align="center">0.3536</td>
+<td align="center">0.125000</td>
+</tr>
+<tr class="even">
+<td align="center">50</td>
+<td align="center">5.2400</td>
+<td align="center">0.2400</td>
+<td align="center">0.3162</td>
+<td align="center">0.100000</td>
+</tr>
+<tr class="odd">
+<td align="center">60</td>
+<td align="center">5.0667</td>
+<td align="center">0.0667</td>
+<td align="center">0.2887</td>
+<td align="center">0.083333</td>
+</tr>
+<tr class="even">
+<td align="center">70</td>
+<td align="center">5.0857</td>
+<td align="center">0.0857</td>
+<td align="center">0.2673</td>
+<td align="center">0.071429</td>
+</tr>
+<tr class="odd">
+<td align="center">80</td>
+<td align="center">5.1875</td>
+<td align="center">0.1875</td>
+<td align="center">0.2500</td>
+<td align="center">0.062500</td>
+</tr>
+<tr class="even">
+<td align="center">90</td>
+<td align="center">5.0667</td>
+<td align="center">0.0667</td>
+<td align="center">0.2357</td>
+<td align="center">0.055556</td>
+</tr>
+<tr class="odd">
+<td align="center">100</td>
+<td align="center">5.1000</td>
+<td align="center">0.1000</td>
+<td align="center">0.2236</td>
+<td align="center">0.050000</td>
+</tr>
+<tr class="even">
+<td align="center">200</td>
+<td align="center">5.1050</td>
+<td align="center">0.1050</td>
+<td align="center">0.1581</td>
+<td align="center">0.025000</td>
+</tr>
+<tr class="odd">
+<td align="center">300</td>
+<td align="center">4.9433</td>
+<td align="center">-0.0567</td>
+<td align="center">0.1291</td>
+<td align="center">0.016667</td>
+</tr>
+<tr class="even">
+<td align="center">400</td>
+<td align="center">5.0025</td>
+<td align="center">0.0025</td>
+<td align="center">0.1118</td>
+<td align="center">0.012500</td>
+</tr>
+<tr class="odd">
+<td align="center">500</td>
+<td align="center">5.0140</td>
+<td align="center">0.0140</td>
+<td align="center">0.1000</td>
+<td align="center">0.010000</td>
+</tr>
+<tr class="even">
+<td align="center">600</td>
+<td align="center">5.0483</td>
+<td align="center">0.0483</td>
+<td align="center">0.0913</td>
+<td align="center">0.008333</td>
+</tr>
+<tr class="odd">
+<td align="center">700</td>
+<td align="center">5.0614</td>
+<td align="center">0.0614</td>
+<td align="center">0.0845</td>
+<td align="center">0.007143</td>
+</tr>
+<tr class="even">
+<td align="center">800</td>
+<td align="center">5.0500</td>
+<td align="center">0.0500</td>
+<td align="center">0.0791</td>
+<td align="center">0.006250</td>
+</tr>
+<tr class="odd">
+<td align="center">900</td>
+<td align="center">5.0256</td>
+<td align="center">0.0256</td>
+<td align="center">0.0745</td>
+<td align="center">0.005556</td>
+</tr>
+<tr class="even">
+<td align="center">1000</td>
+<td align="center">5.0270</td>
+<td align="center">0.0270</td>
+<td align="center">0.0707</td>
+<td align="center">0.005000</td>
+</tr>
+<tr class="odd">
+<td align="center">2000</td>
+<td align="center">4.9745</td>
+<td align="center">-0.0255</td>
+<td align="center">0.0500</td>
+<td align="center">0.002500</td>
+</tr>
+<tr class="even">
+<td align="center">5000</td>
+<td align="center">4.9848</td>
+<td align="center">-0.0152</td>
+<td align="center">0.0316</td>
+<td align="center">0.001000</td>
+</tr>
+<tr class="odd">
+<td align="center">10000</td>
+<td align="center">5.0058</td>
+<td align="center">0.0058</td>
+<td align="center">0.0224</td>
+<td align="center">0.000500</td>
+</tr>
+</tbody>
+</table>
+<p>En la Tabla <a href="estimación-de-la-probabilidad-y-la-media.html#tab:tabla-impacto-tamano">1.4</a>, se puede observar que para
+tamaños pequeños (<span class="math inline">\(n = 5, 10, 20\)</span>), la media muestral puede alejarse
+considerablemente de <span class="math inline">\(\lambda = 5\)</span>, con errores que reflejan la alta
+varianza teórica <span class="math inline">\(\lambda/n\)</span>, pero a medida que <span class="math inline">\(n\)</span> crece, el error
+<span class="math inline">\(\bar{X}_n - \lambda\)</span> tiende a cero y la varianza teórica decrece.</p>
+<div class="figure"><span style="display:block;" id="fig:grafico-impacto-tamano"></span>
+<img src="Actividad-2_files/figure-html/grafico-impacto-tamano-1.png" alt="Convergencia de la media muestral hacia λ = 5 conforme aumenta n" width="80%" />
+<p class="caption">
+Figure 1.6: Convergencia de la media muestral hacia λ = 5 conforme aumenta n
+</p>
+</div>
+<p>El gráfico de la Figura <a href="estimación-de-la-probabilidad-y-la-media.html#fig:grafico-impacto-tamano">1.6</a> muestra que la
+<strong>banda del 95%</strong> se estrecha progresivamente. Notar que para <span class="math inline">\(n = 5\)</span>
+tiene un ancho de <span class="math inline">\(2 \times 1.96 \sqrt{5/5} \approx 3.92\)</span>, mientras que
+para <span class="math inline">\(n = 10000\)</span> se reduce a
+<span class="math inline">\(2 \times 1.96 \sqrt{5/10000} = 2 \times 1.96 \times 0.0224 \approx 0.0877\)</span>.</p>
+<p>En el gráfico se observa que todos los puntos permanecen dentro de la
+banda y se concentran cada vez más cerca de la línea roja, confirmando
+empíricamente la <strong>Ley de los Grandes Números</strong>.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="propiedades-de-los-estimadores.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

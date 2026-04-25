@@ -1,0 +1,148 @@
+# Validación y discusión crítica {#sec-validacion}
+
+```{r validacion-computo, include=FALSE}
+# ============================================================
+# CÓMPUTO COMPLETO DE VALIDACIÓN (oculto del cuerpo).
+# Los resultados detallados se presentan en los Anexos A6–A10.
+# ============================================================
+
+# --- CV 10-fold ---
+set.seed(42)
+control_cv <- trainControl(method = "cv", number = 10)
+
+cv_mat_g2_fit   <- train(G3 ~ G2,        data = mat, method = "lm", trControl = control_cv)
+cv_mat_fail_fit <- train(G3 ~ failures,  data = mat, method = "lm", trControl = control_cv)
+cv_por_g2_fit   <- train(G3 ~ G2,        data = por, method = "lm", trControl = control_cv)
+cv_por_fail_fit <- train(G3 ~ failures,  data = por, method = "lm", trControl = control_cv)
+
+cv_mat_g1_fit   <- train(G3 ~ G1,        data = mat, method = "lm", trControl = control_cv)
+cv_mat_abs_fit  <- train(G3 ~ absences,  data = mat, method = "lm", trControl = control_cv)
+cv_mat_std_fit  <- train(G3 ~ studytime, data = mat, method = "lm", trControl = control_cv)
+cv_por_g1_fit   <- train(G3 ~ G1,        data = por, method = "lm", trControl = control_cv)
+cv_por_abs_fit  <- train(G3 ~ absences,  data = por, method = "lm", trControl = control_cv)
+cv_por_std_fit  <- train(G3 ~ studytime, data = por, method = "lm", trControl = control_cv)
+
+rmse_cv_mat_g2   <- round(cv_mat_g2_fit$results$RMSE,     4)
+mae_cv_mat_g2    <- round(cv_mat_g2_fit$results$MAE,      4)
+r2_cv_mat_g2     <- round(cv_mat_g2_fit$results$Rsquared, 4)
+rmse_cv_mat_fail <- round(cv_mat_fail_fit$results$RMSE,     4)
+r2_cv_mat_fail   <- round(cv_mat_fail_fit$results$Rsquared, 4)
+rmse_cv_por_g2   <- round(cv_por_g2_fit$results$RMSE,     4)
+mae_cv_por_g2    <- round(cv_por_g2_fit$results$MAE,      4)
+r2_cv_por_g2     <- round(cv_por_g2_fit$results$Rsquared, 4)
+rmse_cv_por_fail <- round(cv_por_fail_fit$results$RMSE,     4)
+r2_cv_por_fail   <- round(cv_por_fail_fit$results$Rsquared, 4)
+
+rmse_cv_mat_g1   <- round(cv_mat_g1_fit$results$RMSE,  4)
+rmse_cv_mat_abs  <- round(cv_mat_abs_fit$results$RMSE, 4)
+rmse_cv_mat_std  <- round(cv_mat_std_fit$results$RMSE, 4)
+rmse_cv_por_g1   <- round(cv_por_g1_fit$results$RMSE,  4)
+rmse_cv_por_abs  <- round(cv_por_abs_fit$results$RMSE, 4)
+rmse_cv_por_std  <- round(cv_por_std_fit$results$RMSE, 4)
+
+rmse_in_mat_g2   <- round(sqrt(mean(residuals(modelo_mat)^2)),                4)
+rmse_in_mat_fail <- round(sqrt(mean(residuals(lm(G3~failures,data=mat))^2)),  4)
+rmse_in_por_g2   <- round(sqrt(mean(residuals(modelo_por)^2)),                4)
+rmse_in_por_fail <- round(sqrt(mean(residuals(lm(G3~failures,data=por))^2)), 4)
+
+delta_rmse_mat <- round(rmse_cv_mat_g2 - rmse_in_mat_g2, 4)
+delta_rmse_por <- round(rmse_cv_por_g2 - rmse_in_por_g2, 4)
+
+# --- AIC / BIC ---
+mods_mat <- list(
+  "G3 ~ G2"        = lm(G3 ~ G2,        data = mat),
+  "G3 ~ failures"  = lm(G3 ~ failures,  data = mat),
+  "G3 ~ G1"        = lm(G3 ~ G1,        data = mat),
+  "G3 ~ absences"  = lm(G3 ~ absences,  data = mat),
+  "G3 ~ studytime" = lm(G3 ~ studytime, data = mat)
+)
+mods_por <- list(
+  "G3 ~ G2"        = lm(G3 ~ G2,        data = por),
+  "G3 ~ failures"  = lm(G3 ~ failures,  data = por),
+  "G3 ~ G1"        = lm(G3 ~ G1,        data = por),
+  "G3 ~ absences"  = lm(G3 ~ absences,  data = por),
+  "G3 ~ studytime" = lm(G3 ~ studytime, data = por)
+)
+tabla_aic_mat <- purrr::map_dfr(names(mods_mat), function(nm) {
+  m  <- mods_mat[[nm]]; sm <- summary(m)
+  rmse_cv <- switch(nm,
+    "G3 ~ G2"=rmse_cv_mat_g2, "G3 ~ failures"=rmse_cv_mat_fail,
+    "G3 ~ G1"=rmse_cv_mat_g1, "G3 ~ absences"=rmse_cv_mat_abs,
+    "G3 ~ studytime"=rmse_cv_mat_std)
+  data.frame(Modelo=nm, `R²`=round(sm$r.squared,4), `σ̂`=round(sm$sigma,4),
+             AIC=round(AIC(m),2), `ΔAIC`=NA_real_, BIC=round(BIC(m),2),
+             `RMSE_CV`=rmse_cv, check.names=FALSE)
+})
+tabla_aic_por <- purrr::map_dfr(names(mods_por), function(nm) {
+  m  <- mods_por[[nm]]; sm <- summary(m)
+  rmse_cv <- switch(nm,
+    "G3 ~ G2"=rmse_cv_por_g2, "G3 ~ failures"=rmse_cv_por_fail,
+    "G3 ~ G1"=rmse_cv_por_g1, "G3 ~ absences"=rmse_cv_por_abs,
+    "G3 ~ studytime"=rmse_cv_por_std)
+  data.frame(Modelo=nm, `R²`=round(sm$r.squared,4), `σ̂`=round(sm$sigma,4),
+             AIC=round(AIC(m),2), `ΔAIC`=NA_real_, BIC=round(BIC(m),2),
+             `RMSE_CV`=rmse_cv, check.names=FALSE)
+})
+tabla_aic_mat$`ΔAIC` <- round(tabla_aic_mat$AIC - min(tabla_aic_mat$AIC), 2)
+tabla_aic_por$`ΔAIC` <- round(tabla_aic_por$AIC - min(tabla_aic_por$AIC), 2)
+tabla_aic_mat <- tabla_aic_mat[order(tabla_aic_mat$AIC), ]
+tabla_aic_por <- tabla_aic_por[order(tabla_aic_por$AIC), ]
+
+# --- Tamaño del efecto ---
+f2_mat_g2   <- round(r2_mat  / (1 - r2_mat),  4)
+f2_por_g2   <- round(r2_por  / (1 - r2_por),  4)
+r2_fail_mat <- round(summary(lm(G3~failures,data=mat))$r.squared, 4)
+r2_fail_por <- round(summary(lm(G3~failures,data=por))$r.squared, 4)
+f2_mat_fail <- round(r2_fail_mat / (1 - r2_fail_mat), 4)
+f2_por_fail <- round(r2_fail_por / (1 - r2_fail_por), 4)
+r_mat_g2    <- round(cor(mat$G2,       mat$G3), 4)
+r_por_g2    <- round(cor(por$G2,       por$G3), 4)
+r_mat_fail  <- round(cor(mat$failures, mat$G3), 4)
+r_por_fail  <- round(cor(por$failures, por$G3), 4)
+
+# --- Robustez ---
+ic_full_mat <- confint(modelo_mat,    level = 0.95)["G2", ]
+ic_si_mat   <- confint(modelo_mat_si, level = 0.95)["G2", ]
+ic_full_por <- confint(modelo_por,    level = 0.95)["G2", ]
+ic_si_por   <- confint(modelo_por_si, level = 0.95)["G2", ]
+solapa_mat  <- ic_full_mat[1] < ic_si_mat[2] & ic_si_mat[1] < ic_full_mat[2]
+solapa_por  <- ic_full_por[1] < ic_si_por[2] & ic_si_por[1] < ic_full_por[2]
+
+# --- HC3 ---
+vcov_hc3_mat <- sandwich::vcovHC(modelo_mat, type = "HC3")
+vcov_hc3_por <- sandwich::vcovHC(modelo_por, type = "HC3")
+se_hc3_mat   <- sqrt(diag(vcov_hc3_mat))["G2"]
+se_hc3_por   <- sqrt(diag(vcov_hc3_por))["G2"]
+ic_hc3_mat   <- coef(modelo_mat)["G2"] + c(-1,1) * qt(0.975, df=n_mat-2) * se_hc3_mat
+ic_hc3_por   <- coef(modelo_por)["G2"] + c(-1,1) * qt(0.975, df=n_por-2) * se_hc3_por
+
+# --- Texto condicional sobreajuste ---
+texto_sobreajuste_mat <- ifelse(abs(delta_rmse_mat) < 0.15,
+  "prácticamente nula, lo que confirma la ausencia de sobreajuste",
+  "no trivial, lo que sugiere sobreajuste moderado")
+texto_sobreajuste_por <- ifelse(abs(delta_rmse_por) < 0.15,
+  "prácticamente nula, lo que confirma la ausencia de sobreajuste",
+  "no trivial, lo que sugiere sobreajuste moderado")
+
+texto_robustez <- if (max(abs(delta_b1_mat), abs(delta_b1_por)) < 5) {
+  paste0("Puesto que los cambios relativos en $\\hat{\\beta}_1$ quedan por debajo del 5%, ",
+         "ambos modelos pueden calificarse como robustos.")
+} else {
+  paste0("Los cambios en $\\hat{\\beta}_1$ rebasan el 5%; las observaciones influyentes ",
+         "ejercen un efecto no trivial sobre los estimadores.")
+}
+```
+
+Las métricas de las Secciones \@ref(sec-modelo-mat) y \@ref(sec-modelo-por) son medidas **dentro de muestra**, insuficientes para describir el comportamiento del modelo en datos nuevos (Montgomery y Runger, 2021, §11-9). Tres controles complementarios —desarrollados en los Anexos \@ref(sec-anexo-aic)–\@ref(sec-anexo-coverage)— confirman la adecuación del modelo **G3 ~ G2**: (i) AIC/BIC entre cinco modelos candidatos lo señalan como preferido por $\Delta AIC > `r round(sort(tabla_aic_mat$"ΔAIC")[2],1)`$ en MAT y $> `r round(sort(tabla_aic_por$"ΔAIC")[2],1)`$ en POR (evidencia fuerte; Burnham y Anderson, 2002); (ii) la CV 10-fold arroja $RMSE_{CV} = `r rmse_cv_mat_g2`$ en MAT y $`r rmse_cv_por_g2`$ en POR, prácticamente coincidente con el $RMSE$ dentro de muestra (diferencias de $`r delta_rmse_mat`$ y $`r delta_rmse_por`$ puntos), descartando sobreajuste; (iii) el tamaño del efecto $f^2 = `r f2_mat_g2`$ y $`r f2_por_g2`$ supera holgadamente el umbral $0.35$ de efecto grande (Cohen, 1988, §9.2.1). Adicionalmente, el análisis formal de robustez (estadístico $z$, Anexo \@ref(sec-anexo-hc3)) no rechaza $H_0: \beta_1^{\text{full}} = \beta_1^{\text{si}}$, $|\Delta\hat\beta_1| < 5\%$, e IC HC3 ≈ clásicos. La verificación bootstrap del Anexo \@ref(sec-anexo-coverage) acota empíricamente la cobertura de los IP individuales pese al rechazo de normalidad.
+
+## Discusión crítica: poder explicativo vs. predictivo de G2 {#sec-critica}
+
+El bloque cuantitativo anterior ratifica que G2 es el mejor predictor de G3 en términos estadísticos. Una lectura rigurosa obliga a distinguir **poder predictivo** de **poder explicativo** (Shmueli, 2010; Pearl, 2009).
+
+**¿Explica el modelo, o simplemente predice?** G2 y G3 son calificaciones de la misma asignatura en períodos consecutivos. La elevada correlación ($r \approx `r round(cor(mat$G2, mat$G3), 2)`$ en MAT, $`r round(cor(por$G2, por$G3), 2)`$ en POR) refleja la *persistencia académica* —los estudiantes mantienen su posición relativa entre períodos— y no una relación causal accionable. En el marco causal de Rubin (1974) y Pearl (2009), G2 opera como **proxy** de la capacidad académica subyacente, no como causa directa de G3.
+
+**Sesgo por variable omitida.** El modelo excluye factores relevantes: `failures`, `studytime`, `Medu`, `Fedu`, `Dalc`, `Walc`. Como $r(\text{failures}, G2) = `r round(cor(mat$failures, mat$G2),3)`$ y $r(\text{Medu}, G2) = `r round(cor(mat$Medu, mat$G2),3)`$ en MAT no son triviales, $\hat\beta_1$ **no admite interpretación causal** (Wooldridge, 2019, §3.3).
+
+**Implicaciones prácticas y validez externa.** Desde la óptica de política educativa, G3 ~ G2 ofrece alta utilidad predictiva pero baja utilidad prescriptiva: no informa qué intervenciones elevarían G3. El modelo G3 ~ failures, pese a su ajuste inferior, resulta más apropiado para diseñar intervenciones tempranas. La exclusión de los registros con G3 = 0 (§\@ref(sec-g3cero)) restringe el dominio inferencial a estudiantes que completaron el curso; los datos provienen de dos escuelas portuguesas en 2005–2006, lo que circunscribe la validez externa a poblaciones con características socioeducativas comparables.
+
+**Decisión estadística consolidada.** Considerando la comparación AIC ($\Delta AIC > `r round(sort(tabla_aic_mat$"ΔAIC")[2],1)`$ en MAT; Anexo \@ref(sec-anexo-aic)), CV y el tamaño del efecto (ambos $f^2$ **grandes**; Anexo \@ref(sec-anexo-cv)), y la robustez (Anexo \@ref(sec-anexo-hc3)), la conclusión inferencial sobre $H_0: \beta_1 = 0$ se mantiene bajo todos los controles aplicados. La limitación central es interpretativa, no estadística: **el modelo describe asociación, no causalidad**.

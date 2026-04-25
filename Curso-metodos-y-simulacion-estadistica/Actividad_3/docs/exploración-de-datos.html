@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Exploración de datos | Actividad 3</title>
+  <meta name="description" content="1 Exploración de datos | Actividad 3" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Exploración de datos | Actividad 3" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Exploración de datos | Actividad 3" />
+  
+  
+  
+
+<meta name="author" content="Luis Javier Rubio Hernández" />
+
+
+<meta name="date" content="2026-04-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="sec-modelo-mat.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="chapter" data-level="1" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html"><i class="fa fa-check"></i><b>1</b> Exploración de datos</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#descripci%C3%B3n-del-conjunto-de-datos"><i class="fa fa-check"></i><b>1.1</b> Descripción del conjunto de datos</a></li>
+<li class="chapter" data-level="1.2" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#integridad-de-los-datos"><i class="fa fa-check"></i><b>1.2</b> Integridad de los datos</a></li>
+<li class="chapter" data-level="1.3" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#sec-g3cero"><i class="fa fa-check"></i><b>1.3</b> Tratamiento de observaciones con G3 = 0</a></li>
+<li class="chapter" data-level="1.4" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#an%C3%A1lisis-descriptivo-de-la-variable-respuesta"><i class="fa fa-check"></i><b>1.4</b> Análisis descriptivo de la variable respuesta</a></li>
+<li class="chapter" data-level="1.5" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#estad%C3%ADsticos-descriptivos-de-las-variables-cuantitativas-candidatas"><i class="fa fa-check"></i><b>1.5</b> Estadísticos descriptivos de las variables cuantitativas candidatas</a></li>
+<li class="chapter" data-level="1.6" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#an%C3%A1lisis-de-correlaci%C3%B3n-con-la-variable-respuesta"><i class="fa fa-check"></i><b>1.6</b> Análisis de correlación con la variable respuesta</a></li>
+<li class="chapter" data-level="1.7" data-path="exploración-de-datos.html"><a href="exploración-de-datos.html#sec-predictor"><i class="fa fa-check"></i><b>1.7</b> Selección de la variable predictora</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html"><i class="fa fa-check"></i><b>2</b> Modelo de regresión lineal simple — Matemáticas (MAT)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-espec-mat"><i class="fa fa-check"></i><b>2.1</b> Especificación y estimación del modelo</a></li>
+<li class="chapter" data-level="2.2" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-estim-mat"><i class="fa fa-check"></i><b>2.2</b> Estimación de parámetros</a></li>
+<li class="chapter" data-level="2.3" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-anova-mat"><i class="fa fa-check"></i><b>2.3</b> Prueba de hipótesis global — ANOVA y prueba F</a></li>
+<li class="chapter" data-level="2.4" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-r2-mat"><i class="fa fa-check"></i><b>2.4</b> Coeficiente de determinación</a></li>
+<li class="chapter" data-level="2.5" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-ic-params-mat"><i class="fa fa-check"></i><b>2.5</b> Intervalos de confianza para los parámetros</a></li>
+<li class="chapter" data-level="2.6" data-path="sec-modelo-mat.html"><a href="sec-modelo-mat.html#sec-ic-pred-mat"><i class="fa fa-check"></i><b>2.6</b> Intervalos de confianza y predicción para G3</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html"><i class="fa fa-check"></i><b>3</b> Modelo de regresión lineal simple — Portugués (POR)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-estim-por"><i class="fa fa-check"></i><b>3.1</b> Estimación de parámetros</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-anova-por"><i class="fa fa-check"></i><b>3.2</b> Prueba de hipótesis global — ANOVA y prueba F</a></li>
+<li class="chapter" data-level="3.3" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-r2-por"><i class="fa fa-check"></i><b>3.3</b> Coeficiente de determinación</a></li>
+<li class="chapter" data-level="3.4" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-ic-params-por"><i class="fa fa-check"></i><b>3.4</b> Intervalos de confianza para los parámetros</a></li>
+<li class="chapter" data-level="3.5" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-ic-pred-por"><i class="fa fa-check"></i><b>3.5</b> Intervalos de confianza y predicción para G3</a></li>
+<li class="chapter" data-level="3.6" data-path="sec-modelo-por.html"><a href="sec-modelo-por.html#sec-comparacion-modelos"><i class="fa fa-check"></i><b>3.6</b> Comparación de ambos modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html"><i class="fa fa-check"></i><b>4</b> Diagnóstico de supuestos</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#supuestos-del-modelo"><i class="fa fa-check"></i><b>4.1</b> Supuestos del modelo</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#sec-diag-mat"><i class="fa fa-check"></i><b>4.2</b> Diagnóstico — Matemáticas (MAT)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#pruebas-formales"><i class="fa fa-check"></i><b>4.2.1</b> Pruebas formales</a></li>
+<li class="chapter" data-level="4.2.2" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#respaldo-gr%C3%A1fico"><i class="fa fa-check"></i><b>4.2.2</b> Respaldo gráfico</a></li>
+<li class="chapter" data-level="4.2.3" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#lectura-del-diagn%C3%B3stico-en-mat"><i class="fa fa-check"></i><b>4.2.3</b> Lectura del diagnóstico en MAT</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#sec-diag-por"><i class="fa fa-check"></i><b>4.3</b> Diagnóstico — Portugués (POR)</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#pruebas-formales-1"><i class="fa fa-check"></i><b>4.3.1</b> Pruebas formales</a></li>
+<li class="chapter" data-level="4.3.2" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#respaldo-gr%C3%A1fico-1"><i class="fa fa-check"></i><b>4.3.2</b> Respaldo gráfico</a></li>
+<li class="chapter" data-level="4.3.3" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#lectura-del-diagn%C3%B3stico-en-por"><i class="fa fa-check"></i><b>4.3.3</b> Lectura del diagnóstico en POR</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="sec-diagnostico.html"><a href="sec-diagnostico.html#sec-resumen-diag"><i class="fa fa-check"></i><b>4.4</b> Resumen comparativo del diagnóstico</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-atipicos.html"><a href="sec-atipicos.html"><i class="fa fa-check"></i><b>5</b> Análisis de datos atípicos e influyentes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sec-atipicos.html"><a href="sec-atipicos.html#criterios-de-detecci%C3%B3n"><i class="fa fa-check"></i><b>5.1</b> Criterios de detección</a></li>
+<li class="chapter" data-level="5.2" data-path="sec-atipicos.html"><a href="sec-atipicos.html#sec-infl-mat"><i class="fa fa-check"></i><b>5.2</b> Diagnóstico de influencia — Matemáticas (MAT)</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-atipicos.html"><a href="sec-atipicos.html#visualizaci%C3%B3n-combinada"><i class="fa fa-check"></i><b>5.2.1</b> Visualización combinada</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-atipicos.html"><a href="sec-atipicos.html#distancia-de-cook-por-%C3%ADndice"><i class="fa fa-check"></i><b>5.2.2</b> Distancia de Cook por índice</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-atipicos.html"><a href="sec-atipicos.html#conteo-y-detalle-de-observaciones-flagueadas"><i class="fa fa-check"></i><b>5.2.3</b> Conteo y detalle de observaciones flagueadas</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-atipicos.html"><a href="sec-atipicos.html#sec-infl-por"><i class="fa fa-check"></i><b>5.3</b> Diagnóstico de influencia — Portugués (POR)</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="sec-atipicos.html"><a href="sec-atipicos.html#visualizaci%C3%B3n-combinada-1"><i class="fa fa-check"></i><b>5.3.1</b> Visualización combinada</a></li>
+<li class="chapter" data-level="5.3.2" data-path="sec-atipicos.html"><a href="sec-atipicos.html#distancia-de-cook-por-%C3%ADndice-1"><i class="fa fa-check"></i><b>5.3.2</b> Distancia de Cook por índice</a></li>
+<li class="chapter" data-level="5.3.3" data-path="sec-atipicos.html"><a href="sec-atipicos.html#conteo-de-flagueadas-en-por"><i class="fa fa-check"></i><b>5.3.3</b> Conteo de flagueadas en POR</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="sec-atipicos.html"><a href="sec-atipicos.html#sec-impacto-infl"><i class="fa fa-check"></i><b>5.4</b> Impacto sobre los parámetros del modelo</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sec-validacion.html"><a href="sec-validacion.html"><i class="fa fa-check"></i><b>6</b> Validación y discusión crítica</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sec-validacion.html"><a href="sec-validacion.html#sec-critica"><i class="fa fa-check"></i><b>6.1</b> Discusión crítica: poder explicativo vs. predictivo de G2</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sec-discusion.html"><a href="sec-discusion.html"><i class="fa fa-check"></i><b>7</b> Discusión y conclusiones</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sec-discusion.html"><a href="sec-discusion.html#sec-discusion-resultados"><i class="fa fa-check"></i><b>7.1</b> Síntesis y limitaciones</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-discusion.html"><a href="sec-discusion.html#sec-conclusiones"><i class="fa fa-check"></i><b>7.2</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="sec-referencias.html"><a href="sec-referencias.html"><i class="fa fa-check"></i><b>8</b> Referencias bibliográficas</a></li>
+<li class="chapter" data-level="9" data-path="sec-anexos.html"><a href="sec-anexos.html"><i class="fa fa-check"></i><b>9</b> Anexos</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="sec-anexos.html"><a href="sec-anexos.html#anexos-de-c%C3%B3digo-comentado"><i class="fa fa-check"></i><b>9.1</b> Anexos de código comentado</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="sec-anexos.html"><a href="sec-anexos.html#a1.-carga-y-preparaci%C3%B3n-de-datos"><i class="fa fa-check"></i><b>9.1.1</b> A1. Carga y preparación de datos</a></li>
+<li class="chapter" data-level="9.1.2" data-path="sec-anexos.html"><a href="sec-anexos.html#a2.-an%C3%A1lisis-de-correlaci%C3%B3n"><i class="fa fa-check"></i><b>9.1.2</b> A2. Análisis de correlación</a></li>
+<li class="chapter" data-level="9.1.3" data-path="sec-anexos.html"><a href="sec-anexos.html#a3.-ajuste-y-evaluaci%C3%B3n-del-modelo"><i class="fa fa-check"></i><b>9.1.3</b> A3. Ajuste y evaluación del modelo</a></li>
+<li class="chapter" data-level="9.1.4" data-path="sec-anexos.html"><a href="sec-anexos.html#a4.-diagn%C3%B3stico-de-supuestos"><i class="fa fa-check"></i><b>9.1.4</b> A4. Diagnóstico de supuestos</a></li>
+<li class="chapter" data-level="9.1.5" data-path="sec-anexos.html"><a href="sec-anexos.html#a5.-an%C3%A1lisis-de-observaciones-influyentes"><i class="fa fa-check"></i><b>9.1.5</b> A5. Análisis de observaciones influyentes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="sec-anexos.html"><a href="sec-anexos.html#anexos-de-validaci%C3%B3n-estad%C3%ADstica-formal"><i class="fa fa-check"></i><b>9.2</b> Anexos de validación estadística formal</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-aic"><i class="fa fa-check"></i><b>9.2.1</b> A6. Comparación formal de modelos candidatos (AIC/BIC)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-cv"><i class="fa fa-check"></i><b>9.2.2</b> A7. Validación cruzada <span class="math inline">\(k\)</span>-fold y tamaño del efecto</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-hc3"><i class="fa fa-check"></i><b>9.2.3</b> A8. Análisis formal de robustez ante influyentes</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sec-anexos.html"><a href="sec-anexos.html#a9.-errores-est%C3%A1ndar-robustos-a-heterocedasticidad-hc3"><i class="fa fa-check"></i><b>9.2.4</b> A9. Errores estándar robustos a heterocedasticidad (HC3)</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sec-anexos.html"><a href="sec-anexos.html#sec-anexo-coverage"><i class="fa fa-check"></i><b>9.2.5</b> A10. Cobertura empírica de los intervalos de predicción</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="sec-anexos.html"><a href="sec-anexos.html#anexo-final-aplicaci%C3%B3n-shiny"><i class="fa fa-check"></i><b>9.3</b> Anexo final — Aplicación Shiny</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Actividad 3</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploración-de-datos" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Exploración de datos<a href="exploración-de-datos.html#exploraci%C3%B3n-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="descripción-del-conjunto-de-datos" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Descripción del conjunto de datos<a href="exploración-de-datos.html#descripci%C3%B3n-del-conjunto-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Los datos provienen de Cortez y Silva (2008), recogidos en dos instituciones portuguesas de educación secundaria durante 2005–2006. Cada registro contiene las evaluaciones de los tres períodos (<strong>G1</strong>, <strong>G2</strong>, <strong>G3</strong>) junto con variables demográficas, familiares y de comportamiento escolar. Esta actividad construye un <strong>modelo de regresión lineal simple</strong> con G3 como respuesta. Cada dataset tiene 33 variables: <em>studentmat</em> (395 registros) y <em>studentpor</em> (649). La Tabla <a href="exploración-de-datos.html#tab:tab-variables">1.1</a> las resume.</p>
+<table class="table table-striped table-bordered table-condensed table-responsive" style="font-size: 12px; color: black; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-variables">Table 1.1: </span>Descripción, naturaleza y rango de las 33 variables del conjunto de datos.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+N°
+</th>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+Descripción
+</th>
+<th style="text-align:left;">
+Naturaleza
+</th>
+<th style="text-align:left;">
+Rango
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:left;">
+school
+</td>
+<td style="text-align:left;">
+Escuela del estudiante (GP: Gabriel Pereira; MS: Mousinho da Silveira)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{GP, MS}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:left;">
+Sexo del estudiante (F: femenino; M: masculino)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{F, M}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:left;">
+Edad del estudiante (años)
+</td>
+<td style="text-align:left;">
+Cuantitativa discreta
+</td>
+<td style="text-align:left;">
+15–22 años
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:left;">
+address
+</td>
+<td style="text-align:left;">
+Tipo de domicilio (U: urbano; R: rural)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{U, R}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:left;">
+famsize
+</td>
+<td style="text-align:left;">
+Tamaño del núcleo familiar (LE3: ≤3 miembros; GT3: &gt;3 miembros)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{LE3, GT3}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:left;">
+Pstatus
+</td>
+<td style="text-align:left;">
+Estado de convivencia de los padres (T: juntos; A: separados)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{T, A}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:left;">
+Medu
+</td>
+<td style="text-align:left;">
+Nivel educativo de la madre (0: ninguno → 4: superior)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+0, 1, 2, 3, 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:left;">
+Fedu
+</td>
+<td style="text-align:left;">
+Nivel educativo del padre (0: ninguno → 4: superior)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+0, 1, 2, 3, 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:left;">
+Mjob
+</td>
+<td style="text-align:left;">
+Ocupación de la madre
+</td>
+<td style="text-align:left;">
+Cualitativa nominal
+</td>
+<td style="text-align:left;">
+5 categorías
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:left;">
+Fjob
+</td>
+<td style="text-align:left;">
+Ocupación del padre
+</td>
+<td style="text-align:left;">
+Cualitativa nominal
+</td>
+<td style="text-align:left;">
+5 categorías
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:left;">
+reason
+</td>
+<td style="text-align:left;">
+Razón para elegir la escuela
+</td>
+<td style="text-align:left;">
+Cualitativa nominal
+</td>
+<td style="text-align:left;">
+4 categorías
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:left;">
+guardian
+</td>
+<td style="text-align:left;">
+Tutor del estudiante
+</td>
+<td style="text-align:left;">
+Cualitativa nominal
+</td>
+<td style="text-align:left;">
+{mother, father, other}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:left;">
+traveltime
+</td>
+<td style="text-align:left;">
+Tiempo de desplazamiento al colegio (1: &lt;15 min → 4: &gt;1 hora)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:left;">
+studytime
+</td>
+<td style="text-align:left;">
+Tiempo semanal de estudio (1: &lt;2 h → 4: &gt;10 h)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:left;">
+failures
+</td>
+<td style="text-align:left;">
+Número de reprobaciones previas (0, 1, 2, ≥3)
+</td>
+<td style="text-align:left;">
+Cuantitativa discreta
+</td>
+<td style="text-align:left;">
+0, 1, 2, ≥3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:left;">
+schoolsup
+</td>
+<td style="text-align:left;">
+Apoyo educativo escolar adicional (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:left;">
+famsup
+</td>
+<td style="text-align:left;">
+Apoyo educativo familiar (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:left;">
+paid
+</td>
+<td style="text-align:left;">
+Clases pagadas adicionales en la asignatura (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:left;">
+activities
+</td>
+<td style="text-align:left;">
+Participación en actividades extracurriculares (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:left;">
+nursery
+</td>
+<td style="text-align:left;">
+Asistió a jardín de infantes (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+21
+</td>
+<td style="text-align:left;">
+higher
+</td>
+<td style="text-align:left;">
+Desea cursar educación superior (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:left;">
+internet
+</td>
+<td style="text-align:left;">
+Acceso a internet en casa (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+23
+</td>
+<td style="text-align:left;">
+romantic
+</td>
+<td style="text-align:left;">
+Tiene relación romántica (yes/no)
+</td>
+<td style="text-align:left;">
+Cualitativa nominal binaria
+</td>
+<td style="text-align:left;">
+{yes, no}
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+24
+</td>
+<td style="text-align:left;">
+famrel
+</td>
+<td style="text-align:left;">
+Calidad de las relaciones familiares (1: muy mala → 5: excelente)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4, 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+25
+</td>
+<td style="text-align:left;">
+freetime
+</td>
+<td style="text-align:left;">
+Tiempo libre después del colegio (1: muy bajo → 5: muy alto)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4, 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+26
+</td>
+<td style="text-align:left;">
+goout
+</td>
+<td style="text-align:left;">
+Frecuencia de salidas con amigos (1: muy baja → 5: muy alta)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4, 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+27
+</td>
+<td style="text-align:left;">
+Dalc
+</td>
+<td style="text-align:left;">
+Consumo de alcohol en días de semana (1: muy bajo → 5: muy alto)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4, 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:left;">
+Walc
+</td>
+<td style="text-align:left;">
+Consumo de alcohol en fines de semana (1: muy bajo → 5: muy alto)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4, 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+29
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+Estado de salud actual (1: muy malo → 5: muy bueno)
+</td>
+<td style="text-align:left;">
+Cualitativa ordinal
+</td>
+<td style="text-align:left;">
+1, 2, 3, 4, 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:left;">
+absences
+</td>
+<td style="text-align:left;">
+Número de ausencias escolares
+</td>
+<td style="text-align:left;">
+Cuantitativa discreta
+</td>
+<td style="text-align:left;">
+0–93
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+31
+</td>
+<td style="text-align:left;">
+G1
+</td>
+<td style="text-align:left;">
+Calificación del primer período (0–20)
+</td>
+<td style="text-align:left;">
+Cuantitativa discreta
+</td>
+<td style="text-align:left;">
+0–20
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+32
+</td>
+<td style="text-align:left;">
+G2
+</td>
+<td style="text-align:left;">
+Calificación del segundo período (0–20)
+</td>
+<td style="text-align:left;">
+Cuantitativa discreta
+</td>
+<td style="text-align:left;">
+0–20
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-weight: bold;">
+33
+</td>
+<td style="text-align:left;font-weight: bold;">
+G3
+</td>
+<td style="text-align:left;font-weight: bold;">
+Calificación final (0–20) — variable respuesta
+</td>
+<td style="text-align:left;font-weight: bold;">
+Cuantitativa discreta
+</td>
+<td style="text-align:left;font-weight: bold;">
+0–20
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>*</sup> La variable G3 (resaltada en negrita) constituye la variable respuesta del modelo.<br /> Las variables cualitativas ordinales se tratan como numéricas en el análisis de<br /> correlación lineal; la limitación de este supuesto se aborda en la Sección 1.5.
+</td>
+</tr>
+</tfoot>
+</table>
+<p>De las 33 variables, 27 son cualitativas —binarias o con escalas ordinales tipo Likert— y 6 son cuantitativas discretas: <strong>age</strong>, <strong>failures</strong>, <strong>absences</strong>, <strong>G1</strong>, <strong>G2</strong>, <strong>G3</strong>. Para el modelo lineal se emplearán únicamente predictores cuantitativos.</p>
+</div>
+<div id="integridad-de-los-datos" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Integridad de los datos<a href="exploración-de-datos.html#integridad-de-los-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-integridad">Table 1.2: </span>Verificación de integridad de los conjuntos de datos.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Indicador
+</th>
+<th style="text-align:center;">
+Matemáticas (MAT)
+</th>
+<th style="text-align:center;">
+Portugués (POR)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Observaciones totales
+</td>
+<td style="text-align:center;">
+395
+</td>
+<td style="text-align:center;">
+649
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Variables
+</td>
+<td style="text-align:center;">
+33
+</td>
+<td style="text-align:center;">
+33
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Registros duplicados
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Valores faltantes (NA)
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Observaciones con G3 = 0
+</td>
+<td style="text-align:center;font-weight: bold;">
+38
+</td>
+<td style="text-align:center;font-weight: bold;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Porcentaje con G3 = 0
+</td>
+<td style="text-align:center;font-weight: bold;">
+9.62%
+</td>
+<td style="text-align:center;font-weight: bold;">
+2.31%
+</td>
+</tr>
+</tbody>
+</table>
+<p>La calidad técnica es satisfactoria: <strong>no hay duplicados ni faltantes</strong> (Tabla <a href="exploración-de-datos.html#tab:tab-integridad">1.2</a>). La única anomalía son 38 registros con <strong>G3 = 0</strong> en MAT (9.62%) y 15 en POR (2.31%), cuyo tratamiento se detalla a continuación.</p>
+</div>
+<div id="sec-g3cero" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Tratamiento de observaciones con G3 = 0<a href="exploración-de-datos.html#sec-g3cero" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-g3cero">Table 1.3: </span>Comparación de indicadores entre los subgrupos G3 = 0 y G3 &gt; 0.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Grupo
+</th>
+<th style="text-align:center;">
+n
+</th>
+<th style="text-align:center;">
+Media G1
+</th>
+<th style="text-align:center;">
+Media G2
+</th>
+<th style="text-align:center;">
+Media absences
+</th>
+<th style="text-align:center;">
+Media failures
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-style: italic;">
+G3 = 0 (MAT)
+</td>
+<td style="text-align:center;font-style: italic;">
+38
+</td>
+<td style="text-align:center;font-style: italic;">
+7.53
+</td>
+<td style="text-align:center;font-style: italic;">
+4.66
+</td>
+<td style="text-align:center;font-style: italic;">
+0.00
+</td>
+<td style="text-align:center;font-style: italic;">
+0.92
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G3 &gt; 0 (MAT)
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+11.27
+</td>
+<td style="text-align:center;">
+11.36
+</td>
+<td style="text-align:center;">
+6.32
+</td>
+<td style="text-align:center;">
+0.27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-style: italic;">
+G3 = 0 (POR)
+</td>
+<td style="text-align:center;font-style: italic;">
+15
+</td>
+<td style="text-align:center;font-style: italic;">
+7.07
+</td>
+<td style="text-align:center;font-style: italic;">
+3.80
+</td>
+<td style="text-align:center;font-style: italic;">
+0.00
+</td>
+<td style="text-align:center;font-style: italic;">
+0.80
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G3 &gt; 0 (POR)
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+11.50
+</td>
+<td style="text-align:center;">
+11.75
+</td>
+<td style="text-align:center;">
+3.75
+</td>
+<td style="text-align:center;">
+0.21
+</td>
+</tr>
+</tbody>
+</table>
+<p>Los estudiantes con G3 = 0 presentan calificaciones positivas pero <strong>reprobatorias</strong> en G1 y G2 (MAT: <span class="math inline">\(\bar{G}_1 = 7.53\)</span>, <span class="math inline">\(\bar{G}_2 = 4.66\)</span>; POR: <span class="math inline">\(\bar{G}_1 = 7.07\)</span>, <span class="math inline">\(\bar{G}_2 = 3.8\)</span>): ni ausencias totales <strong>ni aprobaciones previas</strong> (la escala portuguesa exige <span class="math inline">\(\geq 10\)</span>). El patrón decisivo está en <code>absences</code>: en los 53 registros con G3 = 0, ausencias vale 0 en el 100 % de los casos, frente a 21.6 % (MAT) y 36.1 % (POR) entre los G3 &gt; 0. La implicación G3 = 0 <span class="math inline">\(\Rightarrow\)</span> absences = 0 se cumple determinísticamente (Fisher, <span class="math inline">\(p = 0.000000000000000000000027\)</span> en MAT, <span class="math inline">\(0.00000032\)</span> en POR): codificación administrativa de <strong>no-presentación al examen final</strong> (Cortez y Silva, 2008). La convivencia de dos mecanismos generadores rompería la especificación <span class="math inline">\(E[Y_i \mid X_i = x] = \beta_0 + \beta_1 x\)</span> (Montgomery y Runger, 2021, Cap. 11); se <strong>excluyen</strong> estos registros: MAT conserva <strong>357</strong>, POR <strong>634</strong>.</p>
+</div>
+<div id="análisis-descriptivo-de-la-variable-respuesta" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Análisis descriptivo de la variable respuesta<a href="exploración-de-datos.html#an%C3%A1lisis-descriptivo-de-la-variable-respuesta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-g3-desc">Table 1.4: </span>Estadísticos descriptivos de la variable respuesta G3 (con G3 &gt; 0).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Asignatura
+</th>
+<th style="text-align:center;">
+n
+</th>
+<th style="text-align:center;">
+Media
+</th>
+<th style="text-align:center;">
+Mediana
+</th>
+<th style="text-align:center;">
+DE
+</th>
+<th style="text-align:center;">
+Mínimo
+</th>
+<th style="text-align:center;">
+Q1
+</th>
+<th style="text-align:center;">
+Q3
+</th>
+<th style="text-align:center;">
+Máximo
+</th>
+<th style="text-align:center;">
+Asimetría
+</th>
+<th style="text-align:center;">
+Curtosis
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+25%…1
+</td>
+<td style="text-align:left;">
+Matemáticas (MAT)
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+11.524
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+3.228
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:center;">
+0.208
+</td>
+<td style="text-align:center;">
+-0.428
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25%…2
+</td>
+<td style="text-align:left;">
+Portugués (POR)
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+12.188
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+2.692
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+0.125
+</td>
+<td style="text-align:center;">
+-0.142
+</td>
+</tr>
+</tbody>
+</table>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-g3-dist"></span>
+<img src="Actividad-3_files/figure-html/fig-g3-dist-1.png" alt="Distribución de G3 en Matemáticas (izquierda) y Portugués (derecha), comparada mediante diagrama de caja superpuesto a la distribución de frecuencias. El rombo señala la media; la barra central de la caja marca la mediana." width="80%" />
+<p class="caption">
+Figure 1.1: Distribución de G3 en Matemáticas (izquierda) y Portugués (derecha), comparada mediante diagrama de caja superpuesto a la distribución de frecuencias. El rombo señala la media; la barra central de la caja marca la mediana.
+</p>
+</div>
+<p>Tabla <a href="exploración-de-datos.html#tab:tab-g3-desc">1.4</a> y Figura <a href="exploración-de-datos.html#fig:fig-g3-dist">1.1</a>: MAT con media <strong>11.52</strong> (DE = 3.23) y asimetría positiva (0.208); POR con media <strong>12.19</strong> (DE = 2.69), más compacta y simétrica. La curtosis negativa en ambos casos indica distribuciones platicúrticas.</p>
+</div>
+<div id="estadísticos-descriptivos-de-las-variables-cuantitativas-candidatas" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Estadísticos descriptivos de las variables cuantitativas candidatas<a href="exploración-de-datos.html#estad%C3%ADsticos-descriptivos-de-las-variables-cuantitativas-candidatas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed table-responsive" style="font-size: 11px; color: black; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-desc-quant">Table 1.5: </span>Resumen descriptivo de las variables cuantitativas candidatas como predictoras,
+por conjunto de datos (G3 &gt; 0).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Dataset
+</th>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:center;">
+n
+</th>
+<th style="text-align:center;">
+Media
+</th>
+<th style="text-align:center;">
+Mediana
+</th>
+<th style="text-align:center;">
+DE
+</th>
+<th style="text-align:center;">
+Mínimo
+</th>
+<th style="text-align:center;">
+Q1
+</th>
+<th style="text-align:center;">
+Q3
+</th>
+<th style="text-align:center;">
+Máximo
+</th>
+<th style="text-align:center;">
+Asimetría
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+Dalc
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+1.50
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0.92
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+2.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+Dalc
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+1.49
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0.92
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+2.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+Fedu
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+2.55
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1.08
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+-0.07
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+Fedu
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+2.32
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1.10
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+0.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+G1
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+11.27
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+3.24
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+0.16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+G1
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+11.50
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+2.68
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+G2
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+11.36
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+3.15
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+0.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+G2
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+11.75
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+2.63
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+0.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+Medu
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+2.80
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1.09
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+-0.39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+Medu
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+2.52
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1.13
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+-0.04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+Walc
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+2.33
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1.29
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+0.55
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+Walc
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+2.27
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1.28
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+0.64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+absences
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+6.32
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+8.19
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+75
+</td>
+<td style="text-align:center;">
+3.58
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+absences
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+3.75
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4.66
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+32
+</td>
+<td style="text-align:center;">
+1.99
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+16.66
+</td>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:center;">
+1.27
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:center;">
+0.54
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+16.72
+</td>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:center;">
+1.21
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:center;">
+0.45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+failures
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+0.27
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0.67
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2.72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+failures
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+0.21
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0.58
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3.21
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+famrel
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+3.96
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+0.89
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+-0.95
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+famrel
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+3.93
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+0.95
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+-1.11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+freetime
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+3.25
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1.01
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+-0.16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+freetime
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+3.17
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1.05
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+-0.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+goout
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+3.10
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1.09
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+0.14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+goout
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+3.19
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1.16
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+3.55
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1.40
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+-0.50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+3.53
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1.45
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+-0.49
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+studytime
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+2.04
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0.83
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+0.62
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+studytime
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+1.94
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0.83
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+0.68
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MAT
+</td>
+<td style="text-align:left;">
+traveltime
+</td>
+<td style="text-align:center;">
+357
+</td>
+<td style="text-align:center;">
+1.43
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0.69
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1.65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+POR
+</td>
+<td style="text-align:left;">
+traveltime
+</td>
+<td style="text-align:center;">
+634
+</td>
+<td style="text-align:center;">
+1.56
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0.75
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1.27
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>*</sup> Las escalas ordinales Medu, Fedu, traveltime, studytime, famrel, freetime,<br /> goout, Dalc, Walc y health se tratan como numéricas bajo el supuesto de<br /> equidistancia entre niveles.
+</td>
+</tr>
+</tfoot>
+</table>
+<p>De la Tabla <a href="exploración-de-datos.html#tab:tab-desc-quant">1.5</a> destacan: <strong>G1</strong> y <strong>G2</strong> concentran mayor dispersión (rango 0–20); <strong>failures</strong> es fuertemente asimétrica; las ordinales (<strong>famrel</strong>, <strong>freetime</strong>, <strong>health</strong>) se comprimen en niveles altos, limitando su capacidad discriminatoria.</p>
+</div>
+<div id="análisis-de-correlación-con-la-variable-respuesta" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Análisis de correlación con la variable respuesta<a href="exploración-de-datos.html#an%C3%A1lisis-de-correlaci%C3%B3n-con-la-variable-respuesta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-striped table-bordered table-condensed" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab-correlaciones">Table 1.6: </span>Correlaciones de Pearson (r) y Spearman (ρ) entre las variables cuantitativas
+y G3, ordenadas por |r| descendente en Matemáticas.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:center;">
+r MAT
+</th>
+<th style="text-align:center;">
+ρ MAT
+</th>
+<th style="text-align:center;">
+r POR
+</th>
+<th style="text-align:center;">
+ρ POR
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+G2
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9656
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9617
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9338
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.9409
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+G1
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.8918
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.8871
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.8662
+</td>
+<td style="text-align:center;font-weight: bold;">
+0.8788
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-style: italic;">
+failures
+</td>
+<td style="text-align:center;font-style: italic;">
+-0.2938
+</td>
+<td style="text-align:center;font-style: italic;">
+-0.2986
+</td>
+<td style="text-align:center;font-style: italic;">
+-0.3877
+</td>
+<td style="text-align:center;font-style: italic;">
+-0.4308
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+absences
+</td>
+<td style="text-align:center;">
+-0.2131
+</td>
+<td style="text-align:center;">
+-0.2442
+</td>
+<td style="text-align:center;">
+-0.1960
+</td>
+<td style="text-align:center;">
+-0.2141
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Medu
+</td>
+<td style="text-align:center;">
+0.1903
+</td>
+<td style="text-align:center;">
+0.1918
+</td>
+<td style="text-align:center;">
+0.2720
+</td>
+<td style="text-align:center;">
+0.2886
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Walc
+</td>
+<td style="text-align:center;">
+-0.1901
+</td>
+<td style="text-align:center;">
+-0.1874
+</td>
+<td style="text-align:center;">
+-0.1850
+</td>
+<td style="text-align:center;">
+-0.1660
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+goout
+</td>
+<td style="text-align:center;">
+-0.1774
+</td>
+<td style="text-align:center;">
+-0.1883
+</td>
+<td style="text-align:center;">
+-0.1197
+</td>
+<td style="text-align:center;">
+-0.1143
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fedu
+</td>
+<td style="text-align:center;">
+0.1588
+</td>
+<td style="text-align:center;">
+0.1640
+</td>
+<td style="text-align:center;">
+0.1975
+</td>
+<td style="text-align:center;">
+0.2205
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dalc
+</td>
+<td style="text-align:center;">
+-0.1407
+</td>
+<td style="text-align:center;">
+-0.1529
+</td>
+<td style="text-align:center;">
+-0.2110
+</td>
+<td style="text-align:center;">
+-0.2036
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:center;">
+-0.1404
+</td>
+<td style="text-align:center;">
+-0.1482
+</td>
+<td style="text-align:center;">
+-0.0380
+</td>
+<td style="text-align:center;">
+-0.0304
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+studytime
+</td>
+<td style="text-align:center;">
+0.1267
+</td>
+<td style="text-align:center;">
+0.1099
+</td>
+<td style="text-align:center;">
+0.2460
+</td>
+<td style="text-align:center;">
+0.2636
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+traveltime
+</td>
+<td style="text-align:center;">
+-0.0998
+</td>
+<td style="text-align:center;">
+-0.1029
+</td>
+<td style="text-align:center;">
+-0.1229
+</td>
+<td style="text-align:center;">
+-0.1364
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:center;">
+-0.0817
+</td>
+<td style="text-align:center;">
+-0.0559
+</td>
+<td style="text-align:center;">
+-0.1017
+</td>
+<td style="text-align:center;">
+-0.1031
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+famrel
+</td>
+<td style="text-align:center;">
+0.0377
+</td>
+<td style="text-align:center;">
+0.0499
+</td>
+<td style="text-align:center;">
+0.0714
+</td>
+<td style="text-align:center;">
+0.0549
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+freetime
+</td>
+<td style="text-align:center;">
+-0.0216
+</td>
+<td style="text-align:center;">
+-0.0280
+</td>
+<td style="text-align:center;">
+-0.1150
+</td>
+<td style="text-align:center;">
+-0.1230
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>*</sup> En negrita: predictores seleccionados para modelación (G2 y G1).<br /> En itálica: mejor predictor no-calificación (failures).
+</td>
+</tr>
+</tfoot>
+</table>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-corrplot"></span>
+<img src="Actividad-3_files/figure-html/fig-corrplot-1.png" alt="Matriz de correlaciones de Pearson entre las variables cuantitativas y G3, para Matemáticas (izquierda) y Portugués (derecha). La escala monocromática va de gris claro (correlación negativa) a azul marino (correlación positiva)." width="80%" />
+<p class="caption">
+Figure 1.2: Matriz de correlaciones de Pearson entre las variables cuantitativas y G3, para Matemáticas (izquierda) y Portugués (derecha). La escala monocromática va de gris claro (correlación negativa) a azul marino (correlación positiva).
+</p>
+</div>
+<p>Tabla <a href="exploración-de-datos.html#tab:tab-correlaciones">1.6</a> y Figura <a href="exploración-de-datos.html#fig:fig-corrplot">1.2</a>: <strong>G2</strong> presenta la máxima correlación con G3 en ambos datasets (<span class="math inline">\(r = 0.9656\)</span> en MAT; <span class="math inline">\(0.9338\)</span> en POR), seguida de <strong>G1</strong> (<span class="math inline">\(r = 0.8918\)</span> y <span class="math inline">\(0.8662\)</span>). La concordancia entre Pearson y Spearman ofrece robustez ante outliers y relaciones monótonas no estrictamente lineales —no ante no-normalidad, supuesto que solo afecta la inferencia sobre <span class="math inline">\(\rho\)</span> y no el cálculo de <span class="math inline">\(r\)</span> (Faraway, 2014, §3.7)—. El mejor predictor no-calificación es <strong>failures</strong> (<span class="math inline">\(r = -0.2938\)</span> en MAT; <span class="math inline">\(-0.3877\)</span> en POR); en POR se suman <strong>studytime</strong> (<span class="math inline">\(r = 0.246\)</span>) y <strong>Medu</strong> (<span class="math inline">\(r = 0.272\)</span>). El resto presenta correlaciones débiles (<span class="math inline">\(|r| &lt; 0.22\)</span> en MAT; <span class="math inline">\(|r| &lt; 0.27\)</span> en POR).</p>
+</div>
+<div id="sec-predictor" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Selección de la variable predictora<a href="exploración-de-datos.html#sec-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-scatter"></span>
+<img src="Actividad-3_files/figure-html/fig-scatter-1.png" alt="Diagramas de dispersión de G3 frente a los dos predictores seleccionados, G2 (fila superior) y failures (fila inferior), en Matemáticas (columna izquierda) y Portugués (columna derecha). Línea azul marino: ajuste por mínimos cuadrados; banda gris: intervalo de confianza al 95% para la media condicional." width="80%" />
+<p class="caption">
+Figure 1.3: Diagramas de dispersión de G3 frente a los dos predictores seleccionados, G2 (fila superior) y failures (fila inferior), en Matemáticas (columna izquierda) y Portugués (columna derecha). Línea azul marino: ajuste por mínimos cuadrados; banda gris: intervalo de confianza al 95% para la media condicional.
+</p>
+</div>
+<p>La Figura <a href="exploración-de-datos.html#fig:fig-scatter">1.3</a> confirma la <strong>linealidad nítida</strong> de G2 → G3 en ambas asignaturas (puntos agrupados, banda estrecha); failures → G3 es lineal y negativa con mayor dispersión. Se adopta como <strong>predictor principal</strong> a <strong>G2</strong> (máxima correlación, relación lineal nítida) y como <strong>alternativo en la app interactiva</strong> a <strong>failures</strong> (mejor predictor no-calificación, interpretable para intervenciones educativas). La alta correlación <span class="math inline">\(r \approx 0.93\)</span>–<span class="math inline">\(0.97\)</span> refleja la continuidad entre períodos de una misma asignatura: el <span class="math inline">\(R^2\)</span> será alto, pero Cortez y Silva (2008) advierten que la superioridad predictiva pierde utilidad cuando G2 no está disponible con anticipación —tensión ajuste vs. utilidad retomada en §<a href="sec-validacion.html#sec-critica">6.1</a>—.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-modelo-mat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "smooth_scroll": true
+  },
+  "code_folding": "hide"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
